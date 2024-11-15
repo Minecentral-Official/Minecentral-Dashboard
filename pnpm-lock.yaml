@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       better-auth:
-        specifier: 0.8.4-beta.4
-        version: 0.8.4-beta.4
+        specifier: 0.8.5-beta.3
+        version: 0.8.5-beta.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -1147,11 +1147,11 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  better-auth@0.8.4-beta.4:
-    resolution: {integrity: sha512-eq6aVvBttkLipJlyNK1NTdCI+6fQG3ri1S5CMnxywFgQqGLI0SfYxYqwwLH6UDGZ6cIQ7mT63n6F8mGwwqnZcQ==}
+  better-auth@0.8.5-beta.3:
+    resolution: {integrity: sha512-TGmb2b4c7wOyvFK9dZSP9Q2Ck/oZpI4/+nyxDGDWU2A4uZpvMnb4/Ux3ce0dbqcvFYCW0Uc7j5AGCRGMospE+Q==}
 
-  better-call@0.2.14-beta.3:
-    resolution: {integrity: sha512-lA54ETanzM0xUZnQt6lm3BdTr4gVDyAe1DNpCQSTYUnwnGGOmQG8ob0FYivVd0XHsHQK68r01GB5c6cUuu4llQ==}
+  better-call@0.2.15-beta.4:
+    resolution: {integrity: sha512-EHL7KkYPxaDNDD6ojHOTECA6yTsw7Ff5Mn3s3Dm35xWSrMm2BSAIzyK44KjBBmaozcDkust8lEFoja3ueMetxw==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -3479,14 +3479,14 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  better-auth@0.8.4-beta.4:
+  better-auth@0.8.5-beta.3:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       '@noble/ciphers': 0.6.0
       '@noble/hashes': 1.5.0
       '@simplewebauthn/browser': 10.0.0
       '@simplewebauthn/server': 10.0.1
-      better-call: 0.2.14-beta.3
+      better-call: 0.2.15-beta.4
       consola: 3.2.3
       defu: 6.1.4
       jose: 5.9.6
@@ -3499,7 +3499,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  better-call@0.2.14-beta.3:
+  better-call@0.2.15-beta.4:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       rou3: 0.5.1

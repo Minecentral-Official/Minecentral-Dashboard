@@ -1,35 +1,15 @@
-"use client";
+import Login from "@/auth/components/login";
+import SignUp from "@/auth/components/signup";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-import { signUp, useSession } from "@/lib/auth-client";
-import { useState } from "react";
-
-export default function Home() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { data } = useSession();
+export default async function Home() {
+  const session = await auth.api.getSession({ headers: await headers() });
   return (
-    <div>
-      <div>Current User: {data && data.user.name}</div>
-      <div>Sign Up</div>
-      <input
-        placeholder="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={() => signUp.email({ name, email, password })}>
-        submit
-      </button>
-    </div>
+    <>
+      <div>Currently Logged In: {session?.user.name}</div>
+      <SignUp />
+      <Login />
+    </>
   );
 }
