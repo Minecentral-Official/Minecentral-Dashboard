@@ -10,7 +10,6 @@
         "pattern": [
           "src/components/**/*",
           "src/db/**/*",
-          "src/api/**/*",
           "src/hooks/**/*",
           "src/lib/**/*",
           "src/auth/**/*"
@@ -57,7 +56,6 @@
         "src/app/**": "NEXT_JS_APP_ROUTER_CASE",
         "src/components/**/*": "KEBAB_CASE",
         "src/db/**/*": "KEBAB_CASE",
-        "src/api/**/*": "KEBAB_CASE",
         "src/hooks/**/*": "KEBAB_CASE",
         "src/lib/**/*": "KEBAB_CASE",
         "src/auth/**/*": "KEBAB_CASE"

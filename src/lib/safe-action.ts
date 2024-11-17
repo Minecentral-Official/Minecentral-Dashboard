@@ -1,20 +1,11 @@
-import {
-  createSafeActionClient,
-  DEFAULT_SERVER_ERROR_MESSAGE,
-} from "next-safe-action";
-import { z } from "zod";
-
-class MyCustomError extends Error {}
+import { createSafeActionClient } from 'next-safe-action';
+import { z } from 'zod';
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
-    console.error("Action error:", e.message);
+    console.error('Action error:', e.message);
 
-    if (e instanceof MyCustomError) {
-      return e.message;
-    }
-
-    return DEFAULT_SERVER_ERROR_MESSAGE;
+    return e.message;
   },
   defineMetadataSchema() {
     return z.object({
