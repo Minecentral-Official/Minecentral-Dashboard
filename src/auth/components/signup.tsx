@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/auth/lib/auth-client";
 
 export default function SignUp() {
   return (

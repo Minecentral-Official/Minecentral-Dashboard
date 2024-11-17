@@ -1,6 +1,6 @@
 import Login from "@/auth/components/login";
 import SignUp from "@/auth/components/signup";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth/lib/auth";
 import { headers } from "next/headers";
 
 export default async function Home() {
