@@ -23,11 +23,6 @@
       },
       {
         "mode": "full",
-        "type": "section",
-        "pattern": ["src/sections/**/*"]
-      },
-      {
-        "mode": "full",
         "type": "app",
         "capture": ["_", "fileName"],
         "pattern": ["src/app/**/*"]

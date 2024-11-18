@@ -6,6 +6,8 @@ import './globals.css';
 
 import { Manrope } from 'next/font/google';
 
+import Header from '@/components/sections/host/header';
+
 const manrope = Manrope({
   subsets: ['latin'],
   display: 'swap',
@@ -24,7 +26,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en' className={manrope.className}>
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
