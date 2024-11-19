@@ -1,4 +1,4 @@
-import ComparisonSection from '@/components/services/host/sections/landing/compaarison-section';
+import ComparisonSection from '@/components/services/host/sections/landing/comparison-section';
 import { CTASection } from '@/components/services/host/sections/landing/cta-section';
 import { FeaturesSection } from '@/components/services/host/sections/landing/features-section';
 import { HeroSection } from '@/components/services/host/sections/landing/hero-section';
