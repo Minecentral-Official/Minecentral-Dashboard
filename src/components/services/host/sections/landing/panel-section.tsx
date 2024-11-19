@@ -9,14 +9,16 @@ export const PanelSection = () => (
         <div className='flex flex-col gap-10'>
           <div className='flex flex-col gap-4'>
             <div>
-              <Badge variant='outline'>Platform</Badge>
+              <Badge variant='outline'>Host</Badge>
             </div>
             <div className='flex flex-col gap-2'>
               <h2 className='font-regular max-w-xl text-left text-3xl tracking-tighter lg:text-5xl'>
-                Something new!
+                Control Made Easy
               </h2>
               <p className='max-w-xl text-left text-lg leading-relaxed tracking-tight text-muted-foreground'>
-                Managing a small business today is already tough.
+                Built with gamers in mind, our Minecentral Panel offers powerful
+                features and a user-friendly interface, so you can focus on
+                playing, not managing.
               </p>
             </div>
           </div>
@@ -24,27 +26,27 @@ export const PanelSection = () => (
             <div className='flex flex-row items-start gap-6'>
               <Check className='mt-2 h-4 w-4 text-primary' />
               <div className='flex flex-col gap-1'>
-                <p>Easy to use</p>
+                <p>Instant Server Setup</p>
                 <p className='text-sm text-muted-foreground'>
-                  We&apos;ve made it easy to use and understand.
+                  Create and launch your Minecraft server in just a few clicks.
                 </p>
               </div>
             </div>
             <div className='flex flex-row items-start gap-6'>
               <Check className='mt-2 h-4 w-4 text-primary' />
               <div className='flex flex-col gap-1'>
-                <p>Fast and reliable</p>
+                <p>Mod and Plugin Support</p>
                 <p className='text-sm text-muted-foreground'>
-                  We&apos;ve made it fast and reliable.
+                  Seamlessly install, update, or remove mods and plugins.
                 </p>
               </div>
             </div>
             <div className='flex flex-row items-start gap-6'>
               <Check className='mt-2 h-4 w-4 text-primary' />
               <div className='flex flex-col gap-1'>
-                <p>Beautiful and modern</p>
+                <p>Advanced Console Access</p>
                 <p className='text-sm text-muted-foreground'>
-                  We&apos;ve made it beautiful and modern.
+                  Easily execute commands, review logs, and troubleshoot.
                 </p>
               </div>
             </div>

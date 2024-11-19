@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
+import { LucideProps } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -51,12 +52,14 @@ const buttonVariants = cva(
 );
 
 interface IconProps {
-  Icon: React.ElementType;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
   iconPlacement: 'left' | 'right';
 }
 
 interface IconRefProps {
-  Icon?: never;
+  icon?: never;
   iconPlacement?: undefined;
 }
 
@@ -78,13 +81,14 @@ const Button = React.forwardRef<
       variant,
       size,
       asChild = false,
-      Icon,
+      icon,
       iconPlacement,
       ...props
     },
     ref,
   ) => {
     const Comp = asChild ? Slot : 'button';
+    const Icon = icon;
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -92,14 +96,14 @@ const Button = React.forwardRef<
         {...props}
       >
         {Icon && iconPlacement === 'left' && (
-          <div className='w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-100 group-hover:pr-2 group-hover:opacity-100'>
-            <Icon />
+          <div className='group-hover:translate-x-100 w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:pr-2 group-hover:opacity-100'>
+            <Icon strokeWidth={1.5} size={20} />
           </div>
         )}
         <Slottable>{props.children}</Slottable>
         {Icon && iconPlacement === 'right' && (
           <div className='w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-2 group-hover:opacity-100'>
-            <Icon />
+            <Icon strokeWidth={1.5} size={20} />
           </div>
         )}
       </Comp>
