@@ -1,8 +1,8 @@
 import { SVGProps } from 'react';
 
 export default function LogoMark({
-  width = 64,
-  height = 64,
+  width = 48,
+  height = 48,
   ...props
 }: SVGProps<SVGSVGElement>) {
   return (
