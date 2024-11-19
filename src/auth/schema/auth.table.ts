@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
@@ -12,6 +14,9 @@ export const user = pgTable('user', {
   banned: boolean('banned'),
   banReason: text('banReason'),
   banExpires: timestamp('banExpires'),
+
+  // stripe
+  customerId: text(),
 });
 
 export const session = pgTable('session', {

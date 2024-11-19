@@ -1,15 +1,18 @@
-import { user } from "@/auth/schema/auth.table";
+import 'server-only';
+
 import {
   boolean,
   integer,
   pgTable,
   text,
   timestamp,
-} from "drizzle-orm/pg-core";
+} from 'drizzle-orm/pg-core';
 
-export const ticket = pgTable("ticket", {
+import { user } from '@/auth/schema/auth.table';
+
+export const ticket = pgTable('ticket', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-  userId: integer()
+  userId: text()
     .notNull()
     .references(() => user.id),
   subject: text().notNull(),

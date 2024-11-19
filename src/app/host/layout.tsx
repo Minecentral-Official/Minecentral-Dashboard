@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 
+import { Footer } from '@/components/footer';
 import Header from '@/components/services/host/header';
 
 export default function HostLayout({ children }: PropsWithChildren) {
@@ -7,6 +8,7 @@ export default function HostLayout({ children }: PropsWithChildren) {
     <main>
       <Header />
       {children}
+      <Footer />
     </main>
   );
 }
