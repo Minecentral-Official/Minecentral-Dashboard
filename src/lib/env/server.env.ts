@@ -12,7 +12,10 @@ export const serverEnv = createEnv({
     DISCORD_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_WEBHOOK_SECRET_KEY: z.string(),
   },
   // eslint-disable-next-line n/no-process-env
   experimental__runtimeEnv: process.env,
+  isServer: typeof window === 'undefined',
 });
