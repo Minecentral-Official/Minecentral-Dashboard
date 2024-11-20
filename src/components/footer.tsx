@@ -60,21 +60,19 @@ export const Footer = () => {
           <div className='flex flex-col items-start gap-8'>
             <div className='flex flex-col gap-2'>
               <h2 className='font-regular max-w-xl text-left text-3xl tracking-tighter md:text-5xl'>
-                TWBlocks™
+                Minecentral™
               </h2>
               <p className='max-w-lg text-left text-lg leading-relaxed tracking-tight text-background/75'>
-                Managing a small business today is already tough.
+                Managing a game server just got a whole lot easier.
               </p>
             </div>
             <div className='flex flex-row gap-20'>
               <div className='flex max-w-lg flex-col text-left text-sm leading-relaxed tracking-tight text-background/75'>
-                <p>1 Tailwind Way</p>
-                <p>Menlo Park</p>
-                <p>CA 94025</p>
+                <p>Miami, Florida</p>
               </div>
               <div className='flex max-w-lg flex-col text-left text-sm leading-relaxed tracking-tight text-background/75'>
-                <Link href='/'>Terms of service</Link>
-                <Link href='/'>Privacy Policy</Link>
+                <Link href='/terms'>Terms of service</Link>
+                <Link href='/privacy'>Privacy Policy</Link>
               </div>
             </div>
           </div>

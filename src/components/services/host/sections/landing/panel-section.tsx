@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+import Image from 'next/image';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -9,7 +10,7 @@ export const PanelSection = () => (
         <div className='flex flex-col gap-10'>
           <div className='flex flex-col gap-4'>
             <div>
-              <Badge variant='outline'>Host</Badge>
+              <Badge>Admin Panel</Badge>
             </div>
             <div className='flex flex-col gap-2'>
               <h2 className='font-regular max-w-xl text-left text-3xl tracking-tighter lg:text-5xl'>
@@ -52,7 +53,14 @@ export const PanelSection = () => (
             </div>
           </div>
         </div>
-        <div className='aspect-square rounded-md bg-muted'></div>
+        <div className='relative aspect-square rounded-md bg-muted'>
+          <Image
+            src={'/host/panel-console.png'}
+            alt='Server Panel'
+            fill={true}
+            objectFit='cover'
+          />
+        </div>
       </div>
     </div>
   </div>

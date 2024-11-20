@@ -12,12 +12,13 @@ export const CTASection = () => (
         </div>
         <div className='flex flex-col gap-2'>
           <h3 className='font-regular max-w-xl text-3xl tracking-tighter md:text-5xl'>
-            Try our platform today!
+            Try our services today!
           </h3>
           <p className='max-w-xl text-lg leading-relaxed tracking-tight text-muted-foreground'>
-            Managing a small business today is already tough. Avoid further
-            complications by ditching outdated, tedious trade methods. Our goal
-            is to streamline SMB trade, making it easier and faster than ever.
+            Managing a Minecraft server is a hassle already! Let us help you get
+            started with a low barrier to entry hosting solution! Our goal is to
+            lower entry cost while allowing for infinite future expansion when
+            you are ready!
           </p>
         </div>
         <div className='flex flex-row gap-4'>

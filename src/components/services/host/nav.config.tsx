@@ -1,16 +1,16 @@
 export const navigationItems = [
   {
     title: 'Home',
-    href: '/',
+    href: '/host',
     description: '',
   },
   {
     title: 'Product',
-    description: 'Managing a small business today is already tough.',
+    description: 'Managing a game server just got a whole lot easier.',
     items: [
       {
-        title: 'Reports',
-        href: '/reports',
+        title: 'Pricing',
+        href: '/host/pricing',
       },
       {
         title: 'Statistics',

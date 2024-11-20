@@ -1,4 +1,5 @@
 import { Banknote, Gauge, ServerOff, Shield } from 'lucide-react';
+import Image from 'next/image';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -8,7 +9,7 @@ export const FeaturesSection = () => (
       <div className='flex flex-col gap-10'>
         <div className='flex flex-col items-start gap-4'>
           <div>
-            <Badge>Host</Badge>
+            <Badge>Features</Badge>
           </div>
           <div className='flex flex-col gap-2'>
             <h2 className='font-regular max-w-xl text-balance text-left text-3xl tracking-tighter md:text-5xl'>
@@ -21,7 +22,7 @@ export const FeaturesSection = () => (
           </div>
         </div>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-          <div className='flex aspect-square h-full flex-col justify-between rounded-md bg-muted p-6 lg:col-span-2 lg:aspect-auto'>
+          <div className='relative flex aspect-video h-full flex-col justify-between rounded-md bg-muted p-6 lg:col-span-2 lg:aspect-auto'>
             <Gauge className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
               <h3 className='text-xl tracking-tight'>
@@ -33,7 +34,7 @@ export const FeaturesSection = () => (
               </p>
             </div>
           </div>
-          <div className='flex aspect-square flex-col justify-between rounded-md bg-muted p-6'>
+          <div className='flex aspect-video flex-col justify-between rounded-md bg-muted p-6'>
             <ServerOff className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
               <h3 className='text-xl tracking-tight'>
@@ -46,7 +47,7 @@ export const FeaturesSection = () => (
             </div>
           </div>
 
-          <div className='flex aspect-square flex-col justify-between rounded-md bg-muted p-6'>
+          <div className='flex aspect-video flex-col justify-between rounded-md bg-muted p-6'>
             <Shield className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
               <h3 className='text-xl tracking-tight'>
@@ -58,7 +59,7 @@ export const FeaturesSection = () => (
               </p>
             </div>
           </div>
-          <div className='flex aspect-square h-full flex-col justify-between rounded-md bg-muted p-6 lg:col-span-2 lg:aspect-auto'>
+          <div className='flex aspect-video h-full flex-col justify-between rounded-md bg-muted p-6 lg:col-span-2 lg:aspect-auto'>
             <Banknote className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
               <h3 className='text-xl tracking-tight'>Hosting Your Way</h3>

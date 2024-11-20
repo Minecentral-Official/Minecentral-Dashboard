@@ -8,7 +8,7 @@ export const PerformanceSection = () => (
       <div className='grid grid-cols-1 gap-10 lg:grid-cols-2'>
         <div className='flex flex-col items-start gap-4'>
           <div>
-            <Badge>Host</Badge>
+            <Badge>Performance</Badge>
           </div>
           <div className='flex flex-col gap-2'>
             <h2 className='font-regular text-left text-xl tracking-tighter md:text-3xl lg:max-w-xl lg:text-5xl'>
