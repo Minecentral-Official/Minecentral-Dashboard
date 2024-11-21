@@ -41,13 +41,13 @@ export default function NavDesktop() {
                       </Button>
                     </div>
                     <div className='flex h-full flex-col justify-end text-sm'>
-                      {item.items?.map((subItem) => (
+                      {item.items?.map(({ href, title }) => (
                         <NavigationMenuLink
-                          href={subItem.href}
-                          key={subItem.title}
+                          href={href}
+                          key={title}
                           className='flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted'
                         >
-                          <span>{subItem.title}</span>
+                          <span>{title}</span>
                           <MoveRight className='h-4 w-4 text-muted-foreground' />
                         </NavigationMenuLink>
                       ))}
