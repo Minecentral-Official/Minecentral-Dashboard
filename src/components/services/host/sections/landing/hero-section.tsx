@@ -39,7 +39,11 @@ export const HeroSection = () => (
           </div>
         </div>
         <div className='relative aspect-square overflow-hidden rounded-md'>
-          <Image src='/host-hero.jpg' fill={true} alt='Host Hero Image' />
+          <Image
+            src='/host/host-hero.jpg'
+            fill={true}
+            alt='Minecraft Forest Landscape'
+          />
         </div>
       </div>
     </div>

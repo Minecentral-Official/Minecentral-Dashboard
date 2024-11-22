@@ -53,7 +53,7 @@ export const PanelSection = () => (
             </div>
           </div>
         </div>
-        <div className='relative aspect-square rounded-md bg-muted'>
+        <div className='relative aspect-square overflow-hidden rounded-md bg-muted'>
           <Image
             src={'/host/panel-console.png'}
             alt='Server Panel'
