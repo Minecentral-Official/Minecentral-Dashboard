@@ -1,5 +1,3 @@
-import 'server-only';
-
 import getSession from '@/auth/lib/get-session';
 
 export default async function validateSession() {

@@ -1,7 +1,5 @@
 import { headers } from 'next/headers';
 
-import 'server-only';
-
 import { auth } from '@/auth/lib/auth';
 
 export default async function getSession() {

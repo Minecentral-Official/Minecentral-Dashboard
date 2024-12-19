@@ -2,8 +2,6 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin } from 'better-auth/plugins';
 
-import 'server-only';
-
 import { db } from '@/lib/db';
 import { serverEnv } from '@/lib/env/server.env';
 

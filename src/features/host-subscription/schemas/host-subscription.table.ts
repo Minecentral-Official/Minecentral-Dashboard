@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 
 import { user } from '@/auth/schema/auth.table';

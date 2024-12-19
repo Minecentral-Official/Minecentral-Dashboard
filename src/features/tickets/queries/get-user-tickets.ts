@@ -1,7 +1,5 @@
 import { eq } from 'drizzle-orm';
 
-import 'server-only';
-
 import validateSession from '@/auth/lib/validate-session';
 import { db } from '@/lib/db';
 import { ticket } from '@/lib/db/schema';
