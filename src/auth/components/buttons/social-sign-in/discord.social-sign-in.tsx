@@ -19,7 +19,7 @@ export default function DiscordSocialSignIn() {
       <span className='pointer-events-none me-2 flex-1'>
         <RiDiscordFill className='opacity-60' size={16} aria-hidden='true' />
       </span>
-      Login with GitHub
+      Login with Discord
     </Button>
   );
 }
