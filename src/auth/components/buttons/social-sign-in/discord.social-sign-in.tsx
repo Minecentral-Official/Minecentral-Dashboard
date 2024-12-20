@@ -1,23 +1,23 @@
 'use client';
 
-import { RiGithubFill } from '@remixicon/react';
+import { RiDiscordFill } from '@remixicon/react';
 
 import { authClient } from '@/auth/lib/auth-client';
 import { Button } from '@/components/ui/button';
 
-export default function GithubButton() {
+export default function DiscordSocialSignIn() {
   return (
     <Button
-      className='bg-[#333333] text-white after:flex-1 hover:bg-[#333333]/90'
+      className='bg-[#7289da] text-white after:flex-1 hover:bg-[#7289da]/90'
       onClick={async () =>
         await authClient.signIn.social({
-          provider: 'github',
+          provider: 'discord',
           callbackURL: '/dashboard',
         })
       }
     >
       <span className='pointer-events-none me-2 flex-1'>
-        <RiGithubFill className='opacity-60' size={16} aria-hidden='true' />
+        <RiDiscordFill className='opacity-60' size={16} aria-hidden='true' />
       </span>
       Login with GitHub
     </Button>

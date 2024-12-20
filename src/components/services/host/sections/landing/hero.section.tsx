@@ -33,8 +33,9 @@ export const HeroSection = () => (
               effect='expandIcon'
               icon={ArrowRight}
               iconPlacement='right'
+              asChild
             >
-              Get Started
+              <Link href='/sign-in'>Get Started</Link>
             </Button>
           </div>
         </div>

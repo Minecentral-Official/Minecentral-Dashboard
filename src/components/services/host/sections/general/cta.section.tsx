@@ -1,4 +1,4 @@
-import { Mail, MoveRight } from 'lucide-react';
+import { ArrowRight, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +26,12 @@ export const CTASection = () => (
           <Button className='gap-4' variant='outline'>
             Drop us a message <Mail className='h-4 w-4' />
           </Button>
-          <Button effect='expandIcon' icon={MoveRight} iconPlacement='right'>
+          <Button
+            effect='expandIcon'
+            icon={ArrowRight}
+            iconPlacement='right'
+            asChild
+          >
             <Link href='/sign-in'>Sign up here</Link>
           </Button>
         </div>
