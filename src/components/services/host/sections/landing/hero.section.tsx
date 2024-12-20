@@ -30,7 +30,7 @@ export const HeroSection = () => (
             </Button>
             <Button
               size='lg'
-              variant='expandIcon'
+              effect='expandIcon'
               icon={ArrowRight}
               iconPlacement='right'
             >

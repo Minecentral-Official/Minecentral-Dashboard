@@ -73,10 +73,10 @@ export default function ComparisonSection() {
           </div>
           <div className='flex flex-col gap-2'>
             <h2 className='font-regular text-3xl tracking-tighter md:text-5xl lg:max-w-xl'>
-              Something new!
+              Why pay more?
             </h2>
             <p className='max-w-xl text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-xl'>
-              Managing a small business today is already tough.
+              Get superior quality at a lower price
             </p>
           </div>
           <div className='flex w-full flex-col gap-10 pt-12'>

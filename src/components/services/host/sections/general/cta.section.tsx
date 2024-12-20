@@ -1,4 +1,5 @@
-import { MoveRight, PhoneCall } from 'lucide-react';
+import { Mail, MoveRight } from 'lucide-react';
+import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,10 +24,10 @@ export const CTASection = () => (
         </div>
         <div className='flex flex-row gap-4'>
           <Button className='gap-4' variant='outline'>
-            Jump on a call <PhoneCall className='h-4 w-4' />
+            Drop us a message <Mail className='h-4 w-4' />
           </Button>
-          <Button className='gap-4'>
-            Sign up here <MoveRight className='h-4 w-4' />
+          <Button effect='expandIcon' icon={MoveRight} iconPlacement='right'>
+            <Link href='/sign-in'>Sign up here</Link>
           </Button>
         </div>
       </div>
