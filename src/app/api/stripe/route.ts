@@ -39,7 +39,6 @@ export async function POST(req: Request) {
     return new Response('Woah, you made it!', {
       status: 200,
     });
-    console.log('Stripe Event:', event.type);
   } catch {
     return new Response(`Webhook Error`, { status: 400 });
   }
