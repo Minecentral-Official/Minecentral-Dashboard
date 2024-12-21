@@ -1,7 +1,7 @@
-import hostPricingTypesafe from '@/features/stripe/pricing/host/host-pricing-typesafe';
+import getHostProducts from '@/features/stripe/queries/host/host-products.query';
 
 export default async function Home() {
-  const asdf = await hostPricingTypesafe();
-  console.log(asdf);
+  const hostProducts = await getHostProducts();
+  console.log('hostProducts', hostProducts);
   return <>Default Page</>;
 }
