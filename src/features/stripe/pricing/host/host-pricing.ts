@@ -77,6 +77,5 @@ function convertPrice(price: Stripe.Price): Price {
   return {
     id: price.id,
     price: price.unit_amount,
-    recurring: price.recurring ? true : false,
   };
 }
