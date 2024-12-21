@@ -1,4 +1,4 @@
-import { Product } from './product';
+import { Product } from '@/features/stripe/types/product';
 
 export type Product_Host = Product & {
   metadata: Product_HostMetadata;

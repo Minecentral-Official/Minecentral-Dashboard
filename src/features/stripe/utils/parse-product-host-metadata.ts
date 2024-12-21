@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { Product_HostMetadata } from '@/features/stripe/types/product_host';
+import { Product_HostMetadata } from '@/features/stripe/types/product-host';
 
 export function parseProductMetadata(
   metadataArray: Stripe.Metadata,

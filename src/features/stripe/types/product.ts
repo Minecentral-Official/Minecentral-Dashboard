@@ -1,4 +1,4 @@
-import { Price } from './price';
+import { Price } from '@/features/stripe/types/price';
 
 export type Product = {
   id: string;
