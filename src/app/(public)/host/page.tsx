@@ -5,7 +5,7 @@ import { HeroSection } from '@/components/services/host/sections/landing/hero.se
 import { PanelSection } from '@/components/services/host/sections/landing/panel.section';
 import { PerformanceSection } from '@/components/services/host/sections/landing/performance.section';
 
-export default function HostLandingPage() {
+export default async function HostLandingPage() {
   return (
     <>
       <HeroSection />

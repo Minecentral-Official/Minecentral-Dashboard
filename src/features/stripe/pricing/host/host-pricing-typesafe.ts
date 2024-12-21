@@ -6,9 +6,13 @@ export default async function hostPricingTypesafe() {
   //Get all active prices (not products because Stripe is weird)
   const products = await getAllProducts();
 
-  return await products.map(
-    async (product) => await getPricesFromProduct(product),
+  const productsWithPrices = await Promise.all(
+    products.map(async (product) => ({
+      product,
+      prices: await getPricesFromProduct(product),
+    })),
   );
+  return productsWithPrices;
 }
 
 async function getAllProducts() {
