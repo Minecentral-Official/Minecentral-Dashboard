@@ -1,13 +1,16 @@
 import Stripe from 'stripe';
 
-import { stripeAPI } from '../../lib/stripe.api';
-import { Price } from '../../types/price';
-import { Product } from '../../types/product';
-import { Product_Host, Product_HostMetadata } from '../../types/product_host';
-import { parseProductMetadata } from '../../utils/parseProductHostMetadata';
-import { stripeProductToMCProduct } from '../../utils/stripeProductToMCProduct';
+import { stripeAPI } from '@/features/stripe/lib/stripe.api';
+import { Price } from '@/features/stripe/types/price';
+import { Product } from '@/features/stripe/types/product';
+import {
+  Product_Host,
+  Product_HostMetadata,
+} from '@/features/stripe/types/product-host';
+import { parseProductMetadata } from '@/features/stripe/utils/parse-product-host-metadata';
+import { stripeProductToMCProduct } from '@/features/stripe/utils/stripe-product-to-mc-product';
 
-export default async function () {
+export default async function hostPricing() {
   try {
     //Get all active prices (not products because Stripe is weird)
     const { data: prices } = await stripeAPI.prices.list({

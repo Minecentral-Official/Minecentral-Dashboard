@@ -1,6 +1,6 @@
-import { stripeAPI } from '../../lib/stripe.api';
+import { stripeAPI } from '@/features/stripe/lib/stripe.api';
 
-export default async function (priceID: string) {
+export default async function hostPricingFor(priceID: string) {
   try {
     const product = await stripeAPI.products.retrieve(priceID);
     const prices = await stripeAPI.prices.list({

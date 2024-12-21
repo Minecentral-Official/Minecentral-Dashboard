@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { Product } from '../types/product';
+import { Product } from '@/features/stripe/types/product';
 
 export function stripeProductToMCProduct(product: Stripe.Product): Product {
   console.log(product.default_price);
