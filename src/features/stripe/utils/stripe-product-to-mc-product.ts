@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { Product } from '@/features/stripe/types/product';
 
 export function stripeProductToMCProduct(product: Stripe.Product): Product {
-  console.log(product.default_price);
+  // console.log(product.default_price);
   return {
     id: product.id,
     default_price: (product.default_price as string) || '',

@@ -7,9 +7,9 @@ export default async function hostPricingFor(priceID: string) {
       product: product.id,
       active: true,
     });
-    return Response.json({ data: product, prices: prices.data });
+    return { data: product, prices: prices.data };
   } catch (err) {
     console.log(err);
-    return Response.error();
+    throw new Error();
   }
 }
