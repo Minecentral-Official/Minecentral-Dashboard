@@ -4,14 +4,17 @@ import getProducts from '@/features/stripe/queries/general/products.query';
 import 'server-only';
 
 export default async function getProductsWithPrices() {
+  // get all products and get all prices
   const productsPromise = getProducts();
   const pricesPromise = getPrices();
 
+  // await both products and prices
   const [products, prices] = await Promise.all([
     productsPromise,
     pricesPromise,
   ]);
 
+  // combine products and prices
   const productsWithPrices = products.map((product) => {
     // filter out products that are associated with a given product
     const pricesAssociatedWithProduct = prices.filter(
