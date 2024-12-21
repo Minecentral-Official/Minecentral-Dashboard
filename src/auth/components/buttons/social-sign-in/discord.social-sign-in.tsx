@@ -12,7 +12,7 @@ export default function DiscordSocialSignIn() {
       onClick={async () =>
         await authClient.signIn.social({
           provider: 'discord',
-          callbackURL: '/dashboard',
+          callbackURL: '/dashboard/host',
         })
       }
     >
