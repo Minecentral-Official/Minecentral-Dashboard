@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 // we will have a separate css file for each 'project' in the future, just disabling the error here for now
 // eslint-disable-next-line boundaries/element-types
-import './globals.css';
+import '@/app/globals.css';
 
 import { Manrope } from 'next/font/google';
 

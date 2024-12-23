@@ -2,8 +2,13 @@ import AuthNav from '@/auth/components/auth-nav';
 import Logo from '@/components/logo';
 import NavDesktop from '@/components/services/host/nav.desktop';
 import NavMobile from '@/components/services/host/nav.mobile';
+import { MinecentralServices } from '@/lib/types/services';
 
-export default function Header() {
+type HeaderProps = {
+  service: MinecentralServices;
+};
+
+export default function Header({ service }: HeaderProps) {
   return (
     <header className='fixed left-0 top-0 z-40 w-full bg-background'>
       <div className='container relative mx-auto flex min-h-20 flex-row items-center gap-4 lg:grid lg:grid-cols-3'>
@@ -11,7 +16,7 @@ export default function Header() {
           <NavDesktop />
         </div>
         <div className='flex lg:justify-center'>
-          <Logo service='host' />
+          <Logo service={service} />
         </div>
         <div className='flex w-full justify-end gap-4'>
           <AuthNav />
