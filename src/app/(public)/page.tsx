@@ -1,3 +1,4 @@
+import ServiceSelectionSection from '@/components/services/general/sections/service-selection.section';
 import Header from '@/components/services/host/header';
 import getHostProducts from '@/features/stripe/queries/host/host-products.query';
 
@@ -8,7 +9,7 @@ export default async function LandingPage() {
   return (
     <>
       <Header service='host' />
-      <h1 className='mt-20'>Landing Page</h1>
+      <ServiceSelectionSection />
     </>
   );
 }
