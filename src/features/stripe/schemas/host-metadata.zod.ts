@@ -30,3 +30,5 @@ const schemaConfig = hostMetadataKeys.reduce(
 
 // actual schema
 export const hostMetadataSchema = z.object(schemaConfig);
+
+export type HostMetadataType = z.infer<typeof hostMetadataSchema>;

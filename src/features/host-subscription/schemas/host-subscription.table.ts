@@ -4,10 +4,13 @@ import { user } from '@/auth/schema/auth.table';
 
 export const hostSubscription = pgTable('hostSubscription', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-  userId: integer()
+  //The ID of the user that purchased a server
+  userId: text()
     .notNull()
     .references(() => user.id),
+  //Pterodactyl supplied data, ID for data grabbing and UUID for url linking
   serverId: text().notNull(),
-  // because drizzle auto generates column names based on casing, I'm using camel case here
   serverUuid: text().notNull(),
+  //Stripe supplied data
+  subscriptionId: text().notNull(),
 });
