@@ -1,5 +1,3 @@
-import Dashboard from '@/components/services/dashboard/dashboard';
-
 export default async function DashboardHomePage() {
-  return <Dashboard />;
+  return <div className='p-6'>This is the dashboard homepage</div>;
 }
