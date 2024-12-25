@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 // import { PanelServer, PanelUser } from 'pterodactyl.ts';
 import Stripe from 'stripe';
 
-import findUserBySubscriptionID from '@/features/host-subscription/queries/find-user-subscription';
+import findUserBySubscriptionID from '@/features/products/host/queries/find-user-subscription';
 //TODO: Hugo, I need to import these, whats going on?
 
 // TO_ALAIN: I created an eslint rule to prevent imports from different features

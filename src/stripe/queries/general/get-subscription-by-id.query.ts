@@ -1,4 +1,4 @@
-import { stripeAPI } from '@/features/stripe/lib/stripe.api';
+import { stripeAPI } from '@/stripe/lib/stripe.api';
 
 import 'server-only';
 

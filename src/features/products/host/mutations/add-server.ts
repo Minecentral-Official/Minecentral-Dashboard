@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { db } from '@/lib/db';
 import { hostSubscription } from '@/lib/db/schema';

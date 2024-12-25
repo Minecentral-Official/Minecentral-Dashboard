@@ -5,7 +5,7 @@ import { z } from 'zod';
 import getParseStringToIntegerSchema from '@/lib/zod/parse-string-to-integer.zod';
 
 // now we can add additional fields to this validation schema easily :^)
-const hostMetadataKeys = [
+const metadataHostKeys = [
   'allocations',
   'backups',
   'cpu',
@@ -20,15 +20,15 @@ const hostMetadataKeys = [
 ] as const;
 
 // creating zod schema config
-const schemaConfig = hostMetadataKeys.reduce(
+const schemaConfig = metadataHostKeys.reduce(
   (prev, curr) => ({ ...prev, [curr]: getParseStringToIntegerSchema() }),
   {} as Record<
-    (typeof hostMetadataKeys)[number],
+    (typeof metadataHostKeys)[number],
     ReturnType<typeof getParseStringToIntegerSchema>
   >,
 );
 
 // actual schema
-export const hostMetadataSchema = z.object(schemaConfig);
+export const metadataHostSchema = z.object(schemaConfig);
 
-export type HostMetadataType = z.infer<typeof hostMetadataSchema>;
+export type MetadataHostType = z.infer<typeof metadataHostSchema>;

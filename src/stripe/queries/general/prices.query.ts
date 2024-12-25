@@ -1,5 +1,5 @@
-import priceDTO from '@/features/stripe/dto/price.dto';
-import { stripeAPI } from '@/features/stripe/lib/stripe.api';
+import priceDTO from '@/stripe/dto/price.dto';
+import { stripeAPI } from '@/stripe/lib/stripe.api';
 
 import 'server-only';
 

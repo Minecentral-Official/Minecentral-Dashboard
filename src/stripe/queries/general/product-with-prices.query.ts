@@ -1,5 +1,5 @@
-import getPrices from '@/features/stripe/queries/general/prices.query';
-import getProducts from '@/features/stripe/queries/general/products.query';
+import getPrices from '@/stripe/queries/general/prices.query';
+import getProducts from '@/stripe/queries/general/products.query';
 
 import 'server-only';
 

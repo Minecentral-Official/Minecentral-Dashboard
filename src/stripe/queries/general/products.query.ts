@@ -1,5 +1,5 @@
-import productDTO from '@/features/stripe/dto/product.dto';
-import { stripeAPI } from '@/features/stripe/lib/stripe.api';
+import productDTO from '@/stripe/dto/product.dto';
+import { stripeAPI } from '@/stripe/lib/stripe.api';
 
 import 'server-only';
 

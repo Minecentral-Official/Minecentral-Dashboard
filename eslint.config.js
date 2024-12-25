@@ -41,6 +41,7 @@ const config = [
             'src/hooks/**/*',
             'src/lib/**/*',
             'src/auth/**/*',
+            'src/stripe/**/*',
           ],
         },
         {
@@ -81,6 +82,7 @@ const config = [
           'src/lib/**/*': 'KEBAB_CASE',
           'src/auth/**/*': 'KEBAB_CASE',
           'src/features/**/*': 'KEBAB_CASE',
+          'src/stripe/**/*': 'KEBAB_CASE',
         },
       ],
       'n/no-process-env': ['error'],
