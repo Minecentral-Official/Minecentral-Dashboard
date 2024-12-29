@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { AppSidebar } from '@/components/services/dashboard/sidebar/sidebar';
+import { AppSidebar } from '@/components/sidebar/sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,

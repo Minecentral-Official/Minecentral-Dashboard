@@ -8,7 +8,7 @@ import {
 
 import SignOutDropdownMenuItem from '@/auth/components/dropdowns/sign-out.dropdown-menu-item';
 import getSession from '@/auth/lib/get-session';
-import ResponsiveDropdownMenuContent from '@/components/services/dashboard/sidebar/responsive-dropdown-menu-content';
+import ResponsiveDropdownMenuContent from '@/components/sidebar/responsive-dropdown-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-export async function NavUser() {
+export async function SidebarNavUser() {
   const session = await getSession();
 
   if (!session) {

@@ -1,4 +1,4 @@
-import { MoveDownLeft, MoveUpRight } from 'lucide-react';
+import { MoveUpRight } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 

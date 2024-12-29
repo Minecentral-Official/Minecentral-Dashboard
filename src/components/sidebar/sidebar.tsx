@@ -1,11 +1,15 @@
 import * as React from 'react';
 
 import LogoMark from '@/components/logo-mark';
-import { NavUser } from '@/components/services/dashboard/sidebar/nav-user';
+import HostSidebar from '@/components/services/host/sidebar/host.sidebar';
+import { SidebarNavUser } from '@/components/sidebar/sidebar-user.nav';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -32,9 +36,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>{/* add sidebar items here */}</SidebarContent>
+      <SidebarContent>
+        <HostSidebar />
+      </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <SidebarNavUser />
       </SidebarFooter>
     </Sidebar>
   );
