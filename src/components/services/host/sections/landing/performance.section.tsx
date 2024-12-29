@@ -35,7 +35,7 @@ export const PerformanceSection = () => (
               </p>
             </div>
             <div className='flex flex-col justify-between gap-0 rounded-md border p-6'>
-              <MoveDownLeft className='mb-10 h-4 w-4 text-destructive' />
+              <MoveUpRight className='mb-10 h-4 w-4 text-primary' />
               <h2 className='font-regular flex max-w-xl flex-row items-end gap-4 text-left text-4xl tracking-tighter'>
                 32
                 {/* <span className='text-sm tracking-normal text-muted-foreground'>
