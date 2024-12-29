@@ -25,11 +25,11 @@ export default function ServiceLinkCard({
     <Link href={enabled ? href : '#'}>
       <Card
         className={cn(
-          'relative overflow-hidden',
+          'relative h-[120px] overflow-hidden',
           enabled && 'transition-shadow hover:shadow-xl',
         )}
       >
-        <CardHeader>
+        <CardHeader className='flex h-full flex-col justify-between'>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
