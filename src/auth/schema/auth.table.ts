@@ -61,9 +61,6 @@ export const verification = pgTable('verification', {
   updatedAt: timestamp('updatedAt'),
 });
 
-export const userRelations = relations(hostSubscription, ({ one }) => ({
-  user: one(user, {
-    fields: [hostSubscription.userId],
-    references: [user.id],
-  }),
+export const hostSubscriptionRelations = relations(user, ({ many }) => ({
+  hostSubscriptions: many(hostSubscription),
 }));
