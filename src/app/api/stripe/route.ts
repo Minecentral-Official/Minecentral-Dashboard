@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         //   webhookInvoicePaid(event, res);
         break;
       case 'invoice.payment_failed':
-        //   webhookPaymentFailed(event, res);
+        // webhookPaymentFailed(event, res);
         // return updatedAccount(req, res);
         break;
       case 'customer.subscription.deleted':

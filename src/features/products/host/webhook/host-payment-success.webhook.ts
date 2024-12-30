@@ -1,21 +1,8 @@
-import { config } from 'dotenv';
 // import { PanelServer, PanelUser } from 'pterodactyl.ts';
 import Stripe from 'stripe';
 
-import findUserBySubscriptionID from '@/features/products/host/queries/find-user-subscription';
+import findUserBySubscriptionId from '@/features/products/host/queries/find-user-subscription.query';
 import getSubscriptionById from '@/stripe/queries/general/get-subscription-by-id.query';
-
-//TODO: Hugo, I need to import these, whats going on?
-
-// TO_ALAIN: I created an eslint rule to prevent imports from different features
-// This is to ensure code and folder structure quality. If you run into a lot of these problems try one of the two things:
-// 1. You maybe aren't thinking in the 'features' folder structure way. These functions are meant to exist to support a single feature, and are only combined in our app folder
-// Maybe you are doing too much in a single function
-// 2. Rethink our folder structure, and decide whether stripe is actually a 'feature'
-// I've been actually thinking about this, I think the stripe api should be a feature, but really stripe is kind of a meta feature, where it wraps around other features such as our server hosting feature here
-// This means we will run into problems in the future, like we are now.
-
-config();
 
 //Create a server if it doesnt exist (NOT FINISHED)
 export async function webhookInvoicePaid(
@@ -33,7 +20,7 @@ export async function webhookInvoicePaid(
     );
 
     //Find or Create a user
-    const user = await findUserBySubscriptionID({ sub_id: subscription.id });
+    const user = await findUserBySubscriptionId({ subId: subscription.id });
     if (!user)
       throw new Error(
         `Could not find nor create a user from subscription ${user}`,
