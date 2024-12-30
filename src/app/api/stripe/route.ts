@@ -1,5 +1,5 @@
-import { stripeAPI } from '@/features/stripe/lib/stripe.api';
 import { serverEnv } from '@/lib/env/server.env';
+import { stripeAPI } from '@/stripe/lib/stripe.api';
 
 export async function POST(req: Request) {
   try {
