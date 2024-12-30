@@ -1,4 +1,4 @@
-export const navigationItems = [
+export const hostNavigationConfig = [
   {
     title: 'Home',
     href: '/host',

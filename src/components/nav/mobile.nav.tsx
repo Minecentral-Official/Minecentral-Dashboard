@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { Menu, MoveRight, X } from 'lucide-react';
 import Link from 'next/link';
 
-import { navigationItems } from '@/components/services/host/nav.config';
+import { NavigationConfig } from '@/components/nav/nav-config.type';
 import { Button } from '@/components/ui/button';
 
-export default function NavMobile() {
+export default function NavMobile({ config }: { config: NavigationConfig }) {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -20,7 +20,7 @@ export default function NavMobile() {
       </Button>
       {isOpen && (
         <div className='container absolute right-0 top-20 flex w-full flex-col gap-8 border-t bg-background py-4 shadow-lg'>
-          {navigationItems.map((item) => (
+          {config.map((item) => (
             <div key={item.title}>
               <div className='flex flex-col gap-2'>
                 {item.href ?

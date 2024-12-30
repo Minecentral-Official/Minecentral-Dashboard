@@ -1,6 +1,6 @@
 import { MoveRight } from 'lucide-react';
 
-import { navigationItems } from '@/components/services/host/nav.config';
+import { NavigationConfig } from '@/components/nav/nav-config.type';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -11,11 +11,11 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 
-export default function NavDesktop() {
+export default function NavDesktop({ config }: { config: NavigationConfig }) {
   return (
     <NavigationMenu className='flex items-start justify-start'>
       <NavigationMenuList className='flex flex-row justify-start gap-4'>
-        {navigationItems.map((item) => (
+        {config.map((item) => (
           <NavigationMenuItem key={item.title}>
             {item.href ?
               <>
