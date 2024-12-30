@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 
 import { user } from '@/auth/schema/auth.table';
@@ -14,3 +15,7 @@ export const hostSubscription = pgTable('hostSubscription', {
   //Stripe supplied data
   subscriptionId: text().notNull(),
 });
+
+export const hostSubscriptionRelations = relations(user, ({ many }) => ({
+  hostSubscriptions: many(hostSubscription),
+}));

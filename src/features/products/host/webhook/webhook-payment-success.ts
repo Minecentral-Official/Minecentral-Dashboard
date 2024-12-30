@@ -3,6 +3,8 @@ import { config } from 'dotenv';
 import Stripe from 'stripe';
 
 import findUserBySubscriptionID from '@/features/products/host/queries/find-user-subscription';
+import getSubscriptionById from '@/stripe/queries/general/get-subscription-by-id.query';
+
 //TODO: Hugo, I need to import these, whats going on?
 
 // TO_ALAIN: I created an eslint rule to prevent imports from different features
@@ -12,7 +14,6 @@ import findUserBySubscriptionID from '@/features/products/host/queries/find-user
 // 2. Rethink our folder structure, and decide whether stripe is actually a 'feature'
 // I've been actually thinking about this, I think the stripe api should be a feature, but really stripe is kind of a meta feature, where it wraps around other features such as our server hosting feature here
 // This means we will run into problems in the future, like we are now.
-import getSubscriptionById from '@/features/stripe/queries/general/get-subscription-by-id.query';
 
 config();
 
