@@ -1,13 +1,15 @@
+import { PropsWithChildren } from 'react';
+
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { LayoutDashboard } from 'lucide-react';
+import { BadgeCheck, Bell, CreditCard, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 import SignOutDropdownMenuItem from '@/auth/components/dropdowns/sign-out.dropdown-menu-item';
 import getSession from '@/auth/lib/get-session';
+import ResponsiveDropdownMenuContent from '@/components/sidebar/responsive-dropdown-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -15,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export default async function AuthNav() {
+export default async function AuthNav({ children }: PropsWithChildren) {
   const session = await getSession();
 
   if (!session) {
@@ -28,27 +30,50 @@ export default async function AuthNav() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Avatar className='cursor-pointer'>
-          <AvatarImage src={session.user.image ?? undefined} />
-          <AvatarFallback>
-            {session.user.name.charAt(0).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
-        <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <ResponsiveDropdownMenuContent>
+        <DropdownMenuLabel className='p-0 font-normal'>
+          <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
+            <Avatar className='h-8 w-8 rounded-lg'>
+              <AvatarImage
+                src={session.user.image ?? undefined}
+                alt={session.user.name}
+              />
+              <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
+            </Avatar>
+            <div className='grid flex-1 text-left text-sm leading-tight'>
+              <span className='truncate font-semibold'>
+                {session.user.name}
+              </span>
+              <span className='truncate text-xs'>{session.user.email}</span>
+            </div>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href='/dashboard'>
-              <LayoutDashboard />
-              Dashboard
-            </Link>
+          <DropdownMenuItem>
+            <Sparkles />
+            Upgrade to Pro
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <BadgeCheck />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CreditCard />
+            Billing
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Bell />
+            Notifications
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <SignOutDropdownMenuItem />
-      </DropdownMenuContent>
+      </ResponsiveDropdownMenuContent>
     </DropdownMenu>
   );
 }

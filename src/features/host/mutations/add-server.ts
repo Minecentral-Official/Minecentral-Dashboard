@@ -1,6 +1,9 @@
-import 'server-only';
+'use server';
+// This one we'd want it to be a server action, so just 'use server at the top'
+// import 'server-only';
 
 //Adds a server for a user
+
 export default async function addHostServer({
   user_id,
   server_id,

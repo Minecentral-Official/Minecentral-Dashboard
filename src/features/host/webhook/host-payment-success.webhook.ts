@@ -1,7 +1,7 @@
 // import { PanelServer, PanelUser } from 'pterodactyl.ts';
 import Stripe from 'stripe';
 
-import findUserBySubscriptionId from '@/features/products/host/queries/find-user-subscription.query';
+import findUserBySubscriptionId from '@/features/host/queries/find-user-subscription.query';
 import getSubscriptionById from '@/stripe/queries/general/get-subscription-by-id.query';
 
 //Create a server if it doesnt exist (NOT FINISHED)

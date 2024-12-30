@@ -1,4 +1,5 @@
 import AuthNav from '@/auth/components/auth-nav';
+import DataAvatar from '@/auth/components/avatar/data.avatar';
 import Logo from '@/components/logo';
 import NavDesktop from '@/components/services/host/nav.desktop';
 import NavMobile from '@/components/services/host/nav.mobile';
@@ -19,7 +20,9 @@ export default function Header({ service }: HeaderProps) {
           <Logo service={service} />
         </div>
         <div className='flex w-full justify-end gap-4'>
-          <AuthNav />
+          <AuthNav>
+            <DataAvatar />
+          </AuthNav>
         </div>
         <div className='flex w-12 shrink items-end justify-end lg:hidden'>
           <NavMobile />

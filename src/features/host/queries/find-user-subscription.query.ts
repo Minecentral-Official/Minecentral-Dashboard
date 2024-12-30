@@ -2,8 +2,9 @@ import 'server-only';
 
 import { eq } from 'drizzle-orm';
 
+import { user as userTable } from '@/auth/schema/auth.table';
+import { hostSubscription } from '@/features/host/schemas/host-subscription.table';
 import { db } from '@/lib/db';
-import { hostSubscription, user as userTable } from '@/lib/db/schema';
 
 // *Note for Alain:
 // ==================================================

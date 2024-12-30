@@ -3,12 +3,12 @@
 import { PropsWithChildren } from 'react';
 
 import { DropdownMenuContent } from '@/components/ui/dropdown-menu';
-import { useSidebar } from '@/components/ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function ResponsiveDropdownMenuContent({
   children,
 }: PropsWithChildren) {
-  const { isMobile } = useSidebar();
+  const isMobile = useIsMobile();
 
   return (
     <DropdownMenuContent
