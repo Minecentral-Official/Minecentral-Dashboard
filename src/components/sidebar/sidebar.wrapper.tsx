@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 import { AppSidebar } from '@/components/sidebar/sidebar';
 import {
@@ -16,10 +16,13 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
-export default function DashboardSidebar({ children }: PropsWithChildren) {
+export default function DashboardSidebar({
+  children,
+  sidebarChildren,
+}: PropsWithChildren<{ sidebarChildren: ReactNode }>) {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar>{sidebarChildren}</AppSidebar>
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2'>
           <div className='flex items-center gap-2 px-4'>

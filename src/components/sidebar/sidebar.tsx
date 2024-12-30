@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import LogoMark from '@/components/logo-mark';
-import HostSidebar from '@/components/services/host/sidebar/host.sidebar';
 import { SidebarNavUser } from '@/components/sidebar/sidebar-user.nav';
 import {
   Sidebar,
@@ -13,7 +12,10 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  children,
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant='inset' {...props}>
       <SidebarHeader>
@@ -33,9 +35,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
-        <HostSidebar />
-      </SidebarContent>
+      <SidebarContent>{children}</SidebarContent>
       <SidebarFooter>
         <SidebarNavUser />
       </SidebarFooter>

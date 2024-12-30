@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import SignOutDropdownMenuItem from '@/auth/components/dropdowns/sign-out.dropdown-menu-item';
 import getSession from '@/auth/lib/get-session';
-import ResponsiveDropdownMenuContent from '@/components/sidebar/responsive-dropdown-menu-content';
+import ResponsiveDropdownMenuContent from '@/components/dropdown/responsive-dropdown-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,7 +30,7 @@ export default async function AuthNav({ children }: PropsWithChildren) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <ResponsiveDropdownMenuContent>
         <DropdownMenuLabel className='p-0 font-normal'>
           <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>

@@ -1,8 +1,8 @@
-import AuthNav from '@/auth/components/auth-nav';
 import DataAvatar from '@/auth/components/avatar/data.avatar';
+import AuthNav from '@/auth/components/dropdowns/auth.dropdown';
 import Logo from '@/components/logo';
-import NavDesktop from '@/components/services/host/nav.desktop';
-import NavMobile from '@/components/services/host/nav.mobile';
+import NavDesktop from '@/components/nav/desktop.nav';
+import NavMobile from '@/components/nav/mobile.nav';
 import { MinecentralServices } from '@/lib/types/services';
 
 type HeaderProps = {
@@ -21,7 +21,9 @@ export default function Header({ service }: HeaderProps) {
         </div>
         <div className='flex w-full justify-end gap-4'>
           <AuthNav>
-            <DataAvatar />
+            <div>
+              <DataAvatar />
+            </div>
           </AuthNav>
         </div>
         <div className='flex w-12 shrink items-end justify-end lg:hidden'>
