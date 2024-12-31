@@ -1,5 +1,5 @@
 // Auth
-export * from '@/auth/schema/auth.table';
+export * from '@/lib/auth/schema/auth.table';
 
 // Host Subscription
 export * from '@/features/host/schemas/host-subscription.table';

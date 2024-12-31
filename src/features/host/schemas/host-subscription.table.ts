@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 
-import { user } from '@/auth/schema/auth.table';
+import { user } from '@/lib/auth/schema/auth.table';
 
 export const hostSubscription = pgTable('hostSubscription', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),

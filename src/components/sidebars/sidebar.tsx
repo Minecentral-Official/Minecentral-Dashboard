@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import LogoMark from '@/components/logo-mark';
+import LogoMark from '@/components/logos/logo-mark';
 import { SidebarNavUser } from '@/components/sidebars/sidebar-user.nav';
 import {
   Sidebar,

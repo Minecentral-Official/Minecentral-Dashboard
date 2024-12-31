@@ -37,11 +37,9 @@ const config = [
           type: 'shared',
           pattern: [
             'src/components/**/*',
-            'src/db/**/*',
             'src/hooks/**/*',
             'src/lib/**/*',
             'src/auth/**/*',
-            'src/stripe/**/*',
           ],
         },
         {

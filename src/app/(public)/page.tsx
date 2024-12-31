@@ -1,7 +1,7 @@
 import Header from '@/components/header/header';
 import ServiceSelectionSection from '@/components/sections/service-selection.section';
 import { hostNavigationConfig } from '@/features/host/lib/nav.config';
-import getProductsHost from '@/stripe/queries/products/products-host.query';
+import getProductsHost from '@/features/host/queries/products-host.query';
 
 // This is the root of our project, our 'landing page'
 export default async function LandingPage() {

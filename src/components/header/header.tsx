@@ -1,10 +1,10 @@
-import DataAvatar from '@/auth/components/avatar/data.avatar';
-import AuthNav from '@/auth/components/dropdowns/auth.dropdown';
-import Logo from '@/components/logo';
+import Logo from '@/components/logos/logo';
 import NavDesktop from '@/components/nav/desktop.nav';
 import NavMobile from '@/components/nav/mobile.nav';
 import { NavigationConfig } from '@/components/nav/nav-config.type';
-import { MinecentralServices } from '@/lib/types/services';
+import DataAvatar from '@/lib/auth/components/avatar/data.avatar';
+import AuthNav from '@/lib/auth/components/dropdowns/auth.dropdown';
+import { MinecentralServices } from '@/lib/types/minecentral-services';
 
 type HeaderProps = {
   service: MinecentralServices;

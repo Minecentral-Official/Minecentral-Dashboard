@@ -6,7 +6,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
-import { user } from '@/auth/schema/auth.table';
+import { user } from '@/lib/auth/schema/auth.table';
 
 export const ticket = pgTable('ticket', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),

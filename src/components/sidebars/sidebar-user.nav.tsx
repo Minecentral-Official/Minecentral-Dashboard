@@ -1,13 +1,13 @@
 import { ChevronsUpDown } from 'lucide-react';
 
-import AuthNav from '@/auth/components/dropdowns/auth.dropdown';
-import getSession from '@/auth/lib/get-session';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import AuthNav from '@/lib/auth/components/dropdowns/auth.dropdown';
+import getSession from '@/lib/auth/helpers/get-session';
 
 export async function SidebarNavUser() {
   const session = await getSession();

@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 
-import validateSession from '@/auth/lib/validate-session';
+import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket } from '@/lib/db/schema';
 
