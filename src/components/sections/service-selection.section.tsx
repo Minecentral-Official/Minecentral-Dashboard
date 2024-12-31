@@ -1,4 +1,4 @@
-import ServiceLinkCard from '@/components/services/general/service-link.card';
+import ServiceLinkCard from '@/components/cards/service-link.card';
 import { Badge } from '@/components/ui/badge';
 
 export default function ServiceSelectionSection() {

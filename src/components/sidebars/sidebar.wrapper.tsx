@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode } from 'react';
 
-import { AppSidebar } from '@/components/sidebar/sidebar';
+import { AppSidebar } from '@/components/sidebars/sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,

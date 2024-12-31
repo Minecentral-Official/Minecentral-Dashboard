@@ -1,5 +1,5 @@
 import Header from '@/components/header/header';
-import ServiceSelectionSection from '@/components/services/general/sections/service-selection.section';
+import ServiceSelectionSection from '@/components/sections/service-selection.section';
 import { hostNavigationConfig } from '@/features/host/lib/nav.config';
 import getProductsHost from '@/stripe/queries/products/products-host.query';
 
