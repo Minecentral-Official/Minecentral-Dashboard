@@ -20,7 +20,7 @@ const hostSidebarMenuConfig = [
 export default function HostSidebar() {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Host</SidebarGroupLabel>
 
       <SidebarGroupContent>
         <SidebarMenu>

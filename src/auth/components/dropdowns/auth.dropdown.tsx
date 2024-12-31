@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { BadgeCheck, Bell, CreditCard, Sparkles } from 'lucide-react';
+import { BadgeCheck, ChartBarBig, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 
 import SignOutDropdownMenuItem from '@/auth/components/dropdowns/sign-out.dropdown-menu-item';
@@ -51,9 +51,11 @@ export default async function AuthNav({ children }: PropsWithChildren) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Sparkles />
-            Upgrade to Pro
+          <DropdownMenuItem asChild>
+            <Link href='/dashboard'>
+              <ChartBarBig />
+              Dashboard
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -65,10 +67,6 @@ export default async function AuthNav({ children }: PropsWithChildren) {
           <DropdownMenuItem>
             <CreditCard />
             Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
