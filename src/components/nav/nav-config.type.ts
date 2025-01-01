@@ -11,6 +11,7 @@ export type NavigationConfig = (
       items: {
         title: string;
         href: string;
+        disabled?: boolean;
       }[];
       href?: undefined;
     }

@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 
 export default function NavDesktop({ config }: { config: NavigationConfig }) {
   return (
@@ -40,14 +41,20 @@ export default function NavDesktop({ config }: { config: NavigationConfig }) {
                         Book a call today
                       </Button>
                     </div>
-                    <div className='flex h-full flex-col justify-end text-sm'>
-                      {item.items?.map(({ href, title }) => (
+                    <div className='flex h-full flex-col text-sm'>
+                      {item.items?.map(({ href, title, disabled }) => (
                         <NavigationMenuLink
-                          href={href}
+                          href={!disabled ? href : '#'}
                           key={title}
-                          className='flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted'
+                          className={cn(
+                            'flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted',
+                            disabled &&
+                              'text-muted-foreground/70 hover:bg-inherit',
+                          )}
                         >
-                          <span>{title}</span>
+                          <span>
+                            {title} {disabled && '(Under dev)'}
+                          </span>
                           <MoveRight className='h-4 w-4 text-muted-foreground' />
                         </NavigationMenuLink>
                       ))}

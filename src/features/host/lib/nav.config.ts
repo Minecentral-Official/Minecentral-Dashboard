@@ -5,46 +5,46 @@ export const hostNavigationConfig = [
     description: '',
   },
   {
-    title: 'Product',
-    description: 'Managing a game server just got a whole lot easier.',
+    title: 'Products',
+    // TODO: Think of better copy here
+    description: 'Your one stop shop for all things multiplayer minecraft',
+    items: [
+      {
+        title: 'Host',
+        href: '/host',
+      },
+      {
+        title: 'Plugins',
+        href: '/plugins',
+        disabled: true,
+      },
+      {
+        title: 'Servers',
+        href: '/servers',
+        disabled: true,
+      },
+    ],
+  },
+  {
+    title: 'Features',
+    // TODO: Think of better copy here
+    description: 'Host your own minecraft servers with ease',
     items: [
       {
         title: 'Pricing',
         href: '/host/pricing',
       },
       {
-        title: 'Statistics',
-        href: '/statistics',
+        title: 'Performance',
+        href: '/host/panel',
       },
       {
-        title: 'Dashboards',
-        href: '/dashboards',
+        title: 'Panel',
+        href: '/host/panel',
       },
       {
-        title: 'Recordings',
-        href: '/recordings',
-      },
-    ],
-  },
-  {
-    title: 'Company',
-    description: 'Managing a small business today is already tough.',
-    items: [
-      {
-        title: 'About us',
-        href: '/about',
-      },
-      {
-        title: 'Fundraising',
-        href: '/fundraising',
-      },
-      {
-        title: 'Investors',
-        href: '/investors',
-      },
-      {
-        title: 'Contact us',
-        href: '/contact',
+        title: 'Documentation',
+        href: '/documentation/host',
       },
     ],
   },
