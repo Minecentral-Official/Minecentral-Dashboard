@@ -4,10 +4,10 @@ import NavMobile from '@/components/nav/mobile.nav';
 import { NavigationConfig } from '@/components/nav/nav-config.type';
 import DataAvatar from '@/lib/auth/components/avatar/data.avatar';
 import AuthNav from '@/lib/auth/components/dropdowns/auth.dropdown';
-import { MinecentralServices } from '@/lib/types/minecentral-services';
+import { MinecentralServices } from '@/lib/types/minecentral-services.type';
 
 type HeaderProps = {
-  service: MinecentralServices;
+  service: MinecentralServices | 'all';
   config: NavigationConfig;
 };
 

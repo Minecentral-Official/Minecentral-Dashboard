@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
         </>
       }
     >
-      {children}
+      <div className='p-6'>{children}</div>
     </DashboardSidebar>
   );
 }
