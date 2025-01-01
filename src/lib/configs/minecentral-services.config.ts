@@ -1,5 +1,5 @@
 export const minecentralServicesConfig = [
-  'Host',
-  'Plugins',
-  'Servers',
+  'host',
+  'plugins',
+  'servers',
 ] as const;
