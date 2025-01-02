@@ -36,7 +36,7 @@ export const hostNavigationConfig = [
       },
       {
         title: 'Performance',
-        href: '/host/panel',
+        href: '/host/performance',
       },
       {
         title: 'Panel',
