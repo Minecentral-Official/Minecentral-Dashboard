@@ -1,4 +1,4 @@
-import { CTASection } from '@/features/host/components/sections/general/cta.section';
+import HostCtaSection from '@/features/host/components/sections/general/host-cta.section';
 import { FaqSection } from '@/features/host/components/sections/pricing/faq-section';
 import { TableSection } from '@/features/host/components/sections/pricing/table-section';
 
@@ -7,7 +7,7 @@ export default function HostPricingPage() {
     <>
       <TableSection />
       <FaqSection />
-      <CTASection />
+      <HostCtaSection />
     </>
   );
 }

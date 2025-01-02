@@ -1,30 +1,47 @@
-import { ArrowRight, Mail } from 'lucide-react';
+import { ReactNode } from 'react';
+
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-export const CTASection = () => (
+type CTASectionProps = {
+  badgeChildren: ReactNode;
+  title: string;
+  subtitle: string;
+  primaryButtonChildren: ReactNode;
+  primaryButtonHref: string;
+  secondaryButtonChildren: ReactNode;
+  secondaryButtonHref: string;
+};
+
+export const CtaSection = ({
+  badgeChildren,
+  title,
+  subtitle,
+  primaryButtonChildren,
+  primaryButtonHref,
+  secondaryButtonChildren,
+  secondaryButtonHref,
+}: CTASectionProps) => (
   <SectionWrapper>
     <div className='flex flex-col items-center gap-8 rounded-md bg-muted p-4 text-center lg:p-14'>
       <div>
-        <Badge>Get started</Badge>
+        <Badge>{badgeChildren}</Badge>
       </div>
       <div className='flex flex-col gap-2'>
         <h3 className='font-regular max-w-xl text-3xl tracking-tighter md:text-5xl'>
-          Try our services today!
+          {title}
         </h3>
         <p className='max-w-xl text-lg leading-relaxed tracking-tight text-muted-foreground'>
-          Managing a Minecraft server is a hassle already! Let us help you get
-          started with a low barrier to entry hosting solution! Our goal is to
-          lower entry cost while allowing for infinite future expansion when you
-          are ready!
+          {subtitle}
         </p>
       </div>
       <div className='flex flex-row gap-4'>
         <Button className='gap-4' variant='outline'>
-          Drop us a message <Mail className='h-4 w-4' />
+          <Link href={secondaryButtonHref}>{secondaryButtonChildren}</Link>
         </Button>
         <Button
           effect='expandIcon'
@@ -32,7 +49,7 @@ export const CTASection = () => (
           iconPlacement='right'
           asChild
         >
-          <Link href='/sign-in'>Sign up here</Link>
+          <Link href={primaryButtonHref}>{primaryButtonChildren}</Link>
         </Button>
       </div>
     </div>
