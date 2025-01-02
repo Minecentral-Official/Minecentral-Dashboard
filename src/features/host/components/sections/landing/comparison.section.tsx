@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react';
 
+import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -65,89 +66,87 @@ export default function ComparisonSection() {
   console.log(bodyArray);
 
   return (
-    <div className='w-full py-20 lg:py-40'>
-      <div className='container mx-auto'>
-        <div className='flex flex-col items-start gap-4 py-20 lg:py-40'>
-          <div>
-            <Badge>Comparisons</Badge>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <h2 className='font-regular text-3xl tracking-tighter md:text-5xl lg:max-w-xl'>
-              Why pay more?
-            </h2>
-            <p className='max-w-xl text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-xl'>
-              Get superior quality at a lower price
-            </p>
-          </div>
-          <div className='flex w-full flex-col gap-10 pt-12'>
-            <Table>
-              <TableCaption>{comparisonTableConfig.caption}</TableCaption>
-              <TableHeader>
-                <TableRow className='border-none'>
-                  <TableHead />
-                  {headerArray.map((header, index) => (
-                    <TableHead
-                      key={header}
-                      className={cn(
-                        'border-l text-center',
-                        index === 0 ?
-                          'text-lg font-medium text-primary'
-                        : undefined,
-                      )}
-                    >
-                      {header}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {bodyArray.map(({ rowName, data }) => (
-                  // using index here as this data is static and it will never be reordered
-                  <TableRow key={rowName} className='border-none'>
-                    <TableCell className='border-r'>{rowName}</TableCell>
-                    {data.map((cell, index) => {
-                      const contentType =
-                        typeof cell === 'boolean' ? 'boolean' : 'number';
+    <SectionWrapper>
+      <div className='flex flex-col items-start gap-4 py-20 lg:py-40'>
+        <div>
+          <Badge>Comparisons</Badge>
+        </div>
+        <div className='flex flex-col gap-2'>
+          <h2 className='font-regular text-3xl tracking-tighter md:text-5xl lg:max-w-xl'>
+            Why pay more?
+          </h2>
+          <p className='max-w-xl text-lg leading-relaxed tracking-tight text-muted-foreground lg:max-w-xl'>
+            Get superior quality at a lower price
+          </p>
+        </div>
+        <div className='flex w-full flex-col gap-10 pt-12'>
+          <Table>
+            <TableCaption>{comparisonTableConfig.caption}</TableCaption>
+            <TableHeader>
+              <TableRow className='border-none'>
+                <TableHead />
+                {headerArray.map((header, index) => (
+                  <TableHead
+                    key={header}
+                    className={cn(
+                      'border-l text-center',
+                      index === 0 ?
+                        'text-lg font-medium text-primary'
+                      : undefined,
+                    )}
+                  >
+                    {header}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {bodyArray.map(({ rowName, data }) => (
+                // using index here as this data is static and it will never be reordered
+                <TableRow key={rowName} className='border-none'>
+                  <TableCell className='border-r'>{rowName}</TableCell>
+                  {data.map((cell, index) => {
+                    const contentType =
+                      typeof cell === 'boolean' ? 'boolean' : 'number';
 
-                      if (contentType === 'number') {
-                        return (
-                          <TableCell
-                            key={index}
-                            className={cn(
-                              'text-center',
-                              index !== 0 ? 'border-l' : undefined,
-                            )}
-                          >
-                            $
-                            <span
-                              className={cn(
-                                'text-lg',
-                                index === 0 ? 'text-2xl' : undefined,
-                              )}
-                            >
-                              {cell}
-                            </span>
-                            /mo
-                          </TableCell>
-                        );
-                      }
-
+                    if (contentType === 'number') {
                       return (
                         <TableCell
-                          className={index !== 0 ? 'border-l' : undefined}
                           key={index}
+                          className={cn(
+                            'text-center',
+                            index !== 0 ? 'border-l' : undefined,
+                          )}
                         >
-                          {cell && <Check className='h-4 w-full text-center' />}
+                          $
+                          <span
+                            className={cn(
+                              'text-lg',
+                              index === 0 ? 'text-2xl' : undefined,
+                            )}
+                          >
+                            {cell}
+                          </span>
+                          /mo
                         </TableCell>
                       );
-                    })}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                    }
+
+                    return (
+                      <TableCell
+                        className={index !== 0 ? 'border-l' : undefined}
+                        key={index}
+                      >
+                        {cell && <Check className='h-4 w-full text-center' />}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
-    </div>
+    </SectionWrapper>
   );
 }
