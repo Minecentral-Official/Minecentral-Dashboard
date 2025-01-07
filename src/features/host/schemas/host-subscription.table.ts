@@ -16,7 +16,7 @@ export const hostSubscription = pgTable('hostSubscription', {
   subscriptionId: text().notNull(),
 });
 
-export const userRelations = relations(hostSubscription, ({ one }) => ({
+export const hostRelations = relations(hostSubscription, ({ one }) => ({
   user: one(user, {
     fields: [hostSubscription.userId],
     references: [user.id],
