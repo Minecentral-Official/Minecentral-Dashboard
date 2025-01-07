@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db:push": "npx drizzle-kit push",
     "auth:generate": "pnpm dlx @better-auth/cli@latest generate --output=./src/auth/schema/auth.table.ts --config=./src/auth/lib/auth.ts"
   },
   "dependencies": {

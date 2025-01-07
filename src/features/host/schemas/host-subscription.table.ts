@@ -10,8 +10,8 @@ export const hostSubscription = pgTable('hostSubscription', {
     .notNull()
     .references(() => user.id),
   //Pterodactyl supplied data, ID for data grabbing and UUID for url linking
-  serverId: text().notNull(),
-  serverUuid: text().notNull(),
+  pterodactylId: text(),
+  pterodactylUuid: text(),
   //Stripe supplied data
   subscriptionId: text().notNull(),
 });

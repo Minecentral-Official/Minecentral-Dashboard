@@ -4,16 +4,16 @@
 
 //Adds a server for a user
 
-export default async function addHostServer({
-  user_id,
-  server_id,
+export default async function updateHostServerMutation({
+  userId,
+  pterodactylId,
 }: {
-  user_id: string;
-  server_id: string;
+  userId: string;
+  pterodactylId: string;
 }) {
   // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a userr
   return {
-    user_id,
-    server_id,
+    userId,
+    pterodactylId,
   };
 }
