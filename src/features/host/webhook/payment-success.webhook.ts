@@ -1,57 +1,55 @@
 // import { PanelServer, PanelUser } from 'pterodactyl.ts';
 import Stripe from 'stripe';
 
-import findUserBySubscriptionId from '@/features/host/queries/find-user-subscription.query';
-import getSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import createHostSubscription from '@/features/host/mutations/subscription.create';
+import getSubscriptionById from '@/features/host/queries/subscription-by-id.get';
+import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import getUserByCustomerId from '@/lib/stripe/queries/user-by-customer-id.get';
 
 //Create a server if it doesnt exist (NOT FINISHED)
-export async function webhookInvoicePaid(
+export async function hostPaymentSuccessWebhook(
   event: Stripe.InvoicePaymentSucceededEvent,
 ) {
   try {
-    const subscription = await getSubscriptionById(
-      // No type casting -.-
-      // If you need to do 'as ___' it means that you probably need to do a check
-      // if (typeof event.data.object.subscription === 'string') {
-      //      return null
-      //      === or do something more appropriate here ===
-      // }
-      event.data.object.subscription as string,
-    );
+    //Grab the sub id from event
+    const subscriptionString = event.data.object.subscription;
+    const isSubscriptionString = typeof subscriptionString === 'string';
+    if (!isSubscriptionString) throw new Error('Subscription is not a string!');
+    const stripeSubscription =
+      await getStripeSubscriptionById(subscriptionString);
+    const hostSubscription = await getSubscriptionById(stripeSubscription.id);
 
-    //Find or Create a user
-    const user = await findUserBySubscriptionId({ subId: subscription.id });
-    if (!user)
-      throw new Error(
-        `Could not find nor create a user from subscription ${user}`,
-      );
-    else console.log('Found user:', user);
-
-    //Check if the user JUST bought this product
-    if (!(await hasActivePurchase(subscription))) {
-      // createPurchase(user, subscription, res);
+    if (!hostSubscription) {
+      //First time the person has made a payment for this subscription!
+      const customerString = stripeSubscription.customer;
+      const isCustomerString = typeof customerString === 'string';
+      if (!isCustomerString) throw new Error('Customer is not a string!');
+      const customer = await getUserByCustomerId(customerString, 'host');
+      if (!customer) {
+        console.log('customer:', customer);
+      } else {
+        //Add Subscription to table (no ptero data for error safety)
+        createHostSubscription({
+          userId: customer.userId,
+          subscriptionId: stripeSubscription.id,
+        });
+        //Create a Pterodactyl server
+        //Update Subscription table data with Ptero data if it exists
+      }
     } else {
-      console.log(
-        'User has an active service on this subscription! Thanks for your payment!',
-      );
-      // res.send({
-      //   status: 'already_active',
-      //   message: 'Thanks for your payment',
-      // });
+      //Person is making a recurring payment or an overdue payment!
+      //UnSuspend ptero server
     }
-  } catch {
-    // res.status(500).send('Something went wrong!');
+  } catch (err) {
+    console.log(err);
   } finally {
-    console.log(
-      'Users payment has been registered to their subscription/product!',
-    );
   }
 }
 
-async function hasActivePurchase(subscription: Stripe.Subscription) {
-  const sub = await getSubscriptionById(subscription.id);
-  return sub != null;
-}
+// async function hasActivePurchase(subscription: Stripe.Subscription) {
+//   const sub = await getSubscriptionById(subscription.id);
+//   return sub != null;
+// }
 
 // async function createPurchase(
 //   user: UserTableSelect,

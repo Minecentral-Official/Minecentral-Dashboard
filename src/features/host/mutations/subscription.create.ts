@@ -8,15 +8,11 @@ import 'server-only';
 
 //Adds a server for a user
 
-export default async function addHostServerMutation({
+export default async function createHostSubscription({
   userId,
-  pterodactylId,
-  pterodactylUuid,
   subscriptionId,
 }: {
   userId: string;
-  pterodactylId: string | null;
-  pterodactylUuid: string | null;
   subscriptionId: string;
 }) {
   // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a user
@@ -26,8 +22,6 @@ export default async function addHostServerMutation({
     .values({
       userId,
       subscriptionId,
-      pterodactylId,
-      pterodactylUuid,
     })
     .returning();
 

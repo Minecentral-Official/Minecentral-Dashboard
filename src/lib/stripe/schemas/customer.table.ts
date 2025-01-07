@@ -6,14 +6,14 @@ import { user } from '@/lib/db/schema';
 
 import type { MinecentralServices } from '@/lib/types/minecentral-services.type';
 
-const columnSuffix = 'CustomerId';
+export const customerTypeColumnSuffix = 'CustomerId';
 
 const asdf = minecentralServicesConfig.reduce(
   (acc, curr) => {
-    return { ...acc, [`${curr}${columnSuffix}`]: text() };
+    return { ...acc, [`${curr}${customerTypeColumnSuffix}`]: text() };
   },
   {} as Record<
-    `${MinecentralServices}${typeof columnSuffix}`,
+    `${MinecentralServices}${typeof customerTypeColumnSuffix}`,
     ReturnType<typeof text>
   >,
 );

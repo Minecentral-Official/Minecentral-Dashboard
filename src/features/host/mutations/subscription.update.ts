@@ -4,7 +4,7 @@
 
 //Adds a server for a user
 
-export default async function updateHostServerMutation({
+export default async function updateHostSubscription({
   userId,
   pterodactylId,
 }: {

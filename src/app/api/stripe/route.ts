@@ -1,3 +1,4 @@
+import { hostPaymentSuccessWebhook } from '@/features/host/webhook/payment-success.webhook';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
 
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
     switch (event.type) {
       case 'invoice.payment_succeeded':
         //Fires when a subscription is created and paid each month
-        //   webhookInvoicePaid(event, res);
+        hostPaymentSuccessWebhook(event);
         break;
       case 'invoice.payment_failed':
         // webhookPaymentFailed(event, res);
