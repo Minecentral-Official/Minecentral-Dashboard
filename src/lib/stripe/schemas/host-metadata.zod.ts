@@ -43,16 +43,14 @@ const schemaConfig = metadataHostKeys.reduce(
 // });
 
 // actual schema
-export const metadataHostSchema = z
-  .object({
-    ...schemaConfig,
-    isDefaultPlan: z
-      .string()
-      .transform((value) => {
-        return value.toLowerCase() === 'true';
-      })
-      .catch(false),
-  })
-  .nullable();
+export const metadataHostSchema = z.object({
+  ...schemaConfig,
+  isDefaultPlan: z
+    .string()
+    .transform((value) => {
+      return value.toLowerCase() === 'true';
+    })
+    .catch(false),
+});
 
 export type MetadataHostType = z.infer<typeof metadataHostSchema>;

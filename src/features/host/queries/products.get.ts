@@ -13,5 +13,6 @@ export default async function hostGetProducts() {
       ...rest,
     };
   });
+
   return parsedProducts;
 }

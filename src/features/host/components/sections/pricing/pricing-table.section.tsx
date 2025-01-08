@@ -3,8 +3,13 @@ import { Check, Minus, MoveRight, PhoneCall } from 'lucide-react';
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { hostGetDefaultProducts } from '@/features/host/queries/default-product.get';
 
-export default function PricingTableSection() {
+export default async function PricingTableSection() {
+  const defaultProducts = await hostGetDefaultProducts();
+
+  console.log(defaultProducts);
+
   return (
     <SectionWrapper>
       <div className='flex flex-col items-center justify-center gap-4 text-center'>
@@ -20,11 +25,8 @@ export default function PricingTableSection() {
         <div className='grid w-full grid-cols-3 divide-x pt-20 text-left lg:grid-cols-4'>
           <div className='col-span-3 lg:col-span-1'></div>
           <div className='flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-2xl'>Startup</p>
-            <p className='text-sm text-muted-foreground'>
-              Our goal is to streamline SMB trade, making it easier and faster
-              than ever for everyone and everywhere.
-            </p>
+            <p className='text-2xl'>Iron</p>
+            <p className='text-sm text-muted-foreground'></p>
             <p className='mt-8 flex flex-col gap-2 text-xl lg:flex-row lg:items-center'>
               <span className='text-4xl'>$40</span>
               <span className='text-sm text-muted-foreground'> / month</span>
@@ -34,7 +36,7 @@ export default function PricingTableSection() {
             </Button>
           </div>
           <div className='flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-2xl'>Growth</p>
+            <p className='text-2xl'>Gold</p>
             <p className='text-sm text-muted-foreground'>
               Our goal is to streamline SMB trade, making it easier and faster
               than ever for everyone and everywhere.
@@ -48,7 +50,7 @@ export default function PricingTableSection() {
             </Button>
           </div>
           <div className='flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-2xl'>Enterprise</p>
+            <p className='text-2xl'>Emerald</p>
             <p className='text-sm text-muted-foreground'>
               Our goal is to streamline SMB trade, making it easier and faster
               than ever for everyone and everywhere.
