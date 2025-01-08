@@ -41,5 +41,10 @@ export default async function getProductsWithPrices() {
       return (a.price || 0) - (b.price || 0);
     });
   });
+
+  productsWithPrices.sort((a, b) => {
+    return (a.prices[0].price || 0) - (b.prices[0].price || 0);
+  });
+
   return productsWithPrices;
 }

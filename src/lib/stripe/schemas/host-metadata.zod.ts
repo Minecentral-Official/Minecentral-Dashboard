@@ -11,11 +11,8 @@ const metadataHostKeys = [
   'cpu',
   'databases',
   'disk',
-  'egg',
-  'io',
   'ram',
   'splits',
-  'swap',
 ] as const;
 
 // creating zod schema config
@@ -27,31 +24,35 @@ const schemaConfig = metadataHostKeys.reduce(
   >,
 );
 
-const nodesSchema = z.string().transform((value, ctx) => {
-  const parsedNodeArray = value.split(',').map((node, index) => {
-    const nodeValue = node.trim();
-    const parsedNodeValue = parseInt(nodeValue);
+// Nodes is unused for now
+// const nodesSchema = z.string().transform((value, ctx) => {
+//   const parsedNodeArray = value.split(',').map((node, index) => {
+//     const nodeValue = node.trim();
+//     const parsedNodeValue = parseInt(nodeValue);
 
-    if (!isNaN(parsedNodeValue)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Node at index ${index} cannot be parsed to integer`,
-      });
-    }
-    return z.NEVER;
-  });
+//     if (!isNaN(parsedNodeValue)) {
+//       ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: `Node at index ${index} cannot be parsed to integer`,
+//       });
+//     }
+//     return z.NEVER;
+//   });
 
-  return parsedNodeArray;
-});
+//   return parsedNodeArray;
+// });
 
 // actual schema
 export const metadataHostSchema = z
   .object({
     ...schemaConfig,
-    nodes: nodesSchema,
-    isDefaultPlan: z.boolean().catch(false),
+    isDefaultPlan: z
+      .string()
+      .transform((value) => {
+        return value.toLowerCase() === 'true';
+      })
+      .catch(false),
   })
-  .nullable()
-  .catch(null);
+  .nullable();
 
 export type MetadataHostType = z.infer<typeof metadataHostSchema>;
