@@ -13,7 +13,6 @@ const metadataHostKeys = [
   'disk',
   'egg',
   'io',
-  'nodes',
   'ram',
   'splits',
   'swap',
@@ -28,7 +27,31 @@ const schemaConfig = metadataHostKeys.reduce(
   >,
 );
 
+const nodesSchema = z.string().transform((value, ctx) => {
+  const parsedNodeArray = value.split(',').map((node, index) => {
+    const nodeValue = node.trim();
+    const parsedNodeValue = parseInt(nodeValue);
+
+    if (!isNaN(parsedNodeValue)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Node at index ${index} cannot be parsed to integer`,
+      });
+    }
+    return z.NEVER;
+  });
+
+  return parsedNodeArray;
+});
+
 // actual schema
-export const metadataHostSchema = z.object(schemaConfig);
+export const metadataHostSchema = z
+  .object({
+    ...schemaConfig,
+    nodes: nodesSchema,
+    isDefaultPlan: z.boolean().catch(false),
+  })
+  .nullable()
+  .catch(null);
 
 export type MetadataHostType = z.infer<typeof metadataHostSchema>;
