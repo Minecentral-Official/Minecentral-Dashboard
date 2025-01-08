@@ -1,10 +1,10 @@
-import hostGetProducts from '@/lib/stripe/queries/product-with-prices.query';
+import getProductsWithPrices from '@/lib/stripe/queries/product-with-prices.query';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 import 'server-only';
 
-export default async function getProductsHost() {
-  const products = await hostGetProducts();
+export default async function hostGetProducts() {
+  const products = await getProductsWithPrices();
 
   const parsedProducts = products.map(({ metadata, ...rest }) => {
     const parsedMetadata = metadataHostSchema.parse(metadata);

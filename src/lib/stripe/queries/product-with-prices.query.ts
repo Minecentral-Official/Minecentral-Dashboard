@@ -36,5 +36,10 @@ export default async function getProductsWithPrices() {
   });
 
   // return finalized products with prices array
+  productsWithPrices.forEach((product) => {
+    product.prices.sort((a, b) => {
+      return (a.price || 0) - (b.price || 0);
+    });
+  });
   return productsWithPrices;
 }
