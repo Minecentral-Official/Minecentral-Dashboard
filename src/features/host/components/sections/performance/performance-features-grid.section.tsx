@@ -8,6 +8,7 @@ import {
   Volleyball,
   Wrench,
 } from 'lucide-react';
+import Image from 'next/image';
 
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
@@ -30,16 +31,24 @@ export default function PerformanceFeaturesGridSection() {
           </div>
         </div>
         <div className='flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid lg:grid-cols-3 xl:grid-cols-4'>
-          <div className='flex aspect-square h-full w-full flex-col justify-between rounded-md bg-muted p-6 lg:col-span-2 lg:row-span-2'>
-            <Cpu className='h-8 w-8 stroke-1' />
+          <div className='relative flex aspect-square h-full w-full flex-col justify-between overflow-hidden rounded-md p-6 lg:col-span-2 lg:row-span-2'>
+            <Cpu className='h-8 w-8 stroke-1 text-primary-foreground' />
             <div className='flex flex-col'>
-              <h3 className='text-xl tracking-tight'>Powered by AMD Ryzen</h3>
+              <h3 className='text-xl tracking-tight text-primary-foreground'>
+                Powered by AMD Ryzen
+              </h3>
               <p className='max-w-xs text-base text-muted-foreground'>
                 Experience unmatched performance with our servers equipped with
-                the cutting-edge AMD Ryzen [model name], delivering the ultimate
-                gaming and hosting experience.
+                the cutting-edge AMD Ryzen 5950X, delivering the ultimate gaming
+                and hosting experience.
               </p>
             </div>
+            <Image
+              src='/host/amd-cpu.jpg'
+              fill={true}
+              alt='Amd cpu installed in pc'
+              className='-z-10'
+            />
           </div>
 
           <div className='flex aspect-square h-full flex-col justify-between rounded-md bg-muted p-6'>
@@ -56,9 +65,9 @@ export default function PerformanceFeaturesGridSection() {
           <div className='flex aspect-square h-full flex-col justify-between rounded-md bg-muted p-6'>
             <Volleyball className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
-              <h3 className='text-xl tracking-tight'>[Thread Count] Threads</h3>
+              <h3 className='text-xl tracking-tight'>32 Threads</h3>
               <p className='max-w-xs text-base text-muted-foreground'>
-                [Thread count] threads for peak server performance.
+                32 threads for peak server performance.
               </p>
             </div>
           </div>
@@ -67,11 +76,11 @@ export default function PerformanceFeaturesGridSection() {
             <ChevronsUp className='h-8 w-8 stroke-1' />
             <div className='flex flex-col'>
               <h3 className='text-xl tracking-tight'>
-                Boost Clock Speeds up to [Speed] GHz
+                Boost Clock Speeds up to 4.9 GHz
               </h3>
               <p className='max-w-xs text-base text-muted-foreground'>
-                Our servers ramp up with boost clock speeds of up to [speed]
-                GHz, delivering smooth, lag-free gameplay.
+                Our servers ramp up with boost clock speeds of up to 4.9 GHz,
+                delivering smooth, lag-free gameplay.
               </p>
             </div>
           </div>
