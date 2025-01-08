@@ -1,19 +1,27 @@
 'use server';
-// This one we'd want it to be a server action, so just 'use server at the top'
-// import 'server-only';
 
-//Adds a server for a user
+import { eq } from 'drizzle-orm';
 
-export default async function updateHostSubscription({
-  userId,
-  pterodactylId,
+import { db } from '@/lib/db';
+import { hostSubscription } from '@/lib/db/schema';
+
+export default async function hostUpdateSubscription({
+  stripeSubscriptionId,
+  pterodactylServerId,
+  pterodactylServerUuid,
 }: {
-  userId: string;
-  pterodactylId: string;
+  stripeSubscriptionId: string;
+  pterodactylServerId: string;
+  pterodactylServerUuid: string;
 }) {
-  // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a userr
-  return {
-    userId,
-    pterodactylId,
-  };
+  const result = await db
+    .update(hostSubscription)
+    .set({
+      pterodactylServerId,
+      pterodactylServerUuid,
+    })
+    .where(eq(hostSubscription.stripeSubscriptionId, stripeSubscriptionId))
+    .returning();
+
+  return result;
 }

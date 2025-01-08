@@ -1,29 +1,38 @@
+import { eq } from 'drizzle-orm';
+
 import { db } from '@/lib/db';
-import { hostSubscription } from '@/lib/db/schema';
+import { hostCustomer, hostSubscription } from '@/lib/db/schema';
 
 import 'server-only';
 
-// This one we'd want it to be a server action, so just 'use server at the top'
-// import 'server-only';
-
-//Adds a server for a user
-
-export default async function createHostSubscription({
-  userId,
-  subscriptionId,
+export default async function hostCreateSubscription({
+  hostCustomerId,
+  stripeSubscriptionId,
+  pterodactylServerId,
+  pterodactylServerUuid,
 }: {
-  userId: string;
-  subscriptionId: string;
+  hostCustomerId: number;
+  stripeSubscriptionId: string;
+  pterodactylServerId?: string;
+  pterodactylServerUuid?: string;
 }) {
-  // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a user
+  const result = await db.transaction(async (tx) => {
+    const subscription = await tx
+      .insert(hostSubscription)
+      .values({
+        hostCustomerId,
+        stripeSubscriptionId,
+        pterodactylServerId,
+        pterodactylServerUuid,
+      })
+      .returning();
 
-  const result = await db
-    .insert(hostSubscription)
-    .values({
-      userId,
-      subscriptionId,
-    })
-    .returning();
+    const query = await tx.query.hostCustomer.findFirst({
+      where: eq(hostCustomer.id, subscription[0].id),
+      with: { subscriptions: true, user: true },
+    });
+    return query;
+  });
 
   return result;
 }
