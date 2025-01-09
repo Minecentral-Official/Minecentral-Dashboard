@@ -5,7 +5,12 @@ import 'server-only';
 import type Stripe from 'stripe';
 
 // function to filter out data that we actually need
-export default function priceDTO({ id, unit_amount, product }: Stripe.Price) {
+export default function priceDTO({
+  id,
+  unit_amount,
+  product,
+  recurring,
+}: Stripe.Price) {
   let productId: typeof product | null;
 
   // check that the type of price.product is of type string
@@ -21,5 +26,6 @@ export default function priceDTO({ id, unit_amount, product }: Stripe.Price) {
     id,
     price: unit_amount,
     productId,
+    recurring_interval: recurring?.interval_count,
   };
 }
