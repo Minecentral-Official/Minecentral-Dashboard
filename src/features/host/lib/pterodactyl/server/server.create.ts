@@ -44,7 +44,7 @@ export async function pterodactylServerCreate(
   serverBuilder.setMemoryLimit(getMeta(plan.ram, 1) * 1024);
   serverBuilder.setSwapLimit(1 * 1024);
   serverBuilder.setDiskLimit(getMeta(plan.disk, 10) * 1024);
-  serverBuilder.setIoLimit(0);
+  serverBuilder.setIoLimit(200);
   serverBuilder.setCpuLimit(getMeta(plan.cpu, 1) * 100);
   //Feature Limits
   serverBuilder.setDatabaseLimit(getMeta(plan.databases, 1));
