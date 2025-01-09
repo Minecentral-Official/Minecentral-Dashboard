@@ -1,6 +1,7 @@
 import { PanelServer } from 'pterodactyl.ts';
 
 import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
+import { serverEnv } from '@/lib/env/server.env';
 
 export async function pterodactylFindAvailableNode(
   memoryNeeded: number,
@@ -26,7 +27,7 @@ export async function pterodactylFindAvailableNode(
       );
 
       //Does this server have enough memory for this customer?
-      if (process.env.NODE_ENV === 'PROD')
+      if (serverEnv.NODE_ENV === 'production')
         if (!(usedMemory + memoryNeeded <= node.memory))
           //Are we in production?
           continue; //Skip if not enough memory

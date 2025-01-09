@@ -8,6 +8,7 @@ import {
 
 import { pterodactylFindAvailableNode } from '@/features/host/lib/pterodactyl/node/available-node.find';
 import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
+import { serverEnv } from '@/lib/env/server.env';
 import { MetadataHostType } from '@/lib/stripe/schemas/host-metadata.zod';
 
 export async function pterodactylServerCreate(
@@ -41,9 +42,9 @@ export async function pterodactylServerCreate(
   serverBuilder.setEggId(1);
   //Limits
   serverBuilder.setMemoryLimit(getMeta(plan.ram, 1) * 1024);
-  serverBuilder.setSwapLimit(getMeta(plan.swap, 0) * 1024);
+  serverBuilder.setSwapLimit(1 * 1024);
   serverBuilder.setDiskLimit(getMeta(plan.disk, 10) * 1024);
-  serverBuilder.setIoLimit(getMeta(plan.io, 0));
+  serverBuilder.setIoLimit(0);
   serverBuilder.setCpuLimit(getMeta(plan.cpu, 1) * 100);
   //Feature Limits
   serverBuilder.setDatabaseLimit(getMeta(plan.databases, 1));
@@ -62,7 +63,7 @@ export async function pterodactylServerCreate(
   serverBuilder.addEnvironmentVariable('SERVER_JARFILE', 'server.jar');
 
   //Only create servers if CREATE_PTERO_SERVER in .env is enabled
-  if (process.env.CREATE_PTERO_SERVER === 'true')
+  if (serverEnv.HOST_PTERO_SERVER_CREATE)
     return await pteroServer.createServer(serverBuilder);
   return null;
 }

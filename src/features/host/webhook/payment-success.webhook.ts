@@ -4,10 +4,12 @@ import Stripe from 'stripe';
 
 import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/server/server.create';
 import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
+import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
 import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-by-stripe-customer-id.get';
 import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-by-id.get';
+import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
 import { HostCustomer } from '@/lib/db/schema';
 import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
 import {
@@ -35,7 +37,15 @@ export async function hostPaymentSuccessWebhook(
     if (!hostSubscription) {
       //First time the person has made a payment for this subscription!
       //New purchase, give user access to their new pterodactyl server
-      newPtero(stripeSubscription);
+      // const stripeCustomer = await getStripeCustomerBySubscriptionId(stripeSubscriptionId)
+      const user = await getUserByEmail(
+        (stripeSubscription.customer as Stripe.Customer).email || 'n/a',
+      );
+      if (!user)
+        throw new Error(
+          'Someone purchased a server without creating an account first!',
+        );
+      newPtero(stripeSubscription, user);
     } else {
       //Person is making a recurring payment or an overdue payment!
       //UnSuspend ptero server
@@ -61,10 +71,15 @@ async function newPtero(stripeSubscription: Stripe.Subscription, user: User) {
   const customerString = stripeSubscription.customer;
   const isCustomerString = typeof customerString === 'string';
   if (!isCustomerString) throw new Error('Customer is not a string!');
-  const hostCustomer = await hostGetCustomerByStripeCustomerId(customerString);
+  let hostCustomer = await hostGetCustomerByStripeCustomerId(customerString);
   if (!hostCustomer) {
-    //Client has no prior custome data, CREATE IT!
-    hostCustomer = hostCreateCustomer({userId: , pterodactylUserId, stripeCustomerId})
+    //Client has no prior customer data, CREATE IT!
+    const pteroUser = await pterodactylCreateUser(user);
+    hostCustomer = await hostCreateCustomer({
+      userId: user.id,
+      pterodactylUserId: pteroUser.id,
+      stripeCustomerId: (stripeSubscription.customer as Stripe.Customer).id,
+    });
   }
   //Add Subscription to HostSubscription table
   const hostSubscription = await hostCreateSubscription({

@@ -23,5 +23,5 @@ export async function hostCreateCustomer({
     })
     .returning();
 
-  return result;
+  return result[0];
 }
