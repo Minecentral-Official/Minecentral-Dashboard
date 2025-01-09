@@ -12,6 +12,7 @@ import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-
 import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
 import { HostCustomer } from '@/lib/db/schema';
 import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import stripeGetProductById from '@/lib/stripe/queries/product-by-id.get';
 import {
   metadataHostSchema,
   MetadataHostType,
@@ -68,13 +69,17 @@ async function createServer(
 }
 
 async function newPtero(stripeSubscription: Stripe.Subscription, user: User) {
-  const customerString = stripeSubscription.customer;
-  const isCustomerString = typeof customerString === 'string';
-  if (!isCustomerString) throw new Error('Customer is not a string!');
-  let hostCustomer = await hostGetCustomerByStripeCustomerId(customerString);
+  const stripeCustomer = stripeSubscription.customer as Stripe.Customer;
+  // const isCustomerString = typeof customerString === 'string';
+  // if (!isCustomerString) throw new Error('Customer is not a string!');
+  let hostCustomer = await hostGetCustomerByStripeCustomerId(stripeCustomer.id);
   if (!hostCustomer) {
     //Client has no prior customer data, CREATE IT!
     const pteroUser = await pterodactylCreateUser(user);
+    if (!pteroUser)
+      throw new Error(
+        'Could not create nor find a users pterodactyl panel user data!',
+      );
     hostCustomer = await hostCreateCustomer({
       userId: user.id,
       pterodactylUserId: pteroUser.id,
@@ -88,9 +93,11 @@ async function newPtero(stripeSubscription: Stripe.Subscription, user: User) {
   });
   if (!hostSubscription) throw new Error("Host Subscription doesn't exist!");
   //Create a Pterodactyl server
-  createServer(
-    hostSubscription,
-    metadataHostSchema.parse(stripeSubscription.metadata),
+  const stripeMetadata = await stripeGetProductById(
+    stripeSubscription.items.data[0].plan.product as string,
   );
-  //Update Subscription table data with Ptero data if it exists
+  const pteroServer = await createServer(
+    hostSubscription,
+    metadataHostSchema.parse(stripeMetadata.metadata),
+  );
 }
