@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const serverEnv = createEnv({
   server: {
-    NODE_ENV: z.enum(['production', 'developement']),
+    NODE_ENV: z.enum(['development', 'production']),
     DATABASE_URL: z.string().url(),
     BETTER_AUTH_SECRET: z.string(),
     DISCORD_CLIENT_ID: z.string(),
@@ -19,7 +19,4 @@ export const serverEnv = createEnv({
   // eslint-disable-next-line n/no-process-env
   experimental__runtimeEnv: process.env,
   isServer: typeof window === 'undefined',
-  onValidationError: (err) => {
-    console.log(err);
-  },
 });
