@@ -100,4 +100,5 @@ async function newPtero(stripeSubscription: Stripe.Subscription, user: User) {
     hostSubscription,
     metadataHostSchema.parse(stripeMetadata.metadata),
   );
+  console.log(pteroServer);
 }
