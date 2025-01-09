@@ -1,11 +1,11 @@
-'use server';
+import 'server-only';
 
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
 import { hostSubscription } from '@/lib/db/schema';
 
-export default async function hostUpdateSubscription({
+export async function hostUpdateSubscription({
   stripeSubscriptionId,
   pterodactylServerId,
   pterodactylServerUuid,

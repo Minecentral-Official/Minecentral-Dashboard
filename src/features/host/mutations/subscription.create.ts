@@ -5,7 +5,7 @@ import { hostCustomer, hostSubscription } from '@/lib/db/schema';
 
 import 'server-only';
 
-export default async function hostCreateSubscription({
+export async function hostCreateSubscription({
   hostCustomerId,
   stripeSubscriptionId,
   pterodactylServerId,

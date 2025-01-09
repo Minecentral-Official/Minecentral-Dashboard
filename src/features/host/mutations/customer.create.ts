@@ -3,7 +3,7 @@ import { hostCustomer } from '@/lib/db/schema';
 
 import 'server-only';
 
-export default async function hostCreateCustomer({
+export async function hostCreateCustomer({
   userId,
   pterodactylUserId,
   stripeCustomerId,

@@ -5,7 +5,7 @@ import { hostSubscription } from '@/lib/db/schema';
 
 import 'server-only';
 
-export default async function hostGetSubscriptionById(
+export default async function hostGetSubscriptionByStripeId(
   stripeSubscriptionId: string,
 ) {
   const subscription = await db.query.hostSubscription.findFirst({
