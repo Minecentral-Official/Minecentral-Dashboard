@@ -1,4 +1,4 @@
-import { Check, Minus, MoveRight, PhoneCall } from 'lucide-react';
+import { Minus, MoveRight, PhoneCall } from 'lucide-react';
 
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
@@ -70,85 +70,122 @@ export default async function PricingTableSection() {
           </div>
           <div></div>
           <div></div>
+          <div></div>
           <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            <b>Features</b>
+            <b>Specs</b>
           </div>
-
+          <div></div>
+          <div></div>
+          <div></div>
           {/* New Line */}
-          <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>SSO</div>
+          <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>RAM</div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.ram} GB
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.ram} GB
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
-          </div>
-          {/* New Line */}
-          <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            AI Assistant
-          </div>
-          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Minus className='h-4 w-4 text-muted-foreground' />
-          </div>
-          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
-          </div>
-          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
           </div>
           {/* New Line */}
           <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            Version Control
+            CPU Threads
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Minus className='h-4 w-4 text-muted-foreground' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.cpu} Threads
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.cpu} Threads
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
           </div>
           {/* New Line */}
           <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            Members
+            Sub-Servers
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-sm text-muted-foreground'>5 members</p>
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.splits}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-sm text-muted-foreground'>25 members</p>
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.splits}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <p className='text-sm text-muted-foreground'>100+ members</p>
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
           </div>
           {/* New Line */}
           <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            Multiplayer Mode
+            Databases
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Minus className='h-4 w-4 text-muted-foreground' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.databases}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.databases}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
+          </div>
+          {/* New Line */}
+          <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>Disk</div>
+          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.disk} GiB
+            </p>
+          </div>
+          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.disk} GiB
+            </p>
+          </div>
+          <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
           </div>
           {/* New Line */}
           <div className='col-span-3 px-3 py-4 lg:col-span-1 lg:px-6'>
-            Orchestration
+            Backups
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Minus className='h-4 w-4 text-muted-foreground' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[0].metadata.backups}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              {defaultProducts[1].metadata.backups}
+            </p>
           </div>
           <div className='flex justify-center px-3 py-1 md:px-6 md:py-4'>
-            <Check className='h-4 w-4 text-primary' />
+            <p className='text-sm text-muted-foreground'>
+              <Minus className='h-4 w-4 text-muted-foreground' />
+            </p>
           </div>
         </div>
       </div>
