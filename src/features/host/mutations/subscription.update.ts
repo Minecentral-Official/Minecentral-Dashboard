@@ -6,12 +6,12 @@ import { db } from '@/lib/db';
 import { hostSubscription } from '@/lib/db/schema';
 
 export async function hostUpdateSubscription({
-  stripeSubscriptionId,
+  hostId,
   pterodactylServerId,
   pterodactylServerUuid,
 }: {
-  stripeSubscriptionId: string;
-  pterodactylServerId: string;
+  hostId: number;
+  pterodactylServerId: number;
   pterodactylServerUuid: string;
 }) {
   const result = await db
@@ -20,7 +20,7 @@ export async function hostUpdateSubscription({
       pterodactylServerId,
       pterodactylServerUuid,
     })
-    .where(eq(hostSubscription.stripeSubscriptionId, stripeSubscriptionId))
+    .where(eq(hostSubscription.id, hostId))
     .returning();
 
   return result;

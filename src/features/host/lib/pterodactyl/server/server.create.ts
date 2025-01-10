@@ -16,7 +16,7 @@ export async function pterodactylServerCreate(
   plan: MetadataHostType,
 ): Promise<PanelServer | null> {
   const availableNodes = await pterodactylFindAvailableNode(
-    getMeta(plan.ram, 1),
+    checkMinimum(plan.ram, 1),
   );
   if (!availableNodes || availableNodes.length <= 0)
     throw new Error('No nodes available for purchase!');
@@ -41,15 +41,15 @@ export async function pterodactylServerCreate(
   serverBuilder.setOwnerId(pteroUser.id);
   serverBuilder.setEggId(1);
   //Limits
-  serverBuilder.setMemoryLimit(getMeta(plan.ram, 1) * 1024);
+  serverBuilder.setMemoryLimit(checkMinimum(plan.ram, 1) * 1024);
   serverBuilder.setSwapLimit(1 * 1024);
-  serverBuilder.setDiskLimit(getMeta(plan.disk, 10) * 1024);
+  serverBuilder.setDiskLimit(checkMinimum(plan.disk, 10) * 1024);
   serverBuilder.setIoLimit(200);
-  serverBuilder.setCpuLimit(getMeta(plan.cpu, 1) * 100);
+  serverBuilder.setCpuLimit(checkMinimum(plan.cpu, 1) * 100);
   //Feature Limits
-  serverBuilder.setDatabaseLimit(getMeta(plan.databases, 1));
-  serverBuilder.setBackupLimit(getMeta(plan.backups, 0));
-  serverBuilder.setAllocationLimit(getMeta(plan.allocations, 1));
+  serverBuilder.setDatabaseLimit(checkMinimum(plan.databases, 1));
+  serverBuilder.setBackupLimit(checkMinimum(plan.backups, 0));
+  serverBuilder.setAllocationLimit(checkMinimum(plan.allocations, 1));
   //Allocation
   serverBuilder.setAllocation(defaultAllocation);
   serverBuilder.setAdditionalAllocations(additionalAllocations);
@@ -68,8 +68,7 @@ export async function pterodactylServerCreate(
   return null;
 }
 
-//Converts optional variables to typesafe default values if none are given
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getMeta<T>(value: any, defaultValue: T): T {
-  return value || defaultValue || 0;
+//Checks that values are atleast a safe default minimum value
+function checkMinimum(value: number, defaultValue: number): number {
+  return value < defaultValue ? defaultValue : value;
 }

@@ -1,7 +1,11 @@
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { hostCustomer, hostSubscription } from '@/lib/db/schema';
+import {
+  hostCustomer,
+  HostSubscription,
+  hostSubscription,
+} from '@/lib/db/schema';
 
 import 'server-only';
 
@@ -13,9 +17,9 @@ export async function hostCreateSubscription({
 }: {
   hostCustomerId: number;
   stripeSubscriptionId: string;
-  pterodactylServerId?: string;
+  pterodactylServerId?: number;
   pterodactylServerUuid?: string;
-}) {
+}): Promise<HostSubscription | undefined> {
   const result = await db.transaction(async (tx) => {
     const subscription = await tx
       .insert(hostSubscription)
@@ -27,9 +31,9 @@ export async function hostCreateSubscription({
       })
       .returning();
 
-    const query = await tx.query.hostCustomer.findFirst({
+    const query = await tx.query.hostSubscription.findFirst({
       where: eq(hostCustomer.id, subscription[0].id),
-      with: { subscriptions: true, user: true },
+      with: { customer: { with: { subscriptions: true, user: true } } },
     });
     return query;
   });

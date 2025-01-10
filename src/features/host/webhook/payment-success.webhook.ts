@@ -1,17 +1,17 @@
-// import { PanelServer, PanelUser } from 'pterodactyl.ts';
 import { User } from 'better-auth';
 import Stripe from 'stripe';
 
+import { HostPaymentType } from '@/features/host/lib/enum/host-payment.enum';
 import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/server/server.create';
 import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
+import { pterodactylUserFindByServerId } from '@/features/host/lib/pterodactyl/user/user-by-serverid.find';
 import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
+import { hostUpdateSubscription } from '@/features/host/mutations/subscription.update';
 import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-by-stripe-customer-id.get';
-import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-by-id.get';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
-import { HostCustomer } from '@/lib/db/schema';
-import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import { HostCustomer, HostSubscription } from '@/lib/db/schema';
 import stripeGetProductById from '@/lib/stripe/queries/product-by-id.get';
 import {
   metadataHostSchema,
@@ -19,86 +19,110 @@ import {
 } from '@/lib/stripe/schemas/host-metadata.zod';
 
 //Create a server if it doesnt exist (NOT FINISHED)
-export async function hostPaymentSuccessWebhook(
-  event: Stripe.InvoicePaymentSucceededEvent,
-) {
+export async function hostWebhookPaymentSuccess({
+  hostSubscription,
+  stripeCustomer,
+  stripeSubscription,
+}: HostPaymentType) {
   try {
-    //Grab the sub id from event
-    const stripeSubscriptionId = event.data.object.subscription;
-    if (typeof stripeSubscriptionId !== 'string')
-      throw new Error('Subscription is not a string!');
-    const stripeSubscription =
-      await getStripeSubscriptionById(stripeSubscriptionId);
-
-    //Grab HOST subscription via STRIPE subscription id
-    const hostSubscription = await hostGetSubscriptionByStripeId(
-      stripeSubscription.id,
-    );
-
     if (!hostSubscription) {
       //First time the person has made a payment for this subscription!
       //New purchase, give user access to their new pterodactyl server
-      // const stripeCustomer = await getStripeCustomerBySubscriptionId(stripeSubscriptionId)
-      const user = await getUserByEmail(
-        (stripeSubscription.customer as Stripe.Customer).email || 'n/a',
-      );
+      const user = await getUserByEmail(stripeCustomer.email || 'n/a');
       if (!user)
         throw new Error(
           'Someone purchased a server without creating an account first!',
         );
-      newPtero(stripeSubscription, user);
+      hostSubscription = await createHostSubscription(
+        stripeSubscription,
+        stripeCustomer,
+        user,
+      );
+      // newPtero(stripeCustomer, user);
+    }
+    if (!hostSubscription)
+      throw new Error('Unable to create or find users host subscription!');
+    if (hostSubscription.pterodactylServerId) {
+      //Server exists, unsuspend incase of late payment
     } else {
-      //Person is making a recurring payment or an overdue payment!
-      //UnSuspend ptero server
-      // continuePtero();
+      //Create pterodactyl server
+      const stripeMetadata = await stripeGetProductById(
+        stripeSubscription.items.data[0].plan.product as string,
+      );
+
+      const pteroServer = await pterodactylServerCreate(
+        await pterodactylUserFindById(
+          hostSubscription.customer.pterodactylUserId,
+        ),
+        metadataHostSchema.parse(stripeMetadata.metadata),
+      );
+
+      if (!pteroServer)
+        throw new Error('Unable to create a server for users product!');
+      hostUpdateSubscription({
+        pterodactylServerId: pteroServer?.id,
+        pterodactylServerUuid: pteroServer?.uuid,
+        hostId: hostSubscription.id,
+      });
     }
   } catch (err) {
     console.log(err);
-  } finally {
   }
 }
 
-async function createServer(
-  hostCustomer: HostCustomer,
-  plan: MetadataHostType,
-) {
-  return pterodactylServerCreate(
-    await pterodactylUserFindById(hostCustomer.pterodactylUserId),
-    plan,
-  );
+async function createHostSubscription(
+  stripeSubscription: Stripe.Subscription,
+  stripeCustomer: Stripe.Customer,
+  user: User,
+): Promise<HostSubscription | undefined> {
+  //Get users current customer id, as they might have purchased with us before
+  const hostCustomer = await findOrCreateHostCustomer(stripeCustomer, user);
+  //hostCustomer is now a valid value, create a host subscription
+  const hostSubscription = await hostCreateSubscription({
+    hostCustomerId: hostCustomer.id,
+    stripeSubscriptionId: stripeSubscription.id,
+  });
+  return hostSubscription;
 }
 
-async function newPtero(stripeSubscription: Stripe.Subscription, user: User) {
-  const stripeCustomer = stripeSubscription.customer as Stripe.Customer;
-  // const isCustomerString = typeof customerString === 'string';
-  // if (!isCustomerString) throw new Error('Customer is not a string!');
+//Finds or creates a Host Customer
+async function findOrCreateHostCustomer(
+  stripeCustomer: Stripe.Customer,
+  user: User,
+) {
   let hostCustomer = await hostGetCustomerByStripeCustomerId(stripeCustomer.id);
   if (!hostCustomer) {
-    //Client has no prior customer data, CREATE IT!
+    //Customer has no prior host data, CREATE IT!
+
+    //Create Pterodactyl User (for panel login and server assigning)
     const pteroUser = await pterodactylCreateUser(user);
     if (!pteroUser)
       throw new Error(
         'Could not create nor find a users pterodactyl panel user data!',
       );
+
+    //Create a Host Customer
     hostCustomer = await hostCreateCustomer({
       userId: user.id,
       pterodactylUserId: pteroUser.id,
-      stripeCustomerId: (stripeSubscription.customer as Stripe.Customer).id,
+      stripeCustomerId: stripeCustomer.id,
     });
   }
-  //Add Subscription to HostSubscription table
-  const hostSubscription = await hostCreateSubscription({
-    hostCustomerId: hostCustomer.id,
-    stripeSubscriptionId: stripeSubscription.id,
-  });
-  if (!hostSubscription) throw new Error("Host Subscription doesn't exist!");
-  //Create a Pterodactyl server
-  const stripeMetadata = await stripeGetProductById(
-    stripeSubscription.items.data[0].plan.product as string,
-  );
-  const pteroServer = await createServer(
-    hostSubscription,
-    metadataHostSchema.parse(stripeMetadata.metadata),
-  );
-  console.log(pteroServer);
+  return hostCustomer;
 }
+
+// async function newPtero(
+//   stripeCustomer: Stripe.Customer,
+//   hostCustomer: HostCustomer,
+//   user: User,
+// ) {
+//   //Create a Pterodactyl server
+//   const stripeMetadata = await stripeGetProductById(
+//     stripeSubscription.items.data[0].plan.product as string,
+//   );
+//   const pteroServer = await createServer(
+//     hostSubscription,
+//     metadataHostSchema.parse(stripeMetadata.metadata),
+//   );
+//   console.log(pteroServer);
+// }
