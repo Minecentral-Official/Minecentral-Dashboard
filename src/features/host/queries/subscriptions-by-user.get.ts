@@ -11,7 +11,7 @@ export default async function hostGetUserSubscriptions() {
   const { user } = await validateSession();
   const hostCustomer = await hostGetCustomerByUserId(user.id);
   if (!hostCustomer) return undefined;
-  const subscriptions = await db.query.hostSubscription.findFirst({
+  const subscriptions = await db.query.hostSubscription.findMany({
     where: eq(hostSubscription.hostCustomerId, hostCustomer.id),
   });
   return subscriptions;
