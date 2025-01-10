@@ -1,6 +1,7 @@
 import { pterodactylGetServerById } from '@/features/host/lib/pterodactyl/queries/server-by-id.get';
 import hostGetUserSubscriptions from '@/features/host/queries/subscriptions-by-user.get';
 import { getStripeProductBySubId } from '@/lib/stripe/queries/product-by-sub-id.get';
+import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 import 'server-only';
 
@@ -27,14 +28,19 @@ export async function hostGetUserPterdactylServers() {
       const pterodactylRequest = pterodactylGetServerById(pterodactylServerId);
       const stripeRequest = getStripeProductBySubId(stripeSubscriptionId);
 
-      const [pterodactylServerData, StripeProductData] = await Promise.all([
-        pterodactylRequest,
-        stripeRequest,
-      ]);
+      const [pterodactylServerData, { metadata, ...stripeProductData }] =
+        await Promise.all([pterodactylRequest, stripeRequest]);
+
+      const validatedMetadata = metadataHostSchema.parse(metadata);
+
+      const validatedStripeProductData = {
+        metadata: validatedMetadata,
+        ...stripeProductData,
+      };
 
       return {
         pterodactylServerData,
-        StripeProductData,
+        StripeProductData: validatedStripeProductData,
       };
     },
   );

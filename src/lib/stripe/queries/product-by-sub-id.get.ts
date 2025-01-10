@@ -1,3 +1,4 @@
+import productDTO from '@/lib/stripe/dto/product.dto';
 import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
 
 export async function getStripeProductBySubId(subId: string) {
@@ -17,5 +18,5 @@ export async function getStripeProductBySubId(subId: string) {
     throw new Error('this product has been deleted');
   }
 
-  return product;
+  return productDTO(product);
 }

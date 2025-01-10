@@ -10,6 +10,7 @@ export function pteroServerDTO(pteroServerData: Awaited<PanelServer>) {
     node,
     created_at,
     description,
+    status,
   } = pteroServerData as unknown as Awaited<
     PanelServer & {
       feature_limits: PanelServer['feature_limits'] & { splits: number };
@@ -24,5 +25,6 @@ export function pteroServerDTO(pteroServerData: Awaited<PanelServer>) {
     node,
     created_at,
     description,
+    status,
   };
 }

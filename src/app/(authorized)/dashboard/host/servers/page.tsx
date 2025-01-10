@@ -13,8 +13,8 @@ import PterodactylServerCard from '@/features/host/components/cards/pterodactyl-
 import { hostGetUserPterdactylServers } from '@/features/host/queries/user-pterodactyl-servers.get';
 
 export default async function HostServersPage() {
-  const asdf = await hostGetUserPterdactylServers();
-  console.log(asdf);
+  const serverData = await hostGetUserPterdactylServers();
+  console.log(serverData);
   return (
     <div className='flex flex-col gap-6'>
       <div className='flex flex-wrap gap-6'>
@@ -44,7 +44,14 @@ export default async function HostServersPage() {
           </Link>
         </Button>
       </div>
-      <PterodactylServerCard />
+      {serverData.map(({ StripeProductData, pterodactylServerData }) => (
+        <PterodactylServerCard
+          key={pterodactylServerData.id}
+          name={pterodactylServerData.name}
+          plan={StripeProductData.name}
+          status={pterodactylServerData.status}
+        />
+      ))}
     </div>
   );
 }
