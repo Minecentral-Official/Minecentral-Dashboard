@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { pterodactylServerSuspend } from '@/features/host/lib/pterodactyl/server/server.suspend';
+import { pterodactylServerSuspend } from '@/features/host/lib/pterodactyl/mutations/server.suspend';
 
 //Suspend users server
 export async function hostWebhookPaymentFailed(

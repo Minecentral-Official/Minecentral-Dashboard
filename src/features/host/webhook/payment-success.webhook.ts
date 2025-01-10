@@ -1,7 +1,7 @@
 import { User } from 'better-auth';
 import Stripe from 'stripe';
 
-import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/server/server.create';
+import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/mutations/server.create';
 import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
 import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
