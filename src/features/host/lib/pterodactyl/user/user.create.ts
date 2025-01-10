@@ -23,6 +23,6 @@ export async function pterodactylCreateUser(user: User) {
   } catch {
     //User might already be created
     const allPteroUsers = await pteroServer.getUsers();
-    return allPteroUsers.find((user) => user.email === user.email);
+    return allPteroUsers.find((pteroUser) => pteroUser.email === user.email);
   }
 }
