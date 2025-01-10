@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
-import { HostPaymentType } from '@/features/host/lib/enum/host-payment.enum';
 import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-by-id.get';
+import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import { hostWebhookPaymentSuccess } from '@/features/host/webhook/payment-success.webhook';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 //This will return a users STRIPE subscription and their HOST subscription data
 async function getSubscription(
   stripeSubscriptionId: string | Stripe.Subscription | null,
-): Promise<HostPaymentType> {
+): Promise<THostPayment> {
   if (typeof stripeSubscriptionId !== 'string')
     throw new Error('Subscription is not a string!');
   const stripeSubscription =
@@ -65,6 +65,17 @@ async function getSubscription(
     stripeSubscription.id,
   );
   //TYPE CASTING: Safe as this is stripe stuff, believe me!
-  const stripeCustomer = stripeSubscription.customer as Stripe.Customer;
+
+  const stripeCustomer = stripeSubscription.customer;
+
+  // Check the type of stripeCustomer to ensure it is of type Stripe.Customer
+  if (typeof stripeCustomer === 'string') {
+    throw new Error('stripeCustomer should not be a string here');
+  }
+
+  if (stripeCustomer.deleted === true) {
+    throw new Error('stripeCustomer should not be a deleted customer here');
+  }
+
   return { stripeSubscription, stripeCustomer, hostSubscription };
 }

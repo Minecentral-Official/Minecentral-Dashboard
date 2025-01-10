@@ -1,29 +1,25 @@
 import { User } from 'better-auth';
 import Stripe from 'stripe';
 
-import { HostPaymentType } from '@/features/host/lib/enum/host-payment.enum';
 import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/server/server.create';
 import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
-import { pterodactylUserFindByServerId } from '@/features/host/lib/pterodactyl/user/user-by-serverid.find';
 import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
 import { hostUpdateSubscription } from '@/features/host/mutations/subscription.update';
 import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-by-stripe-customer-id.get';
+import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
-import { HostCustomer, HostSubscription } from '@/lib/db/schema';
+import { HostSubscription } from '@/lib/db/schema';
 import stripeGetProductById from '@/lib/stripe/queries/product-by-id.get';
-import {
-  metadataHostSchema,
-  MetadataHostType,
-} from '@/lib/stripe/schemas/host-metadata.zod';
+import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 //Create a server if it doesnt exist (NOT FINISHED)
 export async function hostWebhookPaymentSuccess({
   hostSubscription,
   stripeCustomer,
   stripeSubscription,
-}: HostPaymentType) {
+}: THostPayment) {
   try {
     if (!hostSubscription) {
       //First time the person has made a payment for this subscription!
