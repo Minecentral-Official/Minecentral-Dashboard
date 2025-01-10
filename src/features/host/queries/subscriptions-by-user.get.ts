@@ -10,7 +10,7 @@ import 'server-only';
 export default async function hostGetUserSubscriptions() {
   const { user } = await validateSession();
   const hostCustomer = await hostGetCustomerByUserId(user.id);
-  if (!hostCustomer) return undefined;
+  if (!hostCustomer) return [];
   const subscriptions = await db.query.hostSubscription.findMany({
     where: eq(hostSubscription.hostCustomerId, hostCustomer.id),
   });

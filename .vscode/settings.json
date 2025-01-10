@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["Minecentral", "Ryzen", "Shockbyte"]
+  "cSpell.words": ["Minecentral", "Ryzen", "Shockbyte"],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
