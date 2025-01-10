@@ -92,10 +92,6 @@ async function findOrCreateHostCustomer(
 
     //Create Pterodactyl User (for panel login and server assigning)
     const pteroUser = await pterodactylCreateUser(user);
-    if (!pteroUser)
-      throw new Error(
-        'Could not create nor find a users pterodactyl panel user data!',
-      );
 
     //Create a Host Customer
     hostCustomer = await hostCreateCustomer({
