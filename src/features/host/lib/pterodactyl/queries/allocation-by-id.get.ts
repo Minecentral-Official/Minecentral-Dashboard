@@ -1,3 +1,4 @@
+import { pteroAllocationDTO } from '@/features/host/lib/pterodactyl/dto/ptero-allocation.dto';
 import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
 
 export async function pterodactylGetAllocationById(
@@ -10,5 +11,5 @@ export async function pterodactylGetAllocationById(
   const allocation = allocations.find(
     (allocation) => allocation.id === allocationId,
   );
-  return allocation;
+  return pteroAllocationDTO(allocation);
 }

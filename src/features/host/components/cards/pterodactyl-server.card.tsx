@@ -46,6 +46,8 @@ type PterodactylServerCardProps = {
   databases: number;
   backups: number;
   splits: number;
+  ip?: string;
+  port?: number;
 };
 
 export default function PterodactylServerCard({
@@ -57,7 +59,10 @@ export default function PterodactylServerCard({
   databases,
   backups,
   splits,
+  ip,
+  port,
 }: PterodactylServerCardProps) {
+  console.log(ip, port);
   return (
     <Card>
       <Collapsible>

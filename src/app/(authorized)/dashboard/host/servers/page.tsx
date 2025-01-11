@@ -26,7 +26,11 @@ export default async function HostServersPage() {
             name: stripeName,
             metadata: { backups, cpu, databases, disk, ram, splits },
           },
-          pterodactylServerData: { name: pteroName, id: pteroId },
+          pterodactylServerData: {
+            name: pteroName,
+            id: pteroId,
+            allocationData: { ip, port },
+          },
         }) => (
           <PterodactylServerCard
             key={pteroId}
@@ -38,6 +42,8 @@ export default async function HostServersPage() {
             storage={disk}
             ram={ram}
             splits={splits}
+            ip={ip}
+            port={port}
           />
         ),
       )}

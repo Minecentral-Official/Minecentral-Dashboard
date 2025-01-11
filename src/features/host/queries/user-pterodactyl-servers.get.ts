@@ -1,3 +1,4 @@
+import { pterodactylGetAllocationById } from '@/features/host/lib/pterodactyl/queries/allocation-by-id.get';
 import { pterodactylGetServerById } from '@/features/host/lib/pterodactyl/queries/server-by-id.get';
 import hostGetUserSubscriptions from '@/features/host/queries/subscriptions-by-user.get';
 import { getStripeProductByPurchaseSubId } from '@/lib/stripe/queries/listings/product-listing-by-purchase-sub-id.get';
@@ -16,6 +17,7 @@ type TSubscription = {
 export async function hostGetUserPterdactylServers() {
   const subscriptions = await hostGetUserSubscriptions();
 
+  //Grab a list of subscriptions that have servers attached
   const subscriptionsWithValidServerId = subscriptions.filter(
     (
       subscription,
@@ -25,13 +27,22 @@ export async function hostGetUserPterdactylServers() {
 
   const serverDataPromises = subscriptionsWithValidServerId.map(
     async ({ pterodactylServerId, stripeSubscriptionId }) => {
+      //Pterodactyl data
       const pterodactylRequest = pterodactylGetServerById(pterodactylServerId);
+      //Stripe Data
       const stripeRequest =
         getStripeProductByPurchaseSubId(stripeSubscriptionId);
 
+      //Wait for data
       const [pterodactylServerData, { metadata, ...stripeProductData }] =
         await Promise.all([pterodactylRequest, stripeRequest]);
 
+      const allocationData = await pterodactylGetAllocationById(
+        pterodactylServerData.node,
+        pterodactylServerData.allocation,
+      );
+
+      //Validate Stripe metadata
       const validatedMetadata = metadataHostSchema.parse(metadata);
 
       const validatedStripeProductData = {
@@ -40,7 +51,10 @@ export async function hostGetUserPterdactylServers() {
       };
 
       return {
-        pterodactylServerData,
+        pterodactylServerData: {
+          ...pterodactylServerData,
+          allocationData: { ...allocationData },
+        },
         stripeProductData: validatedStripeProductData,
       };
     },
