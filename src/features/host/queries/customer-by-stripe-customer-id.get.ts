@@ -8,7 +8,7 @@ import 'server-only';
 export default async function hostGetCustomerByStripeCustomerId(
   stripeCustomerId: string,
 ) {
-  const user = db.query.hostCustomer.findFirst({
+  const user = await db.query.hostCustomer.findFirst({
     where: eq(hostCustomer.stripeCustomerId, stripeCustomerId),
   });
   return user;

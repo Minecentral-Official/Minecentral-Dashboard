@@ -28,6 +28,8 @@ export default async function AuthNav({ children }: PropsWithChildren) {
     );
   }
 
+  const userInitials = session.user.name.charAt(0).toUpperCase();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -39,7 +41,9 @@ export default async function AuthNav({ children }: PropsWithChildren) {
                 src={session.user.image ?? undefined}
                 alt={session.user.name}
               />
-              <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
+              <AvatarFallback className='rounded-lg'>
+                {userInitials}
+              </AvatarFallback>
             </Avatar>
             <div className='grid flex-1 text-left text-sm leading-tight'>
               <span className='truncate font-semibold'>
