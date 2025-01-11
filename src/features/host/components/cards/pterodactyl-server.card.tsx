@@ -1,9 +1,15 @@
 import {
+  Archive,
   BadgeCheck,
+  Box,
   ChartBarBig,
   ChevronsUpDown,
   CreditCard,
+  Database,
   Ellipsis,
+  MemoryStick,
+  SquareSplitVertical,
+  Volleyball,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -28,15 +34,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
+import IconWithDataDisplay from '@/features/host/components/etc/icon-with-data.display';
 
 type PterodactylServerCardProps = {
   name: string;
   plan: string;
+  cpuThreads: number;
+  ram: number;
+  storage: number;
+  databases: number;
+  backups: number;
+  splits: number;
 };
 
 export default function PterodactylServerCard({
   name,
   plan,
+  cpuThreads,
+  ram,
+  storage,
+  databases,
+  backups,
+  splits,
 }: PterodactylServerCardProps) {
   return (
     <Card>
@@ -84,7 +104,32 @@ export default function PterodactylServerCard({
           </div>
         </div>
         <CollapsibleContent>
-          <CardContent></CardContent>
+          <div className='mb-4 flex items-center gap-2'>
+            <Separator className='w-4' />
+            <span className='text-xs text-muted-foreground'>Plan Info</span>
+
+            <Separator className='flex-1' />
+          </div>
+          <CardContent className='flex gap-6'>
+            <IconWithDataDisplay data={ram} icon={MemoryStick} name='RAM' />
+            <IconWithDataDisplay
+              data={cpuThreads}
+              icon={Volleyball}
+              name='CPU Threads'
+            />
+            <IconWithDataDisplay data={storage} icon={Box} name='Storage' />
+            <IconWithDataDisplay
+              data={databases}
+              icon={Database}
+              name='Databases'
+            />
+            <IconWithDataDisplay data={backups} icon={Archive} name='Backups' />
+            <IconWithDataDisplay
+              data={splits}
+              icon={SquareSplitVertical}
+              name='Splits'
+            />
+          </CardContent>
         </CollapsibleContent>
       </Collapsible>
     </Card>

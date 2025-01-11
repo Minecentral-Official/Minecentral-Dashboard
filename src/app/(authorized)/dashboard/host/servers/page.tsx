@@ -20,13 +20,27 @@ export default async function HostServersPage() {
           <Plus className='scale-150' />
         </AddServerButton>
       </div>
-      {serverData.map(({ StripeProductData, pterodactylServerData }) => (
-        <PterodactylServerCard
-          key={pterodactylServerData.id}
-          name={pterodactylServerData.name}
-          plan={StripeProductData.name}
-        />
-      ))}
+      {serverData.map(
+        ({
+          stripeProductData: {
+            name: stripeName,
+            metadata: { backups, cpu, databases, disk, ram, splits },
+          },
+          pterodactylServerData: { name: pteroName, id: pteroId },
+        }) => (
+          <PterodactylServerCard
+            key={pteroId}
+            name={pteroName}
+            plan={stripeName}
+            backups={backups}
+            cpuThreads={cpu}
+            databases={databases}
+            storage={disk}
+            ram={ram}
+            splits={splits}
+          />
+        ),
+      )}
     </div>
   );
 }

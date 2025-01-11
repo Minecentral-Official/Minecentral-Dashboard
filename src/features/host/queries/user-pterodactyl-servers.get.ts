@@ -41,7 +41,7 @@ export async function hostGetUserPterdactylServers() {
 
       return {
         pterodactylServerData,
-        StripeProductData: validatedStripeProductData,
+        stripeProductData: validatedStripeProductData,
       };
     },
   );
