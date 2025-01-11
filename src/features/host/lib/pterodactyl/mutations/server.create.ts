@@ -50,6 +50,7 @@ export async function pterodactylServerCreate(
   serverBuilder.setDatabaseLimit(checkMinimum(plan.databases, 1));
   serverBuilder.setBackupLimit(checkMinimum(plan.backups, 0));
   serverBuilder.setAllocationLimit(checkMinimum(plan.allocations, 1));
+  serverBuilder.setCustomLimit('splits', 20);
   //Allocation
   serverBuilder.setAllocation(defaultAllocation);
   serverBuilder.setAdditionalAllocations(additionalAllocations);
@@ -63,8 +64,9 @@ export async function pterodactylServerCreate(
   serverBuilder.addEnvironmentVariable('SERVER_JARFILE', 'server.jar');
 
   //Only create servers if CREATE_PTERO_SERVER in .env is enabled
-  if (serverEnv.HOST_PTERO_SERVER_CREATE)
+  if (serverEnv.HOST_PTERO_SERVER_CREATE) {
     return await pteroServer.createServer(serverBuilder);
+  }
   return null;
 }
 
