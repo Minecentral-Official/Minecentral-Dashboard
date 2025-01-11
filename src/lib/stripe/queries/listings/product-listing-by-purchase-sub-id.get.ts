@@ -1,7 +1,7 @@
 import productDTO from '@/lib/stripe/dto/product.dto';
-import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
 
-export async function getStripeProductBySubId(subId: string) {
+export async function getStripeProductByPurchaseSubId(subId: string) {
   const subscription = await getStripeSubscriptionById(subId);
 
   const product = subscription.items.data[0].plan.product;

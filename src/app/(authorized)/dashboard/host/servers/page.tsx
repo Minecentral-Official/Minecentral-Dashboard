@@ -49,7 +49,6 @@ export default async function HostServersPage() {
           key={pterodactylServerData.id}
           name={pterodactylServerData.name}
           plan={StripeProductData.name}
-          status={pterodactylServerData.status}
         />
       ))}
     </div>

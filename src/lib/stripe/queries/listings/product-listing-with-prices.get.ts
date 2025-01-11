@@ -1,5 +1,5 @@
-import getPrices from '@/lib/stripe/queries/prices.query';
-import getProducts from '@/lib/stripe/queries/products.query';
+import getPrices from '@/lib/stripe/queries/listings/prices-listing.get';
+import getProducts from '@/lib/stripe/queries/listings/products-listing.get';
 
 import 'server-only';
 

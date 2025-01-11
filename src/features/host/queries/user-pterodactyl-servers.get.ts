@@ -1,6 +1,6 @@
 import { pterodactylGetServerById } from '@/features/host/lib/pterodactyl/queries/server-by-id.get';
 import hostGetUserSubscriptions from '@/features/host/queries/subscriptions-by-user.get';
-import { getStripeProductBySubId } from '@/lib/stripe/queries/product-by-sub-id.get';
+import { getStripeProductByPurchaseSubId } from '@/lib/stripe/queries/listings/product-listing-by-purchase-sub-id.get';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 import 'server-only';
@@ -26,7 +26,8 @@ export async function hostGetUserPterdactylServers() {
   const serverDataPromises = subscriptionsWithValidServerId.map(
     async ({ pterodactylServerId, stripeSubscriptionId }) => {
       const pterodactylRequest = pterodactylGetServerById(pterodactylServerId);
-      const stripeRequest = getStripeProductBySubId(stripeSubscriptionId);
+      const stripeRequest =
+        getStripeProductByPurchaseSubId(stripeSubscriptionId);
 
       const [pterodactylServerData, { metadata, ...stripeProductData }] =
         await Promise.all([pterodactylRequest, stripeRequest]);

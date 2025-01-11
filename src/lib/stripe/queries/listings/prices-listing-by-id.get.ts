@@ -8,7 +8,7 @@ import 'server-only';
 // This way we don't need to worry about the Product Type in the future
 
 // Also I put this in general because it is not host specific
-export default async function getPricesFromProductId(productId: string) {
+export default async function getPricesListingFromProductId(productId: string) {
   const { data: prices } = await stripeAPI.prices.list({
     product: productId,
     active: true,

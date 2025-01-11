@@ -1,11 +1,12 @@
 import Stripe from 'stripe';
 
 import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-by-stripe-id.get';
-import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import { hostWebhookPaymentSuccess } from '@/features/host/webhook/payment-success.webhook';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import getStripeSubscriptionById from '@/lib/stripe/queries/get-subscription-by-id.query';
+import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
+
+import type { THostPayment } from '@/features/host/schemas/host-payment.type';
 
 export async function POST(req: Request) {
   try {

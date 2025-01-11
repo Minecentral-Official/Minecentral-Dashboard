@@ -1,7 +1,5 @@
 import Stripe from 'stripe';
 
-import { pterodactylServerSuspend } from '@/features/host/lib/pterodactyl/mutations/server.suspend';
-
 //Suspend users server
 export async function hostWebhookPaymentFailed(
   event: Stripe.InvoicePaymentFailedEvent,
@@ -12,7 +10,7 @@ export async function hostWebhookPaymentFailed(
   // I'm adding this console log to satisfy eslint. No vars can be unused.
   // We want to eventually use res or remove it from this function
   console.log(res);
-  pterodactylServerSuspend();
+  // pterodactylServerSuspend();
   // res.send({
   //   status: "suspended",
   //   message: "Please pay invoice to continue service!",

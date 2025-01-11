@@ -1,4 +1,4 @@
-import getProductsWithPrices from '@/lib/stripe/queries/product-with-prices.query';
+import getProductsWithPrices from '@/lib/stripe/queries/listings/product-listing-with-prices.get';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 import 'server-only';

@@ -11,7 +11,7 @@ import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-
 import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
 import { HostSubscription } from '@/lib/db/schema';
-import stripeGetProductById from '@/lib/stripe/queries/product-by-id.get';
+import stripeGetProductById from '@/lib/stripe/queries/listings/product-listing-by-id.get';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 //Create a server if it doesnt exist (NOT FINISHED)
