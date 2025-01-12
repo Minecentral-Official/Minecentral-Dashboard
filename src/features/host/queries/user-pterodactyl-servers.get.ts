@@ -1,3 +1,4 @@
+import { pterodactylClientGetServerStatus } from '@/features/host/lib/pterodactyl/client/server-status.get';
 import { pterodactylGetAllocationById } from '@/features/host/lib/pterodactyl/queries/allocation-by-id.get';
 import { pterodactylGetServerById } from '@/features/host/lib/pterodactyl/queries/server-by-id.get';
 import hostGetUserSubscriptions from '@/features/host/queries/subscriptions-by-user.get';
@@ -21,21 +22,37 @@ export async function hostGetUserPterdactylServers() {
   const subscriptionsWithValidServerId = subscriptions.filter(
     (
       subscription,
-    ): subscription is TSubscription & { pterodactylServerId: number } =>
-      !!subscription.pterodactylServerId,
+    ): subscription is TSubscription & {
+      pterodactylServerId: number;
+      pterodactylServerUuid: string;
+    } => !!subscription.pterodactylServerId,
   );
 
   const serverDataPromises = subscriptionsWithValidServerId.map(
-    async ({ pterodactylServerId, stripeSubscriptionId }) => {
+    async ({
+      pterodactylServerId,
+      stripeSubscriptionId,
+      pterodactylServerUuid,
+    }) => {
       //Pterodactyl data
       const pterodactylRequest = pterodactylGetServerById(pterodactylServerId);
+      const pterodactylStatusRequest = await pterodactylClientGetServerStatus(
+        pterodactylServerUuid,
+      );
       //Stripe Data
       const stripeRequest =
         getStripeProductByPurchaseSubId(stripeSubscriptionId);
 
       //Wait for data
-      const [pterodactylServerData, { metadata, ...stripeProductData }] =
-        await Promise.all([pterodactylRequest, stripeRequest]);
+      const [
+        pterodactylServerData,
+        { metadata, ...stripeProductData },
+        pterodactylServerStatus,
+      ] = await Promise.all([
+        pterodactylRequest,
+        stripeRequest,
+        pterodactylStatusRequest,
+      ]);
 
       const allocationData = await pterodactylGetAllocationById(
         pterodactylServerData.node,
@@ -54,6 +71,7 @@ export async function hostGetUserPterdactylServers() {
         pterodactylServerData: {
           ...pterodactylServerData,
           allocationData: { ...allocationData },
+          status: pterodactylServerStatus,
         },
         stripeProductData: validatedStripeProductData,
       };

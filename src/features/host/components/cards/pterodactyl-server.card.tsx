@@ -48,6 +48,7 @@ type PterodactylServerCardProps = {
   splits: number;
   ip?: string;
   port?: number;
+  status: string;
 };
 
 export default function PterodactylServerCard({
@@ -61,14 +62,18 @@ export default function PterodactylServerCard({
   splits,
   ip,
   port,
+  status,
 }: PterodactylServerCardProps) {
-  console.log(ip, port);
+  console.log(ip, port, status);
   return (
     <Card>
       <Collapsible>
         <div className='flex justify-between'>
           <CardHeader className='flex w-full justify-between'>
-            <CardTitle>{name}</CardTitle>
+            <div className='flex flex-row justify-between'>
+              <CardTitle>{name}</CardTitle>
+              <p>{status}</p>
+            </div>
             <CardDescription>{plan}</CardDescription>
           </CardHeader>
           <div className='m-2 flex gap-2'>

@@ -8,7 +8,7 @@ import { hostGetUserPterdactylServers } from '@/features/host/queries/user-ptero
 
 export default async function HostServersPage() {
   const serverData = await hostGetUserPterdactylServers();
-  console.log(serverData);
+  // console.log(serverData);
   return (
     <div className='flex flex-col gap-6'>
       <div className='flex flex-wrap gap-6'>
@@ -30,6 +30,7 @@ export default async function HostServersPage() {
             name: pteroName,
             id: pteroId,
             allocationData: { ip, port },
+            status,
           },
         }) => (
           <PterodactylServerCard
@@ -44,6 +45,7 @@ export default async function HostServersPage() {
             splits={splits}
             ip={ip}
             port={port}
+            status={status}
           />
         ),
       )}

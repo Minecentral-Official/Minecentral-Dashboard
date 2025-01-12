@@ -11,7 +11,7 @@ export const hostCustomer = pgTable('hostCustomer', {
   //Stripe Customer ID
   stripeCustomerId: text().notNull(),
   //Pterodactyl User ID
-  pterodactylUserId: integer().notNull(),
+  // pterodactylUserId: integer().notNull(),
 });
 
 export const hostCustomerRelations = relations(

@@ -8,6 +8,6 @@ export const pteroServer = new ApplicationClient({
 });
 
 export const pteroClient = new UserClient({
-  apikey: serverEnv.HOST_PTERO_API_KEY,
+  apikey: 'ptlc_GZo3pyedNJbSgV23fDYkmmF9DuUQbaCDPIhdJfzfYOr',
   panel: serverEnv.HOST_PTERO_API_URL,
 });

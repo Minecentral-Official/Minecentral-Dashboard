@@ -14,6 +14,8 @@ export const user = pgTable('user', {
   banExpires: timestamp('banExpires'),
 });
 
+export type TUserSelect = typeof user.$inferSelect;
+
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
   expiresAt: timestamp('expiresAt').notNull(),

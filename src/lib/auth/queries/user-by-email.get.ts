@@ -6,7 +6,7 @@ import { user } from '@/lib/db/schema';
 import 'server-only';
 
 export default async function getUserByEmail(email: string) {
-  const _user = db.query.user.findFirst({
+  const _user = await db.query.user.findFirst({
     where: eq(user.email, email),
   });
   return _user;

@@ -2,19 +2,17 @@ import { User } from 'better-auth';
 import Stripe from 'stripe';
 
 import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/mutations/server.create';
-import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
-import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
 import { hostUpdateSubscription } from '@/features/host/mutations/subscription.update';
 import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-by-stripe-customer-id.get';
 import { THostPayment } from '@/features/host/schemas/host-payment.type';
-import getUserByEmail from '@/lib/auth/queries/user-by-email.find';
+import getUserByEmail from '@/lib/auth/queries/user-by-email.get';
 import { HostSubscription } from '@/lib/db/schema';
 import stripeGetProductById from '@/lib/stripe/queries/listings/product-listing-by-id.get';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
-//Create a server if it doesnt exist (NOT FINISHED)
+//Create a server if it doesnt exist or un-suspend server if created
 export async function hostWebhookPaymentSuccess({
   hostSubscription,
   stripeCustomer,
@@ -42,14 +40,19 @@ export async function hostWebhookPaymentSuccess({
       //Server exists, unsuspend incase of late payment
     } else {
       //Create pterodactyl server
+      // console.log(
+      //   'Product Info',
+      //   stripeSubscription.items.data[0].plan.product,
+      // );
       const stripeMetadata = await stripeGetProductById(
-        stripeSubscription.items.data[0].plan.product as string,
+        (stripeSubscription.items.data[0].plan.product as Stripe.Product).id,
       );
 
       const pteroServer = await pterodactylServerCreate(
-        await pterodactylUserFindById(
-          hostSubscription.customer.pterodactylUserId,
-        ),
+        hostSubscription.customer.user,
+        // await pterodactylUserFindById(
+        //   hostSubscription.customer.pterodactylUserId,
+        // ),
         metadataHostSchema.parse(stripeMetadata.metadata),
       );
 
@@ -91,12 +94,12 @@ async function findOrCreateHostCustomer(
     //Customer has no prior host data, CREATE IT!
 
     //Create Pterodactyl User (for panel login and server assigning)
-    const pteroUser = await pterodactylCreateUser(user);
+    // const pteroUser = await pterodactylCreateUser(user);
 
     //Create a Host Customer
     hostCustomer = await hostCreateCustomer({
       userId: user.id,
-      pterodactylUserId: pteroUser.id,
+      // pterodactylUserId: pteroUser.id,
       stripeCustomerId: stripeCustomer.id,
     });
   }

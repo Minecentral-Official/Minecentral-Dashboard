@@ -1,18 +1,13 @@
-import {
-  NodeAllocation,
-  PanelNode,
-  PanelServer,
-  PanelUser,
-  ServerBuilder,
-} from 'pterodactyl.ts';
+import { NodeAllocation, PanelServer, ServerBuilder } from 'pterodactyl.ts';
 
 import { pterodactylFindAvailableNode } from '@/features/host/lib/pterodactyl/node/available-node.find';
 import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
+import { TUserSelect } from '@/lib/db/schema';
 import { serverEnv } from '@/lib/env/server.env';
 import { MetadataHostType } from '@/lib/stripe/schemas/host-metadata.zod';
 
 export async function pterodactylServerCreate(
-  pteroUser: PanelUser,
+  user: TUserSelect,
   plan: MetadataHostType,
 ): Promise<PanelServer | null> {
   const availableNodes = await pterodactylFindAvailableNode(
@@ -20,9 +15,7 @@ export async function pterodactylServerCreate(
   );
   if (!availableNodes || availableNodes.length <= 0)
     throw new Error('No nodes available for purchase!');
-  const node: PanelNode | null = await pteroServer
-    .getNode(availableNodes[0])
-    .catch(() => null);
+  const node = await pteroServer.getNode(availableNodes[0]).catch(() => null);
   if (!node) throw new Error('Error when grabbing node data!');
   // Node is not null here
   const availableAllocations = (await node.getAllocations())
@@ -37,8 +30,8 @@ export async function pterodactylServerCreate(
   );
   const serverBuilder = new ServerBuilder();
   //Basic
-  serverBuilder.setName(pteroUser.first_name + "'s server");
-  serverBuilder.setOwnerId(pteroUser.id);
+  serverBuilder.setName(`${user.name}'s server`);
+  serverBuilder.setOwnerId(1);
   serverBuilder.setEggId(1);
   //Limits
   serverBuilder.setMemoryLimit(checkMinimum(plan.ram, 1) * 1024);
@@ -50,7 +43,7 @@ export async function pterodactylServerCreate(
   serverBuilder.setDatabaseLimit(checkMinimum(plan.databases, 1));
   serverBuilder.setBackupLimit(checkMinimum(plan.backups, 0));
   serverBuilder.setAllocationLimit(checkMinimum(plan.allocations, 1));
-  serverBuilder.setCustomLimit('splits', 20);
+  serverBuilder.setCustomLimit('splits', checkMinimum(plan.splits, 0));
   //Allocation
   serverBuilder.setAllocation(defaultAllocation);
   serverBuilder.setAdditionalAllocations(additionalAllocations);
