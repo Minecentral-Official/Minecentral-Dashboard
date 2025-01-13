@@ -4,7 +4,7 @@ import hostGetCustomerByUserId from '@/features/host/queries/customer-by-user-id
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
 
-export async function hostCreateStripeSession(user: User, priceId: string) {
+export async function hostStripeCreateSession(user: User, priceId: string) {
   let customer: string | undefined = undefined;
   //If we dont grab previous customer_id, it'll create a new one even if we use the same email address
   const hostCustomer = await hostGetCustomerByUserId(user.id);
@@ -31,7 +31,7 @@ export async function hostCreateStripeSession(user: User, priceId: string) {
     //Email or Customer can be set, not both (fuck you stripe)
     customer_email: customer ? undefined : user.email || undefined,
     mode: 'subscription',
-    return_url: `${serverEnv.FRONTEND_URL}/dashboard/host/servers/add/payment-success`, //?session_id={CHECKOUT_SESSION_ID}
+    return_url: `${serverEnv.FRONTEND_URL}/dashboard/host/servers/add/success?session={CHECKOUT_SESSION_ID}`,
     allow_promotion_codes: true,
   });
 

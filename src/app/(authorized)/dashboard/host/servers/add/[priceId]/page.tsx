@@ -1,5 +1,5 @@
 import { HostCheckout } from '@/features/host/components/stripe/checkout';
-import { hostCreateStripeSession } from '@/features/host/queries/stripe-session.create';
+import { hostStripeCreateSession } from '@/features/host/queries/stripe/stripe-session.create';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
 type PageProps = {
@@ -8,7 +8,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const priceId = (await params).priceId;
-  const sessionData = await hostCreateStripeSession(
+  const sessionData = await hostStripeCreateSession(
     (await validateSession()).user,
     priceId,
   );
