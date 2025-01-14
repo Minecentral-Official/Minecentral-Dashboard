@@ -3,7 +3,6 @@ import {
   BadgeCheck,
   Box,
   ChartBarBig,
-  ChevronsUpDown,
   CreditCard,
   Database,
   Ellipsis,
@@ -22,11 +21,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -36,6 +30,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import IconWithDataDisplay from '@/features/host/components/etc/icon-with-data.display';
+import ServerStatusDisplay from '@/features/host/components/etc/server-status.display';
+
+import type { ServerStatus } from 'pterodactyl.ts';
 
 type PterodactylServerCardProps = {
   name: string;
@@ -48,7 +45,7 @@ type PterodactylServerCardProps = {
   splits: number;
   ip?: string;
   port?: number;
-  status: string;
+  status: ServerStatus;
 };
 
 export default function PterodactylServerCard({
@@ -67,81 +64,74 @@ export default function PterodactylServerCard({
   console.log(ip, port, status);
   return (
     <Card>
-      <Collapsible>
-        <div className='flex justify-between'>
-          <CardHeader className='flex w-full justify-between'>
-            <div className='flex flex-row justify-between'>
-              <CardTitle>{name}</CardTitle>
-              <p>{status}</p>
-            </div>
-            <CardDescription>{plan}</CardDescription>
-          </CardHeader>
-          <div className='m-2 flex gap-2'>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size='icon' variant='ghost'>
-                  <Ellipsis />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <Link href='/dashboard'>
-                      <ChartBarBig />
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <CollapsibleTrigger asChild>
-              <Button variant='ghost' size='icon'>
-                <ChevronsUpDown />
+      <div className='flex justify-between'>
+        <CardHeader className='flex w-full justify-between'>
+          <div className='flex flex-row justify-between'>
+            <CardTitle>{name}</CardTitle>
+          </div>
+          <CardDescription>{plan}</CardDescription>
+        </CardHeader>
+        <div className='m-2 flex gap-2'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size='icon' variant='ghost'>
+                <Ellipsis />
               </Button>
-            </CollapsibleTrigger>
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <Link href='/dashboard'>
+                    <ChartBarBig />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <BadgeCheck />
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CreditCard />
+                  Billing
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <CollapsibleContent>
-          <div className='mb-4 flex items-center gap-2'>
-            <Separator className='w-4' />
-            <span className='text-xs text-muted-foreground'>Plan Info</span>
+      </div>
 
-            <Separator className='flex-1' />
-          </div>
-          <CardContent className='flex gap-6'>
-            <IconWithDataDisplay data={ram} icon={MemoryStick} name='RAM' />
-            <IconWithDataDisplay
-              data={cpuThreads}
-              icon={Volleyball}
-              name='CPU Threads'
-            />
-            <IconWithDataDisplay data={storage} icon={Box} name='Storage' />
-            <IconWithDataDisplay
-              data={databases}
-              icon={Database}
-              name='Databases'
-            />
-            <IconWithDataDisplay data={backups} icon={Archive} name='Backups' />
-            <IconWithDataDisplay
-              data={splits}
-              icon={SquareSplitVertical}
-              name='Splits'
-            />
-          </CardContent>
-        </CollapsibleContent>
-      </Collapsible>
+      <div className='mb-4 flex items-center gap-2'>
+        <Separator className='w-4' />
+        <span className='text-xs text-muted-foreground'>Plan Info</span>
+
+        <Separator className='flex-1' />
+      </div>
+      <CardContent className='flex items-center justify-between'>
+        <div className='flex gap-6'>
+          <IconWithDataDisplay data={ram} icon={MemoryStick} name='RAM' />
+          <IconWithDataDisplay
+            data={cpuThreads}
+            icon={Volleyball}
+            name='CPU Threads'
+          />
+          <IconWithDataDisplay data={storage} icon={Box} name='Storage' />
+          <IconWithDataDisplay
+            data={databases}
+            icon={Database}
+            name='Databases'
+          />
+          <IconWithDataDisplay data={backups} icon={Archive} name='Backups' />
+          <IconWithDataDisplay
+            data={splits}
+            icon={SquareSplitVertical}
+            name='Splits'
+          />
+        </div>
+        <ServerStatusDisplay status={status} />
+      </CardContent>
     </Card>
   );
 }
