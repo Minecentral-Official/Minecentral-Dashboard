@@ -30,8 +30,8 @@ export default async function GeneralInvoicesPage() {
           <TableHead>Invoices</TableHead>
           <TableHead>Amount Due</TableHead>
 
-          <TableHead>Invoice Created</TableHead>
-          <TableHead>Invoices</TableHead>
+          <TableHead>Created</TableHead>
+          <TableHead>Due Date</TableHead>
           <TableHead className='text-end'>Paid</TableHead>
         </TableRow>
       </TableHeader>
