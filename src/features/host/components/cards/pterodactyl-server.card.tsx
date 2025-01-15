@@ -2,24 +2,17 @@ import {
   Archive,
   BadgeCheck,
   Box,
-  ChartBarBig,
-  CreditCard,
   Database,
   Ellipsis,
   MemoryStick,
+  Settings2Icon,
   SquareSplitVertical,
   Volleyball,
 } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,13 +23,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import IconWithDataDisplay from '@/features/host/components/etc/icon-with-data.display';
-import ServerStatusDisplay from '@/features/host/components/etc/server-status.display';
-
-import type { ServerStatus } from 'pterodactyl.ts';
 
 type PterodactylServerCardProps = {
   name: string;
-  plan: string;
+  // plan: string;
   cpuThreads: number;
   ram: number;
   storage: number;
@@ -45,12 +35,13 @@ type PterodactylServerCardProps = {
   splits: number;
   ip?: string;
   port?: number;
-  status: ServerStatus;
+  // status: ServerStatus;
+  id: number;
+  uuid: string;
 };
 
 export default function PterodactylServerCard({
   name,
-  plan,
   cpuThreads,
   ram,
   storage,
@@ -59,9 +50,11 @@ export default function PterodactylServerCard({
   splits,
   ip,
   port,
-  status,
+  // status,
+  id,
+  uuid,
 }: PterodactylServerCardProps) {
-  console.log(ip, port, status);
+  console.log(ip, port);
   return (
     <Card>
       <div className='flex justify-between'>
@@ -69,7 +62,7 @@ export default function PterodactylServerCard({
           <div className='flex flex-row justify-between'>
             <CardTitle>{name}</CardTitle>
           </div>
-          <CardDescription>{plan}</CardDescription>
+          {/* <CardDescription>{plan}</CardDescription> */}
         </CardHeader>
         <div className='m-2 flex gap-2'>
           <DropdownMenu>
@@ -81,22 +74,24 @@ export default function PterodactylServerCard({
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link href='/dashboard'>
-                    <ChartBarBig />
-                    Dashboard
+                  <Link href={`./servers/${id}`}>
+                    <Settings2Icon />
+                    Manage
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Account
+                <DropdownMenuItem asChild>
+                  <Link href={`https://panel.ronanhost.com/server/${uuid}`}>
+                    <BadgeCheck />
+                    Go To Panel
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem>
                   <CreditCard />
                   Billing
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -111,13 +106,21 @@ export default function PterodactylServerCard({
       </div>
       <CardContent className='flex items-center justify-between'>
         <div className='flex gap-6'>
-          <IconWithDataDisplay data={ram} icon={MemoryStick} name='RAM' />
           <IconWithDataDisplay
-            data={cpuThreads}
+            data={ram / 1024}
+            icon={MemoryStick}
+            name='RAM'
+          />
+          <IconWithDataDisplay
+            data={cpuThreads / 100}
             icon={Volleyball}
             name='CPU Threads'
           />
-          <IconWithDataDisplay data={storage} icon={Box} name='Storage' />
+          <IconWithDataDisplay
+            data={storage / 1024}
+            icon={Box}
+            name='Storage'
+          />
           <IconWithDataDisplay
             data={databases}
             icon={Database}
@@ -130,7 +133,7 @@ export default function PterodactylServerCard({
             name='Splits'
           />
         </div>
-        <ServerStatusDisplay status={status} />
+        {/* <ServerStatusDisplay status={status} /> */}
       </CardContent>
     </Card>
   );

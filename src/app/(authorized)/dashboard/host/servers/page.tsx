@@ -22,30 +22,34 @@ export default async function HostServersPage() {
       </div>
       {serverData.map(
         ({
-          stripeProductData: {
-            name: stripeName,
-            metadata: { backups, cpu, databases, disk, ram, splits },
-          },
-          pterodactylServerData: {
-            name: pteroName,
-            id: pteroId,
-            allocationData: { ip, port },
-            status,
-          },
+          // stripeProductData: {
+          //   name: stripeName,
+          //   metadata: { backups, cpu, databases, disk, ram, splits },
+          // },
+          // pterodactylServerData: {
+          name,
+          id,
+          uuid,
+          allocationData: { ip, port },
+          status,
+          feature_limits: { backups, databases, splits },
+          limits: { cpu, disk, memory },
+          // },
         }) => (
           <PterodactylServerCard
-            key={pteroId}
-            name={pteroName}
-            plan={stripeName}
+            key={id}
+            name={name}
             backups={backups}
             cpuThreads={cpu}
             databases={databases}
             storage={disk}
-            ram={ram}
+            ram={memory}
             splits={splits}
             ip={ip}
             port={port}
-            status={status}
+            // status={status}
+            id={id}
+            uuid={uuid}
           />
         ),
       )}

@@ -5,11 +5,11 @@ import 'server-only';
 
 export async function hostCreateCustomer({
   userId,
-  // pterodactylUserId,
+  pterodactylUserId,
   stripeCustomerId,
 }: {
   userId: string;
-  // pterodactylUserId: number;
+  pterodactylUserId: number;
   stripeCustomerId: string;
 }) {
   // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a user
@@ -18,7 +18,7 @@ export async function hostCreateCustomer({
     .insert(hostCustomer)
     .values({
       userId,
-      // pterodactylUserId,
+      pterodactylUserId,
       stripeCustomerId,
     })
     .returning();

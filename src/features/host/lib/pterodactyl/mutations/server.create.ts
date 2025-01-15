@@ -1,4 +1,9 @@
-import { NodeAllocation, PanelServer, ServerBuilder } from 'pterodactyl.ts';
+import {
+  NodeAllocation,
+  PanelServer,
+  PanelUser,
+  ServerBuilder,
+} from 'pterodactyl.ts';
 
 import { pterodactylFindAvailableNode } from '@/features/host/lib/pterodactyl/node/available-node.find';
 import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
@@ -8,6 +13,7 @@ import { MetadataHostType } from '@/lib/stripe/schemas/host-metadata.zod';
 
 export async function pterodactylServerCreate(
   user: TUserSelect,
+  pteroUser: PanelUser,
   plan: MetadataHostType,
 ): Promise<PanelServer | null> {
   const availableNodes = await pterodactylFindAvailableNode(
@@ -31,7 +37,7 @@ export async function pterodactylServerCreate(
   const serverBuilder = new ServerBuilder();
   //Basic
   serverBuilder.setName(`${user.name}'s server`);
-  serverBuilder.setOwnerId(1);
+  serverBuilder.setOwnerId(pteroUser.id);
   serverBuilder.setEggId(1);
   //Limits
   serverBuilder.setMemoryLimit(checkMinimum(plan.ram, 1) * 1024);

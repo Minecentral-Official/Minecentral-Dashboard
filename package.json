@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "stripe": "stripe listen -f localhost:3000/api/stripe/host",
     "db:push": "npx drizzle-kit push",
     "db:studio": "npx drizzle-kit studio",
     "auth:generate": "pnpm dlx @better-auth/cli@latest generate --output=./src/auth/schema/auth.table.ts --config=./src/auth/lib/auth.ts"

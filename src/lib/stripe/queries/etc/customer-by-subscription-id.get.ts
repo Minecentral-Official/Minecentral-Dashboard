@@ -3,7 +3,7 @@ import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subsc
 
 import 'server-only';
 
-export default async function getStripeCustomerBySubscriptionId(subId: string) {
+export default async function stripeGetCustomerBySubscriptionId(subId: string) {
   const { customer } = await getStripeSubscriptionById(subId);
 
   if (typeof customer !== 'string') {

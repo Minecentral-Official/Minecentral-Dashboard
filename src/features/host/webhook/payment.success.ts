@@ -2,6 +2,8 @@ import { User } from 'better-auth';
 import Stripe from 'stripe';
 
 import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/mutations/server.create';
+import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
+import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
 import { hostUpdateSubscription } from '@/features/host/mutations/subscription.update';
@@ -50,9 +52,9 @@ export async function hostWebhookPaymentSuccess({
 
       const pteroServer = await pterodactylServerCreate(
         hostSubscription.customer.user,
-        // await pterodactylUserFindById(
-        //   hostSubscription.customer.pterodactylUserId,
-        // ),
+        await pterodactylUserFindById(
+          hostSubscription.customer.pterodactylUserId,
+        ),
         metadataHostSchema.parse(stripeMetadata.metadata),
       );
 
@@ -94,12 +96,12 @@ async function findOrCreateHostCustomer(
     //Customer has no prior host data, CREATE IT!
 
     //Create Pterodactyl User (for panel login and server assigning)
-    // const pteroUser = await pterodactylCreateUser(user);
+    const pteroUser = await pterodactylCreateUser(user);
 
     //Create a Host Customer
     hostCustomer = await hostCreateCustomer({
       userId: user.id,
-      // pterodactylUserId: pteroUser.id,
+      pterodactylUserId: pteroUser.id,
       stripeCustomerId: stripeCustomer.id,
     });
   }

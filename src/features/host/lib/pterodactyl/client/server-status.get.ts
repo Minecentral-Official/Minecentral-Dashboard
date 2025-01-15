@@ -1,5 +1,6 @@
 import { pteroClient } from '@/features/host/lib/pterodactyl/ptero';
 
+/**@deprecated */
 export async function pterodactylClientGetServerStatus(pteroServerId: string) {
   const server = await pteroClient.getServer(pteroServerId);
   //   const status = await server.getStatus();

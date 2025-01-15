@@ -12,6 +12,7 @@ export function pteroServerDTO(pteroServerData: Awaited<PanelServer>) {
     status,
     node,
     allocation,
+    uuid,
   } = pteroServerData as Awaited<
     PanelServer & {
       feature_limits: PanelServer['feature_limits'] & { splits: number };
@@ -28,5 +29,6 @@ export function pteroServerDTO(pteroServerData: Awaited<PanelServer>) {
     status,
     node,
     allocation,
+    uuid,
   };
 }
