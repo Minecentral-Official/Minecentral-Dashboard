@@ -31,7 +31,7 @@ export default async function GeneralInvoicesPage() {
           <TableHead>Amount Due</TableHead>
 
           <TableHead>Created</TableHead>
-          <TableHead>Due Date</TableHead>
+
           <TableHead className='text-end'>Paid</TableHead>
         </TableRow>
       </TableHeader>
@@ -50,7 +50,7 @@ function InvoiceRow({
   // amount_paid,
   // amount_remaining,
   created,
-  due_date,
+  // due_date,
   id,
   paid,
   status,
@@ -61,10 +61,10 @@ function InvoiceRow({
       <TableCell className='font-medium'>{id}</TableCell>
       <TableCell>$ {amount_due / 100}</TableCell>
       {/* ALAIN: What does this date number represent? I tried formatting it and it gave me a date in the 1970s LOL */}
-      <TableCell>{new Date(created).toLocaleDateString('en-US')}</TableCell>
       <TableCell>
-        {due_date ? new Date(created).toLocaleDateString('en-US') : 'N/A'}
+        {new Date(created * 1000).toLocaleDateString('en-US')}
       </TableCell>
+
       <TableCell className='text-end'>
         <TooltipProvider>
           <Tooltip>

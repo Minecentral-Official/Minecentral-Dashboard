@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import CopyToClipboard from '@/components/etc/copy-to-clipboard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -103,6 +104,12 @@ export default function PterodactylServerCard({
         <span className='text-xs text-muted-foreground'>Plan Info</span>
 
         <Separator className='flex-1' />
+        <CopyToClipboard clipboardText={ip + ':' + port} asChild>
+          <span className='cursor-pointer select-none rounded p-1 px-2 text-xs text-muted-foreground transition hover:bg-primary hover:text-primary-foreground'>
+            {ip}:{port}
+          </span>
+        </CopyToClipboard>
+        <Separator className='w-4' />
       </div>
       <CardContent className='flex items-center justify-between'>
         <div className='flex gap-6'>
