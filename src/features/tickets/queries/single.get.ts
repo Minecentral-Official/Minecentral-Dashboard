@@ -11,7 +11,13 @@ export default async function ticketsGetSingle(ticketId: number) {
 
   const response = await db.query.ticket.findFirst({
     where: and(eq(ticket.userId, user.id), eq(ticket.id, ticketId)),
-    with: { messages: { with: { user: true } }, user: true },
+    with: {
+      messages: {
+        with: { user: true },
+        orderBy: (messages, { desc }) => [desc(messages.createdAt)],
+      },
+      user: true,
+    },
   });
   return response;
 }

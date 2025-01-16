@@ -15,7 +15,7 @@ export default function TicketStatus({
         status !== 'open' ?
           status === 'closed' ?
             'destructive'
-          : 'secondary'
+          : 'outline'
         : 'default'
       }
     >
