@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { hostStripeGetPaymentsPerMonth } from '@/features/host/queries/stripe/stripe-payments-per-month.get';
+import { hostStripeGetPaymentsPerMonth } from '@/features/host/queries/stripe/payments-per-month.get';
 
 import type { ComponentProps } from 'react';
 

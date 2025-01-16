@@ -64,9 +64,11 @@ export default async function AuthNav({ children }: PropsWithChildren) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
+          <DropdownMenuItem asChild>
+            <Link href='/dashboard/account'>
+              <BadgeCheck />
+              Account
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCard />

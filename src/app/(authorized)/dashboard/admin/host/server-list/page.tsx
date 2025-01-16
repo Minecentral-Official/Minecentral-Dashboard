@@ -7,7 +7,7 @@ export default async function AdminHostPage() {
   return (
     <div className='flex flex-col gap-6'>
       {servers.map((server) => (
-        <Server server={server} />
+        <Server server={server} key={server.id} />
       ))}
     </div>
   );

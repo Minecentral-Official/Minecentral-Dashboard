@@ -17,7 +17,7 @@ import {
 import {
   hostStripeGetInvoices,
   TPurchaseInvoiceData,
-} from '@/features/host/queries/stripe/stripe-invoices.get';
+} from '@/features/host/queries/stripe/invoices.get';
 
 //HUGO: Create invoice table with all the invoice data here!
 export default async function GeneralInvoicesPage() {

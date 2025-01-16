@@ -1,5 +1,5 @@
 import { HostCheckout } from '@/features/host/components/stripe/checkout';
-import { hostStripeCreateSession } from '@/features/host/queries/stripe/stripe-session.create';
+import { hostStripeCreateSession } from '@/features/host/queries/stripe/session.create';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
 type PageProps = {

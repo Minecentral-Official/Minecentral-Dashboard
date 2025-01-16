@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import hostGetServerIdBySubscriptionId from '@/features/host/queries/server-id-by-subscription-id.get';
-import { hostStripeGetSessionData } from '@/features/host/queries/stripe/stripe-session-data.get';
+import { hostStripeGetSessionData } from '@/features/host/queries/stripe/session-data.get';
 import { getStripeProductByPurchaseSubId } from '@/lib/stripe/queries/listings/product-listing-by-purchase-sub-id.get';
 
 //HUGO: Make this page look nicer, probably cant see this page without making a fake payment

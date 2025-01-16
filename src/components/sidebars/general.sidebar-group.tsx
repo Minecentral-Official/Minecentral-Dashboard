@@ -1,4 +1,4 @@
-import { Receipt } from 'lucide-react';
+import { ReceiptIcon, UserIcon } from 'lucide-react';
 
 import {
   SidebarGroup,
@@ -9,12 +9,13 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-const hostSidebarMenuConfig = [
+const generalSidebarConfig = [
   {
     name: 'Invoices',
     url: '/dashboard/invoices',
-    icon: Receipt,
+    icon: ReceiptIcon,
   },
+  { name: 'Account', url: '/dashboard/account', icon: UserIcon },
 ];
 
 export default function GeneralSidebar() {
@@ -24,7 +25,7 @@ export default function GeneralSidebar() {
 
       <SidebarGroupContent>
         <SidebarMenu>
-          {hostSidebarMenuConfig.map(({ name, url, ...rest }) => (
+          {generalSidebarConfig.map(({ name, url, ...rest }) => (
             <SidebarMenuItem key={name}>
               <SidebarMenuButton asChild>
                 <a href={url}>
