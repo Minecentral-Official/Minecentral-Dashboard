@@ -39,6 +39,7 @@ type PterodactylServerCardProps = {
   // status: ServerStatus;
   id: number;
   uuid: string;
+  plan: string;
 };
 
 export default function PterodactylServerCard({
@@ -54,6 +55,7 @@ export default function PterodactylServerCard({
   // status,
   id,
   uuid,
+  plan,
 }: PterodactylServerCardProps) {
   console.log(ip, port);
   return (
@@ -101,7 +103,7 @@ export default function PterodactylServerCard({
 
       <div className='mb-4 flex items-center gap-2'>
         <Separator className='w-4' />
-        <span className='text-xs text-muted-foreground'>Plan Info</span>
+        <span className='text-xs text-muted-foreground'>{plan}</span>
 
         <Separator className='flex-1' />
         <CopyToClipboard clipboardText={ip + ':' + port} asChild>

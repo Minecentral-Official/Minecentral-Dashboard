@@ -27,13 +27,17 @@ export default async function HostServersPage() {
           //   metadata: { backups, cpu, databases, disk, ram, splits },
           // },
           // pterodactylServerData: {
-          name,
-          id,
-          uuid,
-          allocationData: { ip, port },
-          status,
-          feature_limits: { backups, databases, splits },
-          limits: { cpu, disk, memory },
+          server: {
+            name,
+            id,
+            uuid,
+            feature_limits: { backups, databases, splits },
+            limits: { cpu, disk, memory },
+          },
+          allocation: { ip, port },
+          subscription: {
+            stripe: { name: plan },
+          },
           // },
         }) => (
           <PterodactylServerCard
@@ -47,9 +51,9 @@ export default async function HostServersPage() {
             splits={splits}
             ip={ip}
             port={port}
-            // status={status}
             id={id}
             uuid={uuid}
+            plan={plan}
           />
         ),
       )}

@@ -8,14 +8,18 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { serverId } = await params;
   const {
-    limits: { cpu, memory, disk },
-    id,
-    name,
-    allocationData: { ip, port },
-    feature_limits: { backups, databases, splits },
-    uuid,
+    server: {
+      limits: { cpu, memory, disk },
+      id,
+      name,
+      feature_limits: { backups, databases, splits },
+      uuid,
+    },
+    allocation: { ip, port },
+    subscription: {
+      stripe: { name: plan },
+    },
   } = await pterodactylGetFullServerData({ pterodactylServerId: serverId });
-  // const data = pterodactylGetFullServerData({ pterodactylServerId: serverId, pterodactylServerUuid, stripeSubscriptionId });
 
   return (
     <PterodactylServerCard
@@ -31,6 +35,7 @@ export default async function Page({ params }: PageProps) {
       port={port}
       id={id}
       uuid={uuid}
+      plan={plan}
     />
   );
 }

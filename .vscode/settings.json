@@ -1,4 +1,50 @@
 {
   "cSpell.words": ["Minecentral", "Ryzen", "Shockbyte"],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "folder-path-color.folders": [
+    {
+      "path": "src/app/(authorized)/dashboard/host",
+      "symbol": "H",
+      "tooltip": "Host files",
+      "color": "custom1"
+    },
+    {
+      "path": "src/features/host",
+      "symbol": "H",
+      "tooltip": "Host files",
+      "color": "custom1"
+    },
+    { "path": "packages/common", "symbol": "T", "tooltip": "Common" }
+  ],
+  "workbench.colorCustomizations": {
+    "folderPathColor.custom1": "#d7d7d7",
+    "folderPathColor.custom2": "#88ff44",
+    "folderPathColor.custom3": "#4488FF"
+  },
+  "folder-color.pathColors": [
+    {
+      "folderPath": "Minecentral\\src\\features\\host\\lib\\pterodactyl\\",
+      "badge": "👽"
+    },
+    {
+      "folderPath": "Minecentral\\src\\features\\host\\",
+      "badge": "H"
+    },
+    {
+      "folderPath": "Minecentral\\src\\app\\(authorized)\\dashboard\\admin\\host\\server-list\\",
+      "badge": "A"
+    },
+    {
+      "folderPath": "Minecentral\\src\\app\\(authorized)\\dashboard\\host\\",
+      "badge": "H"
+    },
+    {
+      "folderPath": "Minecentral\\src\\lib\\stripe\\",
+      "badge": "🤑"
+    },
+    {
+      "folderPath": "Minecentral\\src\\app\\api\\",
+      "badge": "😶‍🌫️"
+    }
+  ]
 }
