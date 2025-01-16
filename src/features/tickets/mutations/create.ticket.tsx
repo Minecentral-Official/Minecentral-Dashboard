@@ -12,16 +12,18 @@ export default async function ticketsCreate(
   prevState: unknown,
   formData: FormData,
 ) {
+  console.log('this action ran');
   const { user } = await validateSession();
-
+  console.log('session was validated');
   const submission = parseWithZod(formData, {
     schema: ticketZod,
   });
 
   if (submission.status !== 'success') {
+    console.log('formdata validation unsuccessful');
     return submission.reply();
   }
-
+  console.log('formdata validation successful');
   const { category, message, title } = submission.value;
 
   await db.transaction(async (tx) => {
@@ -36,5 +38,5 @@ export default async function ticketsCreate(
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
   });
 
-  redirect('/dashboard/tickets');
+  redirect('/dashboard/tickets/create?success=true');
 }

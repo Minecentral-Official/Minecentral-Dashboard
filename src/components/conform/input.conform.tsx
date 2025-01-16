@@ -7,15 +7,15 @@ import { Input } from '@/components/ui/input';
 export const InputConform = ({
   meta,
   type,
+  key,
   ...props
 }: {
   meta: FieldMetadata<string>;
   type: Parameters<typeof getInputProps>[1]['type'];
 } & ComponentProps<typeof Input>) => {
-  return (
-    <Input
-      {...getInputProps(meta, { type, ariaAttributes: true })}
-      {...props}
-    />
-  );
+  const { key: inputPropsKey, ...inputProps } = getInputProps(meta, {
+    type,
+    ariaAttributes: true,
+  });
+  return <Input key={key ?? inputPropsKey} {...inputProps} {...props} />;
 };

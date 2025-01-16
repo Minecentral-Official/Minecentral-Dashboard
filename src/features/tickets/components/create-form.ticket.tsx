@@ -4,64 +4,88 @@ import { useActionState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
+import { Field, FieldError } from '@/components/conform/field.conform';
+import { InputConform } from '@/components/conform/input.conform';
+import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { ticketCategoryConfig } from '@/features/tickets/config/ticket-category.config';
 import ticketsCreate from '@/features/tickets/mutations/create.ticket';
 import { ticketZod } from '@/features/tickets/schemas/ticket.zod';
-import { useToast } from '@/hooks/use-toast';
 
 export default function TicketCreateForm() {
-  const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [lastResult, action] = useActionState(ticketsCreate, undefined);
-
-  // async function onSubmit(values: z.infer<typeof ticketZod>) {
-  //   try {
-  //     toast({
-  //       title: 'Ticket Created',
-  //       description: 'Your support ticket has been successfully created.',
-  //     });
-  //     await ticketsCreate(values);
-  //   } catch {
-  //     toast({
-  //       title: 'Error',
-  //       description:
-  //         'There was a problem creating your ticket. Please try again.',
-  //       variant: 'destructive',
-  //     });
-  //   }
-  // }
-
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: ticketZod });
+      const submission = parseWithZod(formData, { schema: ticketZod });
+      if (submission.status !== 'success') {
+        toast.error('Form data invalid', { id: 'create-ticket' });
+      } else {
+        toast.loading('Creating Your Ticket...', { id: 'create-ticket' });
+      }
+      return submission;
     },
-    shouldValidate: 'onBlur',
+    shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
+    defaultValue: {
+      title: '',
+      message: '',
+      category: undefined,
+    },
   });
 
+  const success = searchParams.get('success');
+
+  if (success === 'true') {
+    toast.success('Ticket Successfully created', { id: 'create-ticket' });
+    router.push('/dashboard/tickets');
+  }
+
+  const categorySelectData = ticketCategoryConfig.map((category) => ({
+    value: category,
+    name: category
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' '),
+  }));
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
+    <div className='flex flex-col gap-6 p-10'>
+      <form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
+        <Field>
+          <Label htmlFor={fields.title.id}>Title</Label>
+          <InputConform meta={fields.title} type='text' />
+          {fields.title.errors && (
+            <FieldError>{fields.title.errors}</FieldError>
+          )}
+        </Field>
+        <Field>
+          <Label htmlFor={fields.category.id}>Category</Label>
+          <SelectConform
+            placeholder='Select a category'
+            meta={fields.category}
+            items={categorySelectData}
+          />
+
+          {fields.category.errors && (
+            <FieldError>{fields.category.errors}</FieldError>
+          )}
+        </Field>
+        <Field>
+          <Label htmlFor={fields.message.id}>Message</Label>
+          <InputConform meta={fields.message} type='text' />
+          {fields.message.errors && (
+            <FieldError>{fields.message.errors}</FieldError>
+          )}
+        </Field>
+        {/* <FormField
           control={form.control}
           name='title'
           render={({ field }) => (
@@ -128,9 +152,9 @@ export default function TicketCreateForm() {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <Button type='submit'>Submit Ticket</Button>
+        /> */}
+        <Button>Submit Ticket</Button>
       </form>
-    </Form>
+    </div>
   );
 }

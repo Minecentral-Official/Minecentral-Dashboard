@@ -28,7 +28,7 @@ export default async function RootLayout({
     <html lang='en' className={manrope.className}>
       <body>
         {children}
-        <Toaster />
+        <Toaster richColors toastOptions={{}} />
       </body>
     </html>
   );
