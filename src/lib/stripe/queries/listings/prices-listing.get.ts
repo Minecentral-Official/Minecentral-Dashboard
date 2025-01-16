@@ -1,5 +1,5 @@
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import priceDTO from '@/lib/stripe/dto/price.dto';
+import DTOPriceStripe from '@/lib/stripe/dto/price.dto';
 
 import 'server-only';
 
@@ -11,7 +11,7 @@ export default async function getPrices() {
   });
 
   // filter prices
-  const filteredPrices = rawPrices.map((rawPrice) => priceDTO(rawPrice));
+  const filteredPrices = rawPrices.map((rawPrice) => DTOPriceStripe(rawPrice));
 
   return filteredPrices;
 }

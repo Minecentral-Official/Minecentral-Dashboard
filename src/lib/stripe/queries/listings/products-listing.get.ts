@@ -1,5 +1,5 @@
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import productDTO from '@/lib/stripe/dto/product.dto';
+import DTOProductStripe from '@/lib/stripe/dto/product.dto';
 
 import 'server-only';
 
@@ -12,7 +12,7 @@ export default async function getProducts() {
 
   // Filter products
   const filteredProducts = rawProducts.map((rawProduct) =>
-    productDTO(rawProduct),
+    DTOProductStripe(rawProduct),
   );
 
   return filteredProducts;

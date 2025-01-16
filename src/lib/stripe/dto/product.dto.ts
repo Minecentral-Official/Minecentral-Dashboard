@@ -3,7 +3,7 @@ import 'server-only';
 import type Stripe from 'stripe';
 
 // function for filtering product fields
-export default function productDTO({
+export default function DTOProductStripe({
   id,
   name,
   description,
@@ -20,3 +20,5 @@ export default function productDTO({
     metadata,
   };
 }
+
+export type MCProduct_Stripe = ReturnType<typeof DTOProductStripe>;

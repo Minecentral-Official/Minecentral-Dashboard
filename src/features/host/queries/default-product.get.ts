@@ -1,4 +1,4 @@
-import { defaultProductDTO } from '@/features/host/dto/default-product.dto';
+import { DTOProductDefault } from '@/features/host/dto/default-product.dto';
 import hostGetProducts from '@/features/host/queries/products.get';
 
 import 'server-only';
@@ -9,7 +9,7 @@ export async function hostGetDefaultProducts() {
     ({ metadata }) => metadata.isDefaultPlan,
   );
   const filteredDefaultProducts = defaultProducts.map((product) =>
-    defaultProductDTO(product),
+    DTOProductDefault(product),
   );
   return filteredDefaultProducts;
 }

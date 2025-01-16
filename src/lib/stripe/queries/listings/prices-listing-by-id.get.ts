@@ -1,5 +1,5 @@
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import priceDTO from '@/lib/stripe/dto/price.dto';
+import DTOPriceStripe from '@/lib/stripe/dto/price.dto';
 
 import 'server-only';
 
@@ -15,5 +15,5 @@ export default async function getPricesListingFromProductId(productId: string) {
     limit: 100,
   });
 
-  return prices.map((price) => priceDTO(price));
+  return prices.map((price) => DTOPriceStripe(price));
 }

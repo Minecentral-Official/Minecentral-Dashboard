@@ -1,6 +1,6 @@
 import type hostGetProducts from '@/features/host/queries/products.get';
 
-export function defaultProductDTO({
+export function DTOProductDefault({
   metadata,
   ...restProduct
 }: Awaited<ReturnType<typeof hostGetProducts>>[number]) {

@@ -1,4 +1,4 @@
-import { ReceiptIcon, UserIcon } from 'lucide-react';
+import { ReceiptIcon, TicketIcon, UserIcon } from 'lucide-react';
 
 import {
   SidebarGroup,
@@ -10,12 +10,13 @@ import {
 } from '@/components/ui/sidebar';
 
 const generalSidebarConfig = [
+  { name: 'Tickets', url: '/dashboard/tickets', icon: TicketIcon },
+  { name: 'Account', url: '/dashboard/account', icon: UserIcon },
   {
     name: 'Invoices',
     url: '/dashboard/invoices',
     icon: ReceiptIcon,
   },
-  { name: 'Account', url: '/dashboard/account', icon: UserIcon },
 ];
 
 export default function GeneralSidebar() {

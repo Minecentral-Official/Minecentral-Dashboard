@@ -5,7 +5,7 @@ import 'server-only';
 import type Stripe from 'stripe';
 
 // function to filter out data that we actually need
-export default function priceDTO({
+export default function DTOPriceStripe({
   id,
   unit_amount,
   product,
