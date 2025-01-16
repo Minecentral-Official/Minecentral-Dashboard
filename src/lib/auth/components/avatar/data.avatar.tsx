@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
 import getSession from '@/lib/auth/helpers/get-session';
 
 export default async function DataAvatar() {
@@ -9,11 +9,9 @@ export default async function DataAvatar() {
   }
 
   return (
-    <Avatar className='cursor-pointer'>
-      <AvatarImage src={session.user.image ?? undefined} />
-      <AvatarFallback>
-        {session.user.name.charAt(0).toUpperCase()}
-      </AvatarFallback>
-    </Avatar>
+    <WrapperAvatar
+      image={session.user.image ?? undefined}
+      name={session.user.name}
+    />
   );
 }

@@ -1,9 +1,9 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { useActionState } from 'react';
+
+import { useForm } from '@conform-to/react';
+import { parseWithZod } from '@conform-to/zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,43 +25,38 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import ticketsCreate from '@/features/tickets/mutations/create.ticket';
+import { ticketZod } from '@/features/tickets/schemas/ticket.zod';
 import { useToast } from '@/hooks/use-toast';
 
-const formSchema = z.object({
-  title: z.string().min(5, 'Title must be at least 5 characters'),
-  category: z.string().min(1, 'Please select a category'),
-  message: z.string().min(10, 'Description must be at least 10 characters'),
-});
-
 export default function TicketCreateForm() {
-  const router = useRouter();
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: '',
-      category: '',
-      message: '',
-    },
-  });
+  const [lastResult, action] = useActionState(ticketsCreate, undefined);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      toast({
-        title: 'Ticket Created',
-        description: 'Your support ticket has been successfully created.',
-      });
-      await ticketsCreate(values);
-      router.push('./');
-    } catch {
-      toast({
-        title: 'Error',
-        description:
-          'There was a problem creating your ticket. Please try again.',
-        variant: 'destructive',
-      });
-    }
-  }
+  // async function onSubmit(values: z.infer<typeof ticketZod>) {
+  //   try {
+  //     toast({
+  //       title: 'Ticket Created',
+  //       description: 'Your support ticket has been successfully created.',
+  //     });
+  //     await ticketsCreate(values);
+  //   } catch {
+  //     toast({
+  //       title: 'Error',
+  //       description:
+  //         'There was a problem creating your ticket. Please try again.',
+  //       variant: 'destructive',
+  //     });
+  //   }
+  // }
+
+  const [form, fields] = useForm({
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: ticketZod });
+    },
+    shouldValidate: 'onBlur',
+    shouldRevalidate: 'onInput',
+  });
 
   return (
     <Form {...form}>

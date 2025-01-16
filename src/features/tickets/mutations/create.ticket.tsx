@@ -1,19 +1,28 @@
 'use server';
 
+import { parseWithZod } from '@conform-to/zod';
+import { redirect } from 'next/navigation';
+
+import { ticketZod } from '@/features/tickets/schemas/ticket.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket, ticketMessage } from '@/lib/db/schema';
 
-export default async function ticketsCreate({
-  category,
-  title,
-  message,
-}: {
-  category: string;
-  title: string;
-  message: string;
-}) {
+export default async function ticketsCreate(
+  prevState: unknown,
+  formData: FormData,
+) {
   const { user } = await validateSession();
+
+  const submission = parseWithZod(formData, {
+    schema: ticketZod,
+  });
+
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+
+  const { category, message, title } = submission.value;
 
   await db.transaction(async (tx) => {
     //Insert new ticket info
@@ -26,4 +35,6 @@ export default async function ticketsCreate({
       .insert(ticketMessage)
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
   });
+
+  redirect('/dashboard/tickets');
 }
