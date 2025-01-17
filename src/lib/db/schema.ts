@@ -8,7 +8,7 @@ export * from '@/features/host/schemas/subscription.table';
 export * from '@/features/host/schemas/customer.table';
 
 // Tickets
-export * from '@/features/tickets/schemas/ticket-messages.table';
+export * from '@/features/tickets/schemas/ticket-message.table';
 export * from '@/features/tickets/schemas/ticket.table';
 
 // Customers

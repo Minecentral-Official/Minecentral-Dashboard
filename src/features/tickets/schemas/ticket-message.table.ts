@@ -26,9 +26,3 @@ export const ticketMessageRelations = relations(ticketMessage, ({ one }) => ({
     references: [ticket.id],
   }),
 }));
-
-type TicketMessageBase = typeof ticketMessage.$inferSelect;
-export type TicketMessage = TicketMessageBase & {
-  user: typeof user.$inferSelect;
-  // ticket: Ticket;
-};

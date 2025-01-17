@@ -68,16 +68,14 @@ const UpdatePaymentMethod = () => {
   };
 
   return (
-    <div className='p-6'>
-      <form className='space-y-4'>
-        <div className='rounded-md border bg-white p-4 shadow-sm'>
-          <CardElement options={cardStyle} />
-        </div>
-        <Button onClick={handleSubmit} className='mx-auto'>
-          Update Payment Method
-        </Button>
-      </form>
-    </div>
+    <form className='space-y-4' onSubmit={handleSubmit}>
+      <div className='rounded-md border bg-white p-4 shadow-sm'>
+        <CardElement options={cardStyle} />
+      </div>
+      <Button type='submit' className='mx-auto'>
+        Update Payment Method
+      </Button>
+    </form>
   );
 };
 

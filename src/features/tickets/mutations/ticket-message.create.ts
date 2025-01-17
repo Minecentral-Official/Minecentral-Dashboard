@@ -1,19 +1,30 @@
 'use server';
 
+import { parseWithZod } from '@conform-to/zod';
 import { eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
+import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticketMessage, ticket as ticketTable } from '@/lib/db/schema';
 
-export default async function ticketsCreateMessage({
-  message,
-  ticketId,
-}: {
-  message: string;
-  ticketId: number;
-}) {
+export default async function createTicketMessage(
+  //prevState: unknown
+  _: unknown,
+  formData: FormData,
+) {
   const { user } = await validateSession();
+
+  const submission = parseWithZod(formData, {
+    schema: insertTicketMessageZod,
+  });
+
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+
+  const { message, ticketId } = submission.value;
 
   await db.transaction(async (tx) => {
     //Update Ticket Status
@@ -23,15 +34,19 @@ export default async function ticketsCreateMessage({
     });
     if (!ticketData) throw new Error('Invalid ticket id!');
     if (ticketData.userId !== user.id && ticketData.status === 'open') {
+      // to automatically switch status to 'in-progress'
       await tx
         .update(ticketTable)
         .set({ status: 'in-progress' })
         .where(eq(ticketTable.id, ticketData.id));
     }
+
     //Create new Message
     await tx
       .insert(ticketMessage)
       .values({ message, ticketId, userId: user.id })
       .returning();
   });
+  // TODO: once we have caching we can have more granular control here
+  revalidatePath('/dashboard/tickets');
 }

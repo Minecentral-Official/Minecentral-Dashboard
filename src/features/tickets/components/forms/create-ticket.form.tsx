@@ -12,15 +12,20 @@ import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ticketCategoryConfig } from '@/features/tickets/config/ticket-category.config';
-import ticketsCreate from '@/features/tickets/mutations/create.ticket';
-import { ticketZod } from '@/features/tickets/schemas/ticket.zod';
+import createTicketWithMessage from '@/features/tickets/mutations/ticket-with-message.create';
+import { insertTicketWithMessageZod } from '@/features/tickets/schemas/ticket-with-message.zod';
 
-export default function TicketCreateForm() {
-  const [lastResult, action] = useActionState(ticketsCreate, undefined);
+export default function CreateTicketForm() {
+  const [lastResult, action] = useActionState(
+    createTicketWithMessage,
+    undefined,
+  );
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      const submission = parseWithZod(formData, { schema: ticketZod });
+      const submission = parseWithZod(formData, {
+        schema: insertTicketWithMessageZod,
+      });
       if (submission.status !== 'success') {
         toast.error('Form data invalid', { id: 'create-ticket' });
       } else {
@@ -46,7 +51,7 @@ export default function TicketCreateForm() {
   }));
 
   return (
-    <div className='flex flex-col gap-6 p-10'>
+    <div className='flex flex-col gap-6'>
       <form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
         <Field>
           <Label htmlFor={fields.title.id}>Title</Label>

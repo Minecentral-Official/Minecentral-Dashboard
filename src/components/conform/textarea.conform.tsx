@@ -6,9 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 
 export const TextareaConform = ({
   meta,
+  key,
   ...props
 }: {
   meta: FieldMetadata<string>;
 } & ComponentProps<typeof Textarea>) => {
-  return <Textarea {...getTextareaProps(meta)} {...props} />;
+  const { key: textareaPropsKey, ...textareaProps } = getTextareaProps(meta);
+  return (
+    <Textarea key={key ?? textareaPropsKey} {...textareaProps} {...props} />
+  );
 };

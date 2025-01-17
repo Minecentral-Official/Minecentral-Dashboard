@@ -11,15 +11,15 @@ export default async function TicketMessages({ ticket }: { ticket: Ticket }) {
         <div
           key={reply.id}
           className={`flex items-start space-x-4 p-4 ${
-            index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+            index === 0 ? 'bg-gray-50' : 'bg-white'
           }`}
         >
           <WrapperAvatar name={reply.user.name} image={reply.user.image} />
-          <div className='flex-1 space-y-1'>
+          <div className='mt-1 flex-1'>
             <div className='flex items-center justify-between'>
-              <h4 className='text-sm font-semibold'>
+              <h4 className='text-xs font-semibold'>
                 {reply.user.name}
-                <span className='font-thin'>
+                <span className='text-muted-foreground'>
                   {reply.user.id === user.id ? ' (You)' : ''}
                 </span>
               </h4>
