@@ -7,9 +7,9 @@ import { parseWithZod } from '@conform-to/zod';
 import Form from 'next/form';
 import { toast } from 'sonner';
 
+import AutoExpandingTextareaConform from '@/components/conform/auto-expanding-textarea.conform';
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
-import { TextareaConform } from '@/components/conform/textarea.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import createTicketMessage from '@/features/tickets/mutations/ticket-message.create';
@@ -70,14 +70,20 @@ export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
   });
 
   return (
-    <div className='flex flex-col gap-6'>
-      <Form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
+    <div>
+      <Form
+        id={form.id}
+        onSubmit={form.onSubmit}
+        action={action}
+        className='flex flex-col gap-6'
+        noValidate
+      >
         <Field>
           <InputConform meta={fields.ticketId} type='hidden' />
         </Field>
         <Field>
           <Label htmlFor={fields.message.id}>New Reply</Label>
-          <TextareaConform meta={fields.message} />
+          <AutoExpandingTextareaConform meta={fields.message} />
           {fields.message.errors && (
             <FieldError>{fields.message.errors}</FieldError>
           )}

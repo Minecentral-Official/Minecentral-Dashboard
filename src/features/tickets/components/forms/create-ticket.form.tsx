@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { SelectConform } from '@/components/conform/select.conform';
+import { TextareaConform } from '@/components/conform/textarea.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ticketCategoryConfig } from '@/features/tickets/config/ticket-category.config';
@@ -51,8 +52,14 @@ export default function CreateTicketForm() {
   }));
 
   return (
-    <div className='flex flex-col gap-6'>
-      <form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
+    <div>
+      <form
+        id={form.id}
+        onSubmit={form.onSubmit}
+        className='flex flex-col gap-6'
+        action={action}
+        noValidate
+      >
         <Field>
           <Label htmlFor={fields.title.id}>Title</Label>
           <InputConform meta={fields.title} type='text' />
@@ -74,7 +81,7 @@ export default function CreateTicketForm() {
         </Field>
         <Field>
           <Label htmlFor={fields.message.id}>Message</Label>
-          <InputConform meta={fields.message} type='text' />
+          <TextareaConform meta={fields.message} />
           {fields.message.errors && (
             <FieldError>{fields.message.errors}</FieldError>
           )}
