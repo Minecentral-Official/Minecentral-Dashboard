@@ -17,6 +17,7 @@ export const SelectConform = ({
   meta,
   items,
   placeholder,
+  onValueChange,
   ...props
 }: {
   meta: FieldMetadata<string>;
@@ -25,6 +26,13 @@ export const SelectConform = ({
 } & ComponentProps<typeof Select>) => {
   const selectRef = useRef<ElementRef<typeof SelectTrigger>>(null);
   const control = useControl(meta);
+
+  function handleValueChange(value: string) {
+    control.change(value);
+    if (onValueChange) {
+      onValueChange(value);
+    }
+  }
 
   return (
     <>
@@ -48,7 +56,7 @@ export const SelectConform = ({
       <Select
         {...props}
         value={control.value ?? ''}
-        onValueChange={control.change}
+        onValueChange={handleValueChange}
         onOpenChange={(open) => {
           if (!open) {
             control.blur();

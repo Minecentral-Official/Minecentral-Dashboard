@@ -1,20 +1,35 @@
 'use server';
 
-import { eq } from 'drizzle-orm';
+import { parseWithZod } from '@conform-to/zod';
+import { and, eq } from 'drizzle-orm';
 
-import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
+import { updateTicketStatusZod } from '@/features/tickets/schemas/ticket-status.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
-import { ticket } from '@/lib/db/schema';
+import { ticket as ticketTable } from '@/lib/db/schema';
 
-export default async function ticketsChangeStatus({
-  ticketId,
-  status,
-}: {
-  ticketId: number;
-  status: (typeof ticketStatusConfig)[number];
-}) {
+export default async function ticketsChangeStatus(
+  _: unknown,
+  formData: FormData,
+) {
   const { user } = await validateSession();
 
-  await db.update(ticket).set({ status }).where(eq(ticket.id, ticketId));
+  const submission = parseWithZod(formData, {
+    schema: updateTicketStatusZod,
+  });
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+
+  const { id, status } = submission.value;
+
+  const ticket = await db.query.ticket.findFirst({
+    where: and(eq(ticketTable.userId, user.id), eq(ticketTable.id, id)),
+  });
+
+  if (!ticket) {
+    throw new Error('Unauthorized');
+  }
+
+  await db.update(ticketTable).set({ status }).where(eq(ticketTable.id, id));
 }
