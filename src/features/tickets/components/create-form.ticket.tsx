@@ -4,7 +4,6 @@ import { useActionState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -17,9 +16,6 @@ import ticketsCreate from '@/features/tickets/mutations/create.ticket';
 import { ticketZod } from '@/features/tickets/schemas/ticket.zod';
 
 export default function TicketCreateForm() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
   const [lastResult, action] = useActionState(ticketsCreate, undefined);
   const [form, fields] = useForm({
     lastResult,
@@ -40,13 +36,6 @@ export default function TicketCreateForm() {
       category: undefined,
     },
   });
-
-  const success = searchParams.get('success');
-
-  if (success === 'true') {
-    toast.success('Ticket Successfully created', { id: 'create-ticket' });
-    router.push('/dashboard/tickets');
-  }
 
   const categorySelectData = ticketCategoryConfig.map((category) => ({
     value: category,

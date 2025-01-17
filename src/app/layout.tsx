@@ -6,6 +6,7 @@ import '@/app/globals.css';
 
 import { Manrope } from 'next/font/google';
 
+import SearchParamTriggerSonner from '@/components/sonner/search-param-trigger.sonner';
 import { Toaster } from '@/components/ui/sonner';
 
 const manrope = Manrope({
@@ -29,6 +30,7 @@ export default async function RootLayout({
       <body>
         {children}
         <Toaster richColors toastOptions={{}} />
+        <SearchParamTriggerSonner />
       </body>
     </html>
   );

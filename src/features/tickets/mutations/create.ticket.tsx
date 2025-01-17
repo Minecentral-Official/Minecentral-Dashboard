@@ -38,5 +38,7 @@ export default async function ticketsCreate(
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
   });
 
-  redirect('/dashboard/tickets/create?success=true');
+  redirect(
+    '/dashboard/tickets?toast-success=true&toast-message=Ticket%20successfully%20created&toast-id=create-ticket',
+  );
 }
