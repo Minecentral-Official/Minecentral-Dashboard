@@ -18,7 +18,7 @@ export default function AddServerButton({
 }: AddServerButtonProps) {
   return (
     <Button asChild {...buttonProps} icon={undefined} iconPlacement={undefined}>
-      <Link href='/dashboard/host/servers/add' {...linkProps}>
+      <Link href='/dashboard/host/add' {...linkProps}>
         {children}
       </Link>
     </Button>

@@ -1,41 +1,9 @@
 import { Server } from 'lucide-react';
 
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
-
-const hostSidebarMenuConfig = [
-  {
-    name: 'Servers',
-    url: '/dashboard/host/servers',
-    icon: Server,
-  },
-];
+import SidebarLinkWrapper from '@/components/sidebars/wrapper.sidebar-link';
 
 export default function HostSidebar() {
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Host</SidebarGroupLabel>
-
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {hostSidebarMenuConfig.map(({ name, url, ...rest }) => (
-            <SidebarMenuItem key={name}>
-              <SidebarMenuButton asChild>
-                <a href={url}>
-                  <rest.icon />
-                  <span>{name}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <SidebarLinkWrapper Icon={Server} name='Hosting' url='/dashboard/host' />
   );
 }

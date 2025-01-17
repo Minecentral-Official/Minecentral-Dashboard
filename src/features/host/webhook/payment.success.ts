@@ -1,13 +1,13 @@
 import { User } from 'better-auth';
 import Stripe from 'stripe';
 
-import { pterodactylServerCreate } from '@/features/host/lib/pterodactyl/mutations/server.create';
-import { pterodactylUserFindById } from '@/features/host/lib/pterodactyl/user/user-by-id.find';
-import { pterodactylCreateUser } from '@/features/host/lib/pterodactyl/user/user.create';
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
 import { hostUpdateSubscription } from '@/features/host/mutations/subscription.update';
-import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer-by-stripe-customer-id.get';
+import { pterodactylServerCreate } from '@/features/host/pterodactyl/mutations/server.create';
+import { pterodactylUserFindById } from '@/features/host/pterodactyl/user/user-by-id.find';
+import { pterodactylCreateUser } from '@/features/host/pterodactyl/user/user.create';
+import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer/customer-by-stripe-customer-id.get';
 import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.get';
 import { HostSubscription } from '@/lib/db/schema';

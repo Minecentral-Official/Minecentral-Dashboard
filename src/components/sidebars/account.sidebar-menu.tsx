@@ -1,4 +1,4 @@
-import { ChevronRight, Server, TestTube } from 'lucide-react';
+import { ChevronRight, CogIcon, ReceiptIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import {
@@ -15,33 +15,34 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
-const hostSidebarMenuConfig = [
+const accountSidebarMenuConfig = [
   {
-    name: 'Servers',
-    url: '/dashboard/admin/host/server-list',
-    icon: Server,
+    name: 'Billing',
+    url: '/dashboard/account/billing',
+    icon: ReceiptIcon,
   },
   {
-    name: 'Testing List',
-    url: '/dashboard',
-    icon: TestTube,
+    name: 'Settings',
+    url: '/dashboard/account/settings',
+    icon: CogIcon,
   },
 ];
 
-export default function SidebarHostAdmin() {
+export default function SidebarAccount() {
   return (
     <SidebarMenu>
       <Collapsible className='group/collapsible' asChild>
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
-              <span>Host</span>
+              <UserIcon />
+              <span>Account</span>
               <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
             </SidebarMenuButton>
           </CollapsibleTrigger>
           <CollapsibleContent>
             <SidebarMenuSub>
-              {hostSidebarMenuConfig.map(({ name, url, ...rest }) => (
+              {accountSidebarMenuConfig.map(({ name, url, ...rest }) => (
                 <SidebarMenuSubItem key={name}>
                   <SidebarMenuSubButton asChild>
                     <Link href={url}>

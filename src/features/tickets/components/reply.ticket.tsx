@@ -53,7 +53,7 @@ export default function TicketReply({ ticketId }: { ticketId: number }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
         <FormField
           control={form.control}
           name='message'

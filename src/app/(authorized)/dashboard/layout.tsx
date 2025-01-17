@@ -1,26 +1,28 @@
 import { PropsWithChildren } from 'react';
 
-import AdminSidebar from '@/components/sidebars/admin.sidebar-group';
-import GeneralSidebar from '@/components/sidebars/general.sidebar-group';
-import DashboardSidebar from '@/components/sidebars/sidebar-dashboard.wrapper';
-import HostAdminSidebarMenu from '@/features/host/components/sidebar/host-admin.sidebar-menu';
+import SidebarDashboardWrapper from '@/components/sidebars/dashboard.wrapper';
+import SidebarGeneral from '@/components/sidebars/general.sidebar-menu';
+import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
+import SidebarHostAdmin from '@/features/host/components/sidebar/host-admin.sidebar-menu';
 import HostSidebar from '@/features/host/components/sidebar/host.sidebar-group';
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
   return (
-    <DashboardSidebar
+    <SidebarDashboardWrapper
       sidebarChildren={
         <>
-          <HostSidebar />
-          <GeneralSidebar />
-          <AdminSidebar>
-            <HostAdminSidebarMenu />
-          </AdminSidebar>
+          <SidebarGroupWrapper title='Products'>
+            <HostSidebar />
+          </SidebarGroupWrapper>
+          <SidebarGeneral />
+          <SidebarGroupWrapper title='Admin'>
+            <SidebarHostAdmin />
+          </SidebarGroupWrapper>
           {/* Add Additional sidebar menus here */}
         </>
       }
     >
       <div className='h-full w-full p-6'>{children}</div>
-    </DashboardSidebar>
+    </SidebarDashboardWrapper>
   );
 }

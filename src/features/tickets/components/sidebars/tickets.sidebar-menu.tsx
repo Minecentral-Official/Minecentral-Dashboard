@@ -1,4 +1,4 @@
-import { ChevronRight, Server, TestTube } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import {
@@ -15,20 +15,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
-const hostSidebarMenuConfig = [
-  {
-    name: 'Servers',
-    url: '/dashboard/admin/host/server-list',
-    icon: Server,
-  },
-  {
-    name: 'Testing List',
-    url: '/dashboard',
-    icon: TestTube,
-  },
-];
-
-export default function SidebarHostAdmin() {
+export default function TicketsSidebarMenu() {
   return (
     <SidebarMenu>
       <Collapsible className='group/collapsible' asChild>

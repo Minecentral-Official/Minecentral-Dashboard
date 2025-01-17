@@ -1,3 +1,4 @@
+import { CardDescription } from '@/components/ui/card';
 import TicketMessages from '@/features/tickets/components/messages.ticket';
 import TicketReply from '@/features/tickets/components/reply.ticket';
 import TicketStatus from '@/features/tickets/components/status.ticket';
@@ -12,13 +13,18 @@ export default async function TicketDetails({
   if (!ticket) return <>error</>;
 
   return (
-    <div className='p-4'>
-      <div className='flex flex-row justify-between'>
-        <h2 className='text-lg font-medium'>{ticket.title}</h2>
-        <TicketStatus status={ticket.status} />
+    <div className='space-y-4'>
+      <div className='flex flex-col'>
+        <div className='flex flex-row justify-between'>
+          <p className='text-3xl font-bold'>{ticket.title}</p>
+          <TicketStatus status={ticket.status} />
+        </div>
+        <CardDescription>{ticket.category}</CardDescription>
       </div>
       <TicketMessages ticket={ticket} />
-      <TicketReply ticketId={ticket.id} />
+      <div className='w-full'>
+        <TicketReply ticketId={ticket.id} />
+      </div>
     </div>
   );
 }

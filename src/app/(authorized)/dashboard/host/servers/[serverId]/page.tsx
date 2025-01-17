@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import PterodactylServerCard from '@/features/host/components/cards/pterodactyl-server.card';
 import { HostStripeSubscriptionDatails } from '@/features/host/components/stripe/subscription-details';
-import { pterodactylGetFullServerData } from '@/features/host/lib/pterodactyl/queries/server-full.get';
+import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full.get';
 
 type PageProps = {
   params: Promise<{ serverId: number }>;

@@ -45,6 +45,10 @@
     {
       "folderPath": "Minecentral\\src\\app\\api\\",
       "badge": "😶‍🌫️"
+    },
+    {
+      "folderPath": "Minecentral\\src\\features\\host\\pterodactyl\\",
+      "badge": "👽"
     }
   ]
 }

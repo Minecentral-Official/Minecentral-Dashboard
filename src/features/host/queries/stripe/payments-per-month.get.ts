@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import hostGetCustomerByUserId from '@/features/host/queries/customer-by-user-id.get';
+import hostGetCustomerByUserId from '@/features/host/queries/customer/customer-by-user-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import stripeGetCustomer from '@/lib/stripe/queries/etc/customer-by-id.get';
 

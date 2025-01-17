@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import TicketStatus from '@/features/tickets/components/status.ticket';
 import ticketsGetAll from '@/features/tickets/queries/all.get';
 
 export default async function TicketListAll() {
@@ -23,11 +23,7 @@ export default async function TicketListAll() {
             <CardHeader>
               <div className='flex items-start justify-between'>
                 <CardTitle>{ticket.title}</CardTitle>
-                <Badge
-                  variant={ticket.status === 'open' ? 'default' : 'secondary'}
-                >
-                  {ticket.status}
-                </Badge>
+                <TicketStatus status={ticket.status} />
               </div>
               <CardDescription>
                 Ticket #{ticket.id} - {ticket.category}

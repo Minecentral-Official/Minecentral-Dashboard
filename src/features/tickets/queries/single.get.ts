@@ -10,7 +10,7 @@ export default async function ticketsGetSingle(ticketId: number) {
   const { user } = await validateSession();
 
   const response = await db.query.ticket.findFirst({
-    where: and(eq(ticket.userId, user.id), eq(ticket.id, ticketId)),
+    where: and(eq(ticket.id, ticketId)),
     with: {
       messages: {
         with: { user: true },

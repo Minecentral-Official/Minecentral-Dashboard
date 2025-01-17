@@ -1,6 +1,6 @@
 import { User } from 'better-auth';
 
-import hostGetCustomerByUserId from '@/features/host/queries/customer-by-user-id.get';
+import hostGetCustomerByUserId from '@/features/host/queries/customer/customer-by-user-id.get';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
 

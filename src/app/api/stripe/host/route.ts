@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription-by-stripe-id.get';
+import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription/subscription-by-stripe-id.get';
 import { hostWebhookPaymentSuccess } from '@/features/host/webhook/payment.success';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';

@@ -77,7 +77,7 @@ export default function PterodactylServerCard({
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link href={`./servers/${id}`}>
+                  <Link href={`/dashboard/host/servers/${id}`}>
                     <Settings2Icon />
                     Manage
                   </Link>

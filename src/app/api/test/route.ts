@@ -1,4 +1,4 @@
-import { pterodactylClientGetServerStatus } from '@/features/host/lib/pterodactyl/client/server-status.get';
+import { pterodactylClientGetServerStatus } from '@/features/host/pterodactyl/client/server-status.get';
 
 export async function GET() {
   await pterodactylClientGetServerStatus('23');

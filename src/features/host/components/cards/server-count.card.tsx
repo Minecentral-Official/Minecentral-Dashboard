@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { hostGetUserPterdactylServers } from '@/features/host/queries/user-pterodactyl-servers.get';
+import { userGetPterodactylServers } from '@/features/host/pterodactyl/queries/get-servers.user';
 
 type ServerCountCardProps = {
   cardProps?: ComponentProps<typeof Card>;
@@ -17,7 +17,7 @@ type ServerCountCardProps = {
 export default async function ServerCountCard({
   cardProps,
 }: ServerCountCardProps) {
-  const serverData = await hostGetUserPterdactylServers();
+  const serverData = await userGetPterodactylServers();
   return (
     <Card {...cardProps}>
       <CardHeader>

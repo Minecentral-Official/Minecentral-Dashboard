@@ -1,4 +1,4 @@
-import { pteroServer } from '@/features/host/lib/pterodactyl/ptero';
+import { pteroServer } from '@/features/host/pterodactyl/ptero';
 
 export async function hostADMINGetAllServers() {
   // const {user} = await validateSession();

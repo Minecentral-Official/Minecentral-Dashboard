@@ -4,7 +4,12 @@ import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 export function DTOProductHost({
   metadata,
   ...restProduct
-}: ReturnType<typeof DTOProductStripe>) {
+}: ReturnType<typeof DTOProductStripe> & {
+  prices: {
+    id: string;
+    price: number | null;
+  }[];
+}) {
   const validatedMetadata = metadataHostSchema.parse(metadata);
   return { ...restProduct, metadata: validatedMetadata };
 }

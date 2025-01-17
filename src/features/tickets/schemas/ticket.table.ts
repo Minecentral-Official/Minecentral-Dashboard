@@ -4,7 +4,7 @@ import { date, integer, pgTable, text } from 'drizzle-orm/pg-core';
 import { user } from '@/lib/auth/schema/auth.table';
 import { TicketMessage, ticketMessage } from '@/lib/db/schema';
 
-export const TTicketStatuses = ['open', 'in progress', 'closed'] as const;
+export const TTicketStatuses = ['open', 'in-progress', 'closed'] as const;
 
 export const ticket = pgTable('ticket', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
