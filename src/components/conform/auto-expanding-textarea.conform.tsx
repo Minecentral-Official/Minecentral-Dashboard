@@ -49,13 +49,18 @@ export default function AutoExpandingTextareaConform({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.shiftKey && e.key === 'Enter') {
+    // Prevent default Enter key behavior
+    if (e.key === 'Enter') {
       e.preventDefault();
-      const newValue =
-        value!.slice(0, e.currentTarget.selectionStart) +
-        '\n' +
-        value!.slice(e.currentTarget.selectionEnd);
-      change(newValue);
+
+      // Add a new line only when Shift + Enter is pressed
+      if (e.shiftKey) {
+        const newValue =
+          value!.slice(0, e.currentTarget.selectionStart) +
+          '\n' +
+          value!.slice(e.currentTarget.selectionEnd);
+        change(newValue);
+      }
     }
   };
 

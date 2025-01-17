@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
@@ -16,32 +16,7 @@ import createTicketMessage from '@/features/tickets/mutations/ticket-message.cre
 import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
 
 export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
-  // const router = useRouter();
-  // const { toast } = useToast();
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     message: '',
-  //   },
-  // });
-
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   try {
-  //     toast({
-  //       title: 'Ticket Reply',
-  //       description: 'Your reply to ticket has been submitted.',
-  //     });
-  //     await ticketsCreateMessage({ ...values, ticketId });
-  //     router.push(`./${ticketId}`);
-  //   } catch {
-  //     toast({
-  //       title: 'Error',
-  //       description:
-  //         'There was a problem creating your reply. Please try again.',
-  //       variant: 'destructive',
-  //     });
-  //   }
-  // }
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [lastResult, action] = useActionState(createTicketMessage, undefined);
 
@@ -53,9 +28,9 @@ export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
       });
 
       if (submission.status !== 'success') {
-        toast.error('Form data invalid', { id: 'create-ticket' });
+        toast.error('Please input a message', { id: 'create-ticket-message' });
       } else {
-        toast.loading('Creating Your Ticket...', { id: 'create-ticket' });
+        toast.loading('Messaging...', { id: 'create-ticket-message' });
       }
       return submission;
     },
@@ -69,6 +44,25 @@ export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
     },
   });
 
+  useEffect(() => {
+    function handleKeydown(e: KeyboardEvent) {
+      // Prevent default Enter key behavior
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        console.log('enter key was pressed');
+        // Add a new line only when Shift + Enter is pressed
+        if (!e.shiftKey) {
+          console.log('proper keys were pressed');
+          formRef.current?.requestSubmit();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeydown);
+
+    return () => document.removeEventListener('keydown', handleKeydown);
+  }, []);
+
   return (
     <div>
       <Form
@@ -76,6 +70,7 @@ export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
         onSubmit={form.onSubmit}
         action={action}
         className='flex flex-col gap-2'
+        ref={formRef}
         noValidate
       >
         <Field>
@@ -91,7 +86,7 @@ export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
           )}
           <Button
             type='submit'
-            className='absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 px-0'
+            className='absolute bottom-1 right-1 h-7 w-7 px-0'
           >
             <ArrowUp />
           </Button>
