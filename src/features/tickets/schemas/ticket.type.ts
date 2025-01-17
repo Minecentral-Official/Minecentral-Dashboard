@@ -1,4 +1,5 @@
-import type { ticket, TicketMessage, user } from '@/lib/db/schema';
+import type { TicketMessage } from '@/features/tickets/schemas/ticket-message.type';
+import type { ticket, user } from '@/lib/db/schema';
 
 type TicketBase = typeof ticket.$inferSelect;
 

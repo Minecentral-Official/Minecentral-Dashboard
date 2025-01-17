@@ -22,6 +22,7 @@ type AutoExpandingTextareaProps = {
 
 export default function AutoExpandingTextareaConform({
   meta,
+  placeholder,
 }: AutoExpandingTextareaProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { value, change, register, blur } = useControl(meta);
@@ -43,6 +44,7 @@ export default function AutoExpandingTextareaConform({
   }, [value, change]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(e.target.value);
     change(e.target.value);
   };
 
@@ -59,7 +61,7 @@ export default function AutoExpandingTextareaConform({
 
   return (
     <>
-      <input
+      <textarea
         ref={register}
         name={meta.name}
         defaultValue={meta.initialValue}
@@ -83,6 +85,7 @@ export default function AutoExpandingTextareaConform({
           paddingTop: '0.5rem',
           paddingBottom: '0.5rem',
         }}
+        placeholder={placeholder}
         rows={1}
       />
     </>

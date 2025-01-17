@@ -1,7 +1,10 @@
+import { Fragment } from 'react';
+
 import { ScrollArea } from '@/components/ui/scroll-area';
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { Ticket } from '@/lib/db/schema';
+
+import type { Ticket } from '@/features/tickets/schemas/ticket.type';
 
 export default async function TicketMessages({ ticket }: { ticket: Ticket }) {
   const { user } = await validateSession();
@@ -27,7 +30,14 @@ export default async function TicketMessages({ ticket }: { ticket: Ticket }) {
                 {new Date(reply.createdAt).toLocaleString()}
               </span>
             </div>
-            <p className='text-sm text-gray-700'>{reply.message}</p>
+            <p className='text-sm text-gray-700' key={index}>
+              {reply.message.split('\n').map((line, index) => (
+                <Fragment key={index}>
+                  {line}
+                  <br />
+                </Fragment>
+              ))}
+            </p>
           </div>
         </div>
       ))}

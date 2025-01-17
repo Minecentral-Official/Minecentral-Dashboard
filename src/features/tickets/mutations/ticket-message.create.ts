@@ -25,7 +25,7 @@ export default async function createTicketMessage(
   }
 
   const { message, ticketId } = submission.value;
-
+  console.log('message: ', message);
   await db.transaction(async (tx) => {
     //Update Ticket Status
     const ticketData = await tx.query.ticket.findFirst({
