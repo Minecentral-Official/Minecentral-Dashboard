@@ -2,11 +2,6 @@ import { ChevronRight, CogIcon, ReceiptIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -31,31 +26,27 @@ const accountSidebarMenuConfig = [
 export default function SidebarAccount() {
   return (
     <SidebarMenu>
-      <Collapsible className='group/collapsible' asChild>
-        <SidebarMenuItem>
-          <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
-              <UserIcon />
-              <span>Account</span>
-              <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <SidebarMenuSub>
-              {accountSidebarMenuConfig.map(({ name, url, ...rest }) => (
-                <SidebarMenuSubItem key={name}>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={url}>
-                      {rest.icon && <rest.icon />}
-                      <span>{name}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              ))}
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
+      <SidebarMenuItem>
+        <SidebarMenuButton asChild>
+          <Link href={'/dashboard/account'}>
+            <UserIcon />
+            <span>Account</span>
+            <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+          </Link>
+        </SidebarMenuButton>
+        <SidebarMenuSub>
+          {accountSidebarMenuConfig.map(({ name, url, ...rest }) => (
+            <SidebarMenuSubItem key={name}>
+              <SidebarMenuSubButton asChild>
+                <Link href={url}>
+                  {rest.icon && <rest.icon />}
+                  <span>{name}</span>
+                </Link>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      </SidebarMenuItem>
     </SidebarMenu>
   );
 }

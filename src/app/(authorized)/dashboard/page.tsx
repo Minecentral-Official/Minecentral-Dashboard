@@ -1,3 +1,6 @@
-export default async function DashboardHomePage() {
-  return <div>This is the dashboard homepage</div>;
+import { redirect } from 'next/navigation';
+
+export default async function Page() {
+  redirect('/dashboard/account');
+  return null;
 }
