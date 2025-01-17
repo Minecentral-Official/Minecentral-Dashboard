@@ -1,3 +1,3 @@
 export default function Page() {
-  return <>Plugins</>;
+  return <>Good Luck Hugo</>;
 }

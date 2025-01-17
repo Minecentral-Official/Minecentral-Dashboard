@@ -49,6 +49,14 @@
     {
       "folderPath": "Minecentral\\src\\features\\host\\pterodactyl\\",
       "badge": "👽"
+    },
+    {
+      "folderPath": "Minecentral\\src\\app\\(authorized)\\dashboard\\plugins\\",
+      "badge": "PL"
+    },
+    {
+      "folderPath": "Minecentral\\src\\app\\(authorized)\\dashboard\\worlds\\",
+      "badge": "WO"
     }
   ]
 }

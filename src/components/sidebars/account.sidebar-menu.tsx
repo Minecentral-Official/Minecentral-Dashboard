@@ -1,4 +1,4 @@
-import { ChevronRight, CogIcon, ReceiptIcon, UserIcon } from 'lucide-react';
+import { CogIcon, ReceiptIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import {
@@ -31,7 +31,7 @@ export default function SidebarAccount() {
           <Link href={'/dashboard/account'}>
             <UserIcon />
             <span>Account</span>
-            <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+            {/* <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' /> */}
           </Link>
         </SidebarMenuButton>
         <SidebarMenuSub>
