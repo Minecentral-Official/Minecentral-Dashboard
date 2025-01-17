@@ -1,12 +1,12 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { TTicketStatuses } from '@/lib/db/schema';
+import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
 
 export default function TicketStatus({
   status,
 }: {
-  status: (typeof TTicketStatuses)[number];
+  status: (typeof ticketStatusConfig)[number];
 }) {
   return (
     <Badge

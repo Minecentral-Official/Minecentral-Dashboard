@@ -2,16 +2,17 @@
 
 import { eq } from 'drizzle-orm';
 
+import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
-import { ticket, TTicketStatuses } from '@/lib/db/schema';
+import { ticket } from '@/lib/db/schema';
 
 export default async function ticketsChangeStatus({
   ticketId,
   status,
 }: {
   ticketId: number;
-  status: (typeof TTicketStatuses)[number];
+  status: (typeof ticketStatusConfig)[number];
 }) {
   const { user } = await validateSession();
 
