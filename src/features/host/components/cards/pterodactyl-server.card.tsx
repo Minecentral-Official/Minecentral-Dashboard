@@ -1,33 +1,30 @@
+'use client';
+
+import { createContext, useContext } from 'react';
+
 import {
   Archive,
-  BadgeCheck,
   Box,
   Database,
-  Ellipsis,
   MemoryStick,
-  Settings2Icon,
   SquareSplitVertical,
   Volleyball,
 } from 'lucide-react';
-import Link from 'next/link';
 
 import CopyToClipboard from '@/components/etc/copy-to-clipboard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  Card as ShadCard,
+  CardFooter as ShadCardFooter,
+  CardTitle as ShadCardTitle,
+} from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import ManageServerDropdown from '@/features/host/components/dropdown/manage-server.dropdown';
 import IconWithDataDisplay from '@/features/host/components/etc/icon-with-data.display';
 
-type PterodactylServerCardProps = {
+import type { PropsWithChildren } from 'react';
+
+type CardContextType = {
   name: string;
-  // plan: string;
   cpuThreads: number;
   ram: number;
   storage: number;
@@ -36,114 +33,97 @@ type PterodactylServerCardProps = {
   splits: number;
   ip?: string;
   port?: number;
-  // status: ServerStatus;
   id: number;
   uuid: string;
   plan: string;
 };
 
-export default function PterodactylServerCard({
-  name,
-  cpuThreads,
-  ram,
-  storage,
-  databases,
-  backups,
-  splits,
-  ip,
-  port,
-  // status,
-  id,
-  uuid,
-  plan,
+type PterodactylServerCardProps = PropsWithChildren<CardContextType>;
+
+const CardContext = createContext<CardContextType | null>(null);
+
+function useCardContext() {
+  const context = useContext(CardContext);
+  if (!context) {
+    throw new Error(
+      'Pterodactyl Card Components can only be used in its wrapper provider component',
+    );
+  }
+  return context;
+}
+
+export default function PteroServerCard({
+  children,
+  ...serverData
 }: PterodactylServerCardProps) {
-  console.log(ip, port);
   return (
-    <Card>
-      <div className='flex justify-between'>
-        <CardHeader className='flex w-full justify-between'>
-          <div className='flex flex-row justify-between'>
-            <CardTitle>{name}</CardTitle>
-          </div>
-          {/* <CardDescription>{plan}</CardDescription> */}
-        </CardHeader>
-        <div className='m-2 flex gap-2'>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size='icon' variant='ghost'>
-                <Ellipsis />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <Link href={`/dashboard/host/servers/${id}`}>
-                    <Settings2Icon />
-                    Manage
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <Link href={`https://panel.ronanhost.com/server/${uuid}`}>
-                    <BadgeCheck />
-                    Go To Panel
-                  </Link>
-                </DropdownMenuItem>
-                {/* <DropdownMenuItem>
-                  <CreditCard />
-                  Billing
-                </DropdownMenuItem> */}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+    <CardContext.Provider value={serverData}>
+      <ShadCard>{children}</ShadCard>
+    </CardContext.Provider>
+  );
+}
 
-      <div className='mb-4 flex items-center gap-2'>
-        <Separator className='w-4' />
-        <span className='text-xs text-muted-foreground'>{plan}</span>
+export function PteroServerCardHeader({ children }: PropsWithChildren) {
+  return <div className='flex justify-between'>{children}</div>;
+}
 
-        <Separator className='flex-1' />
-        <CopyToClipboard clipboardText={ip + ':' + port} asChild>
-          <span className='cursor-pointer select-none rounded p-1 px-2 text-xs text-muted-foreground transition hover:bg-primary hover:text-primary-foreground'>
-            {ip}:{port}
-          </span>
-        </CopyToClipboard>
-        <Separator className='w-4' />
+export function PteroServerCardTitle() {
+  const { name } = useCardContext();
+  return <ShadCardTitle className='p-6 pb-1 pt-6'>{name}</ShadCardTitle>;
+}
+
+export function PteroServerCardDropdown() {
+  const { id, uuid } = useCardContext();
+  return (
+    <div className='m-4 mb-0'>
+      <ManageServerDropdown id={id} uuid={uuid} />
+    </div>
+  );
+}
+
+export function PteroServerCardDivider() {
+  const { plan, ip, port } = useCardContext();
+  return (
+    <div className='mb-6 flex items-center gap-2'>
+      <Separator className='w-4' />
+      <span className='text-xs text-muted-foreground'>{plan}</span>
+
+      <Separator className='flex-1' />
+      <CopyToClipboard clipboardText={ip + ':' + port} asChild>
+        <span className='cursor-pointer select-none rounded p-1 px-2 text-xs text-muted-foreground transition hover:bg-primary hover:text-primary-foreground'>
+          {ip}:{port}
+        </span>
+      </CopyToClipboard>
+      <Separator className='w-4' />
+    </div>
+  );
+}
+
+export function PteroServerCardFooter() {
+  const { ram, cpuThreads, storage, databases, backups, splits } =
+    useCardContext();
+  return (
+    <ShadCardFooter className='flex items-center justify-between'>
+      <div className='flex gap-6'>
+        <IconWithDataDisplay data={ram / 1024} icon={MemoryStick} name='RAM' />
+        <IconWithDataDisplay
+          data={cpuThreads / 100}
+          icon={Volleyball}
+          name='CPU Threads'
+        />
+        <IconWithDataDisplay data={storage / 1024} icon={Box} name='Storage' />
+        <IconWithDataDisplay
+          data={databases}
+          icon={Database}
+          name='Databases'
+        />
+        <IconWithDataDisplay data={backups} icon={Archive} name='Backups' />
+        <IconWithDataDisplay
+          data={splits}
+          icon={SquareSplitVertical}
+          name='Splits'
+        />
       </div>
-      <CardContent className='flex items-center justify-between'>
-        <div className='flex gap-6'>
-          <IconWithDataDisplay
-            data={ram / 1024}
-            icon={MemoryStick}
-            name='RAM'
-          />
-          <IconWithDataDisplay
-            data={cpuThreads / 100}
-            icon={Volleyball}
-            name='CPU Threads'
-          />
-          <IconWithDataDisplay
-            data={storage / 1024}
-            icon={Box}
-            name='Storage'
-          />
-          <IconWithDataDisplay
-            data={databases}
-            icon={Database}
-            name='Databases'
-          />
-          <IconWithDataDisplay data={backups} icon={Archive} name='Backups' />
-          <IconWithDataDisplay
-            data={splits}
-            icon={SquareSplitVertical}
-            name='Splits'
-          />
-        </div>
-        {/* <ServerStatusDisplay status={status} /> */}
-      </CardContent>
-    </Card>
+    </ShadCardFooter>
   );
 }

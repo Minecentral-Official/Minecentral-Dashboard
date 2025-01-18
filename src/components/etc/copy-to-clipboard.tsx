@@ -22,7 +22,7 @@ export default function CopyToClipboard({
     <Comp
       onClick={() => {
         navigator.clipboard.writeText(clipboardText);
-        toast('Copied to clipboard', {
+        toast(`Copied ${clipboardText} to clipboard`, {
           icon: <Clipboard className='h-4 w-4' />,
           id: 'clipboard',
         });

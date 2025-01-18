@@ -1,6 +1,11 @@
-import { Separator } from '@/components/ui/separator';
-import PterodactylServerCard from '@/features/host/components/cards/pterodactyl-server.card';
-import { HostStripeSubscriptionDatails } from '@/features/host/components/stripe/subscription-details';
+import PterodactylServerCard, {
+  PteroServerCardDivider,
+  PteroServerCardFooter,
+  PteroServerCardHeader,
+  PteroServerCardTitle,
+} from '@/features/host/components/cards/pterodactyl-server.card';
+import { HostStripeSubscriptionLinks } from '@/features/host/components/cards/subscription-links.card';
+import { HostStripeSubscriptionDetails } from '@/features/host/components/stripe/subscription-details';
 import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full.get';
 
 type PageProps = {
@@ -9,50 +14,56 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { serverId } = await params;
-  const {
-    server: {
-      limits: { cpu, memory, disk },
-      id,
-      name,
-      feature_limits: { backups, databases, splits },
-      uuid,
-    },
-    allocation: { ip, port },
-    subscription: { stripe: stripeProduct, host: hostSubscription },
-  } = await pterodactylGetFullServerData({ pterodactylServerId: serverId });
+  const { server, allocation, subscription } =
+    await pterodactylGetFullServerData({ pterodactylServerId: serverId });
+
+  const pteroServerCardProps = {
+    name: server.name,
+    backups: server.feature_limits.backups,
+    cpuThreads: server.limits.cpu,
+    databases: server.feature_limits.databases,
+    storage: server.limits.disk,
+    ram: server.limits.memory,
+    splits: server.feature_limits.splits,
+    ip: allocation.ip,
+    port: allocation.port,
+    id: server.id,
+    uuid: server.uuid,
+    plan: subscription.stripe.name,
+  };
+
+  const hostStripeSubscriptionDetailsProps = {
+    hostSubscription: subscription.host,
+    stripeProduct: subscription.stripe,
+  };
 
   return (
-    <>
-      <div className='flex w-full flex-col gap-2 py-2'>
-        <h1 className='text-4xl font-bold'>Server Datails</h1>
-        <Separator />
-        <PterodactylServerCard
-          key={id}
-          name={name}
-          backups={backups}
-          cpuThreads={cpu}
-          databases={databases}
-          storage={disk}
-          ram={memory}
-          splits={splits}
-          ip={ip}
-          port={port}
-          id={id}
-          uuid={uuid}
-          plan={stripeProduct.name}
-        />
-      </div>
-      <div className='flex w-full flex-col gap-2 py-2'>
-        <h1 className='text-4xl font-bold'>Subscription</h1>
-        <Separator />
-        <div className='grid gap-2'>
-          <HostStripeSubscriptionDatails
-            hostSubscription={hostSubscription}
-            stripeProduct={stripeProduct}
+    <div className='flex flex-col gap-6'>
+      <PterodactylServerCard {...pteroServerCardProps}>
+        <PteroServerCardHeader>
+          <PteroServerCardTitle />
+        </PteroServerCardHeader>
+        <PteroServerCardDivider />
+        {/* TODO: removing this for now, creating new card for this */}
+        {/* <PteroServerCardFooter /> */}
+      </PterodactylServerCard>
+
+      <div className='flex flex-wrap gap-6'>
+        <div className='flex-1'>
+          <HostStripeSubscriptionDetails
+            {...hostStripeSubscriptionDetailsProps}
           />
-          {/* <PurchaseManage purchase={purchase} /> */}
+        </div>
+        <div className='w-full flex-none md:w-auto'>
+          <HostStripeSubscriptionLinks
+            panelLink={`https://panel.ronanhost.com/server/${hostStripeSubscriptionDetailsProps.hostSubscription.pterodactylServerUuid}`}
+          />
         </div>
       </div>
-    </>
+      <PterodactylServerCard {...pteroServerCardProps}>
+        <div className='pt-6'></div>
+        <PteroServerCardFooter />
+      </PterodactylServerCard>
+    </div>
   );
 }

@@ -2,7 +2,13 @@ import { Plus } from 'lucide-react';
 
 import AddServerButton from '@/features/host/components/buttons/add-server.button';
 import NextPaymentCard from '@/features/host/components/cards/next-payment.card';
-import PterodactylServerCard from '@/features/host/components/cards/pterodactyl-server.card';
+import PteroServerCard, {
+  PteroServerCardDivider,
+  PteroServerCardDropdown,
+  PteroServerCardFooter,
+  PteroServerCardHeader,
+  PteroServerCardTitle,
+} from '@/features/host/components/cards/pterodactyl-server.card';
 import ServerCountCard from '@/features/host/components/cards/server-count.card';
 import { userGetPterodactylServers } from '@/features/host/pterodactyl/queries/get-servers.user';
 
@@ -20,43 +26,32 @@ export default async function HostServersPage() {
           <Plus className='scale-150' />
         </AddServerButton>
       </div>
-      {serverData.map(
-        ({
-          // stripeProductData: {
-          //   name: stripeName,
-          //   metadata: { backups, cpu, databases, disk, ram, splits },
-          // },
-          // pterodactylServerData: {
-          server: {
-            name,
-            id,
-            uuid,
-            feature_limits: { backups, databases, splits },
-            limits: { cpu, disk, memory },
-          },
-          allocation: { ip, port },
-          subscription: {
-            stripe: { name: plan },
-          },
-          // },
-        }) => (
-          <PterodactylServerCard
-            key={id}
-            name={name}
-            backups={backups}
-            cpuThreads={cpu}
-            databases={databases}
-            storage={disk}
-            ram={memory}
-            splits={splits}
-            ip={ip}
-            port={port}
-            id={id}
-            uuid={uuid}
-            plan={plan}
-          />
-        ),
-      )}
+      {serverData.map(({ server, allocation, subscription }) => {
+        const pteroServerCardProps = {
+          name: server.name,
+          backups: server.feature_limits.backups,
+          cpuThreads: server.limits.cpu,
+          databases: server.feature_limits.databases,
+          storage: server.limits.disk,
+          ram: server.limits.memory,
+          splits: server.feature_limits.splits,
+          ip: allocation.ip,
+          port: allocation.port,
+          id: server.id,
+          uuid: server.uuid,
+          plan: subscription.stripe.name,
+        };
+        return (
+          <PteroServerCard key={server.id} {...pteroServerCardProps}>
+            <PteroServerCardHeader>
+              <PteroServerCardTitle />
+              <PteroServerCardDropdown />
+            </PteroServerCardHeader>
+            <PteroServerCardDivider />
+            <PteroServerCardFooter />
+          </PteroServerCard>
+        );
+      })}
     </div>
   );
 }
