@@ -16,10 +16,7 @@ export function DTOCustomerStripe({
           plan: { active, interval_count },
           price: { product, unit_amount: price },
         }) => {
-          if (product && typeof product === 'string') {
-            return { active, interval_count, product, price };
-          }
-          return null;
+          return { active, interval_count, product, price };
         },
       );
       const planData = {
