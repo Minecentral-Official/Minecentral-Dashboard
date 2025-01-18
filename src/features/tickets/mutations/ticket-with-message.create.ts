@@ -38,7 +38,7 @@ export default async function createTicketWithMessage(
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
   });
 
-  revalidateTag(`tickets-data-${user.id}`);
+  revalidateTag(`tickets-user-${user.id}`);
 
   redirect(
     '/dashboard/tickets?toast-success=true&toast-message=Ticket%20successfully%20created&toast-id=create-ticket',

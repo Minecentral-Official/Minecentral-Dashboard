@@ -13,7 +13,7 @@ export default async function ticketMessagesGet(ticketId: number) {
 async function cachedMessages(ticketId: number) {
   'use cache';
   cacheLife('minutes');
-  cacheTag(`ticket-message-${ticketId}`);
+  cacheTag(`ticket-messages-${ticketId}`);
   return await db.query.ticketMessage.findMany({
     where: eq(ticketMessage.ticketId, ticketId),
     orderBy: (messages, { desc }) => [desc(messages.createdAt)],

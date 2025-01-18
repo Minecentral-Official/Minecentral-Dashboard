@@ -25,7 +25,6 @@ export default async function createTicketMessage(
   }
 
   const { message, ticketId } = submission.value;
-  console.log('message: ', message);
   await db.transaction(async (tx) => {
     //Update Ticket Status
     const ticketData = await tx.query.ticket.findFirst({
@@ -48,5 +47,5 @@ export default async function createTicketMessage(
       .returning();
   });
   // TODO: once we have caching we can have more granular control here
-  revalidateTag(`ticket-${ticketId}`);
+  revalidateTag(`ticket-messages-${ticketId}`);
 }

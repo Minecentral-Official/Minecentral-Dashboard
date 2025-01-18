@@ -15,7 +15,7 @@ export default async function ticketsGetAll() {
 async function cachedTickets(userId: string) {
   'use cache';
   cacheLife('hours');
-  cacheTag(`tickets-data-${userId}`);
+  cacheTag(`tickets-user-${userId}`);
 
   const response = await db.query.ticket.findMany({
     where: eq(ticket.userId, userId),

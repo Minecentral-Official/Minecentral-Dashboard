@@ -2,11 +2,11 @@ import LogoMark from '@/components/logos/logo-mark';
 import { MinecentralServices } from '@/lib/types/minecentral-services.type';
 
 type LogoProps = {
-  service: MinecentralServices | 'all';
+  service?: MinecentralServices | 'all';
 };
 
 export default function Logo({ service }: LogoProps) {
-  const serviceDisplay = service.toUpperCase();
+  const serviceDisplay = service?.toUpperCase();
 
   return (
     <div className='flex items-center gap-2'>
