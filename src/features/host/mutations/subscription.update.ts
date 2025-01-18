@@ -3,7 +3,7 @@ import 'server-only';
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { hostSubscription } from '@/lib/db/schema';
+import { hostSubscriptionTable } from '@/lib/db/schema';
 
 export async function hostUpdateSubscription({
   hostId,
@@ -15,12 +15,12 @@ export async function hostUpdateSubscription({
   pterodactylServerUuid: string;
 }) {
   const result = await db
-    .update(hostSubscription)
+    .update(hostSubscriptionTable)
     .set({
       pterodactylServerId,
       pterodactylServerUuid,
     })
-    .where(eq(hostSubscription.id, hostId))
+    .where(eq(hostSubscriptionTable.id, hostId))
     .returning();
 
   return result;

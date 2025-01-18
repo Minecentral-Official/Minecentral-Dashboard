@@ -1,6 +1,6 @@
 import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 
-import { hostSubscription, user } from '@/lib/db/schema';
+import { hostSubscriptionTable, user } from '@/lib/db/schema';
 
 export const resourceRelease = pgTable('resourceRelease', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -28,5 +28,5 @@ type PluginPostBase = typeof resourceRelease.$inferSelect;
 
 export type PluginPost = PluginPostBase & {
   user: typeof user.$inferSelect;
-  subscriptions: (typeof hostSubscription.$inferSelect)[];
+  subscriptions: (typeof hostSubscriptionTable.$inferSelect)[];
 };

@@ -1,4 +1,4 @@
-import userGetHostSubscriptions from '@/features/host/queries/subscription/get-subscriptions.user';
+import hostUserListSubscriptions from '@/features/host/queries/subscription/subscriptions.user';
 
 import 'server-only';
 
@@ -11,7 +11,7 @@ type TSubscription = {
 };
 
 export async function userGetPterodactylServerCount() {
-  const subscriptions = await userGetHostSubscriptions();
+  const subscriptions = await hostUserListSubscriptions();
 
   //Grab a list of host subscriptions that have servers attached
   const subscriptionsWithValidServerId = subscriptions.filter(

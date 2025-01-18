@@ -1,9 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 
-import { hostSubscription, user } from '@/lib/db/schema';
+import { hostSubscriptionTable, user } from '@/lib/db/schema';
 
-export const hostCustomer = pgTable('hostCustomer', {
+export const hostCustomerTable = pgTable('hostCustomer', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
   userId: text()
     .notNull()
@@ -15,19 +15,19 @@ export const hostCustomer = pgTable('hostCustomer', {
 });
 
 export const hostCustomerRelations = relations(
-  hostCustomer,
+  hostCustomerTable,
   ({ one, many }) => ({
     user: one(user, {
-      fields: [hostCustomer.userId],
+      fields: [hostCustomerTable.userId],
       references: [user.id],
     }),
-    subscriptions: many(hostSubscription),
+    subscriptions: many(hostSubscriptionTable),
   }),
 );
 
-type HostCustomerBase = typeof hostCustomer.$inferSelect;
+type HostCustomerBase = typeof hostCustomerTable.$inferSelect;
 
 export type HostCustomer = HostCustomerBase & {
   user: typeof user.$inferSelect;
-  subscriptions: (typeof hostSubscription.$inferSelect)[];
+  subscriptions: (typeof hostSubscriptionTable.$inferSelect)[];
 };

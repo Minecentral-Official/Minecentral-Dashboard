@@ -1,4 +1,4 @@
-import type hostGetProducts from '@/features/host/queries/products.get';
+import type hostGetProducts from '@/features/host/queries/customer/products.get';
 
 export function DTOProductDefault({
   metadata,

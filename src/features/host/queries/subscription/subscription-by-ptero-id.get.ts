@@ -5,12 +5,12 @@ import { hostSubscriptionTable } from '@/lib/db/schema';
 
 import 'server-only';
 
-export default async function hostGetSubscriptionByStripeId(
-  stripeSubscriptionId: string,
+export default async function hostGetSubscriptionByPterodactylId(
+  serverId: number,
 ) {
   const hostSubscription = await db.query.hostSubscriptionTable.findFirst({
-    where: eq(hostSubscriptionTable.stripeSubscriptionId, stripeSubscriptionId),
-    with: { customer: { with: { user: true, subscriptions: true } } },
+    where: eq(hostSubscriptionTable.pterodactylServerId, serverId),
+    with: { customer: { with: { subscriptions: true, user: true } } },
   });
   return hostSubscription;
 }

@@ -1,5 +1,5 @@
 import { DTOProductDefault } from '@/features/host/dto/default-product.dto';
-import hostGetProducts from '@/features/host/queries/products.get';
+import hostGetProducts from '@/features/host/queries/customer/products.get';
 
 import 'server-only';
 

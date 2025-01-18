@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { hostCustomer } from '@/lib/db/schema';
+import { hostCustomerTable } from '@/lib/db/schema';
 
 import 'server-only';
 
@@ -15,7 +15,7 @@ export async function hostCreateCustomer({
   // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a user
 
   const result = await db
-    .insert(hostCustomer)
+    .insert(hostCustomerTable)
     .values({
       userId,
       pterodactylUserId,

@@ -1,7 +1,7 @@
 import { DTOProductHost } from '@/features/host/dto/host-product.dto';
 import { pterodactylGetAllocationById } from '@/features/host/pterodactyl/queries/allocation-by-id.get';
 import { pterodactylGetServerById } from '@/features/host/pterodactyl/queries/server-by-id.get';
-import hostGetSubscriptionByServerId from '@/features/host/queries/subscription/subscription-by-server-id.get';
+import hostGetSubscriptionByPterodactylId from '@/features/host/queries/subscription/subscription-by-ptero-id.get';
 import { getStripeProductByPurchaseSubId } from '@/lib/stripe/queries/listings/product-listing-by-purchase-sub-id.get';
 
 export async function pterodactylGetFullServerData({
@@ -12,7 +12,7 @@ export async function pterodactylGetFullServerData({
   //Pterodactyl data
   const pterodactylRequest = pterodactylGetServerById(pterodactylServerId);
   const hostSubscriptionRequest =
-    hostGetSubscriptionByServerId(pterodactylServerId);
+    hostGetSubscriptionByPterodactylId(pterodactylServerId);
 
   //Wait for data
   const [pterodactylServer, hostSubscription] = await Promise.all([
