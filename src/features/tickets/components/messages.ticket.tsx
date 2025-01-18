@@ -1,18 +1,22 @@
 import { Fragment } from 'react';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
+import ticketMessagesGet from '@/features/tickets/queries/messages.get';
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
-import type { Ticket } from '@/features/tickets/schemas/ticket.type';
-
-export default async function TicketMessages({ ticket }: { ticket: Ticket }) {
+export default async function TicketMessages({
+  ticketId,
+}: {
+  ticketId: number;
+}) {
   const { user } = await validateSession();
+  const messages = await ticketMessagesGet(ticketId);
   return (
     <ScrollArea className='h-[350px] w-full rounded-md border'>
-      {ticket.messages.map((reply, index) => (
+      {messages.map((reply, index) => (
         <div
-          key={reply.id}
+          key={index}
           className={`flex items-start space-x-4 p-4 ${
             index === 0 ? 'bg-gray-50' : 'bg-white'
           }`}
@@ -30,7 +34,7 @@ export default async function TicketMessages({ ticket }: { ticket: Ticket }) {
                 {new Date(reply.createdAt).toLocaleString()}
               </span>
             </div>
-            <p className='text-sm text-gray-700' key={index}>
+            <p className='text-sm text-gray-700'>
               {reply.message.split('\n').map((line, index) => (
                 <Fragment key={index}>
                   {line}

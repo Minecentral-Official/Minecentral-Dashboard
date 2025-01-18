@@ -1,5 +1,7 @@
 import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
+import { roleConfig } from '@/lib/auth/configs/roles.config';
+
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
@@ -8,7 +10,7 @@ export const user = pgTable('user', {
   image: text('image'),
   createdAt: timestamp('createdAt').notNull(),
   updatedAt: timestamp('updatedAt').notNull(),
-  role: text('role'),
+  role: text({ enum: roleConfig }).default('user'),
   banned: boolean('banned'),
   banReason: text('banReason'),
   banExpires: timestamp('banExpires'),

@@ -1,6 +1,7 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
+import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { insertTicketWithMessageZod } from '@/features/tickets/schemas/ticket-with-message.zod';
@@ -36,6 +37,8 @@ export default async function createTicketWithMessage(
       .insert(ticketMessage)
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
   });
+
+  revalidateTag(`tickets-data-${user.id}`);
 
   redirect(
     '/dashboard/tickets?toast-success=true&toast-message=Ticket%20successfully%20created&toast-id=create-ticket',

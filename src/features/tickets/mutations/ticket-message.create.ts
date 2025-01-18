@@ -2,7 +2,7 @@
 
 import { parseWithZod } from '@conform-to/zod';
 import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
@@ -48,5 +48,5 @@ export default async function createTicketMessage(
       .returning();
   });
   // TODO: once we have caching we can have more granular control here
-  revalidatePath('/dashboard/tickets');
+  revalidateTag(`ticket-${ticketId}`);
 }

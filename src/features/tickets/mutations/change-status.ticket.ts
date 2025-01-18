@@ -2,6 +2,7 @@
 
 import { parseWithZod } from '@conform-to/zod';
 import { and, eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 
 import { updateTicketStatusZod } from '@/features/tickets/schemas/ticket-status.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
@@ -32,4 +33,5 @@ export default async function ticketsChangeStatus(
   }
 
   await db.update(ticketTable).set({ status }).where(eq(ticketTable.id, id));
+  revalidateTag(`ticket-${id}`);
 }

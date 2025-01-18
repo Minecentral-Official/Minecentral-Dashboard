@@ -27,7 +27,7 @@ export default async function TicketDetails({
         </div>
         <CardDescription>{ticket.category}</CardDescription>
       </div>
-      <TicketMessages ticket={ticket} />
+      <TicketMessages ticketId={ticket.id} />
       <div className='w-full'>
         <ReplyTicketForm ticketId={ticket.id} />
       </div>

@@ -4,5 +4,4 @@ type TicketMessageBase = typeof ticketMessage.$inferSelect;
 
 export type TicketMessage = TicketMessageBase & {
   user: typeof user.$inferSelect;
-  // ticket: Ticket;
 };
