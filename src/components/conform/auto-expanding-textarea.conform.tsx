@@ -44,7 +44,6 @@ export default function AutoExpandingTextareaConform({
   }, [value, change]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e.target.value);
     change(e.target.value);
   };
 

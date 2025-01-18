@@ -12,7 +12,6 @@ export async function HostStripeSubscriptionDetails({
   stripeProduct: MCProduct_Host;
   hostSubscription: HostSubscription;
 }) {
-  console.log(stripeProduct);
   return (
     <Card className='w-full'>
       <CardHeader className='flex flex-row justify-between'>

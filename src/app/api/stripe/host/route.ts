@@ -22,7 +22,7 @@ export async function POST(req: Request) {
         serverEnv.STRIPE_WEBHOOK_SECRET_KEY,
       );
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return new Response(`Webhook Error`, { status: 400 });
     }
 

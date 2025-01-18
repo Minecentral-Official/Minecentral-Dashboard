@@ -63,8 +63,6 @@ export default function ComparisonSection() {
     data: dataArray.map((item) => item[row]),
   }));
 
-  console.log(bodyArray);
-
   return (
     <SectionWrapper>
       <div className='flex flex-col items-start gap-4 py-20 lg:py-40'>

@@ -8,8 +8,6 @@ import { hostGetDefaultProducts } from '@/features/host/queries/customer/default
 export default async function PricingTableSection() {
   const defaultProducts = await hostGetDefaultProducts();
 
-  console.log(defaultProducts);
-
   return (
     <SectionWrapper>
       <div className='flex flex-col items-center justify-center gap-4 text-center'>

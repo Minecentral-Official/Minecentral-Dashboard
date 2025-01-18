@@ -46,7 +46,7 @@ export default async function hostStripeCreatePaymentMethodChangeIntent(
 
     return Response.json({ success: true });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     // res.status(400).send({ error: error.message });
   }
 }

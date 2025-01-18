@@ -26,8 +26,6 @@ export default function DataBreadcrumbs() {
   const pathLinkItems = pathItems.slice(0, -1);
   const currentPath = pathItems[pathItems.length - 1];
 
-  console.log(pathLinkItems);
-
   return (
     <Breadcrumb>
       <BreadcrumbList>

@@ -14,7 +14,7 @@ import { userGetPterodactylServers } from '@/features/host/pterodactyl/queries/g
 
 export default async function HostServersPage() {
   const serverData = await userGetPterodactylServers();
-  // console.log(serverData);
+
   return (
     <div className='flex flex-col gap-6'>
       <div className='flex flex-wrap gap-6'>

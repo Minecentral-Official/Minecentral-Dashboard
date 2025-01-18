@@ -1,3 +1,6 @@
+'use cache';
+
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
 import DTOPriceStripe from '@/lib/stripe/dto/price.dto';
 
@@ -8,7 +11,9 @@ import 'server-only';
 // This way we don't need to worry about the Product Type in the future
 
 // Also I put this in general because it is not host specific
-export default async function getPricesListingFromProductId(productId: string) {
+export default async function getPriceListingsFromProductId(productId: string) {
+  cacheLife('days');
+  cacheTag('price-listing-data', productId);
   const { data: prices } = await stripeAPI.prices.list({
     product: productId,
     active: true,

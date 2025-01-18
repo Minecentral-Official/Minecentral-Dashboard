@@ -1,9 +1,13 @@
+'use cache';
+
+import { cacheLife } from '@/lib/cache/cache-exports';
 import getPrices from '@/lib/stripe/queries/listings/prices-listing.get';
 import getProducts from '@/lib/stripe/queries/listings/products-listing.get';
 
 import 'server-only';
 
 export default async function getProductsWithPrices() {
+  cacheLife('days');
   // get all products and get all prices
   const productsPromise = getProducts();
   const pricesPromise = getPrices();

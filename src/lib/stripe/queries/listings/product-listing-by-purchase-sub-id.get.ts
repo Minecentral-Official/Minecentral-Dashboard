@@ -1,7 +1,11 @@
+'use cache';
+
+import { cacheLife } from '@/lib/cache/cache-exports';
 import DTOProductStripe from '@/lib/stripe/dto/product.dto';
 import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
 
 export async function getStripeProductByPurchaseSubId(subId: string) {
+  cacheLife('days');
   const subscription = await getStripeSubscriptionById(subId);
 
   const product = subscription.items.data[0].plan.product;
