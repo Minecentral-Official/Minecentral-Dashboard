@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { CardDescription } from '@/components/ui/card';
-import ReplyTicketForm from '@/features/tickets/components/forms/reply-ticket.form';
+import TicketReplyForm from '@/features/tickets/components/forms/ticket-reply.form';
 import TicketMessages from '@/features/tickets/components/messages.ticket';
 import TicketStatusSelect from '@/features/tickets/components/select/ticket-status.select';
 import ticketsGetSingle from '@/features/tickets/queries/single.get';
@@ -29,7 +29,7 @@ export default async function TicketDetails({
       </div>
       <TicketMessages ticketId={ticket.id} />
       <div className='w-full'>
-        <ReplyTicketForm ticketId={ticket.id} />
+        <TicketReplyForm ticketId={ticketId} />
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export default async function TicketMessages({
         <div
           key={index}
           className={`flex items-start space-x-4 p-4 ${
-            index === 0 ? 'bg-gray-50' : 'bg-white'
+            index % 2 ? 'bg-gray-200' : 'bg-secondary'
           }`}
         >
           <WrapperAvatar name={reply.user.name} image={reply.user.image} />

@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import createTicketMessage from '@/features/tickets/mutations/ticket-message.create';
 import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
 
-export default function ReplyTicketForm({ ticketId }: { ticketId: number }) {
+export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const [lastResult, action] = useActionState(createTicketMessage, undefined);
