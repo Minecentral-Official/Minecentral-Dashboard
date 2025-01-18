@@ -15,8 +15,6 @@ export default async function getPrices() {
     limit: 100,
   });
 
-  console.log('pricing query was called');
-
   // filter prices
   const filteredPrices = rawPrices.map((rawPrice) => DTOPriceStripe(rawPrice));
 

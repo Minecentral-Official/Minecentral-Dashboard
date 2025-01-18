@@ -39,16 +39,14 @@ export async function pterodactylGetFullServerData({
   if (!allocationData)
     throw new Error('Unable to grab allocation data from server id');
 
-  return {
-    // pterodactylServerData: {
+  const serverData = {
     server: pterodactylServer,
     allocation: allocationData,
     subscription: {
       host: hostSubscription,
       stripe: stripeProductData,
     },
-    // status: pterodactylServerStatus,
-    // },
-    // stripeProductData: validatedStripeProductData,
   };
+
+  return serverData;
 }

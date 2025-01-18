@@ -36,13 +36,13 @@ export default async function AccountOverview() {
           <div className='flex flex-col items-center'>
             <EarthIcon className='mb-2 h-8 w-8 text-primary' />
             <span className='text-2xl font-bold'>0</span>
-            <span className='text-sm text-muted-foreground'>Posted Worlds</span>
+            <span className='text-sm text-muted-foreground'>Worlds Listed</span>
           </div>
           <div className='flex flex-col items-center'>
             <Plugin className='mb-2 h-8 w-8 text-primary' />
             <span className='text-2xl font-bold'>0</span>
             <span className='text-sm text-muted-foreground'>
-              Published Plugins
+              Resources Posted
             </span>
           </div>
         </div>

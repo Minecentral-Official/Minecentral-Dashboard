@@ -6,7 +6,7 @@ import PterodactylServerCard, {
 } from '@/features/host/components/cards/pterodactyl-server.card';
 import { HostStripeSubscriptionLinks } from '@/features/host/components/cards/subscription-links.card';
 import { HostStripeSubscriptionDetails } from '@/features/host/components/stripe/subscription-details';
-import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full.get';
+import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full-data.get';
 
 type PageProps = {
   params: Promise<{ serverId: number }>;

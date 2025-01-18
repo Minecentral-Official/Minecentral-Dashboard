@@ -1,7 +1,7 @@
 'use cache';
 
 import { cacheLife } from '@/lib/cache/cache-exports';
-import DTOProductStripe from '@/lib/stripe/dto/product.dto';
+import getProductsWithPrices from '@/lib/stripe/queries/listings/product-listing-with-prices.get';
 import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
 
 export async function getStripeProductByPurchaseSubId(subId: string) {
@@ -22,5 +22,16 @@ export async function getStripeProductByPurchaseSubId(subId: string) {
     throw new Error('this product has been deleted');
   }
 
-  return DTOProductStripe(product);
+  const productId = product.id;
+
+  //Grab DTO product from cache
+  const productsWithPrices = await getProductsWithPrices();
+
+  const productFound = productsWithPrices.find(
+    (product) => product.id === productId,
+  );
+
+  if (!productFound) throw new Error('Could not find product somehow?');
+
+  return productFound;
 }

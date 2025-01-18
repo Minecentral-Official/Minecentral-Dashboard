@@ -1,15 +1,8 @@
-import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full.get';
+import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full-data.get';
 import hostUserListSubscriptions from '@/features/host/queries/subscription/subscriptions.user';
+import { HostSubscription } from '@/lib/db/schema';
 
 import 'server-only';
-
-type TSubscription = {
-  id: number;
-  pterodactylServerId: number | null;
-  pterodactylServerUuid: string | null;
-  stripeSubscriptionId: string;
-  hostCustomerId: number;
-};
 
 export async function userGetPterodactylServers() {
   const subscriptions = await hostUserListSubscriptions();
@@ -18,7 +11,7 @@ export async function userGetPterodactylServers() {
   const subscriptionsWithValidServerId = subscriptions.filter(
     (
       subscription,
-    ): subscription is TSubscription & {
+    ): subscription is HostSubscription & {
       pterodactylServerId: number;
       pterodactylServerUuid: string;
     } => !!subscription.pterodactylServerId,
