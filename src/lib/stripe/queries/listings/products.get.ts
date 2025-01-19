@@ -6,7 +6,7 @@ import DTOProductStripe from '@/lib/stripe/dto/product.dto';
 
 import 'server-only';
 
-export default async function getProducts() {
+export default async function stripeGetProducts() {
   cacheLife('days');
   // Get all the products
   const { data: rawProducts } = await stripeAPI.products.list({

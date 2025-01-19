@@ -2,13 +2,13 @@
 
 import { cacheLife } from '@/lib/cache/cache-exports';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
+import stripeGetSubscriptionById from '@/lib/stripe/queries/purchases/subscription-by-id.get';
 
 import 'server-only';
 
 export default async function stripeGetCustomerBySubscriptionId(subId: string) {
   cacheLife('days');
-  const { customer } = await getStripeSubscriptionById(subId);
+  const { customer } = await stripeGetSubscriptionById(subId);
 
   if (typeof customer !== 'string') {
     throw new Error(

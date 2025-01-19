@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import { pterodactylGetAllocationByNodeIdAndAllocationId } from '@/features/host/pterodactyl/queries/allocation-by-node-id-and-allocation-id.get';
 import { pterodactylGetServerById } from '@/features/host/pterodactyl/queries/server-by-server-id.get';
 import hostGetSubscriptionByPterodactylId from '@/features/host/queries/subscription/subscription-by-ptero-id.get';
-import { getStripeProductListingByPurchaseSubId } from '@/lib/stripe/queries/listings/product-listing-by-purchase-sub-id.get';
+import { stripeGetProductWithPricesBySubscriptionId } from '@/lib/stripe/queries/listings/product-with-price-by-sub-id.get';
 
 type PteroServerCardDividerProps = {
   serverId: number;
@@ -25,9 +25,10 @@ export default async function PteroServerCardDivider({
   const subscriptionTableData =
     await hostGetSubscriptionByPterodactylId(serverId);
 
-  const subscriptionListingData = await getStripeProductListingByPurchaseSubId(
-    subscriptionTableData?.stripeSubscriptionId ?? '',
-  );
+  const subscriptionListingData =
+    await stripeGetProductWithPricesBySubscriptionId(
+      subscriptionTableData?.stripeSubscriptionId ?? '',
+    );
 
   return (
     <div className='mb-6 flex items-center gap-2'>

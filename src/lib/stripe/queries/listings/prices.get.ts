@@ -6,7 +6,7 @@ import DTOPriceStripe from '@/lib/stripe/dto/price.dto';
 
 import 'server-only';
 
-export default async function getPrices() {
+export default async function stripeGetPrices() {
   cacheLife('days');
   cacheTag('prices-data');
   // get all prices

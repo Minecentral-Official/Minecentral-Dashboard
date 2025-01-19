@@ -4,7 +4,7 @@ import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription/
 import { hostWebhookPaymentSuccess } from '@/features/host/webhook/payment.success';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
-import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
+import stripeGetSubscriptionById from '@/lib/stripe/queries/purchases/subscription-by-id.get';
 
 import type { THostPayment } from '@/features/host/schemas/host-payment.type';
 
@@ -59,7 +59,7 @@ async function getSubscription(
   if (typeof stripeSubscriptionId !== 'string')
     throw new Error('Subscription is not a string!');
   const stripeSubscription =
-    await getStripeSubscriptionById(stripeSubscriptionId);
+    await stripeGetSubscriptionById(stripeSubscriptionId);
 
   //Grab HOST subscription via STRIPE subscription id
   const hostSubscription = await hostGetSubscriptionByStripeId(
