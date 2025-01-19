@@ -1,3 +1,5 @@
+'use cache';
+
 import HostCtaSection from '@/features/host/components/sections/general/host-cta.section';
 import ComparisonSection from '@/features/host/components/sections/landing/comparison.section';
 import { FeaturesSection } from '@/features/host/components/sections/landing/features.section';

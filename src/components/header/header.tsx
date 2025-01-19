@@ -23,9 +23,7 @@ export default function Header({ service, config }: HeaderProps) {
         </div>
         <div className='flex w-full justify-end gap-4'>
           <AuthNav>
-            <div>
-              <DataAvatar />
-            </div>
+            <DataAvatar />
           </AuthNav>
         </div>
         <div className='flex w-12 shrink items-end justify-end lg:hidden'>

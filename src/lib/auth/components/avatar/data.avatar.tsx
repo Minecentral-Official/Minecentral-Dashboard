@@ -1,12 +1,8 @@
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
-import getSession from '@/lib/auth/helpers/get-session';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function DataAvatar() {
-  const session = await getSession();
-
-  if (!session) {
-    throw new Error('no session found');
-  }
+  const session = await validateSession();
 
   return (
     <WrapperAvatar
