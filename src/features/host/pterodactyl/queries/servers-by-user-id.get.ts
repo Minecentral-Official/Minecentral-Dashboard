@@ -1,11 +1,11 @@
-import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full-data.get';
-import hostUserListSubscriptions from '@/features/host/queries/subscription/subscriptions.user';
+import { pterodactylGetServerById } from '@/features/host/pterodactyl/queries/server-by-server-id.get';
+import hostSubscriptionsByUserId from '@/features/host/queries/subscription/subscriptions-by-user-id.get';
 import { HostSubscription } from '@/lib/db/schema';
 
 import 'server-only';
 
-export async function userGetPterodactylServers() {
-  const subscriptions = await hostUserListSubscriptions();
+export async function pterodactylGetServersByUserId(userId: string) {
+  const subscriptions = await hostSubscriptionsByUserId(userId);
 
   //Grab a list of host subscriptions that have servers attached
   const subscriptionsWithValidServerId = subscriptions.filter(
@@ -18,9 +18,7 @@ export async function userGetPterodactylServers() {
   );
 
   const serverDataPromises = subscriptionsWithValidServerId.map(
-    async (data) => {
-      return pterodactylGetFullServerData(data);
-    },
+    ({ pterodactylServerId }) => pterodactylGetServerById(pterodactylServerId),
   );
 
   const serverData = await Promise.all(serverDataPromises);

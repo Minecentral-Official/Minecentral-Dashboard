@@ -13,13 +13,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 type ManageServerDropdownProps = {
-  id: number;
-  uuid: string;
+  serverId: number;
+  serverUuid: string;
 };
 
 export default function ManageServerDropdown({
-  id,
-  uuid,
+  serverId: id,
+  serverUuid: uuid,
 }: ManageServerDropdownProps) {
   return (
     <DropdownMenu>

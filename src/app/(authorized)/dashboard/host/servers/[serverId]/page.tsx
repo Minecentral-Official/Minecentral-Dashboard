@@ -1,12 +1,11 @@
-import PterodactylServerCard, {
-  PteroServerCardDivider,
-  PteroServerCardFooter,
-  PteroServerCardHeader,
-  PteroServerCardTitle,
-} from '@/features/host/components/cards/pterodactyl-server.card';
+import PteroServerCard from '@/features/host/components/cards/ptero-server/ptero-server.card';
+import PteroServerCardFooter from '@/features/host/components/cards/ptero-server/ptero-server.card-footer';
+import PteroServerCardHeader from '@/features/host/components/cards/ptero-server/ptero-server.card-header';
+import PteroServerCardDivider from '@/features/host/components/cards/ptero-server/ptero-server.card-separator';
+import PteroServerCardTitle from '@/features/host/components/cards/ptero-server/ptero-server.card-title';
 import { HostStripeSubscriptionLinks } from '@/features/host/components/cards/subscription-links.card';
-import { HostStripeSubscriptionDetails } from '@/features/host/components/stripe/subscription-details';
-import { pterodactylGetFullServerData } from '@/features/host/pterodactyl/queries/server-full-data.get';
+import { HostStripeSubscriptionDetailsCard } from '@/features/host/components/stripe/subscription-details';
+import { pterodactylGetServerById } from '@/features/host/pterodactyl/queries/server-by-server-id.get';
 
 type PageProps = {
   params: Promise<{ serverId: number }>;
@@ -14,56 +13,31 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { serverId } = await params;
-  const { server, allocation, subscription } =
-    await pterodactylGetFullServerData({ pterodactylServerId: serverId });
 
-  const pteroServerCardProps = {
-    name: server.name,
-    backups: server.feature_limits.backups,
-    cpuThreads: server.limits.cpu,
-    databases: server.feature_limits.databases,
-    storage: server.limits.disk,
-    ram: server.limits.memory,
-    splits: server.feature_limits.splits,
-    ip: allocation.ip,
-    port: allocation.port,
-    id: server.id,
-    uuid: server.uuid,
-    plan: subscription.stripe.name,
-  };
-
-  const hostStripeSubscriptionDetailsProps = {
-    hostSubscription: subscription.host,
-    stripeProduct: subscription.stripe,
-  };
-
+  const { uuid } = await pterodactylGetServerById(serverId);
   return (
     <div className='flex flex-col gap-6'>
-      <PterodactylServerCard {...pteroServerCardProps}>
+      <PteroServerCard>
         <PteroServerCardHeader>
-          <PteroServerCardTitle />
+          <PteroServerCardTitle serverId={serverId} />
         </PteroServerCardHeader>
-        <PteroServerCardDivider />
-        {/* TODO: removing this for now, creating new card for this */}
-        {/* <PteroServerCardFooter /> */}
-      </PterodactylServerCard>
+        <PteroServerCardDivider serverId={serverId} />
+      </PteroServerCard>
 
       <div className='flex flex-wrap gap-6'>
         <div className='flex-1'>
-          <HostStripeSubscriptionDetails
-            {...hostStripeSubscriptionDetailsProps}
-          />
+          <HostStripeSubscriptionDetailsCard serverId={serverId} />
         </div>
         <div className='w-full flex-none md:w-auto'>
           <HostStripeSubscriptionLinks
-            panelLink={`https://panel.ronanhost.com/server/${hostStripeSubscriptionDetailsProps.hostSubscription.pterodactylServerUuid}`}
+            panelLink={`https://panel.ronanhost.com/server/${uuid}`}
           />
         </div>
       </div>
-      <PterodactylServerCard {...pteroServerCardProps}>
+      <PteroServerCard>
         <div className='pt-6'></div>
-        <PteroServerCardFooter />
-      </PterodactylServerCard>
+        <PteroServerCardFooter serverId={serverId} />
+      </PteroServerCard>
     </div>
   );
 }

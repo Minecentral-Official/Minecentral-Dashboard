@@ -2,18 +2,19 @@ import { Plus } from 'lucide-react';
 
 import AddServerButton from '@/features/host/components/buttons/add-server.button';
 import NextPaymentCard from '@/features/host/components/cards/next-payment.card';
-import PteroServerCard, {
-  PteroServerCardDivider,
-  PteroServerCardDropdown,
-  PteroServerCardFooter,
-  PteroServerCardHeader,
-  PteroServerCardTitle,
-} from '@/features/host/components/cards/pterodactyl-server.card';
+import PteroServerCard from '@/features/host/components/cards/ptero-server/ptero-server.card';
+import PteroServerCardDropdown from '@/features/host/components/cards/ptero-server/ptero-server.card-dropdown';
+import PteroServerCardFooter from '@/features/host/components/cards/ptero-server/ptero-server.card-footer';
+import PteroServerCardHeader from '@/features/host/components/cards/ptero-server/ptero-server.card-header';
+import PteroServerCardDivider from '@/features/host/components/cards/ptero-server/ptero-server.card-separator';
+import PteroServerCardTitle from '@/features/host/components/cards/ptero-server/ptero-server.card-title';
 import ServerCountCard from '@/features/host/components/cards/server-count.card';
-import { userGetPterodactylServers } from '@/features/host/pterodactyl/queries/get-servers.user';
+import { pterodactylGetServersByUserId } from '@/features/host/pterodactyl/queries/servers-by-user-id.get';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function HostServersPage() {
-  const serverData = await userGetPterodactylServers();
+  const { user } = await validateSession();
+  const serverData = await pterodactylGetServersByUserId(user.id);
 
   return (
     <div className='flex flex-col gap-6'>
@@ -26,32 +27,16 @@ export default async function HostServersPage() {
           <Plus className='scale-150' />
         </AddServerButton>
       </div>
-      {serverData.map(({ server, allocation, subscription }) => {
-        const pteroServerCardProps = {
-          name: server.name,
-          backups: server.feature_limits.backups,
-          cpuThreads: server.limits.cpu,
-          databases: server.feature_limits.databases,
-          storage: server.limits.disk,
-          ram: server.limits.memory,
-          splits: server.feature_limits.splits,
-          ip: allocation.ip,
-          port: allocation.port,
-          id: server.id,
-          uuid: server.uuid,
-          plan: subscription.stripe.name,
-        };
-        return (
-          <PteroServerCard key={server.id} {...pteroServerCardProps}>
-            <PteroServerCardHeader>
-              <PteroServerCardTitle />
-              <PteroServerCardDropdown />
-            </PteroServerCardHeader>
-            <PteroServerCardDivider />
-            <PteroServerCardFooter />
-          </PteroServerCard>
-        );
-      })}
+      {serverData.map(({ id }) => (
+        <PteroServerCard key={id}>
+          <PteroServerCardHeader>
+            <PteroServerCardTitle serverId={id} />
+            <PteroServerCardDropdown serverId={id} />
+          </PteroServerCardHeader>
+          <PteroServerCardDivider serverId={id} />
+          <PteroServerCardFooter serverId={id} />
+        </PteroServerCard>
+      ))}
     </div>
   );
 }

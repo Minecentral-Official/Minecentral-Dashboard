@@ -1,14 +1,11 @@
 import { NodeAllocation } from 'pterodactyl.ts';
 
 export function pteroAllocationDTO(
-  pteroAllocationData: Awaited<NodeAllocation | undefined>,
+  pteroAllocationData: Awaited<NodeAllocation>,
 ) {
-  if (!pteroAllocationData) return undefined;
-  const { id, ip, port, assigned } = pteroAllocationData;
+  const { ip, port } = pteroAllocationData;
   return {
-    id,
     ip,
     port,
-    assigned,
   };
 }

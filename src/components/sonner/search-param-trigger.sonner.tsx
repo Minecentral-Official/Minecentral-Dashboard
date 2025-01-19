@@ -1,11 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 export default function SearchParamTriggerSonner() {
+  return (
+    <Suspense>
+      <SearchParamTriggerSonnerContent />
+    </Suspense>
+  );
+}
+
+function SearchParamTriggerSonnerContent() {
   const searchParams = useSearchParams();
   const toastSuccess = searchParams.get('toast-success');
   const toastMessage = searchParams.get('toast-message');

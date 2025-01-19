@@ -1,6 +1,7 @@
 import { EarthIcon, PlugIcon as Plugin, Server } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// eslint-disable-next-line boundaries/element-types
 import HostServerCount from '@/features/host/components/data-driven/server-count.data';
 import DataAvatar from '@/lib/auth/components/avatar/data.avatar';
 import validateSession from '@/lib/auth/helpers/validate-session';

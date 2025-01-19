@@ -4,7 +4,7 @@ import { cacheLife } from '@/lib/cache/cache-exports';
 import getProductsWithPrices from '@/lib/stripe/queries/listings/product-listing-with-prices.get';
 import getStripeSubscriptionById from '@/lib/stripe/queries/purchases/user-subscription-by-id.get';
 
-export async function getStripeProductByPurchaseSubId(subId: string) {
+export async function getStripeProductListingByPurchaseSubId(subId: string) {
   cacheLife('days');
   const subscription = await getStripeSubscriptionById(subId);
 

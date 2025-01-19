@@ -19,6 +19,9 @@ async function cachedTickets(userId: string) {
 
   const response = await db.query.ticket.findMany({
     where: eq(ticket.userId, userId),
+    with: {
+      messages: true,
+    },
   });
   return response;
 }

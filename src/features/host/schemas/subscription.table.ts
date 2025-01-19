@@ -7,12 +7,12 @@ import {
 } from '@/features/host/schemas/customer.table';
 
 export const hostSubscriptionTable = pgTable('hostSubscription', {
+  //Stripe Subscription ID
+  stripeSubscriptionId: text(),
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
   //Pterodactyl supplied data, ID for data grabbing and UUID for url linking
   pterodactylServerId: integer(),
   pterodactylServerUuid: text(),
-  //Stripe Subscription ID
-  stripeSubscriptionId: text().notNull(),
   //The Host Customer who purchased this
   hostCustomerId: integer()
     .references(() => hostCustomerTable.id)

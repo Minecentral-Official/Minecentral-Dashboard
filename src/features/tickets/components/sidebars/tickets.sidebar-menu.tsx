@@ -1,18 +1,10 @@
 import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
 export default function TicketsSidebarMenu() {
@@ -26,7 +18,8 @@ export default function TicketsSidebarMenu() {
               <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
             </SidebarMenuButton>
           </CollapsibleTrigger>
-          <CollapsibleContent>
+          {/* this file isnt used for anything currently, commenting this out to satisfy typescript for builds */}
+          {/* <CollapsibleContent>
             <SidebarMenuSub>
               {hostSidebarMenuConfig.map(({ name, url, ...rest }) => (
                 <SidebarMenuSubItem key={name}>
@@ -39,7 +32,7 @@ export default function TicketsSidebarMenu() {
                 </SidebarMenuSubItem>
               ))}
             </SidebarMenuSub>
-          </CollapsibleContent>
+          </CollapsibleContent> */}
         </SidebarMenuItem>
       </Collapsible>
     </SidebarMenu>

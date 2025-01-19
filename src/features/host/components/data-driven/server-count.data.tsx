@@ -1,6 +1,9 @@
-import { userGetPterodactylServerCount } from '@/features/host/pterodactyl/queries/get-server-count.user';
+import hostSubscriptionsByUserId from '@/features/host/queries/subscription/subscriptions-by-user-id.get';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function HostServerCount() {
-  const serverCount = await userGetPterodactylServerCount();
+  const { user } = await validateSession();
+  const servers = await hostSubscriptionsByUserId(user.id);
+  const serverCount = servers.length;
   return <>{serverCount}</>;
 }
