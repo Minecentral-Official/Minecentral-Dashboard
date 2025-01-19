@@ -14,7 +14,7 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function HostServersPage() {
   const { user } = await validateSession();
-  const serverData = await pterodactylGetServersByUserId(user.id);
+  const pteroServers = await pterodactylGetServersByUserId(user.id);
 
   return (
     <div className='flex flex-col gap-6'>
@@ -27,7 +27,7 @@ export default async function HostServersPage() {
           <Plus className='scale-150' />
         </AddServerButton>
       </div>
-      {serverData.map(({ id }) => (
+      {pteroServers.map(({ id }) => (
         <PteroServerCard key={id}>
           <PteroServerCardHeader>
             <PteroServerCardTitle serverId={id} />
