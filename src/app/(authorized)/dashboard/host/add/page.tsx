@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import hostGetProducts from '@/features/host/queries/customer/products.get';
+import hostGetProducts from '@/features/host/queries/products/products.get';
 
 export default async function Page() {
   const products = await hostGetProducts();

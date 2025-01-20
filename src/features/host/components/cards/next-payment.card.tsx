@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { hostStripeGetPaymentsPerMonth } from '@/features/host/queries/stripe/payments-per-month.get';
+import { hostHelperGetPaymentsPerMonth } from '@/features/host/helpers/get-payments-per-month.helper';
 
 import type { ComponentProps } from 'react';
 
@@ -17,7 +17,7 @@ type NextPaymentCardProps = {
 export default async function NextPaymentCard({
   cardProps,
 }: NextPaymentCardProps) {
-  const totalCost = await hostStripeGetPaymentsPerMonth();
+  const totalCost = await hostHelperGetPaymentsPerMonth();
   return (
     <Card {...cardProps}>
       <CardHeader>

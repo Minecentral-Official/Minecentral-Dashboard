@@ -4,7 +4,7 @@ import stripeGetCustomer from '@/lib/stripe/queries/etc/customer-by-id.get';
 
 import 'server-only';
 
-export async function hostStripeGetPaymentsPerMonth() {
+export async function hostHelperGetPaymentsPerMonth() {
   const { user } = await validateSession();
   const hostCustomer = await hostGetCustomerByUserId(user.id);
 

@@ -3,7 +3,7 @@ import { Minus, MoveRight, PhoneCall } from 'lucide-react';
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { hostGetDefaultProducts } from '@/features/host/queries/customer/default-product.get';
+import { hostGetDefaultProducts } from '@/features/host/queries/products/default-product.get';
 
 export default async function PricingTableSection() {
   const defaultProducts = await hostGetDefaultProducts();
