@@ -16,6 +16,7 @@ export const serverEnv = createEnv({
     HOST_PTERO_API_URL: z.string().url(),
     HOST_PTERO_SERVER_CREATE: z.string().transform((value) => value === 'true'),
     FRONTEND_URL: z.string().url(),
+    GITHUB_ACCESS_TOKEN: z.string(),
   },
   // eslint-disable-next-line n/no-process-env
   experimental__runtimeEnv: process.env,
