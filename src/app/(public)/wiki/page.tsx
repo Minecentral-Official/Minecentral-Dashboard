@@ -1,53 +1,24 @@
-import { FileExplorer } from '@/features/wiki/components/file-explorer';
-import { serverEnv } from '@/lib/env/server.env';
+'use client';
 
-import type { GitHubApiResponse, GitHubContent } from '@/types/github';
+import { useState } from 'react';
 
-async function getContents(): Promise<GitHubContent[]> {
-  const res = await fetch(
-    `${serverEnv.FRONTEND_URL}/api/github/files?owner=minecental&repo=minecental`,
-    {
-      cache: 'no-store',
-      headers: {
-        Accept: 'application/json',
-      },
-    },
-  );
+import FileExplorer from '@/features/wiki/components/file-explorer';
+import WikiContent from '@/features/wiki/components/wiki-content';
 
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || 'Failed to fetch repository contents');
-  }
-
-  const response: GitHubApiResponse = await res.json();
-  return response.data;
-}
-
-export default async function Home() {
-  let contents: GitHubContent[] = [];
-  let error: string | null = null;
-
-  try {
-    contents = await getContents();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    error = e.message;
-    console.error('Error fetching contents:', e);
-  }
+export default function Home() {
+  const [selectedFile, setSelectedFile] = useState('home.md');
 
   return (
-    <div className='mx-auto max-w-4xl px-4 py-8'>
-      <h1 className='mb-6 text-3xl font-bold'>Minecental Project Wiki</h1>
-
-      {error ?
-        <div className='rounded-md border border-red-200 bg-red-50 p-4 text-red-700'>
-          {error}
+    <main className='container mx-auto p-4'>
+      <h1 className='mb-4 text-3xl font-bold'>Wiki Content</h1>
+      <div className='flex gap-4'>
+        <div className='w-1/4'>
+          <FileExplorer onFileSelect={setSelectedFile} />
         </div>
-      : contents.length > 0 ?
-        <div className='rounded-lg border bg-card p-4'>
-          <FileExplorer items={contents} />
+        <div className='w-3/4'>
+          <WikiContent path={selectedFile} />
         </div>
-      : <p className='text-gray-600'>No contents found in the repository.</p>}
-    </div>
+      </div>
+    </main>
   );
 }

@@ -1,122 +1,75 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { ChevronDown, ChevronRight, FileText, Folder } from 'lucide-react';
-import Link from 'next/link';
+import { FileIcon, FolderIcon } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { clientEnv } from '@/lib/env/client.env';
 
-import type { GitHubContent } from '@/types/github';
-
-interface FileExplorerProps {
-  items: GitHubContent[];
-  basePath?: string;
+interface FileItem {
+  name: string;
+  path: string;
+  type: 'file' | 'dir';
 }
 
-interface FolderItemProps {
-  item: GitHubContent;
-  basePath: string;
-}
+export default function FileExplorer({
+  onFileSelect,
+}: {
+  onFileSelect: (path: string) => void;
+}) {
+  const [currentPath, setCurrentPath] = useState('');
+  const [contents, setContents] = useState<FileItem[]>([]);
 
-function FolderItem({ item, basePath }: FolderItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [children, setChildren] = useState<GitHubContent[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    fetchContents(currentPath);
+  }, [currentPath]);
 
-  const fetchFolderContents = async () => {
-    if (children.length > 0) {
-      setIsOpen(!isOpen);
-      return;
+  async function fetchContents(path: string) {
+    const response = await fetch(
+      `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/api/wiki-content?path=${encodeURIComponent(path)}`,
+    );
+    if (response.ok) {
+      const data = await response.json();
+      setContents(data.contents || []);
     }
+  }
 
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(
-        `/api/github/files?owner=minecental&repo=minecental&path=${item.path}`,
-        {
-          cache: 'no-store',
-        },
-      );
-
-      if (!res.ok) {
-        throw new Error('Failed to fetch folder contents');
-      }
-
-      const { data } = await res.json();
-      setChildren(data);
-      setIsOpen(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
+  function handleItemClick(item: FileItem) {
+    if (item.type === 'dir') {
+      setCurrentPath(item.path);
+    } else {
+      onFileSelect(item.path);
     }
-  };
+  }
 
   return (
-    <div className='space-y-1'>
-      <Button
-        variant='ghost'
-        className='h-auto w-full justify-start p-2 font-normal hover:bg-accent'
-        onClick={fetchFolderContents}
-      >
-        <span className='inline-flex items-center'>
-          {isOpen ?
-            <ChevronDown className='mr-2 h-4 w-4' />
-          : <ChevronRight className='mr-2 h-4 w-4' />}
-          <Folder className='mr-2 h-4 w-4' />
-          {item.name}
-        </span>
-      </Button>
-
-      {isLoading && (
-        <div className='pl-9 text-sm text-muted-foreground'>Loading...</div>
-      )}
-
-      {error && <div className='pl-9 text-sm text-red-500'>{error}</div>}
-
-      {isOpen && children.length > 0 && (
-        <div className='ml-3 border-l pl-6'>
-          <FileExplorer items={children} basePath={basePath} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-export function FileExplorer({ items, basePath = '/wiki' }: FileExplorerProps) {
-  const sortedItems = [...items].sort((a, b) => {
-    // Folders first, then files
-    if (a.type !== b.type) {
-      return a.type === 'dir' ? -1 : 1;
-    }
-    // Alphabetical order within same type
-    return a.name.localeCompare(b.name);
-  });
-
-  return (
-    <div className='space-y-1'>
-      {sortedItems.map((item) => (
-        <div key={item.path}>
-          {item.type === 'dir' ?
-            <FolderItem item={item} basePath={basePath} />
-          : <Link href={`${basePath}/${encodeURIComponent(item.path)}`}>
-              <Button
-                variant='ghost'
-                className='h-auto w-full justify-start p-2 font-normal hover:bg-accent'
-              >
-                <span className='inline-flex items-center'>
-                  <FileText className='ml-6 mr-2 h-4 w-4' />
-                  {item.name}
-                </span>
-              </Button>
-            </Link>
+    <div className='rounded-lg bg-gray-100 p-4'>
+      <h2 className='mb-2 text-xl font-semibold'>File Explorer</h2>
+      {currentPath !== '' && (
+        <button
+          onClick={() =>
+            setCurrentPath(currentPath.split('/').slice(0, -1).join('/'))
           }
-        </div>
-      ))}
+          className='mb-2 text-blue-500 hover:underline'
+        >
+          ../ (Up one level)
+        </button>
+      )}
+      <ul>
+        {contents.map((item) => (
+          <li key={item.path} className='mb-1'>
+            <button
+              onClick={() => handleItemClick(item)}
+              className='flex w-full items-center rounded p-1 text-left hover:bg-gray-200'
+            >
+              {item.type === 'dir' ?
+                <FolderIcon className='mr-2' size={16} />
+              : <FileIcon className='mr-2' size={16} />}
+              {item.name}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
