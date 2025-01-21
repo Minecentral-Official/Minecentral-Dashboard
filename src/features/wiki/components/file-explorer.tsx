@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { FileIcon, FolderIcon } from 'lucide-react';
 
-import { clientEnv } from '@/lib/env/client.env';
+import { wikiGetFolderContent } from '@/features/wiki/queries/folder-content.get';
 
 interface FileItem {
   name: string;
@@ -12,11 +12,7 @@ interface FileItem {
   type: 'file' | 'dir';
 }
 
-export default function FileExplorer({
-  onFileSelect,
-}: {
-  onFileSelect: (path: string) => void;
-}) {
+export default function FileExplorer() {
   const [currentPath, setCurrentPath] = useState('');
   const [contents, setContents] = useState<FileItem[]>([]);
 
@@ -25,12 +21,9 @@ export default function FileExplorer({
   }, [currentPath]);
 
   async function fetchContents(path: string) {
-    const response = await fetch(
-      `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/api/wiki-content?path=${encodeURIComponent(path)}`,
-    );
-    if (response.ok) {
-      const data = await response.json();
-      setContents(data.contents || []);
+    const response = await wikiGetFolderContent(path);
+    if (response !== null) {
+      setContents(response || []);
     }
   }
 
@@ -38,7 +31,7 @@ export default function FileExplorer({
     if (item.type === 'dir') {
       setCurrentPath(item.path);
     } else {
-      onFileSelect(item.path);
+      // onFileSelect(item.path);
     }
   }
 
