@@ -7,7 +7,7 @@ export function DTOCustomerStripe({
   subscriptions,
   email,
   created,
-}: Stripe.Response<Stripe.Customer>) {
+}: Stripe.Customer) {
   const subData = subscriptions?.data.map(
     ({ created: sub_created, items: { data } }) => {
       // console.log(data);

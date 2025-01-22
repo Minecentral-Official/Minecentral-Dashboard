@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import hostGetSubscriptionByStripeId from '@/features/host/queries/subscription/subscription-by-stripe-id.get';
+import hostGetSubscriptionByStripeSubscriptionId from '@/features/host/queries/subscription/subscription-by-stripe-sub-id.get';
 import { hostWebhookPaymentSuccess } from '@/features/host/webhook/payment.success';
 import { serverEnv } from '@/lib/env/server.env';
 import { stripeAPI } from '@/lib/stripe/api/stripe.api';
@@ -62,21 +62,9 @@ async function getSubscription(
     await stripeGetSubscriptionById(stripeSubscriptionId);
 
   //Grab HOST subscription via STRIPE subscription id
-  const hostSubscription = await hostGetSubscriptionByStripeId(
+  const hostSubscription = await hostGetSubscriptionByStripeSubscriptionId(
     stripeSubscription.id,
   );
-  //TYPE CASTING: Safe as this is stripe stuff, believe me!
 
-  const stripeCustomer = stripeSubscription.customer;
-
-  // Check the type of stripeCustomer to ensure it is of type Stripe.Customer
-  if (typeof stripeCustomer === 'string') {
-    throw new Error('stripeCustomer should not be a string here');
-  }
-
-  if (stripeCustomer.deleted === true) {
-    throw new Error('stripeCustomer should not be a deleted customer here');
-  }
-
-  return { stripeSubscription, stripeCustomer, hostSubscription };
+  return { hostSubscription, stripeSubscription };
 }

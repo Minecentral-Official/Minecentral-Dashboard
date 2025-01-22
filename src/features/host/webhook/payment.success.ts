@@ -1,5 +1,4 @@
 import { User } from 'better-auth';
-import Stripe from 'stripe';
 
 import { hostCreateCustomer } from '@/features/host/mutations/customer.create';
 import { hostCreateSubscription } from '@/features/host/mutations/subscription.create';
@@ -11,29 +10,27 @@ import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer/
 import { THostPayment } from '@/features/host/schemas/host-payment.type';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.get';
 import { HostSubscription } from '@/lib/db/schema';
+import { DTOCustomerStripe } from '@/lib/stripe/dto/customer.dto';
+import { DTOSubscriptionStripe } from '@/lib/stripe/dto/subscription.dto';
 import stripeGetProductById from '@/lib/stripe/queries/listings/product-by-id.get';
 import { metadataHostSchema } from '@/lib/stripe/schemas/host-metadata.zod';
 
 //Create a server if it doesnt exist or un-suspend server if created
 export async function hostWebhookPaymentSuccess({
   hostSubscription,
-  stripeCustomer,
   stripeSubscription,
 }: THostPayment) {
   try {
+    const { customer, product } = stripeSubscription;
     if (!hostSubscription) {
       //First time the person has made a payment for this subscription!
       //New purchase, give user access to their new pterodactyl server
-      const user = await getUserByEmail(stripeCustomer.email || 'n/a');
+      const user = await getUserByEmail(customer.email || 'n/a');
       if (!user)
         throw new Error(
           'Someone purchased a server without creating an account first!',
         );
-      hostSubscription = await createHostSubscription(
-        stripeSubscription,
-        stripeCustomer,
-        user,
-      );
+      hostSubscription = await createHostSubscription(stripeSubscription, user);
       // newPtero(stripeCustomer, user);
     }
     if (!hostSubscription)
@@ -46,9 +43,7 @@ export async function hostWebhookPaymentSuccess({
       //   'Product Info',
       //   stripeSubscription.items.data[0].plan.product,
       // );
-      const stripeMetadata = await stripeGetProductById(
-        (stripeSubscription.items.data[0].plan.product as Stripe.Product).id,
-      );
+      const stripeMetadata = await stripeGetProductById(product[0].product.id);
 
       const pteroServer = await pterodactylServerCreate(
         hostSubscription.customer.user,
@@ -72,12 +67,12 @@ export async function hostWebhookPaymentSuccess({
 }
 
 async function createHostSubscription(
-  stripeSubscription: Stripe.Subscription,
-  stripeCustomer: Stripe.Customer,
+  stripeSubscription: ReturnType<typeof DTOSubscriptionStripe>,
   user: User,
 ): Promise<HostSubscription | undefined> {
+  const { customer } = stripeSubscription;
   //Get users current customer id, as they might have purchased with us before
-  const hostCustomer = await findOrCreateHostCustomer(stripeCustomer, user);
+  const hostCustomer = await findOrCreateHostCustomer(customer, user);
   //hostCustomer is now a valid value, create a host subscription
   const hostSubscription = await hostCreateSubscription({
     hostCustomerId: hostCustomer.id,
@@ -88,7 +83,7 @@ async function createHostSubscription(
 
 //Finds or creates a Host Customer
 async function findOrCreateHostCustomer(
-  stripeCustomer: Stripe.Customer,
+  stripeCustomer: ReturnType<typeof DTOCustomerStripe>,
   user: User,
 ) {
   let hostCustomer = await hostGetCustomerByStripeCustomerId(stripeCustomer.id);
