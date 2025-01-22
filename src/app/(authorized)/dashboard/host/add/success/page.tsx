@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import hostGetServerIdBySubscriptionId from '@/features/host/queries/server-id-by-subscription-id.get';
 import { hostStripeGetSessionData } from '@/features/host/queries/stripe/session-data.get';
+import hostGetSubscriptionByStripeSubscriptionId from '@/features/host/queries/subscription/subscription-by-stripe-sub-id.get';
 import { stripeGetProductWithPricesBySubscriptionId } from '@/lib/stripe/queries/listings/product-with-price-by-sub-id.get';
 
 //HUGO: Make this page look nicer, probably cant see this page without making a fake payment
@@ -24,7 +25,15 @@ export default async function Page({
 
   const { name } =
     await stripeGetProductWithPricesBySubscriptionId(subscription_id);
-  const id = await hostGetServerIdBySubscriptionId(subscription_id);
+  const subscriptionData =
+    await hostGetSubscriptionByStripeSubscriptionId(subscription_id);
+
+  if (!subscriptionData) {
+    notFound();
+  }
+
+  const { pterodactylServerId: id } = subscriptionData;
+
   //I don't know the difference between a session status and payment status, just do something with this data xD
   return (
     <div className='flex h-full w-full items-center justify-center'>
