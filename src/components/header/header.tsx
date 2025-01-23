@@ -7,7 +7,7 @@ import AuthNav from '@/lib/auth/components/dropdowns/auth.dropdown';
 import { MinecentralServices } from '@/lib/types/minecentral-services.type';
 
 type HeaderProps = {
-  service: MinecentralServices | 'all';
+  service: MinecentralServices | 'services';
   config: NavigationConfig;
 };
 

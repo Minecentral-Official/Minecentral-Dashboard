@@ -1,6 +1,11 @@
-import { redirect } from 'next/navigation';
+import AccountOverview from '@/components/account/overview';
+import AccountQuickaccess from '@/components/account/quickaccess';
 
 export default async function Page() {
-  redirect('/dashboard/account');
-  return null;
+  return (
+    <div className='space-y-4'>
+      <AccountOverview />
+      <AccountQuickaccess />
+    </div>
+  );
 }
