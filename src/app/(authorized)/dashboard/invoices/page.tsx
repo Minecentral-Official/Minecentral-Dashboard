@@ -1,4 +1,5 @@
 import { Check, X } from 'lucide-react';
+import { Metadata } from 'next';
 
 import {
   Table,
@@ -19,6 +20,9 @@ import {
   TPurchaseInvoiceData,
 } from '@/features/host/queries/stripe/invoices.get';
 
+export const metadata: Metadata = {
+  title: 'Invoices',
+};
 //HUGO: Create invoice table with all the invoice data here!
 export default async function GeneralInvoicesPage() {
   const invoices = await hostStripeGetInvoices();

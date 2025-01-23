@@ -32,6 +32,12 @@ export default function ServiceSelectionSection() {
             href='/host'
             enabled={false}
           />
+          <ServiceLinkCard
+            title='Docs'
+            description='Find out how to create and manage your Minecentral Services'
+            href='https://docs.minecentral.net'
+            enabled={true}
+          />
         </div>
       </div>
     </SectionWrapper>
