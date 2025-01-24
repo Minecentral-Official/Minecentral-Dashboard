@@ -8,6 +8,10 @@ import { pterodactylUserFindById } from '@/features/host/pterodactyl/user/user-b
 import { pterodactylCreateUser } from '@/features/host/pterodactyl/user/user.create';
 import hostGetCustomerByStripeCustomerId from '@/features/host/queries/customer/customer-by-stripe-customer-id.get';
 import { THostPayment } from '@/features/host/schemas/host-payment.type';
+import {
+  ACTIVITY,
+  activityAddAction,
+} from '@/lib/activity/mutations/activity.add';
 import getUserByEmail from '@/lib/auth/queries/user-by-email.get';
 import { HostSubscription } from '@/lib/db/schema';
 import { DTOCustomerStripe } from '@/lib/stripe/dto/customer.dto';
@@ -73,11 +77,19 @@ async function createHostSubscription(
   const { customer } = stripeSubscription;
   //Get users current customer id, as they might have purchased with us before
   const hostCustomer = await findOrCreateHostCustomer(customer, user);
+
+  if (!hostCustomer)
+    throw new Error('Could not find or create a host customer!');
   //hostCustomer is now a valid value, create a host subscription
   const hostSubscription = await hostCreateSubscription({
-    hostCustomerId: hostCustomer.id,
+    hostCustomer,
     stripeSubscriptionId: stripeSubscription.id,
   });
+  await activityAddAction(
+    hostCustomer.userId,
+    ACTIVITY.SUBSCRIPTION_PURCHASED,
+    stripeSubscription.product[0].product.name,
+  );
   return hostSubscription;
 }
 

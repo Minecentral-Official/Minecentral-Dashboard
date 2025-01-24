@@ -5,7 +5,7 @@ import SidebarGeneral from '@/components/sidebars/general.sidebar-menu';
 import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
 import SidebarHostAdmin from '@/features/host/components/sidebar/host-admin.sidebar-menu';
 import HostSidebar from '@/features/host/components/sidebar/host.sidebar-group';
-import ResourceSidebar from '@/features/resource/components/sidebar/resource.sidebar-group';
+import ResourceSidebar from '@/features/resource/components/sidebar/resource.sidebar-menu';
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
   return (

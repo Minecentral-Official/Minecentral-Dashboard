@@ -13,3 +13,6 @@ export * from '@/features/tickets/schemas/ticket.table';
 
 // Customers
 export * from '@/lib/stripe/schemas/customer.table';
+
+//Recent Activity
+export * from '@/lib/activity/schemas/recent-activity.table';

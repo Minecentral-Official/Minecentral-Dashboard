@@ -10,6 +10,7 @@ export default async function hostGetCustomerByStripeCustomerId(
 ) {
   const hostCustomer = await db.query.hostCustomerTable.findFirst({
     where: eq(hostCustomerTable.stripeCustomerId, stripeCustomerId),
+    with: { subscriptions: true, user: true },
   });
   return hostCustomer;
 }

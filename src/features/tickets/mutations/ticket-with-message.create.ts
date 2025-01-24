@@ -5,6 +5,10 @@ import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { insertTicketWithMessageZod } from '@/features/tickets/schemas/ticket-with-message.zod';
+import {
+  ACTIVITY,
+  activityAddAction,
+} from '@/lib/activity/mutations/activity.add';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket, ticketMessage } from '@/lib/db/schema';
@@ -26,7 +30,7 @@ export default async function createTicketWithMessage(
 
   const { category, message, title } = submission.value;
 
-  await db.transaction(async (tx) => {
+  const newTicket = await db.transaction(async (tx) => {
     //Insert new ticket info
     const newTicket = await tx
       .insert(ticket)
@@ -36,7 +40,10 @@ export default async function createTicketWithMessage(
     await tx
       .insert(ticketMessage)
       .values({ message, ticketId: newTicket[0].id, userId: user.id });
+    return newTicket;
   });
+
+  await activityAddAction(user.id, ACTIVITY.NEW_TICKET, `${newTicket[0].id}`);
 
   revalidateTag(`tickets-user-${user.id}`);
 

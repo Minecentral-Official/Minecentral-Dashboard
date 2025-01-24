@@ -1,3 +1,4 @@
+import hostGetCustomerByUserId from '@/features/host/queries/customer/customer-by-user-id.get';
 import { db } from '@/lib/db';
 import { hostCustomerTable } from '@/lib/db/schema';
 
@@ -14,7 +15,7 @@ export async function hostCreateCustomer({
 }) {
   // just returning here to satisfy eslint unused vars rule. Eventually this will connect to db and create a server for a user
 
-  const result = await db
+  await db
     .insert(hostCustomerTable)
     .values({
       userId,
@@ -23,5 +24,5 @@ export async function hostCreateCustomer({
     })
     .returning();
 
-  return result[0];
+  return await hostGetCustomerByUserId(userId);
 }

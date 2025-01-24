@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
 import {
+  HostCustomer,
   hostCustomerTable,
   HostSubscription,
   hostSubscriptionTable,
@@ -10,12 +11,12 @@ import {
 import 'server-only';
 
 export async function hostCreateSubscription({
-  hostCustomerId,
+  hostCustomer,
   stripeSubscriptionId,
   pterodactylServerId,
   pterodactylServerUuid,
 }: {
-  hostCustomerId: number;
+  hostCustomer: HostCustomer;
   stripeSubscriptionId: string;
   pterodactylServerId?: number;
   pterodactylServerUuid?: string;
@@ -24,7 +25,7 @@ export async function hostCreateSubscription({
     const subscription = await tx
       .insert(hostSubscriptionTable)
       .values({
-        hostCustomerId,
+        hostCustomerId: hostCustomer.id,
         stripeSubscriptionId,
         pterodactylServerId,
         pterodactylServerUuid,
@@ -35,6 +36,7 @@ export async function hostCreateSubscription({
       where: eq(hostCustomerTable.id, subscription[0].id),
       with: { customer: { with: { subscriptions: true, user: true } } },
     });
+
     return query;
   });
 
