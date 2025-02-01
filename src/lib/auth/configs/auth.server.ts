@@ -13,6 +13,7 @@ export const auth = betterAuth({
     discord: {
       clientId: serverEnv.DISCORD_CLIENT_ID,
       clientSecret: serverEnv.DISCORD_CLIENT_SECRET,
+      redirectURI: serverEnv.DISCORD_REDIRECT,
     },
     github: {
       clientId: serverEnv.GITHUB_CLIENT_ID,
