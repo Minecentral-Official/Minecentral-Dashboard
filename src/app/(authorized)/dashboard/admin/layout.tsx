@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminGuard({ children }: PropsWithChildren) {
-  if (!validateRole('admin')) {
+  if (!(await validateRole('admin'))) {
     return redirect('/dashboard');
   }
   return <>{children}</>;
