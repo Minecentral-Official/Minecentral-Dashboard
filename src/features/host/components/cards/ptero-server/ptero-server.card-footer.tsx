@@ -29,7 +29,7 @@ export default async function PteroServerCardFooter({
         <IconWithDataDisplay
           data={memory / 1024}
           icon={MemoryStick}
-          name='RA M'
+          name='RAM'
         />
         <IconWithDataDisplay
           data={cpu / 100}
