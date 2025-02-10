@@ -13,11 +13,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import validateRole from '@/lib/auth/helpers/validate-role';
 
-export function AppSidebar({
+export async function AppSidebar({
   children,
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const isAdmin = await validateRole('admin');
   return (
     <Sidebar variant='inset' {...props}>
       <SidebarHeader>
@@ -30,7 +32,9 @@ export function AppSidebar({
                 </div>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>Minecentral</span>
-                  <span className='truncate text-xs'>Dashboard</span>
+                  <span className='truncate text-xs'>
+                    {isAdmin ? 'Admin' : 'Dashboard'}
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
