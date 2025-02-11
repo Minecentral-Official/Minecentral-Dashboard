@@ -11,6 +11,10 @@ export * from '@/features/host/schemas/customer.table';
 export * from '@/features/tickets/schemas/ticket-message.table';
 export * from '@/features/tickets/schemas/ticket.table';
 
+// Resources
+export * from '@/features/resource/schemas/resource-release.table';
+export * from '@/features/resource/schemas/resource.table';
+
 // Customers
 export * from '@/lib/stripe/schemas/customer.table';
 

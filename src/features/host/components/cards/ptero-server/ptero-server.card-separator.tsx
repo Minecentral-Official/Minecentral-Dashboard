@@ -26,16 +26,20 @@ export default async function PteroServerCardDivider({
     await hostGetSubscriptionByPterodactylId(serverId);
 
   const subscriptionListingData =
-    await stripeGetProductWithPricesBySubscriptionId(
-      subscriptionTableData?.stripeSubscriptionId ?? '',
+    !subscriptionTableData ? null : (
+      await stripeGetProductWithPricesBySubscriptionId(
+        subscriptionTableData.stripeSubscriptionId!,
+      )
     );
 
   return (
     <div className='mb-6 flex items-center gap-2'>
       <Separator className='w-4' />
-      <span className='text-xs text-muted-foreground'>
-        {subscriptionListingData.name}
-      </span>
+      {subscriptionListingData && (
+        <span className='text-xs text-muted-foreground'>
+          {subscriptionListingData.name}
+        </span>
+      )}
 
       <Separator className='flex-1' />
       <CopyToClipboard

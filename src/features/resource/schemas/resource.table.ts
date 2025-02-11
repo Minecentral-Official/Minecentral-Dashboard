@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { integer, pgTable, text } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { resourceRelease } from '@/features/resource/schemas/resource-release.table';
 import { TMinecraftVersion } from '@/features/resource/types/minecraft-versions.type';
@@ -33,8 +33,8 @@ export const resource = pgTable('resource', {
   //Other
   downloads: integer(),
   // reports?: number,
-  // updatedAt: Date,
-  // createdAt: Date,
+  updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 
 export const resourceRelations = relations(resource, ({ one }) => ({

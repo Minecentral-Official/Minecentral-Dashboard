@@ -1,26 +1,26 @@
-import { CpuIcon, ServerIcon, TestTube } from 'lucide-react';
+import { CpuIcon, PlugIcon, TestTube } from 'lucide-react';
 
 import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collapsible-sidebar.wrapper';
 
 const sidebarMenuConfig = [
   {
     name: 'Servers',
-    url: '/dashboard/admin/host/servers',
+    url: '/dashboard/admin/resource/servers',
     icon: CpuIcon,
   },
   {
     name: 'Nodes',
-    url: '/dashboard/admin/host/nodes',
+    url: '/dashboard/admin/resource/nodes',
     icon: TestTube,
   },
 ];
 
-export default function SidebarHostAdmin() {
+export default function SidebarResourceAdmin() {
   return (
     <CollapsibleSidebarWrapper
       urlSuffix='admin'
-      Icon={ServerIcon}
-      title='Host'
+      Icon={PlugIcon}
+      title='Resources'
       links={sidebarMenuConfig}
     />
   );
