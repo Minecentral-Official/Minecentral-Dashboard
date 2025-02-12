@@ -9,7 +9,7 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket as ticketTable } from '@/lib/db/schema';
 
-export default async function ticketsChangeStatus(
+export default async function ticketChangeStatus(
   _: unknown,
   formData: FormData,
 ) {

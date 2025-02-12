@@ -3,7 +3,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { ticketMessage } from '@/lib/db/schema';
 import getParseStringToIntegerSchema from '@/lib/zod/parse-string-to-integer.zod';
 
-export const insertTicketMessageZod = createInsertSchema(ticketMessage, {
+export const ticketCreateMessageZod = createInsertSchema(ticketMessage, {
   message: (schema) =>
     schema
       .min(1, 'Please type something')

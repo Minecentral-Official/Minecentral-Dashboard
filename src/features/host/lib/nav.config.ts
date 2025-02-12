@@ -1,7 +1,7 @@
 import { baseNavigationConfig } from '@/lib/configs/base-nav.config';
 
 export const hostNavigationConfig = [
-  ...baseNavigationConfig,
+  ...baseNavigationConfig('hosting'),
   {
     title: 'Features',
     // TODO: Think of better copy here
@@ -9,15 +9,15 @@ export const hostNavigationConfig = [
     items: [
       {
         title: 'Pricing',
-        href: '/host/pricing',
+        href: '/hosting/pricing',
       },
       {
         title: 'Performance',
-        href: '/host/performance',
+        href: '/hosting/performance',
       },
       {
         title: 'Panel',
-        href: '/host/panel',
+        href: '/hosting/panel',
       },
       {
         title: 'Documentation',

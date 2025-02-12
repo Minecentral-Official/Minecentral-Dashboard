@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { insertTicketWithMessageZod } from '@/features/tickets/schemas/ticket-with-message.zod';
+import { ticketCreateWithMessageZod } from '@/features/tickets/schemas/zod/ticket-with-message.zod';
 import {
   ACTIVITY,
   activityAddAction,
@@ -13,15 +13,14 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket, ticketMessage } from '@/lib/db/schema';
 
-export default async function createTicketWithMessage(
+export default async function ticketCreateWithMessage(
   // prevState: unknown
   _: unknown,
   formData: FormData,
 ) {
-  console.log('this action ran');
   const { user } = await validateSession();
   const submission = parseWithZod(formData, {
-    schema: insertTicketWithMessageZod,
+    schema: ticketCreateWithMessageZod,
   });
 
   if (submission.status !== 'success') {

@@ -16,20 +16,20 @@ export default function ServiceSelectionSection() {
         </div>
         <div className='mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3'>
           <ServiceLinkCard
-            title='Host'
+            title='Hosting'
             description='Rent your own Minecraft server and play together for cheap'
-            href='/host'
+            href='/hosting'
           />
           <ServiceLinkCard
-            title='Plugins'
+            title='Resources'
             description='Find community plugins and easily add to your game'
-            href='/host'
+            href='/resources'
             enabled={false}
           />
           <ServiceLinkCard
-            title='Servers'
+            title='Worlds'
             description='Find and explore community servers you can connect to now!'
-            href='/host'
+            href='/worlds'
             enabled={false}
           />
           <ServiceLinkCard

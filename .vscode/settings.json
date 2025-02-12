@@ -57,6 +57,10 @@
     {
       "folderPath": "Minecentral\\src\\app\\(authorized)\\dashboard\\worlds\\",
       "badge": "WO"
+    },
+    {
+      "folderPath": "Minecentral\\src\\features\\tickets\\",
+      "badge": "📝"
     }
   ]
 }

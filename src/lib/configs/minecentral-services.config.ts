@@ -1,1 +1,5 @@
-export const minecentralServicesConfig = ['host', 'plugins', 'worlds'] as const;
+export const minecentralServicesConfig = [
+  'hosting',
+  'resources',
+  'worlds',
+] as const;

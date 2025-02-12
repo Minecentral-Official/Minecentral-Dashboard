@@ -12,13 +12,13 @@ import AutoExpandingTextareaConform from '@/components/conform/auto-expanding-te
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
-import createTicketMessage from '@/features/tickets/mutations/ticket-message.create';
+import ticketCreateMessage from '@/features/tickets/mutations/ticket-message.create';
 import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
 
 export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [lastResult, action] = useActionState(createTicketMessage, undefined);
+  const [lastResult, action] = useActionState(ticketCreateMessage, undefined);
 
   const [form, fields] = useForm({
     lastResult,

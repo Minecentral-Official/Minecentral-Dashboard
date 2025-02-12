@@ -10,7 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-export const FaqSection = () => (
+export const PricingFaqSection = () => (
   <SectionWrapper>
     <div className='grid gap-10 lg:grid-cols-2'>
       <div className='flex flex-col gap-10'>

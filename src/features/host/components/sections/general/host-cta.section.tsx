@@ -22,7 +22,7 @@ export default function HostCtaSection() {
         </div>
         <div className='flex flex-row gap-4'>
           <Button className='gap-4' variant='outline'>
-            <Link href='/host/pricing'>View pricing</Link>
+            <Link href='/hosting/pricing'>View pricing</Link>
           </Button>
           <Button
             effect='expandIcon'

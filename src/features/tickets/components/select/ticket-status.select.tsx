@@ -9,7 +9,7 @@ import Form from 'next/form';
 import { InputConform } from '@/components/conform/input.conform';
 import { SelectConform } from '@/components/conform/select.conform';
 import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
-import ticketsChangeStatus from '@/features/tickets/mutations/change-status.ticket';
+import ticketChangeStatus from '@/features/tickets/mutations/change-status.ticket';
 import { updateTicketStatusZod } from '@/features/tickets/schemas/ticket-status.zod';
 
 type TicketStatusSelectProps = {
@@ -22,7 +22,7 @@ export default function TicketStatusSelect({
   currentStatus,
 }: TicketStatusSelectProps) {
   console.log(currentStatus);
-  const [lastResult, action] = useActionState(ticketsChangeStatus, undefined);
+  const [lastResult, action] = useActionState(ticketChangeStatus, undefined);
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {

@@ -12,20 +12,15 @@ import { SelectConform } from '@/components/conform/select.conform';
 import { TextareaConform } from '@/components/conform/textarea.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { ticketCategoryConfig } from '@/features/tickets/config/ticket-category.config';
-import ticketCreateWithMessage from '@/features/tickets/mutations/ticket-with-message.create';
-import { ticketCreateWithMessageZod } from '@/features/tickets/schemas/zod/ticket-with-message.zod';
+import resourceCreate from '@/features/resource/mutations/create.resource';
 
 export default function CreateTicketForm() {
-  const [lastResult, action] = useActionState(
-    ticketCreateWithMessage,
-    undefined,
-  );
+  const [lastResult, action] = useActionState(resourceCreate, undefined);
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: ticketCreateWithMessageZod,
+        schema: insertTicketWithMessageZod,
       });
       if (submission.status !== 'success') {
         toast.error('Form data invalid', { id: 'create-ticket' });

@@ -37,9 +37,6 @@ export default function NavDesktop({ config }: { config: NavigationConfig }) {
                           {item.description}
                         </p>
                       </div>
-                      <Button size='sm' className='mt-10'>
-                        Book a call today
-                      </Button>
                     </div>
                     <div className='flex h-full flex-col text-sm'>
                       {item.items?.map(({ href, title, disabled }) => (

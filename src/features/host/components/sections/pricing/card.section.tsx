@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export const CardSection = () => (
+export const PricingCardSection = () => (
   <SectionWrapper>
     <div className='flex flex-col items-center justify-center gap-4 text-center'>
       <Badge>Pricing</Badge>

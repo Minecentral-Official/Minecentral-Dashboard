@@ -25,7 +25,7 @@ export const HeroSection = () => (
         </div>
         <div className='flex flex-row gap-4'>
           <Button size='lg' className='gap-4' variant='outline' asChild>
-            <Link href='/host/pricing'>View Pricing</Link>
+            <Link href='/hosting/pricing'>View Pricing</Link>
           </Button>
           <Button
             size='lg'
