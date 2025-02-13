@@ -1,9 +1,10 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import { Tag, TagInput } from 'emblor';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -85,6 +86,8 @@ export default function CreateResourceForm() {
   const contentDescriptionHandler = useInputControl(fields.description);
   const versionSupportHandle = useInputControl(fields.versionSupport);
   const relatedCategoriesHandle = useInputControl(fields.categories);
+  const tagsHandle = useInputControl(fields.tags);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   return (
     <div>
@@ -191,6 +194,26 @@ export default function CreateResourceForm() {
           <InputConform meta={fields.linkSupport} type='text' />
           {fields.linkSupport.errors && (
             <FieldError>{fields.linkSupport.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.tags.id}>Tags</Label>
+          <TagInput
+            activeTagIndex={-1}
+            setActiveTagIndex={() => {}}
+            placeholder='Enter a topic'
+            tags={tags}
+            className='sm:min-w-[450px]'
+            setTags={(newTags) => {
+              setTags(newTags);
+              const asdf = newTags as [Tag, ...Tag[]];
+              const simpleTags = asdf.map(({ text }) => text);
+              tagsHandle.change(simpleTags);
+            }}
+          />
+          {fields.linkSupport.errors && (
+            <FieldError>{fields.tags.errors}</FieldError>
           )}
         </Field>
 

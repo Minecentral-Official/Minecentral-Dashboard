@@ -1,4 +1,5 @@
 import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
 import { resourceTable } from '@/lib/db/schema';
 
@@ -13,5 +14,6 @@ export const resourceCreateZod = createInsertSchema(resourceTable, {
     schema.min(10, 'Description must be at least 10 characters'),
   linkSource: (schema) => schema.url(),
   linkSupport: (schema) => schema.url(),
+  tags: z.array(z.string()),
   // type: z.enum(ResourceType),
 }).omit({ createdAt: true, updatedAt: true, userId: true, releaseId: true });

@@ -26,7 +26,8 @@ export default async function resourceCreate(
     return submission.reply();
   }
 
-  const { description, subtitle, title, versionSupport } = submission.value;
+  const { description, subtitle, title, versionSupport, tags } =
+    submission.value;
 
   const newResource = await db.transaction(async (tx) => {
     //Insert new ticket info
@@ -38,6 +39,7 @@ export default async function resourceCreate(
         description,
         subtitle,
         versionSupport,
+        tags,
       })
       .returning();
     //Insert first message as Ticket Message

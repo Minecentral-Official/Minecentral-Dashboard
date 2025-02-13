@@ -24,7 +24,7 @@ export const resourceTable = pgTable('resource', {
   // banner?: Types.ObjectId,
   discord: text(),
   language: text(),
-  tags: text(),
+  tags: text().array(),
   // versionSupport: number[],
   linkSource: text(),
   linkSupport: text(),

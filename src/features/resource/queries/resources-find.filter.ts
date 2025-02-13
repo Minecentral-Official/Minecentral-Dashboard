@@ -48,7 +48,7 @@ export default async function resourcesFindAndFilter({
 
   const [resources, total] = await Promise.all([
     //Query/Filter
-    db.query.resource.findMany({
+    db.query.resourceTable.findMany({
       where: whereClause,
       with: { user: true },
       orderBy: desc(resourceTable.updatedAt),
@@ -56,7 +56,7 @@ export default async function resourcesFindAndFilter({
       offset: (page - 1) * limit,
     }),
     //Total Count
-    db.query.resource.findMany({ where: whereClause }),
+    db.query.resourceTable.findMany({ where: whereClause }),
   ]);
 
   const totalCount = total.length;
