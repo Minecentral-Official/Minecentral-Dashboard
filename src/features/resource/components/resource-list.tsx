@@ -20,7 +20,7 @@ export default async function ResourceList() {
             <p className='mb-4 text-sm text-muted-foreground'>
               Version: {resource.downloads}
             </p>
-            <Link href={`/dashboard/resource/edit/${resource.id}`}>
+            <Link href={`/dashboard/resources/edit/${resource.id}`}>
               <Button variant='outline'>Edit Resource</Button>
             </Link>
           </CardContent>

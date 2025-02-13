@@ -3,8 +3,8 @@
 import { parseWithZod } from '@conform-to/zod';
 import { redirect } from 'next/navigation';
 
-import { resource } from '@/features/resource/schemas/resource.table';
-import { resourceCreateZod } from '@/features/resource/schemas/zod/resource.zod';
+import { resourceTable } from '@/features/resource/schemas/resource.table';
+import { resourceCreateZod } from '@/features/resource/schemas/zod/create-resource.zod';
 import {
   ACTIVITY,
   activityAddAction,
@@ -31,7 +31,7 @@ export default async function resourceCreate(
   const newResource = await db.transaction(async (tx) => {
     //Insert new ticket info
     const newTicket = await tx
-      .insert(resource)
+      .insert(resourceTable)
       .values({
         title,
         userId: user.id,

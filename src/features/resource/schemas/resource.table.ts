@@ -5,7 +5,7 @@ import { resourceRelease } from '@/features/resource/schemas/resource-release.ta
 import { TMinecraftVersion } from '@/features/resource/types/minecraft-versions.type';
 import { user } from '@/lib/db/schema';
 
-export const resource = pgTable('resource', {
+export const resourceTable = pgTable('resource', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
   userId: text()
     .notNull()
@@ -35,15 +35,15 @@ export const resource = pgTable('resource', {
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 
-export const resourceRelations = relations(resource, ({ one }) => ({
+export const resourceRelations = relations(resourceTable, ({ one }) => ({
   user: one(user, {
-    fields: [resource.userId],
+    fields: [resourceTable.userId],
     references: [user.id],
   }),
   // subscriptions: many(hostSubscription),
 }));
 
-type ResourceBase = typeof resource.$inferSelect;
+type ResourceBase = typeof resourceTable.$inferSelect;
 
 export type Resource = ResourceBase & {
   user: typeof user.$inferSelect;

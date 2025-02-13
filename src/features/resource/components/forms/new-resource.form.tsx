@@ -6,50 +6,38 @@ import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { toast } from 'sonner';
 
-import { CheckboxGroupConform } from '@/components/conform/checkbox-group.conform';
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { PlateEditor } from '@/components/editor/plate-editor';
+import { Input } from '@/components/plate-ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { MultiSelect } from '@/components/ui/multi-select';
+import { Separator } from '@/components/ui/separator';
 import { Toaster } from '@/components/ui/toaster';
+import { categoriesPluginConfig } from '@/features/resource/config/categories.plugin';
 import resourceCreate from '@/features/resource/mutations/create.resource';
-import { resourceCreateZod } from '@/features/resource/schemas/zod/resource.zod';
+import { pluginCreateZod } from '@/features/resource/schemas/zod/create-plugin.zod';
 import { TMinecraftVersion } from '@/features/resource/types/minecraft-versions.type';
+
+const mcVersions = TMinecraftVersion.map((type) => ({
+  value: type,
+  label: type
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '),
+}));
+
+const mcCategories = categoriesPluginConfig.map((type) => ({
+  value: type,
+  label: type
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '),
+}));
 
 export default function CreateResourceForm() {
   const [lastResult, action] = useActionState(resourceCreate, undefined);
-  const [form, fields] = useForm({
-    lastResult,
-    onValidate({ formData }) {
-      const submission = parseWithZod(formData, {
-        schema: resourceCreateZod,
-      });
-      if (submission.status !== 'success') {
-        toast.error('Form data invalid', { id: 'create-resource' });
-      } else {
-        toast.loading('Posting Resource...', { id: 'create-resource' });
-        //Clear Editor Cache
-        window?.localStorage.removeItem('editorContent');
-      }
-      return submission;
-    },
-    shouldValidate: 'onSubmit',
-    shouldRevalidate: 'onInput',
-    defaultValue: {
-      title: '',
-      description: '',
-    },
-  });
-  const contentDescription = useInputControl(fields.description);
-
-  const versionsData = TMinecraftVersion.map((type) => ({
-    value: type,
-    name: type
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' '),
-  }));
 
   let jsonContent;
   if (typeof window !== 'undefined') {
@@ -75,6 +63,29 @@ export default function CreateResourceForm() {
         },
       ];
 
+  const [form, fields] = useForm({
+    lastResult,
+    onValidate({ formData }) {
+      const submission = parseWithZod(formData, {
+        schema: pluginCreateZod,
+      });
+      if (submission.status !== 'success') {
+        toast.error('Form data invalid', { id: 'create-resource' });
+      } else {
+        toast.loading('Posting Resource...', { id: 'create-resource' });
+        //Clear Editor Cache
+        window?.localStorage.removeItem('editorContent');
+      }
+      return submission;
+    },
+    defaultValue: {
+      description: descriptionContent,
+    },
+  });
+  const contentDescriptionHandler = useInputControl(fields.description);
+  const versionSupportHandle = useInputControl(fields.versionSupport);
+  const relatedCategoriesHandle = useInputControl(fields.categories);
+
   return (
     <div>
       <form
@@ -91,30 +102,7 @@ export default function CreateResourceForm() {
             <FieldError>{fields.title.errors}</FieldError>
           )}
         </Field>
-        <Field>
-          <Label htmlFor={fields.versionSupport.id}>Version Support</Label>
-          <div className='flex flex-row gap-4'>
-            <CheckboxGroupConform
-              items={versionsData}
-              meta={fields.versionSupport}
-            />
-          </div>
-          {fields.versionSupport.errors && (
-            <FieldError>{fields.versionSupport.errors}</FieldError>
-          )}
-        </Field>
-        {/* <Field>
-          <Label htmlFor={fields.categories.id}>Categories</Label>
-          <SelectConform
-            placeholder='Select a category'
-            meta={fields.versionSupport}
-            items={categorySelectData}
-          />
 
-          {fields.category.errors && (
-            <FieldError>{fields.category.errors}</FieldError>
-          )}
-        </Field> */}
         <Field>
           <Label htmlFor={fields.subtitle.id}>SubTitle</Label>
           <InputConform meta={fields.subtitle} type='text' />
@@ -123,14 +111,86 @@ export default function CreateResourceForm() {
           )}
         </Field>
 
+        <Separator />
+
+        <Field>
+          <Label htmlFor={fields.releaseFile.id}>Your Resource</Label>
+          <Input type='file' name={fields.releaseFile.name} />
+          {fields.releaseFile.errors && (
+            <FieldError>{fields.releaseFile.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.releaseVersion.id}>
+            Resource String Version
+          </Label>
+          <InputConform
+            meta={fields.releaseVersion}
+            type='text'
+            placeholder='v1.23.4'
+          />
+          {fields.releaseVersion.errors && (
+            <FieldError>{fields.releaseVersion.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.versionSupport.id}>Version Support</Label>
+          <div className='flex flex-row gap-4'>
+            <MultiSelect
+              options={mcVersions}
+              onValueChange={(e) => versionSupportHandle.change(e)}
+              variant={'inverted'}
+            />
+          </div>
+          {fields.versionSupport.errors && (
+            <FieldError>{fields.versionSupport.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.versionSupport.id}>Related Categories</Label>
+          <div className='flex flex-row gap-4'>
+            <MultiSelect
+              options={mcCategories}
+              onValueChange={(e) => relatedCategoriesHandle.change(e)}
+              variant={'inverted'}
+            />
+          </div>
+          {fields.versionSupport.errors && (
+            <FieldError>{fields.versionSupport.errors}</FieldError>
+          )}
+        </Field>
+
+        <Separator />
+
         <Field>
           <Label htmlFor={fields.description.id}>Description</Label>
           <PlateEditor
-            content={descriptionContent}
-            handleChange={(e) => contentDescription.change(JSON.stringify(e))}
+            content={fields.description.value}
+            handleChange={(e) =>
+              contentDescriptionHandler.change(JSON.stringify(e))
+            }
           />
           {fields.description.errors && (
             <FieldError>{fields.description.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.linkSource.id}>Source Code Link</Label>
+          <InputConform meta={fields.linkSource} type='text' />
+          {fields.linkSource.errors && (
+            <FieldError>{fields.linkSource.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
+          <Label htmlFor={fields.linkSupport.id}>Additional Support Link</Label>
+          <InputConform meta={fields.linkSupport} type='text' />
+          {fields.linkSupport.errors && (
+            <FieldError>{fields.linkSupport.errors}</FieldError>
           )}
         </Field>
 

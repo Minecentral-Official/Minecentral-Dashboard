@@ -3,7 +3,7 @@
 import { and, desc, ilike, inArray } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { resource as resourceTable, user } from '@/lib/db/schema';
+import { resourceTable, user } from '@/lib/db/schema';
 
 type params = {
   search: string;
