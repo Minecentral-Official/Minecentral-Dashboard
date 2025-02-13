@@ -10,4 +10,4 @@ export const resourceCreateZod = createInsertSchema(resource, {
   description: (schema) =>
     schema.min(10, 'Description must be at least 10 characters'),
   // type: z.enum(ResourceType),
-}).omit({ createdAt: true, updatedAt: true, userId: true });
+}).omit({ createdAt: true, updatedAt: true, userId: true, releaseId: true });

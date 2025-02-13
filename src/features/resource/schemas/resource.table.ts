@@ -10,9 +10,7 @@ export const resource = pgTable('resource', {
   userId: text()
     .notNull()
     .references(() => user.id),
-  releaseId: integer()
-    .references(() => resourceRelease.id)
-    .notNull(),
+  releaseId: integer().references(() => resourceRelease.id),
   title: text().notNull(),
   subtitle: text().notNull(),
   categories: integer().array(),

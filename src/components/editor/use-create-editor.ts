@@ -1,4 +1,5 @@
 import { withProps } from '@udecode/cn';
+import { Value } from '@udecode/plate';
 import {
   BoldPlugin,
   CodePlugin,
@@ -35,6 +36,7 @@ import {
 } from '@udecode/plate-table/react';
 import {
   ParagraphPlugin,
+  PlateEditor,
   PlateLeaf,
   usePlateEditor,
 } from '@udecode/plate/react';
@@ -68,8 +70,9 @@ import { TableElement } from '@/components/plate-ui/table-element';
 import { TableRowElement } from '@/components/plate-ui/table-row-element';
 import { TocElement } from '@/components/plate-ui/toc-element';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useCreateEditor = (defaultValue: any) => {
+export const useCreateEditor = (
+  defaultValue: string | Value | ((editor: PlateEditor) => Value) | undefined,
+) => {
   return usePlateEditor({
     override: {
       components: withPlaceholders({
@@ -109,6 +112,21 @@ export const useCreateEditor = (defaultValue: any) => {
       }),
     },
     plugins: [...editorPlugins, FixedToolbarPlugin, FloatingToolbarPlugin],
-    value: defaultValue,
+    value: defaultValue || [
+      {
+        children: [{ text: 'New Resource' }],
+        type: 'h1',
+      },
+      {
+        children: [
+          { text: 'Type in your description and ' },
+          { bold: true, text: 'create rich text' },
+          {
+            text: '. \nYou can also use the slash "/" menu to open the in-line editor',
+          },
+        ],
+        type: 'p',
+      },
+    ],
   });
 };

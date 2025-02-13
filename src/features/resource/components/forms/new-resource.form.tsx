@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 
-import { useForm } from '@conform-to/react';
+import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { toast } from 'sonner';
 
@@ -41,6 +41,7 @@ export default function CreateResourceForm() {
       description: '',
     },
   });
+  const contentDescription = useInputControl(fields.description);
 
   const versionsData = TMinecraftVersion.map((type) => ({
     value: type,
@@ -50,8 +51,10 @@ export default function CreateResourceForm() {
       .join(' '),
   }));
 
-  const jsonContent = window?.localStorage.getItem('editorContent');
-
+  let jsonContent;
+  if (typeof window !== 'undefined') {
+    jsonContent = window.localStorage.getItem('editorContent');
+  }
   const descriptionContent =
     jsonContent && jsonContent.length > 100 ?
       JSON.parse(jsonContent)
@@ -122,7 +125,10 @@ export default function CreateResourceForm() {
 
         <Field>
           <Label htmlFor={fields.description.id}>Description</Label>
-          <PlateEditor content={descriptionContent} />
+          <PlateEditor
+            content={descriptionContent}
+            handleChange={(e) => contentDescription.change(JSON.stringify(e))}
+          />
           {fields.description.errors && (
             <FieldError>{fields.description.errors}</FieldError>
           )}

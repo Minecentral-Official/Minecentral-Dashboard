@@ -1,6 +1,7 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
+import { redirect } from 'next/navigation';
 
 import { resource } from '@/features/resource/schemas/resource.table';
 import { resourceCreateZod } from '@/features/resource/schemas/zod/resource.zod';
@@ -25,8 +26,7 @@ export default async function resourceCreate(
     return submission.reply();
   }
 
-  const { description, subtitle, title, versionSupport, releaseId } =
-    submission.value;
+  const { description, subtitle, title, versionSupport } = submission.value;
 
   const newResource = await db.transaction(async (tx) => {
     //Insert new ticket info
@@ -38,7 +38,6 @@ export default async function resourceCreate(
         description,
         subtitle,
         versionSupport,
-        releaseId,
       })
       .returning();
     //Insert first message as Ticket Message
@@ -56,7 +55,7 @@ export default async function resourceCreate(
 
   // revalidateTag(`tickets-user-${user.id}`);
 
-  // redirect(
-  //   '/resource/tickets?toast-success=true&toast-message=Ticket%20successfully%20created&toast-id=create-ticket',
-  // );
+  redirect(
+    '/dashboard/resources?toast-success=true&toast-message=Resource%20successfully%20created&toast-id=create-ticket',
+  );
 }
