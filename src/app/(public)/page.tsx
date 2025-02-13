@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   return (
     <>
-      <Header service='services' config={baseNavigationConfig} />
+      <Header service='services' config={baseNavigationConfig()} />
       <ServiceSelectionSection />
     </>
   );

@@ -13,7 +13,7 @@ export default async function Page() {
           <div>
             {prices.map(({ id, price }) => (
               <Button key={id}>
-                <Link href={`/dashboard/host/add/${id}`}>{price}</Link>
+                <Link href={`add/${id}`}>{price}</Link>
               </Button>
             ))}
           </div>

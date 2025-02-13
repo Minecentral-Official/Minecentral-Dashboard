@@ -11,7 +11,7 @@ export default function Page() {
       <div className='md:col-span-2'>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-2xl font-semibold'>Published Resources</h2>
-          <Link href='/dashboard/resource/new'>
+          <Link href='resources/create'>
             <Button>
               <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Resources
             </Button>

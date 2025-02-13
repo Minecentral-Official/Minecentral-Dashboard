@@ -21,7 +21,7 @@ export const hostNavigationConfig = [
       },
       {
         title: 'Documentation',
-        href: '/documentation/host',
+        href: 'https://docs.minecentral.net/host',
       },
     ],
   },

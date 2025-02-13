@@ -13,16 +13,16 @@ import {
 export default function QuickLinks() {
   const links = [
     {
-      href: 'dashboard/account/settings',
+      href: 'account/settings',
       icon: Settings,
       text: 'Account Settings',
     },
     {
-      href: 'dashboard/account/billing',
+      href: 'account/billing',
       icon: CreditCard,
       text: 'Billing & Plans',
     },
-    { href: '/account/notifications', icon: Bell, text: 'Notifications' },
+    { href: 'account/notifications', icon: Bell, text: 'Notifications' },
     // { href: '/account/security', icon: Shield, text: 'Security' },
   ];
 

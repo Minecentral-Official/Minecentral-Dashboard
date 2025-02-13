@@ -51,7 +51,7 @@ export default async function Page({
           </p>
         </div>
         <Button asChild>
-          <Link href={`/dashboard/host/servers/${id}`}>Get Started!</Link>
+          <Link href={`/dashboard/hosting/servers/${id}`}>Get Started!</Link>
         </Button>
       </div>
     </div>

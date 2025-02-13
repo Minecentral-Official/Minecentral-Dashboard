@@ -31,7 +31,7 @@ export default function ManageServerDropdown({
       <DropdownMenuContent align='end'>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/host/servers/${id}`}>
+            <Link href={`/dashboard/hosting/servers/${id}`}>
               <Settings2Icon />
               Manage
             </Link>

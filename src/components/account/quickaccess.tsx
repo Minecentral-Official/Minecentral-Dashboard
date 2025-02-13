@@ -8,10 +8,10 @@ export default async function AccountQuickaccess() {
   // const router = useRouter();
 
   const quickLinks = [
-    { icon: Server, label: 'Manage Servers', href: '/dashboard/host' },
-    { icon: List, label: 'Worlds List', href: '/dashboard/worlds' },
-    { icon: Plugin, label: 'Resource Manager', href: '/dashboard/resource' },
-    { icon: Settings, label: 'Account Settings', href: '/dashboard/account' },
+    { icon: Server, label: 'Manage Servers', href: 'dashboard/hosting' },
+    { icon: List, label: 'Worlds List', href: 'dashboard/worlds' },
+    { icon: Plugin, label: 'Resource Manager', href: 'dashboard/resources' },
+    { icon: Settings, label: 'Account Settings', href: 'dashboard/account' },
   ];
 
   return (

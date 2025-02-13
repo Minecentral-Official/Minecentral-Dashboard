@@ -5,7 +5,7 @@ import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collaps
 const sidebarMenuConfig = [
   {
     name: 'Post Resource',
-    url: '/dashboard/resource/new',
+    url: '/dashboard/resources/create',
     icon: PlusIcon,
   },
 ];
@@ -13,7 +13,7 @@ const sidebarMenuConfig = [
 export default function ResourceAccount() {
   return (
     <CollapsibleSidebarWrapper
-      urlSuffix='resource'
+      urlSuffix='resources'
       Icon={PlugIcon}
       links={sidebarMenuConfig}
       title='Resources'
