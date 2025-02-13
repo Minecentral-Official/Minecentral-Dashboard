@@ -9,8 +9,10 @@ import { toast } from 'sonner';
 import { CheckboxGroupConform } from '@/components/conform/checkbox-group.conform';
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
+import { PlateEditor } from '@/components/editor/plate-editor';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Toaster } from '@/components/ui/toaster';
 import resourceCreate from '@/features/resource/mutations/create.resource';
 import { resourceCreateZod } from '@/features/resource/schemas/zod/resource.zod';
 import { TMinecraftVersion } from '@/features/resource/types/minecraft-versions.type';
@@ -27,6 +29,8 @@ export default function CreateResourceForm() {
         toast.error('Form data invalid', { id: 'create-resource' });
       } else {
         toast.loading('Posting Resource...', { id: 'create-resource' });
+        //Clear Editor Cache
+        window?.localStorage.removeItem('editorContent');
       }
       return submission;
     },
@@ -45,6 +49,28 @@ export default function CreateResourceForm() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' '),
   }));
+
+  const jsonContent = window?.localStorage.getItem('editorContent');
+
+  const descriptionContent =
+    jsonContent && jsonContent.length > 100 ?
+      JSON.parse(jsonContent)
+    : [
+        {
+          children: [{ text: 'New Resource' }],
+          type: 'h1',
+        },
+        {
+          children: [
+            { text: 'Type in your description and ' },
+            { bold: true, text: 'create rich text' },
+            {
+              text: '. \nYou can also use the slash "/" menu to open the in-line editor',
+            },
+          ],
+          type: 'p',
+        },
+      ];
 
   return (
     <div>
@@ -93,8 +119,18 @@ export default function CreateResourceForm() {
             <FieldError>{fields.subtitle.errors}</FieldError>
           )}
         </Field>
+
+        <Field>
+          <Label htmlFor={fields.description.id}>Description</Label>
+          <PlateEditor content={descriptionContent} />
+          {fields.description.errors && (
+            <FieldError>{fields.description.errors}</FieldError>
+          )}
+        </Field>
+
         <Button>Post Resource</Button>
       </form>
+      <Toaster />
     </div>
   );
 }
