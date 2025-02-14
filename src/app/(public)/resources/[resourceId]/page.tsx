@@ -1,3 +1,4 @@
+import ResourcePageView from '@/features/resource/components/views/plugin-page.view';
 import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
 import resourceGetById from '@/features/resource/queries/resource-by-id.get';
 
@@ -12,7 +13,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <ResourcePluginProvider plugin={plugin}>
-      {resourceId}
+      <div className='pt-20'>
+        <ResourcePageView />
+      </div>
     </ResourcePluginProvider>
   );
 }

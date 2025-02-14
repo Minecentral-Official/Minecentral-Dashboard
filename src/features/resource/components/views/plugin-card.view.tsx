@@ -2,6 +2,7 @@
 
 import { Download } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { useResourcePluginContext } from '@/features/resource/context/plugin.con
 
 export default function ResourceCardView() {
   const {
-    plugin: { title, author, subtitle },
+    plugin: { title, author, subtitle, id },
   } = useResourcePluginContext();
   return (
     <Card className='overflow-hidden'>
@@ -21,7 +22,9 @@ export default function ResourceCardView() {
         className='h-48 w-full object-cover'
       />
       <CardContent className='p-4'>
-        <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
+        <Link href={`/resources/${id}`}>
+          <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
+        </Link>
         {/* <Badge variant='secondary' className='mb-2'>
           {type}
         </Badge> */}
