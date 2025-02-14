@@ -10,7 +10,7 @@ import { InputConform } from '@/components/conform/input.conform';
 import { SelectConform } from '@/components/conform/select.conform';
 import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
 import ticketChangeStatus from '@/features/tickets/mutations/change-status.ticket';
-import { updateTicketStatusZod } from '@/features/tickets/schemas/ticket-status.zod';
+import { ticketUpdateStatusZod } from '@/features/tickets/schemas/zod/ticket-status.zod';
 
 type TicketStatusSelectProps = {
   ticketId: number;
@@ -26,7 +26,7 @@ export default function TicketStatusSelect({
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: updateTicketStatusZod });
+      return parseWithZod(formData, { schema: ticketUpdateStatusZod });
     },
     shouldValidate: 'onBlur',
     shouldRevalidate: 'onInput',

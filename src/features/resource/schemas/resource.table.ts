@@ -42,10 +42,3 @@ export const resourceRelations = relations(resourceTable, ({ one }) => ({
   }),
   // subscriptions: many(hostSubscription),
 }));
-
-type ResourceBase = typeof resourceTable.$inferSelect;
-
-export type Resource = ResourceBase & {
-  user: typeof user.$inferSelect;
-  // subscriptions: (typeof hostSubscription.$inferSelect)[];
-};

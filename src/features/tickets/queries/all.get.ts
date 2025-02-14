@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 
 import 'server-only';
 
+import DTOTicket from '@/features/tickets/dto/ticket.dto';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
@@ -20,8 +21,9 @@ async function cachedTickets(userId: string) {
   const response = await db.query.ticket.findMany({
     where: eq(ticket.userId, userId),
     with: {
-      messages: true,
+      messages: { with: { user: true }, limit: 1 },
+      user: true,
     },
   });
-  return response;
+  return response.map((ticket) => DTOTicket(ticket));
 }

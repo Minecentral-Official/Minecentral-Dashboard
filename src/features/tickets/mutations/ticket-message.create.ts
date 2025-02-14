@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { eq } from 'drizzle-orm';
 import { revalidateTag } from 'next/cache';
 
-import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
+import { ticketCreateMessageZod } from '@/features/tickets/schemas/zod/ticket-message.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticketMessage, ticket as ticketTable } from '@/lib/db/schema';
@@ -17,7 +17,7 @@ export default async function ticketCreateMessage(
   const { user } = await validateSession();
 
   const submission = parseWithZod(formData, {
-    schema: insertTicketMessageZod,
+    schema: ticketCreateMessageZod,
   });
 
   if (submission.status !== 'success') {
@@ -46,6 +46,6 @@ export default async function ticketCreateMessage(
       .values({ message, ticketId, userId: user.id })
       .returning();
   });
-  // TODO: once we have caching we can have more granular control here
-  revalidateTag(`ticket-messages-${ticketId}`);
+
+  revalidateTag(`ticket-${ticketId}`);
 }

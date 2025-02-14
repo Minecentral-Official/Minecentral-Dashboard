@@ -1,13 +1,12 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
+import { useTicketContext } from '@/features/tickets/context/ticket.context';
 
-export default function TicketStatus({
-  status,
-}: {
-  status: (typeof ticketStatusConfig)[number];
-}) {
+export default function TicketStatus() {
+  const {
+    ticket: { status },
+  } = useTicketContext();
   return (
     <Badge
       className='hover:cursor-pointer'

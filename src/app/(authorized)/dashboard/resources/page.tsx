@@ -4,25 +4,32 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ResourceList from '@/features/resource/components/resource-list';
 import ResourceOverview from '@/features/resource/components/resource-overview';
+import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
+import resourcesGetByUserId from '@/features/resource/queries/resources-by-user-id.get';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
-export default function Page() {
+export default async function Page() {
+  const { user } = await validateSession();
+  const plugins = await resourcesGetByUserId(user.id);
   return (
-    <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-      <div className='md:col-span-2'>
-        <div className='mb-4 flex items-center justify-between'>
-          <h2 className='text-2xl font-semibold'>Published Resources</h2>
-          <Link href='resources/create'>
-            <Button>
-              <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Resources
-            </Button>
-          </Link>
+    <ResourcePluginProvider init={plugins}>
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+        <div className='md:col-span-2'>
+          <div className='mb-4 flex items-center justify-between'>
+            <h2 className='text-2xl font-semibold'>Published Resources</h2>
+            <Link href='resources/create'>
+              <Button>
+                <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Resources
+              </Button>
+            </Link>
+          </div>
+          <ResourceList />
         </div>
-        <ResourceList />
+        <div>
+          <h2 className='mb-4 text-2xl font-semibold'>Resource Overview</h2>
+          <ResourceOverview />
+        </div>
       </div>
-      <div>
-        <h2 className='mb-4 text-2xl font-semibold'>Resource Overview</h2>
-        <ResourceOverview />
-      </div>
-    </div>
+    </ResourcePluginProvider>
   );
 }

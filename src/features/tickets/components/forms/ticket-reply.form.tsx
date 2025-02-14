@@ -13,7 +13,7 @@ import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import ticketCreateMessage from '@/features/tickets/mutations/ticket-message.create';
-import { insertTicketMessageZod } from '@/features/tickets/schemas/ticket-message.zod';
+import { ticketCreateMessageZod } from '@/features/tickets/schemas/zod/ticket-message.zod';
 
 export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -24,7 +24,7 @@ export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
     lastResult,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: insertTicketMessageZod,
+        schema: ticketCreateMessageZod,
       });
 
       if (submission.status !== 'success') {

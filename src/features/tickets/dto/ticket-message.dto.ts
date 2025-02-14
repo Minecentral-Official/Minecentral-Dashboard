@@ -1,14 +1,14 @@
-import type { TicketMessage } from '@/features/tickets/schemas/ticket-message.type';
+import type { TTicketMessage } from '@/features/tickets/types/ticket-message.type';
 
 export default function DTOTicketMessage({
   createdAt,
   message,
   user,
-}: TicketMessage) {
+}: TTicketMessage) {
   return {
     createdAt,
     message,
-    user: {
+    author: {
       image: user.image,
       name: user.name,
       id: user.id,

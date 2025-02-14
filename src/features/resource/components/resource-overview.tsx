@@ -1,16 +1,16 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useResourcePluginContext } from '@/features/resource/context/plugin.context';
 
-async function getResourceStats() {
-  // This would be replaced with an actual API call or database query
-  return {
-    totalPlugins: 15,
-    totalDownloads: 10000,
-    averageRating: 4.7,
+export default function ResourceOverview() {
+  const { plugins } = useResourcePluginContext();
+  const stats = {
+    totalPlugins: plugins.length,
+    totalDownloads: plugins.reduce((acc, plugin) => {
+      return acc + (plugin.downloads || 0);
+    }, 0),
   };
-}
-
-export default async function ResourceOverview() {
-  const stats = await getResourceStats();
 
   return (
     <Card>
@@ -33,14 +33,14 @@ export default async function ResourceOverview() {
               {stats.totalDownloads.toLocaleString()}
             </dd>
           </div>
-          <div>
+          {/* <div>
             <dt className='text-sm font-medium text-muted-foreground'>
               Average Rating
             </dt>
             <dd className='text-2xl font-semibold'>
               {stats.averageRating.toFixed(1)}
             </dd>
-          </div>
+          </div> */}
         </dl>
       </CardContent>
     </Card>

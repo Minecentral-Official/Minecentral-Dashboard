@@ -5,33 +5,14 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import ResourceCard from '@/features/resource/components/card/resource.card';
 import ResourceSearchBar from '@/features/resource/components/filter/searchbar';
 import ResourceFilterSidebar from '@/features/resource/components/filter/sidebar';
-
-const resources = [
-  {
-    title: 'Medieval Texture Pack',
-    type: 'Texture Pack',
-    author: 'PixelArtist',
-    downloads: 5000,
-  },
-  {
-    title: 'Epic Survival Plugin',
-    type: 'Plugin',
-    author: 'MinecraftMaster',
-    downloads: 1000,
-  },
-  {
-    title: 'Advanced Farming Datapack',
-    type: 'Datapack',
-    author: 'RedstoneWizard',
-    downloads: 3000,
-  },
-];
+import ResourceList from '@/features/resource/components/resource-list';
+import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
 
 export default function ResourceLandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // const resources = []
 
   return (
     <div className='flex min-h-screen flex-col pt-20'>
@@ -56,15 +37,9 @@ export default function ResourceLandingPage() {
             <ResourceSearchBar />
           </div>
           <div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
-            {resources.map(({ title, downloads, author, type }, index) => (
-              <ResourceCard
-                key={index}
-                title={title}
-                author={author}
-                downloads={downloads}
-                type={type}
-              />
-            ))}
+            <ResourcePluginProvider init={[]}>
+              <ResourceList />
+            </ResourcePluginProvider>
           </div>
         </main>
       </div>

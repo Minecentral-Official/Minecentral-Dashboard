@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { and, eq } from 'drizzle-orm';
 import { revalidateTag } from 'next/cache';
 
-import { updateTicketStatusZod } from '@/features/tickets/schemas/ticket-status.zod';
+import { ticketUpdateStatusZod } from '@/features/tickets/schemas/zod/ticket-status.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { db } from '@/lib/db';
 import { ticket as ticketTable } from '@/lib/db/schema';
@@ -16,7 +16,7 @@ export default async function ticketChangeStatus(
   const { user } = await validateSession();
 
   const submission = parseWithZod(formData, {
-    schema: updateTicketStatusZod,
+    schema: ticketUpdateStatusZod,
   });
   if (submission.status !== 'success') {
     return submission.reply();
