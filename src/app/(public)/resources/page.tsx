@@ -7,7 +7,7 @@ import { FilterIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourceSearchBar from '@/features/resource/components/filter/searchbar';
 import ResourceFilterSidebar from '@/features/resource/components/filter/sidebar';
-import ResourceList from '@/features/resource/components/resource-list';
+import PluginList from '@/features/resource/components/plugin-list';
 import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
 
 export default function ResourceLandingPage() {
@@ -38,7 +38,7 @@ export default function ResourceLandingPage() {
           </div>
           <div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
             <ResourcePluginProvider init={[]}>
-              <ResourceList />
+              <PluginList />
             </ResourcePluginProvider>
           </div>
         </main>

@@ -6,9 +6,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTicketContext } from '@/features/tickets/context/ticket.context';
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
 
-export default function TicketMessages({ userId }: { userId: string }) {
+export default function TicketMessages() {
   const {
     ticket: { messages },
+    userId,
   } = useTicketContext();
   return (
     <ScrollArea className='h-[350px] w-full rounded-md border'>

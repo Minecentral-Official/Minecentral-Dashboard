@@ -1,3 +1,5 @@
+'use client';
+
 import { Download } from 'lucide-react';
 import Image from 'next/image';
 
@@ -5,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useResourcePluginContext } from '@/features/resource/context/plugin.context';
 
-export default function ResourceCard({ resourceId }: { resourceId: number }) {
-  const { plugins } = useResourcePluginContext();
-  const { title, author, subtitle } = plugins.find((p) => p.id === resourceId)!;
+export default function ResourceCardView() {
+  const {
+    plugin: { title, author, subtitle },
+  } = useResourcePluginContext();
   return (
     <Card className='overflow-hidden'>
       <Image

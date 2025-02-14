@@ -93,27 +93,5 @@ export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
         </div>
       </Form>
     </div>
-    // <Form {...form}>
-    //   <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
-    //     <FormField
-    //       control={form.control}
-    //       name='message'
-    //       render={({ field }) => (
-    //         <FormItem>
-    //           <FormLabel>New Reply</FormLabel>
-    //           <FormControl>
-    //             <Textarea {...field} />
-    //           </FormControl>
-    //           <FormDescription>
-    //             Submit a new message if you have additional details to provide
-    //           </FormDescription>
-    //           <FormMessage />
-    //         </FormItem>
-    //       )}
-    //     />
-
-    //     <Button type='submit'>Send Reply</Button>
-    //   </form>
-    // </Form>
   );
 }

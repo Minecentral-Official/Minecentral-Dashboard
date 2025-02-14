@@ -1,13 +1,13 @@
 'use client';
 
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { TResourcePlugin } from '@/features/resource/types/plugin.type';
 
 import type { ReactNode } from 'react';
 
 interface PluginContextType {
-  plugins: TResourcePlugin[];
+  plugin: TResourcePlugin;
 }
 
 const PluginContext = createContext<PluginContextType | undefined>(undefined);
@@ -20,19 +20,16 @@ export function useResourcePluginContext() {
   return context;
 }
 
-interface ResourcePluginProviderProps {
+interface ResourcePluginProviderProps extends PluginContextType {
   children: ReactNode;
-  init: TResourcePlugin[];
 }
 
 export function ResourcePluginProvider({
   children,
-  init,
+  plugin,
 }: ResourcePluginProviderProps) {
-  const [plugins] = React.useState(init);
-
   return (
-    <PluginContext.Provider value={{ plugins }}>
+    <PluginContext.Provider value={{ plugin }}>
       {children}
     </PluginContext.Provider>
   );

@@ -9,19 +9,14 @@ import Form from 'next/form';
 import { InputConform } from '@/components/conform/input.conform';
 import { SelectConform } from '@/components/conform/select.conform';
 import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
+import { useTicketContext } from '@/features/tickets/context/ticket.context';
 import ticketChangeStatus from '@/features/tickets/mutations/change-status.ticket';
 import { ticketUpdateStatusZod } from '@/features/tickets/schemas/zod/ticket-status.zod';
 
-type TicketStatusSelectProps = {
-  ticketId: number;
-  currentStatus: (typeof ticketStatusConfig)[number];
-};
-
-export default function TicketStatusSelect({
-  ticketId,
-  currentStatus,
-}: TicketStatusSelectProps) {
-  console.log(currentStatus);
+export default function TicketStatusSelect() {
+  const {
+    ticket: { status: currentStatus, id: ticketId },
+  } = useTicketContext();
   const [lastResult, action] = useActionState(ticketChangeStatus, undefined);
   const [form, fields] = useForm({
     lastResult,

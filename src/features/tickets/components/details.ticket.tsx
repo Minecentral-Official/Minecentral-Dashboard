@@ -20,24 +20,21 @@ export default async function TicketDetails({
   if (!ticket) throw notFound();
 
   return (
-    <div className='space-y-4'>
-      <div className='flex flex-col'>
-        <div className='flex flex-row justify-between'>
-          <p className='text-2xl font-bold'>{ticket.title}</p>
-          {/* <TicketStatus status={ticket.status} /> */}
-          <TicketStatusSelect
-            ticketId={ticket.id}
-            currentStatus={ticket.status}
-          />
+    <TicketProvider ticket={ticket} userId={userId}>
+      <div className='space-y-4'>
+        <div className='flex flex-col'>
+          <div className='flex flex-row justify-between'>
+            <p className='text-2xl font-bold'>{ticket.title}</p>
+            <TicketStatusSelect />
+          </div>
+          <CardDescription>{ticket.category}</CardDescription>
         </div>
-        <CardDescription>{ticket.category}</CardDescription>
+        <TicketMessages />
+
+        <div className='w-full'>
+          <TicketReplyForm ticketId={ticketId} />
+        </div>
       </div>
-      <TicketProvider ticket={ticket}>
-        <TicketMessages userId={userId} />
-      </TicketProvider>
-      <div className='w-full'>
-        <TicketReplyForm ticketId={ticketId} />
-      </div>
-    </div>
+    </TicketProvider>
   );
 }

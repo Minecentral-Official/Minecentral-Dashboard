@@ -8,6 +8,7 @@ import type { ReactNode } from 'react';
 
 interface TicketContextType {
   ticket: ReturnType<typeof DTOTicket>;
+  userId: string;
 }
 
 const PluginContext = createContext<TicketContextType | undefined>(undefined);
@@ -20,14 +21,17 @@ export function useTicketContext() {
   return context;
 }
 
-interface TicketProviderProps {
+interface TicketProviderProps extends TicketContextType {
   children: ReactNode;
-  ticket: ReturnType<typeof DTOTicket>;
 }
 
-export function TicketProvider({ children, ticket }: TicketProviderProps) {
+export function TicketProvider({
+  children,
+  ticket,
+  userId,
+}: TicketProviderProps) {
   return (
-    <PluginContext.Provider value={{ ticket }}>
+    <PluginContext.Provider value={{ ticket, userId }}>
       {children}
     </PluginContext.Provider>
   );
