@@ -9,7 +9,7 @@ interface FilterSidebarProps {
   onClose: () => void;
 }
 
-export default function ResourceFilterSidebar({
+export default function FilterPluginSidebar({
   open,
   onClose,
 }: FilterSidebarProps) {

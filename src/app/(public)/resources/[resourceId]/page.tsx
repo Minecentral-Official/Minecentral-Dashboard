@@ -9,13 +9,16 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { resourceId } = await params;
   const plugin = await resourceGetById(resourceId);
-  if (!plugin) return <>Huh</>;
 
   return (
-    <ResourcePluginProvider plugin={plugin}>
-      <div className='pt-20'>
-        <ResourcePageView />
-      </div>
-    </ResourcePluginProvider>
+    <div className='pt-20'>
+      {plugin ?
+        <ResourcePluginProvider plugin={plugin}>
+          <div className='pt-20'>
+            <ResourcePageView />
+          </div>
+        </ResourcePluginProvider>
+      : <>Requested Resource not found</>}
+    </div>
   );
 }
