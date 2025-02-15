@@ -12,8 +12,8 @@ export * from '@/features/tickets/schemas/ticket-message.table';
 export * from '@/features/tickets/schemas/ticket.table';
 
 // Resources
-export * from '@/features/resource/schemas/resource-release.table';
-export * from '@/features/resource/schemas/resource.table';
+export * from '@/features/resource-plugin/schemas/plugin.table';
+export * from '@/features/resource-plugin/schemas/resource-release.table';
 
 // Customers
 export * from '@/lib/stripe/schemas/customer.table';

@@ -8,8 +8,8 @@ import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
 import SidebarLinkWrapper from '@/components/sidebars/wrapper.sidebar-link';
 import SidebarHostAdmin from '@/features/host/components/sidebar/host-admin.sidebar-menu';
 import HostSidebar from '@/features/host/components/sidebar/host.sidebar-group';
-import SidebarResourceAdmin from '@/features/resource/components/sidebar/resource-admin.sidebar-menu';
-import ResourceSidebar from '@/features/resource/components/sidebar/resource.sidebar-menu';
+import SidebarResourceAdmin from '@/features/resource-plugin/components/sidebar/resource-admin.sidebar-menu';
+import ResourceSidebar from '@/features/resource-plugin/components/sidebar/resource.sidebar-menu';
 import validateRole from '@/lib/auth/helpers/validate-role';
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {

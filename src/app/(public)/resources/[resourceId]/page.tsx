@@ -1,6 +1,6 @@
-import ResourcePageView from '@/features/resource/components/views/plugin-page.view';
-import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
-import resourceGetById from '@/features/resource/queries/resource-by-id.get';
+import ResourcePageView from '@/features/resource-plugin/components/views/plugin-page.view';
+import { ResourcePluginProvider } from '@/features/resource-plugin/context/plugin.context';
+import resourceGetById from '@/features/resource-plugin/queries/resource-by-id.get';
 
 type PageProps = {
   params: Promise<{ resourceId: number }>;

@@ -1,4 +1,4 @@
-import CreateResourceForm from '@/features/resource/components/forms/new-resource.form';
+import CreateResourceForm from '@/features/resource-plugin/components/forms/new-resource.form';
 
 export default function Page() {
   return (

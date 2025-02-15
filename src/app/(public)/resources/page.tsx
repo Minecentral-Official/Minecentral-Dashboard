@@ -5,9 +5,14 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import FilterPluginSearchBar from '@/features/resource/components/with-context/searchbar';
-import FilterPluginSidebar from '@/features/resource/components/with-context/sidebar';
-import { FilterPluginProvider } from '@/features/resource/context/plugin.filter';
+import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
+import FilterPluginSearchBar from '@/features/resource-plugin/components/with-context/searchbar';
+import FilterPluginSidebar from '@/features/resource-plugin/components/with-context/sidebar';
+import { ResourcePluginProvider } from '@/features/resource-plugin/context/plugin.context';
+import {
+  FilterPluginProvider,
+  useFilterPluginContext,
+} from '@/features/resource-plugin/context/plugin.filter';
 
 export default function ResourceLandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,10 +41,29 @@ export default function ResourceLandingPage() {
               </div>
               <FilterPluginSearchBar />
             </div>
-            <div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'></div>
+            <div className='mt-4 w-full'>
+              <ResourceList />
+            </div>
           </main>
         </div>
       </div>
     </FilterPluginProvider>
+  );
+}
+
+function ResourceList() {
+  const { plugins } = useFilterPluginContext();
+  return (
+    <>
+      {plugins ?
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
+          {plugins.map((plugin, index) => (
+            <ResourcePluginProvider key={index} plugin={plugin}>
+              <ResourceCardView />
+            </ResourcePluginProvider>
+          ))}
+        </div>
+      : <p className='mx-auto'>No resources found</p>}
+    </>
   );
 }

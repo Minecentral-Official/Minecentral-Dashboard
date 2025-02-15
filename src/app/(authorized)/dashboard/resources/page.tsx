@@ -2,10 +2,10 @@ import { PlusCircleIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import ResourceOverview from '@/features/resource/components/resource-overview';
-import ResourceCardView from '@/features/resource/components/views/plugin-card.view';
-import { ResourcePluginProvider } from '@/features/resource/context/plugin.context';
-import resourcesGetByUserId from '@/features/resource/queries/resources-by-user-id.get';
+import ResourceOverview from '@/features/resource-plugin/components/resource-overview';
+import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
+import { ResourcePluginProvider } from '@/features/resource-plugin/context/plugin.context';
+import resourcesGetByUserId from '@/features/resource-plugin/queries/resources-by-user-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function Page() {
