@@ -7,9 +7,11 @@ import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CustomCheckbox } from '@/features/resource-plugin/components/ui/custom-checkbox';
 import { pluginCategoriesConfig } from '@/features/resource-plugin/config/categories.plugin';
+import { useFilterPluginContext } from '@/features/resource-plugin/context/plugin.filter';
 
 export default function CategoriesFilter() {
   const [open, setOpen] = useState(true);
+  const { toggleCategory, categories } = useFilterPluginContext();
   return (
     <Card>
       <CardHeader
@@ -26,6 +28,10 @@ export default function CategoriesFilter() {
           <CustomCheckbox
             key={item}
             label={item.charAt(0).toUpperCase() + item.slice(1)}
+            onCheckedChange={() => {
+              toggleCategory(item);
+            }}
+            checked={categories.includes(item)}
           />
         ))}
       </CardContent>

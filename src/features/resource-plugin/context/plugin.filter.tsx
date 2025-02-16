@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import {
   pluginCategoriesConfig,
   PluginCategory,
@@ -13,12 +15,16 @@ import { useDebounce } from '@/hooks/use-debounce';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 interface FilterPluginContextType {
-  plugins: TResourcePlugin[] | undefined;
-  setPlugins: Dispatch<SetStateAction<TResourcePlugin[] | undefined>>;
-  search: string | undefined;
+  plugins: TResourcePlugin[];
+  setPlugins: Dispatch<SetStateAction<TResourcePlugin[]>>;
+  search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  categories: PluginCategory[] | undefined;
+  categories: PluginCategory[];
   toggleCategory: (category: PluginCategory) => void;
+  limit: number;
+  setLimit: Dispatch<SetStateAction<number>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
   updateSearch: () => void;
 }
 
@@ -39,16 +45,42 @@ interface FilterPluginProviderProps {
 }
 
 export function FilterPluginProvider({ children }: FilterPluginProviderProps) {
-  const [plugins, setPlugins] = useState<TResourcePlugin[]>();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
+  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
   const [categories, setCategories] = useState<
     (typeof pluginCategoriesConfig)[number][]
   >([]);
 
-  async function fetchPlugins() {
+  useEffect(() => {
+    setSearch(searchParams.get('search') || '');
+    setCategories(
+      searchParams
+        .getAll('category')
+        .filter((category): category is PluginCategory =>
+          pluginCategoriesConfig.includes(category as PluginCategory),
+        ),
+    );
+    setLimit(Number.parseInt(searchParams.get('limit') || '10', 10));
+    setPage(Number.parseInt(searchParams.get('page') || '0', 10));
+  }, [searchParams]);
+
+  async function performSearch() {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    categories.forEach((category) => params.append('category', category));
+    if (limit != 10) params.set('limit', limit.toString());
+    if (page > 0) params.set('page', page.toString());
+
+    router.push(`/resources?${params.toString()}`);
+
     const newPlugins = await resourcesFindAndFilter({
-      limit: 10,
-      page: 0,
+      limit,
+      page,
       search,
       categories,
     });
@@ -64,7 +96,7 @@ export function FilterPluginProvider({ children }: FilterPluginProviderProps) {
   }, [searchDebound]);
 
   function updateSearch() {
-    fetchPlugins();
+    performSearch();
   }
 
   function toggleCategory(category: (typeof pluginCategoriesConfig)[number]) {
@@ -85,6 +117,10 @@ export function FilterPluginProvider({ children }: FilterPluginProviderProps) {
         categories,
         toggleCategory,
         updateSearch,
+        limit,
+        setLimit,
+        page,
+        setPage,
       }}
     >
       {children}

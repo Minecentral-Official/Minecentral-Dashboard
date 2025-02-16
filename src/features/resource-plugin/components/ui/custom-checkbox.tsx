@@ -12,11 +12,11 @@ const CustomCheckbox = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
     label: string;
   }
->(({ className, label, ...props }, ref) => {
-  const [checked, setChecked] = React.useState(false);
+>(({ className, label, checked, ...props }, ref) => {
+  // const [checked, setChecked] = React.useState(false);
 
   const handleCheck = (checked: boolean) => {
-    setChecked(checked);
+    // setChecked(checked);
     if (props.onCheckedChange) props.onCheckedChange(checked);
   };
 
