@@ -52,6 +52,7 @@ export default function ResourceLandingPage() {
 
 function ResourceList() {
   const { plugins } = usePluginFilterContext();
+
   return (
     <>
       {plugins ?

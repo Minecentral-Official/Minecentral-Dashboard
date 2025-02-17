@@ -1,14 +1,8 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
   TPluginCategories,
@@ -71,6 +65,8 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
   const [categories, setCategories] = useState<TPluginCategory[]>([]);
   const [versions, setVersions] = useState<TPluginVersion[]>([]);
+  const pathname = usePathname();
+  const router = useRouter();
 
   //Whenever we load up, set the new categories
   useEffect(() => {
@@ -94,12 +90,23 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   }, []);
 
   useEffect(() => {
-    performSearch();
+    // performSearch();
+    async function getPlugins() {
+      const params = new URLSearchParams();
+      setParams(params);
+      categories.forEach((category) => params.append('category', category));
+      versions.forEach((version) => params.append('v', version));
+
+      const result = await fetch(
+        `/api/resources?q=${searchDebounce}&page=${page}`,
+      );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounce]);
 
   //Performs the search query, returning and updating the plugins to be shown to user
-  const performSearch = useCallback(async () => {
+  const performSearch = async () => {
     updateParams();
     const newPlugins = await resourcesFindAndFilter({
       limit,
@@ -109,8 +116,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     });
 
     setPlugins(newPlugins.resources);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categories, limit, page, searchQuery]);
+  };
 
   function updateParams() {
     const params = new URLSearchParams();
@@ -131,6 +137,25 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         prev.filter((c) => c !== category)
       : [...prev, category],
     );
+
+    const currentCategories = searchParams
+      .getAll('category')
+      .filter((category): category is TPluginCategory =>
+        TPluginCategories.includes(category as TPluginCategory),
+      );
+
+    const newCategories =
+      currentCategories.includes(category) ?
+        currentCategories.filter((c) => c !== category)
+      : [...currentCategories, category];
+
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete('category');
+
+    newCategories.forEach((category) => {
+      newSearchParams.append('category', category);
+    });
+    router.push(pathname + '?' + newSearchParams.toString());
   }
 
   function toggleVersions(version: TPluginVersion) {
