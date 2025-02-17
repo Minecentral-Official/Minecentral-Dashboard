@@ -2,21 +2,21 @@
 
 import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
 
-import { PluginCategory } from '@/features/resource-plugin/config/categories.plugin';
+import { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
 import DTOResourcePlugin from '@/features/resource-plugin/dto/plugin.dto';
 import { db } from '@/lib/db';
 import { pluginTable, user } from '@/lib/db/schema';
 
 type params = {
-  search: string;
+  query: string;
   page: number;
   limit: number;
   author?: string;
-  categories?: PluginCategory[];
+  categories?: TPluginCategory[];
 };
 
 export default async function resourcesFindAndFilter({
-  search,
+  query,
   limit,
   page,
   categories,
@@ -26,9 +26,9 @@ export default async function resourcesFindAndFilter({
 
   textConditions.push(
     or(
-      ilike(pluginTable.title, `%${search}%`),
-      ilike(pluginTable.description, `%${search}%`),
-      ilike(pluginTable.subtitle, `%${search}%`),
+      ilike(pluginTable.title, `%${query}%`),
+      ilike(pluginTable.description, `%${query}%`),
+      ilike(pluginTable.subtitle, `%${query}%`),
     ),
   );
 
@@ -41,7 +41,7 @@ export default async function resourcesFindAndFilter({
   const matchedUsers = await db
     .select({ id: user.id })
     .from(user)
-    .where(ilike(user.name, `%${search}%`));
+    .where(ilike(user.name, `%${query}%`));
   authorIds = matchedUsers.map((user) => user.id.toString());
   // Add condition to check if author matches either a name or an ID
   textConditions.push(inArray(pluginTable.userId, [...authorIds]));

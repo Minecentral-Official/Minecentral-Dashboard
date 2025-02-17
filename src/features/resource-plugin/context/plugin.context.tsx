@@ -6,13 +6,9 @@ import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 
 import type { ReactNode } from 'react';
 
-interface PluginContextType {
-  plugin: TResourcePlugin;
-}
+const PluginContext = createContext<TResourcePlugin | undefined>(undefined);
 
-const PluginContext = createContext<PluginContextType | undefined>(undefined);
-
-export function useResourcePluginContext() {
+export function usePluginContext() {
   const context = useContext(PluginContext);
   if (context === undefined) {
     throw new Error('usePluginContext must be used within a PluginProvider');
@@ -20,17 +16,15 @@ export function useResourcePluginContext() {
   return context;
 }
 
-interface ResourcePluginProviderProps extends PluginContextType {
+interface ResourcePluginProviderProps extends TResourcePlugin {
   children: ReactNode;
 }
 
-export function ResourcePluginProvider({
+export function PluginProvider({
   children,
-  plugin,
+  ...rest
 }: ResourcePluginProviderProps) {
   return (
-    <PluginContext.Provider value={{ plugin }}>
-      {children}
-    </PluginContext.Provider>
+    <PluginContext.Provider value={rest}>{children}</PluginContext.Provider>
   );
 }

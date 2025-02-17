@@ -16,12 +16,12 @@ import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { Separator } from '@/components/ui/separator';
 import { Toaster } from '@/components/ui/toaster';
-import { pluginCategoriesConfig } from '@/features/resource-plugin/config/categories.plugin';
+import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
+import { TPluginVersions } from '@/features/resource-plugin/config/versions.plugin';
 import resourceCreate from '@/features/resource-plugin/mutations/create.resource';
 import { pluginCreateZod } from '@/features/resource-plugin/schemas/zod/create-plugin.zod';
-import { TMinecraftVersion } from '@/features/resource-plugin/types/minecraft-versions.type';
 
-const mcVersions = TMinecraftVersion.map((type) => ({
+const mcVersions = TPluginVersions.map((type) => ({
   value: type,
   label: type
     .split('-')
@@ -29,7 +29,7 @@ const mcVersions = TMinecraftVersion.map((type) => ({
     .join(' '),
 }));
 
-const mcCategories = pluginCategoriesConfig.map((type) => ({
+const mcCategories = TPluginCategories.map((type) => ({
   value: type,
   label: type
     .split('-')

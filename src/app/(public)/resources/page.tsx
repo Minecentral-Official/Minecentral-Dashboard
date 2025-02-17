@@ -5,21 +5,20 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
+import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
 import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
-import FilterPluginSearchBar from '@/features/resource-plugin/components/with-context/searchbar';
-import FilterPluginSidebar from '@/features/resource-plugin/components/with-context/sidebar';
-import { ResourcePluginProvider } from '@/features/resource-plugin/context/plugin.context';
 import {
-  FilterPluginProvider,
-  useFilterPluginContext,
-} from '@/features/resource-plugin/context/plugin.filter';
+  PluginFilterProvider,
+  usePluginFilterContext,
+} from '@/features/resource-plugin/context/plugin-filter.context';
+import { PluginProvider } from '@/features/resource-plugin/context/plugin.context';
 
 export default function ResourceLandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const resources = []
 
   return (
-    <FilterPluginProvider>
+    <PluginFilterProvider>
       <div className='flex min-h-screen flex-col pt-20'>
         <div className='flex flex-1 overflow-hidden'>
           <FilterPluginSidebar
@@ -39,7 +38,7 @@ export default function ResourceLandingPage() {
                   <span className='sr-only'>Toggle sidebar</span>
                 </Button>
               </div>
-              <FilterPluginSearchBar />
+              <PluginFilterSearchBar />
             </div>
             <div className='mt-4 w-full'>
               <ResourceList />
@@ -47,20 +46,20 @@ export default function ResourceLandingPage() {
           </main>
         </div>
       </div>
-    </FilterPluginProvider>
+    </PluginFilterProvider>
   );
 }
 
 function ResourceList() {
-  const { plugins } = useFilterPluginContext();
+  const { plugins } = usePluginFilterContext();
   return (
     <>
       {plugins ?
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
           {plugins.map((plugin, index) => (
-            <ResourcePluginProvider key={index} plugin={plugin}>
+            <PluginProvider key={index} {...plugin}>
               <ResourceCardView />
-            </ResourcePluginProvider>
+            </PluginProvider>
           ))}
         </div>
       : <p className='mx-auto'>No resources found</p>}

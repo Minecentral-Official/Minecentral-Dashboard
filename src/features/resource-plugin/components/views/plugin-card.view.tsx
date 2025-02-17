@@ -6,12 +6,10 @@ import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { useResourcePluginContext } from '@/features/resource-plugin/context/plugin.context';
+import { usePluginContext } from '@/features/resource-plugin/context/plugin.context';
 
 export default function ResourceCardView() {
-  const {
-    plugin: { title, author, subtitle, id, categories },
-  } = useResourcePluginContext();
+  const { title, author, subtitle, id, categories } = usePluginContext();
   return (
     <Card className='overflow-hidden'>
       <Image

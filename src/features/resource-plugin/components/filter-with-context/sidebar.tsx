@@ -1,8 +1,9 @@
 import { SearchIcon, XIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import CategoriesFilter from '@/features/resource-plugin/components/ui/categories-filter';
-import { useFilterPluginContext } from '@/features/resource-plugin/context/plugin.filter';
+import PluginCategoriesFilter from '@/features/resource-plugin/components/ui/categories-filter';
+import PluginVersionsFilter from '@/features/resource-plugin/components/ui/versions-filter';
+import { usePluginFilterContext } from '@/features/resource-plugin/context/plugin-filter.context';
 
 interface FilterSidebarProps {
   open: boolean;
@@ -13,7 +14,7 @@ export default function FilterPluginSidebar({
   open,
   onClose,
 }: FilterSidebarProps) {
-  const { toggleCategory, categories, updateSearch } = useFilterPluginContext();
+  const { performSearch } = usePluginFilterContext();
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r bg-background transition-transform duration-200 ease-in-out md:z-10 ${open ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0`}
@@ -26,9 +27,10 @@ export default function FilterPluginSidebar({
         </Button>
       </div>
       <div className='space-y-6 p-4'>
-        <CategoriesFilter />
+        <PluginCategoriesFilter />
+        <PluginVersionsFilter />
 
-        <Button onClick={updateSearch}>
+        <Button onClick={performSearch}>
           <SearchIcon />
           Search
         </Button>

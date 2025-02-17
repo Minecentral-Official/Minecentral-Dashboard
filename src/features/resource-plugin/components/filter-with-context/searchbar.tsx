@@ -1,10 +1,11 @@
 import { SearchIcon } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
-import { useFilterPluginContext } from '@/features/resource-plugin/context/plugin.filter';
+import { useResourceFilterContext } from '@/features/resource-plugin/context/resource-filter.context';
 
-export default function FilterPluginSearchBar() {
-  const { search, setSearch } = useFilterPluginContext();
+export default function PluginFilterSearchBar() {
+  const { searchQuery: search, setSearchQuery: setSearch } =
+    useResourceFilterContext();
   return (
     <div className='relative w-full'>
       <SearchIcon className='absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400' />

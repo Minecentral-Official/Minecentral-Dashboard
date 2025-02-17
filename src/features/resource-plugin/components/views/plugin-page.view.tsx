@@ -8,19 +8,11 @@ import { PlateViewer } from '@/components/editor/plate-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { useResourcePluginContext } from '@/features/resource-plugin/context/plugin.context';
+import { usePluginContext } from '@/features/resource-plugin/context/plugin.context';
 
 export default function ResourcePageView() {
-  const {
-    plugin: {
-      title,
-      subtitle,
-      downloads,
-      linkSource,
-      linkSupport,
-      description,
-    },
-  } = useResourcePluginContext();
+  const { title, subtitle, downloads, linkSource, linkSupport, description } =
+    usePluginContext();
   return (
     <div className='min-h-screen bg-background'>
       <div className='container mx-auto px-4 py-8'>

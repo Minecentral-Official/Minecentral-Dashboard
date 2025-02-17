@@ -1,4 +1,4 @@
-export const resourceTypeConfig = [
+export const TResourceTypes = [
   'plugin',
   'resource-packs',
   'data-packs',
