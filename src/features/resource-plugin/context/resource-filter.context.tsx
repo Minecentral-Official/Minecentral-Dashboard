@@ -54,7 +54,8 @@ export function ResourceFilterProvider({
     setSearchQuery(searchParams.get('q') || '');
     setLimit(Number.parseInt(searchParams.get('limit') || '10', 10));
     setPage(Number.parseInt(searchParams.get('p') || '0', 10));
-  }, [searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const searchDebounce = useDebounce(searchQuery, 500);
 

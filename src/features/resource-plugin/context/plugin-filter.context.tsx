@@ -1,8 +1,14 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import {
   TPluginCategories,
@@ -58,7 +64,6 @@ export function PluginFilterProvider({ children }: FilterPluginProviderProps) {
 }
 
 function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { limit, page, searchQuery, searchDebounce, setParams } =
     useResourceFilterContext();
@@ -84,12 +89,18 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
           TPluginVersions.includes(version as TPluginVersion),
         ),
     );
-    performSearch();
+    console.log('Updated categories and versions');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    performSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDebounce]);
+
   //Performs the search query, returning and updating the plugins to be shown to user
-  async function performSearch() {
+  const performSearch = useCallback(async () => {
+    updateParams();
     const newPlugins = await resourcesFindAndFilter({
       limit,
       page,
@@ -98,11 +109,8 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     });
 
     setPlugins(newPlugins.resources);
-  }
-
-  useEffect(() => {
-    updateParams();
-  }, [limit, page, searchQuery, versions, categories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories, limit, page, searchQuery]);
 
   function updateParams() {
     const params = new URLSearchParams();
@@ -111,7 +119,9 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     categories.forEach((category) => params.append('category', category));
     versions.forEach((version) => params.append('v', version));
 
-    router.push(`/resources?${params.toString()}`, { scroll: true });
+    //Updates the clients navigation, but doesn't trigger get on server
+    window.history.replaceState(null, '', `?${params.toString()}`);
+    // router.replace(`/resources?${params.toString()}`, { scroll: true });
   }
 
   //#region Togglers

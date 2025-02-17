@@ -21,6 +21,13 @@ export default async function resourcesFindAndFilter({
   page,
   categories,
 }: params) {
+  console.log(
+    '---------- Fetched plugin list!',
+    query,
+    limit,
+    page,
+    categories,
+  );
   const otherConditions = [];
   const textConditions = [];
 
