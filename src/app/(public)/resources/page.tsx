@@ -12,7 +12,6 @@ import {
   PluginFilterProvider,
   usePluginFilterContext,
 } from '@/features/resource-plugin/context/plugin-filter.context';
-import { PluginProvider } from '@/features/resource-plugin/context/plugin.context';
 
 export default function ResourceLandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,9 +57,7 @@ function ResourceList() {
       {plugins ?
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
           {plugins.map((plugin, index) => (
-            <PluginProvider key={index} {...plugin}>
-              <ResourceCardView />
-            </PluginProvider>
+            <ResourceCardView key={index} {...plugin} />
           ))}
         </div>
       : <p className='mx-auto'>No resources found</p>}

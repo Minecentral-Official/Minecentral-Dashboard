@@ -4,40 +4,41 @@ import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
 
 import { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
 import DTOResourcePlugin from '@/features/resource-plugin/dto/plugin.dto';
+import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 import { db } from '@/lib/db';
 import { pluginTable, user } from '@/lib/db/schema';
 
-type params = {
-  query: string;
+export type TGetPluginsRequest = {
+  query?: string;
   page: number;
   limit: number;
-  author?: string;
   categories?: TPluginCategory[];
 };
 
-export default async function resourcesFindAndFilter({
+export type TGetPluginsResponse = {
+  resources: TResourcePlugin[] | [];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+};
+
+export default async function pluginsGet({
   query,
   limit,
   page,
   categories,
-}: params) {
-  console.log(
-    '---------- Fetched plugin list!',
-    query,
-    limit,
-    page,
-    categories,
-  );
+}: TGetPluginsRequest): Promise<TGetPluginsResponse> {
   const otherConditions = [];
   const textConditions = [];
 
-  textConditions.push(
-    or(
-      ilike(pluginTable.title, `%${query}%`),
-      ilike(pluginTable.description, `%${query}%`),
-      ilike(pluginTable.subtitle, `%${query}%`),
-    ),
-  );
+  if (query)
+    textConditions.push(
+      or(
+        ilike(pluginTable.title, `%${query}%`),
+        ilike(pluginTable.description, `%${query}%`),
+        ilike(pluginTable.subtitle, `%${query}%`),
+      ),
+    );
 
   if (categories && categories.length > 0)
     otherConditions.push(arrayContains(pluginTable.categories, categories));
@@ -45,13 +46,15 @@ export default async function resourcesFindAndFilter({
   //Author Search
   let authorIds: string[] = [];
   // Find user ID(s) that match the given name
-  const matchedUsers = await db
-    .select({ id: user.id })
-    .from(user)
-    .where(ilike(user.name, `%${query}%`));
-  authorIds = matchedUsers.map((user) => user.id.toString());
-  // Add condition to check if author matches either a name or an ID
-  textConditions.push(inArray(pluginTable.userId, [...authorIds]));
+  if (query) {
+    const matchedUsers = await db
+      .select({ id: user.id })
+      .from(user)
+      .where(ilike(user.name, `%${query}%`));
+    authorIds = matchedUsers.map((user) => user.id.toString());
+    // Add condition to check if author matches either a name or an ID
+    textConditions.push(inArray(pluginTable.userId, [...authorIds]));
+  }
 
   //Query/Filter
   const whereClause = and(or(...textConditions), and(...otherConditions));
@@ -71,10 +74,11 @@ export default async function resourcesFindAndFilter({
   const totalCount = total.length;
   const totalPages = Math.ceil(totalCount / limit);
 
-  return {
+  const result = {
     resources: resources.map((resource) => DTOResourcePlugin(resource)),
     totalCount,
     currentPage: page,
     totalPages,
   };
+  return result;
 }

@@ -8,11 +8,27 @@ import { PlateViewer } from '@/components/editor/plate-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { usePluginContext } from '@/features/resource-plugin/context/plugin.context';
+import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 
-export default function ResourcePageView() {
-  const { title, subtitle, downloads, linkSource, linkSupport, description } =
-    usePluginContext();
+type props = Pick<
+  TResourcePlugin,
+  | 'title'
+  | 'subtitle'
+  | 'author'
+  | 'downloads'
+  | 'linkSource'
+  | 'linkSupport'
+  | 'description'
+>;
+
+export default function ResourcePageView({
+  title,
+  subtitle,
+  downloads,
+  linkSource,
+  linkSupport,
+  description,
+}: props) {
   return (
     <div className='min-h-screen bg-background'>
       <div className='container mx-auto px-4 py-8'>

@@ -15,4 +15,4 @@ export const resourceCreateZod = createInsertSchema(pluginTable, {
   //linkSupport: (schema) => schema.url(),
   // tags: z.array(z.string()),
   // type: z.enum(ResourceType),
-});
+}).omit({ createdAt: true, updatedAt: true, userId: true, releaseId: true });

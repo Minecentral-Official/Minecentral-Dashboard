@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 import {
   TPluginCategories,
@@ -16,7 +17,7 @@ import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resource-plugin/context/resource-filter.context';
-import resourcesFindAndFilter from '@/features/resource-plugin/queries/resources-find.filter';
+import { PluginsGetResponseSchema } from '@/features/resource-plugin/schemas/zod/plugins-get-response.zod';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
@@ -59,12 +60,9 @@ export function PluginFilterProvider({ children }: FilterPluginProviderProps) {
 
 function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const searchParams = useSearchParams();
-  const { limit, page, searchQuery, searchDebounce, setParams } =
-    useResourceFilterContext();
+  const { searchDebounce, setParams } = useResourceFilterContext();
 
   const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
-  //const [categories, setCategories] = useState<TPluginCategory[]>([]);
-  //const [versions, setVersions] = useState<TPluginVersion[]>([]);
   const categories = searchParams
     .getAll('category')
     .filter((category): category is TPluginCategory =>
@@ -76,52 +74,30 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       TPluginVersions.includes(version as TPluginVersion),
     );
 
-  //Whenever we load up, set the new categories
-  // useEffect(() => {
-  // setCategories(
-  //   searchParams
-  //     .getAll('category')
-  //     .filter((category): category is TPluginCategory =>
-  //       TPluginCategories.includes(category as TPluginCategory),
-  //     ),
-  // );
-
-  // setVersions(
-  //   searchParams
-  //     .getAll('v')
-  //     .filter((version): version is TPluginVersion =>
-  //       TPluginVersions.includes(version as TPluginVersion),
-  //     ),
-  // );
-  //}, []);
-
   useEffect(() => {
-    // performSearch();
-    async function getPlugins() {
-      const params = new URLSearchParams();
-      setParams(params);
-      categories.forEach((category) => params.append('category', category));
-      versions.forEach((version) => params.append('v', version));
-
-      const result = await fetch(`/api/resources?${params.toString()}`);
-      console.log(result);
-    }
-    getPlugins();
-
+    performSearch();
+    updateParams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounce]);
 
   //Performs the search query, returning and updating the plugins to be shown to user
   const performSearch = async () => {
-    updateParams();
-    const newPlugins = await resourcesFindAndFilter({
-      limit,
-      page,
-      query: searchQuery,
-      categories,
-    });
+    const params = new URLSearchParams();
+    setParams(params);
+    categories.forEach((category) => params.append('category', category));
+    versions.forEach((version) => params.append('v', version));
 
-    setPlugins(newPlugins.resources);
+    fetch(`/api/resources?${params.toString()}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        const parse = PluginsGetResponseSchema.safeParse(json);
+        if (parse.success) setPlugins(parse.data.resources);
+        else {
+          toast.error('Query error:' + parse.error);
+        }
+      });
   };
 
   function updateParams() {

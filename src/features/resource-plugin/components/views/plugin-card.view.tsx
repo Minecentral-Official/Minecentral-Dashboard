@@ -6,10 +6,20 @@ import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { usePluginContext } from '@/features/resource-plugin/context/plugin.context';
+import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 
-export default function ResourceCardView() {
-  const { title, author, subtitle, id, categories } = usePluginContext();
+type props = Pick<
+  TResourcePlugin,
+  'title' | 'author' | 'subtitle' | 'id' | 'categories'
+>;
+
+export default function ResourceCardView({
+  title,
+  author,
+  subtitle,
+  id,
+  categories,
+}: props) {
   return (
     <Card className='overflow-hidden'>
       <Image

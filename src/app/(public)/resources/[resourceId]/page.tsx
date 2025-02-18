@@ -1,5 +1,4 @@
 import ResourcePageView from '@/features/resource-plugin/components/views/plugin-page.view';
-import { PluginProvider } from '@/features/resource-plugin/context/plugin.context';
 import resourceGetById from '@/features/resource-plugin/queries/resource-by-id.get';
 
 type PageProps = {
@@ -13,11 +12,9 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className='pt-20'>
       {plugin ?
-        <PluginProvider {...plugin}>
-          <div className='pt-20'>
-            <ResourcePageView />
-          </div>
-        </PluginProvider>
+        <div className='pt-20'>
+          <ResourcePageView {...plugin} />
+        </div>
       : <>Requested Resource not found</>}
     </div>
   );
