@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import {
   TPluginCategories,
@@ -63,31 +63,37 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     useResourceFilterContext();
 
   const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
-  const [categories, setCategories] = useState<TPluginCategory[]>([]);
-  const [versions, setVersions] = useState<TPluginVersion[]>([]);
-  const pathname = usePathname();
-  const router = useRouter();
+  //const [categories, setCategories] = useState<TPluginCategory[]>([]);
+  //const [versions, setVersions] = useState<TPluginVersion[]>([]);
+  const categories = searchParams
+    .getAll('category')
+    .filter((category): category is TPluginCategory =>
+      TPluginCategories.includes(category as TPluginCategory),
+    );
+  const versions = searchParams
+    .getAll('v')
+    .filter((version): version is TPluginVersion =>
+      TPluginVersions.includes(version as TPluginVersion),
+    );
 
   //Whenever we load up, set the new categories
-  useEffect(() => {
-    setCategories(
-      searchParams
-        .getAll('category')
-        .filter((category): category is TPluginCategory =>
-          TPluginCategories.includes(category as TPluginCategory),
-        ),
-    );
+  // useEffect(() => {
+  // setCategories(
+  //   searchParams
+  //     .getAll('category')
+  //     .filter((category): category is TPluginCategory =>
+  //       TPluginCategories.includes(category as TPluginCategory),
+  //     ),
+  // );
 
-    setVersions(
-      searchParams
-        .getAll('v')
-        .filter((version): version is TPluginVersion =>
-          TPluginVersions.includes(version as TPluginVersion),
-        ),
-    );
-    console.log('Updated categories and versions');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // setVersions(
+  //   searchParams
+  //     .getAll('v')
+  //     .filter((version): version is TPluginVersion =>
+  //       TPluginVersions.includes(version as TPluginVersion),
+  //     ),
+  // );
+  //}, []);
 
   useEffect(() => {
     // performSearch();
@@ -97,10 +103,10 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       categories.forEach((category) => params.append('category', category));
       versions.forEach((version) => params.append('v', version));
 
-      const result = await fetch(
-        `/api/resources?q=${searchDebounce}&page=${page}`,
-      );
+      const result = await fetch(`/api/resources?${params.toString()}`);
+      console.log(result);
     }
+    getPlugins();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounce]);
@@ -132,12 +138,6 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
 
   //#region Togglers
   function toggleCategory(category: TPluginCategory) {
-    setCategories((prev) =>
-      prev.includes(category) ?
-        prev.filter((c) => c !== category)
-      : [...prev, category],
-    );
-
     const currentCategories = searchParams
       .getAll('category')
       .filter((category): category is TPluginCategory =>
@@ -155,15 +155,30 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     newCategories.forEach((category) => {
       newSearchParams.append('category', category);
     });
-    router.push(pathname + '?' + newSearchParams.toString());
+    window.history.replaceState(null, '', `?${newSearchParams.toString()}`);
+    // router.push(pathname + '?' + newSearchParams.toString());
   }
 
   function toggleVersions(version: TPluginVersion) {
-    setVersions((prev) =>
-      prev.includes(version) ?
-        prev.filter((c) => c !== version)
-      : [...prev, version],
-    );
+    const currentVersions = searchParams
+      .getAll('v')
+      .filter((version): version is TPluginVersion =>
+        TPluginVersions.includes(version as TPluginVersion),
+      );
+
+    const newVersions =
+      currentVersions.includes(version) ?
+        currentVersions.filter((c) => c !== version)
+      : [...currentVersions, version];
+
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    newSearchParams.delete('v');
+
+    newVersions.forEach((version) => {
+      newSearchParams.append('v', version);
+    });
+    window.history.replaceState(null, '', `?${newSearchParams.toString()}`);
   }
   //#endregion
 

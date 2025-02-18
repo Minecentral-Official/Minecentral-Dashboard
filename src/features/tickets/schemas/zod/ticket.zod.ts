@@ -10,4 +10,4 @@ export const ticketCreateZod = createInsertSchema(ticket, {
       .min(5, 'Title must be at least 5 characters')
       .max(50, 'Title is too long'),
   category: z.enum(ticketCategoryConfig),
-}).omit({ createdAt: true, status: true, userId: true });
+});

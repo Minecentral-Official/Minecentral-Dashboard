@@ -2,5 +2,5 @@ import { ticketCreateMessageZod } from '@/features/tickets/schemas/zod/ticket-me
 import { ticketCreateZod } from '@/features/tickets/schemas/zod/ticket.zod';
 
 export const ticketCreateWithMessageZod = ticketCreateZod.merge(
-  ticketCreateMessageZod.omit({ ticketId: true }),
+  ticketCreateMessageZod,
 );
