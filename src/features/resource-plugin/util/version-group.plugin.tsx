@@ -34,8 +34,8 @@ export default function pluginGroupVersions(selected: string[]): string[] {
 }
 
 // Example usage
-const availableVersions = ['1.8.1', '1.8.2', '1.8.3', '1.9.1', '1.9.2', '1.11'];
-const selectedVersions = ['1.8.1', '1.8.2', '1.8.3', '1.9.1'];
+// const availableVersions = ['1.8.1', '1.8.2', '1.8.3', '1.9.1', '1.9.2', '1.11'];
+// const selectedVersions = ['1.8.1', '1.8.2', '1.8.3', '1.9.1'];
 
-console.log(groupVersions(availableVersions, selectedVersions));
+// console.log(groupVersions(availableVersions, selectedVersions));
 // Output: [ '1.8.x', '1.9.1' ]

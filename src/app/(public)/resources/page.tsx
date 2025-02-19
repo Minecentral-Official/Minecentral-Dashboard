@@ -7,6 +7,8 @@ import { FilterIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
 import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
+import PluginLimitFilter from '@/features/resource-plugin/components/ui/limit-filter';
+import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
 import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
 import {
   PluginFilterProvider,
@@ -24,7 +26,7 @@ export default function ResourceLandingPage() {
             open={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
-          <main className='w-full flex-1 overflow-y-auto p-4 md:p-6'>
+          <main className='flex w-full flex-col gap-2 overflow-y-auto p-4 md:p-6'>
             <div className='flex w-full flex-row gap-2'>
               <div className='bg-background md:hidden'>
                 <Button
@@ -39,7 +41,11 @@ export default function ResourceLandingPage() {
               </div>
               <PluginFilterSearchBar />
             </div>
-            <div className='mt-4 w-full'>
+            <div className='flex flex-row gap-2'>
+              <PluginSortFilter />
+              <PluginLimitFilter />
+            </div>
+            <div className='w-full'>
               <ResourceList />
             </div>
           </main>
@@ -55,7 +61,7 @@ function ResourceList() {
   return (
     <>
       {plugins ?
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-6 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
           {plugins.map((plugin, index) => (
             <ResourceCardView key={index} {...plugin} />
           ))}

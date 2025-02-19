@@ -19,6 +19,10 @@ import {
 } from '@/features/resource-plugin/context/resource-filter.context';
 import { PluginsGetResponseSchema } from '@/features/resource-plugin/schemas/zod/plugins-get-response.zod';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import {
+  SearchParamsConsume,
+  useUpdateSearchParams,
+} from '@/hooks/use-update-search-params';
 
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
@@ -60,9 +64,10 @@ export function PluginFilterProvider({ children }: FilterPluginProviderProps) {
 
 function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const searchParams = useSearchParams();
-  const { searchDebounce, setParams } = useResourceFilterContext();
+  const { searchDebounce, getParams } = useResourceFilterContext();
 
   const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
+  const updateSearchParams = useUpdateSearchParams();
   const categories = searchParams
     .getAll('category')
     .filter((category): category is TPluginCategory =>
@@ -75,15 +80,15 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     );
 
   useEffect(() => {
+    // updateSearchParams({ q: searchQuery });
     performSearch();
-    updateParams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounce]);
 
   //Performs the search query, returning and updating the plugins to be shown to user
   const performSearch = async () => {
     const params = new URLSearchParams();
-    setParams(params);
+    SearchParamsConsume(params, getParams());
     categories.forEach((category) => params.append('category', category));
     versions.forEach((version) => params.append('v', version));
 
@@ -100,18 +105,6 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       });
   };
 
-  function updateParams() {
-    const params = new URLSearchParams();
-    setParams(params);
-
-    categories.forEach((category) => params.append('category', category));
-    versions.forEach((version) => params.append('v', version));
-
-    //Updates the clients navigation, but doesn't trigger get on server
-    window.history.replaceState(null, '', `?${params.toString()}`);
-    // router.replace(`/resources?${params.toString()}`, { scroll: true });
-  }
-
   //#region Togglers
   function toggleCategory(category: TPluginCategory) {
     const currentCategories = searchParams
@@ -125,14 +118,9 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         currentCategories.filter((c) => c !== category)
       : [...currentCategories, category];
 
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-    newSearchParams.delete('category');
-
-    newCategories.forEach((category) => {
-      newSearchParams.append('category', category);
+    updateSearchParams({
+      category: newCategories.map((cat) => cat),
     });
-    window.history.replaceState(null, '', `?${newSearchParams.toString()}`);
-    // router.push(pathname + '?' + newSearchParams.toString());
   }
 
   function toggleVersions(version: TPluginVersion) {
@@ -147,14 +135,9 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         currentVersions.filter((c) => c !== version)
       : [...currentVersions, version];
 
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-
-    newSearchParams.delete('v');
-
-    newVersions.forEach((version) => {
-      newSearchParams.append('v', version);
+    updateSearchParams({
+      v: newVersions.map((cat) => cat),
     });
-    window.history.replaceState(null, '', `?${newSearchParams.toString()}`);
   }
   //#endregion
 
