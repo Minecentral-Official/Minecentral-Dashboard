@@ -201,24 +201,24 @@ export const MultiSelect = React.forwardRef<
                 <div className='flex flex-wrap items-center'>
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const option = options.find((o) => o.value === value);
-                    const IconComponent = option?.icon;
+                    // const IconComponent = option?.icon;
                     return (
                       <Badge
                         key={value}
-                        className={cn(multiSelectVariants({ variant }))}
-                        style={{ animationDuration: `${animation}s` }}
-                      >
-                        {IconComponent && (
-                          <IconComponent className='mr-2 h-4 w-4' />
+                        className={cn(
+                          multiSelectVariants({ variant }) + ' pl-1',
                         )}
+                        style={{ animationDuration: `${animation}s` }}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleOption(value);
+                        }}
+                      >
+                        <XIcon className='mr-1 h-4 w-4 hover:text-red-500' />
+                        {/* {IconComponent && (
+                          <IconComponent className='mr-2 h-4 w-4' />
+                        )} */}
                         {option?.label}
-                        <XCircle
-                          className='ml-2 h-4 w-4 cursor-pointer hover:text-red-500'
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            toggleOption(value);
-                          }}
-                        />
                       </Badge>
                     );
                   })}

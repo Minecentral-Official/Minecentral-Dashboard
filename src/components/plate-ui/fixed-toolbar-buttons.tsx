@@ -18,6 +18,7 @@ import {
   BoldIcon,
   Code2Icon,
   ItalicIcon,
+  MoreHorizontalIcon,
   PaintBucketIcon,
   StrikethroughIcon,
   UnderlineIcon,
@@ -49,94 +50,104 @@ import { TurnIntoDropdownMenu } from '@/components/plate-ui/turn-into-dropdown-m
 export function FixedToolbarButtons() {
   const readOnly = useEditorReadOnly();
 
+  const mainToolbarItems = (
+    <>
+      <ToolbarGroup>
+        <UndoToolbarButton />
+        <RedoToolbarButton />
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <InsertDropdownMenu />
+        <TurnIntoDropdownMenu />
+        <FontSizeToolbarButton />
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <MarkToolbarButton nodeType={BoldPlugin.key} tooltip='Bold (ctrl+B)'>
+          <BoldIcon className='h-4 w-4' />
+        </MarkToolbarButton>
+
+        <MarkToolbarButton
+          nodeType={ItalicPlugin.key}
+          tooltip='Italic (ctrl+I)'
+        >
+          <ItalicIcon className='h-4 w-4' />
+        </MarkToolbarButton>
+
+        <MarkToolbarButton
+          nodeType={UnderlinePlugin.key}
+          tooltip='Underline (ctrl+U)'
+        >
+          <UnderlineIcon className='h-4 w-4' />
+        </MarkToolbarButton>
+      </ToolbarGroup>
+    </>
+  );
+
+  const secondaryToolbarItems = (
+    <>
+      <ToolbarGroup>
+        <MarkToolbarButton
+          nodeType={StrikethroughPlugin.key}
+          tooltip='Strikethrough'
+        >
+          <StrikethroughIcon className='h-4 w-4' />
+        </MarkToolbarButton>
+
+        <MarkToolbarButton nodeType={CodePlugin.key} tooltip='Code (ctrl+E)'>
+          <Code2Icon className='h-4 w-4' />
+        </MarkToolbarButton>
+
+        <ColorDropdownMenu nodeType={FontColorPlugin.key} tooltip='Text color'>
+          <BaselineIcon className='h-4 w-4' />
+        </ColorDropdownMenu>
+
+        <ColorDropdownMenu
+          nodeType={FontBackgroundColorPlugin.key}
+          tooltip='Background color'
+        >
+          <PaintBucketIcon className='h-4 w-4' />
+        </ColorDropdownMenu>
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <AlignDropdownMenu />
+        <NumberedIndentListToolbarButton />
+        <BulletedIndentListToolbarButton />
+        <IndentTodoToolbarButton />
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <LinkToolbarButton />
+        <TableDropdownMenu />
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <MediaToolbarButton nodeType={ImagePlugin.key} />
+        <MediaToolbarButton nodeType={VideoPlugin.key} />
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <OutdentToolbarButton />
+        <IndentToolbarButton />
+      </ToolbarGroup>
+    </>
+  );
+
   return (
-    <div className='flex w-full'>
+    <div className='flex w-full flex-wrap items-center gap-2'>
       {!readOnly && (
         <>
-          <ToolbarGroup>
-            <UndoToolbarButton />
-            <RedoToolbarButton />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <InsertDropdownMenu />
-            <TurnIntoDropdownMenu />
-            <FontSizeToolbarButton />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <MarkToolbarButton
-              nodeType={BoldPlugin.key}
-              tooltip='Bold (ctrl+B)'
-            >
-              <BoldIcon />
-            </MarkToolbarButton>
-
-            <MarkToolbarButton
-              nodeType={ItalicPlugin.key}
-              tooltip='Italic (ctrl+I)'
-            >
-              <ItalicIcon />
-            </MarkToolbarButton>
-
-            <MarkToolbarButton
-              nodeType={UnderlinePlugin.key}
-              tooltip='Underline (ctrl+U)'
-            >
-              <UnderlineIcon />
-            </MarkToolbarButton>
-
-            <MarkToolbarButton
-              nodeType={StrikethroughPlugin.key}
-              tooltip='Strikethrough'
-            >
-              <StrikethroughIcon />
-            </MarkToolbarButton>
-
-            <MarkToolbarButton
-              nodeType={CodePlugin.key}
-              tooltip='Code (ctrl+E)'
-            >
-              <Code2Icon />
-            </MarkToolbarButton>
-
-            <ColorDropdownMenu
-              nodeType={FontColorPlugin.key}
-              tooltip='Text color'
-            >
-              <BaselineIcon />
-            </ColorDropdownMenu>
-
-            <ColorDropdownMenu
-              nodeType={FontBackgroundColorPlugin.key}
-              tooltip='Background color'
-            >
-              <PaintBucketIcon />
-            </ColorDropdownMenu>
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <AlignDropdownMenu />
-
-            <NumberedIndentListToolbarButton />
-            <BulletedIndentListToolbarButton />
-            <IndentTodoToolbarButton />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <LinkToolbarButton />
-            <TableDropdownMenu />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <MediaToolbarButton nodeType={ImagePlugin.key} />
-            <MediaToolbarButton nodeType={VideoPlugin.key} />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
-            <OutdentToolbarButton />
-            <IndentToolbarButton />
-          </ToolbarGroup>
+          <div className='flex flex-wrap items-center gap-2'>
+            {mainToolbarItems}
+          </div>
+          <div className='hidden flex-wrap items-center gap-2 xl:flex'>
+            {secondaryToolbarItems}
+          </div>
+          <div className='xl:hidden'>
+            <MoreHorizontalIcon>{secondaryToolbarItems}</MoreHorizontalIcon>
+          </div>
         </>
       )}
 

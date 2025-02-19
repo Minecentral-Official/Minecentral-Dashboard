@@ -1,5 +1,5 @@
 import ResourcePageView from '@/features/resource-plugin/components/views/plugin-page.view';
-import resourceGetById from '@/features/resource-plugin/queries/resource-by-id.get';
+import pluginGetById from '@/features/resource-plugin/queries/plugin-by-id.get';
 
 type PageProps = {
   params: Promise<{ resourceId: number }>;
@@ -7,7 +7,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { resourceId } = await params;
-  const plugin = await resourceGetById(resourceId);
+  const plugin = await pluginGetById(resourceId);
 
   return (
     <div className='pt-20'>

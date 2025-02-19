@@ -25,7 +25,7 @@ export const pluginTable = pgTable('resourcePlugin', {
   // banner?: Types.ObjectId,
   discord: text(),
   language: text(),
-  // tags: text().array(),
+  tags: text().array(),
   linkSource: text(),
   linkSupport: text(),
   //Other

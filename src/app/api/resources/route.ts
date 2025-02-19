@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
-import pluginsGet from '@/features/resource-plugin/queries/resources-find.filter';
+import pluginsFind from '@/features/resource-plugin/queries/plugins-find.filter';
 import { PluginsGetRequestSchema } from '@/features/resource-plugin/schemas/zod/plugins-get-request.zod';
 
 import type { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   });
 
   if (params.success) {
-    const result = await pluginsGet({
+    const result = await pluginsFind({
       ...params.data,
     });
 

@@ -83,7 +83,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     // updateSearchParams({ q: searchQuery });
     performSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDebounce]);
+  }, [searchDebounce, searchParams]);
 
   //Performs the search query, returning and updating the plugins to be shown to user
   const performSearch = async () => {

@@ -1,10 +1,9 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { Tag, TagInput } from 'emblor';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -15,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { Separator } from '@/components/ui/separator';
+import { TagInput } from '@/components/ui/tag-input';
 import { Toaster } from '@/components/ui/toaster';
 import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
 import { TPluginVersions } from '@/features/resource-plugin/config/versions.plugin';
@@ -37,32 +37,39 @@ const mcCategories = TPluginCategories.map((type) => ({
     .join(' '),
 }));
 
+const defaultContent = [
+  {
+    children: [{ text: 'New Resource' }],
+    type: 'h1',
+  },
+  {
+    children: [
+      { text: 'Type in your description and ' },
+      { bold: true, text: 'create rich text' },
+      {
+        text: '. \nYou can also use the slash "/" menu to open the in-line editor',
+      },
+    ],
+    type: 'p',
+  },
+];
+
 export default function CreateResourceForm() {
   const [lastResult, action] = useActionState(resourceCreate, undefined);
 
-  let jsonContent;
-  if (typeof window !== 'undefined') {
-    jsonContent = window.localStorage.getItem('editorContent');
-  }
-  const descriptionContent =
-    jsonContent && jsonContent.length > 100 ?
-      JSON.parse(jsonContent)
-    : [
-        {
-          children: [{ text: 'New Resource' }],
-          type: 'h1',
-        },
-        {
-          children: [
-            { text: 'Type in your description and ' },
-            { bold: true, text: 'create rich text' },
-            {
-              text: '. \nYou can also use the slash "/" menu to open the in-line editor',
-            },
-          ],
-          type: 'p',
-        },
-      ];
+  // function getLocalStorageEditorContent() {
+  //   try {
+  //     let jsonContent;
+  //     if (typeof window !== 'undefined') {
+  //       jsonContent = window.localStorage.getItem('editorContent');
+  //     }
+  //     return jsonContent && jsonContent.length > 100 ?
+  //         JSON.parse(jsonContent)
+  //       : defaultContent;
+  //   } catch {
+  //     return defaultContent;
+  //   }
+  // }
 
   const [form, fields] = useForm({
     lastResult,
@@ -75,19 +82,18 @@ export default function CreateResourceForm() {
       } else {
         toast.loading('Posting Resource...', { id: 'create-resource' });
         //Clear Editor Cache
-        window?.localStorage.removeItem('editorContent');
+        // window?.localStorage.removeItem('editorContent');
       }
       return submission;
     },
     defaultValue: {
-      description: descriptionContent,
+      description: JSON.parse(JSON.stringify(defaultContent)),
     },
   });
   const contentDescriptionHandler = useInputControl(fields.description);
   const versionSupportHandle = useInputControl(fields.versionSupport);
   const relatedCategoriesHandle = useInputControl(fields.categories);
   const tagsHandle = useInputControl(fields.tags);
-  const [tags, setTags] = useState<Tag[]>([]);
 
   return (
     <div>
@@ -200,17 +206,14 @@ export default function CreateResourceForm() {
         <Field>
           <Label htmlFor={fields.tags.id}>Tags</Label>
           <TagInput
-            activeTagIndex={-1}
-            setActiveTagIndex={() => {}}
-            placeholder='Enter a topic'
-            tags={tags}
-            className='sm:min-w-[450px]'
-            setTags={(newTags) => {
-              setTags(newTags);
-              const asdf = newTags as [Tag, ...Tag[]];
-              const simpleTags = asdf.map(({ text }) => text);
-              tagsHandle.change(simpleTags);
-            }}
+            // className='sm:min-w-[450px]'
+            onChange={(e) => tagsHandle.change(e)}
+            // setTags={(newTags) => {
+            //   setTags(newTags);
+            //   const asdf = newTags as [Tag, ...Tag[]];
+            //   const simpleTags = asdf.map(({ text }) => text);
+            //   tagsHandle.change(simpleTags);
+            // }}
           />
           {fields.linkSupport.errors && (
             <FieldError>{fields.tags.errors}</FieldError>

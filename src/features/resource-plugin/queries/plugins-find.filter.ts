@@ -3,6 +3,7 @@
 import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
 
 import { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
+import { TPluginVersion } from '@/features/resource-plugin/config/versions.plugin';
 import DTOResourcePlugin from '@/features/resource-plugin/dto/plugin.dto';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 import { db } from '@/lib/db';
@@ -13,6 +14,7 @@ export type TGetPluginsRequest = {
   page: number;
   limit: number;
   categories?: TPluginCategory[];
+  versions?: TPluginVersion[];
 };
 
 export type TGetPluginsResponse = {
@@ -22,16 +24,19 @@ export type TGetPluginsResponse = {
   totalPages: number;
 };
 
-export default async function pluginsGet({
+export default async function pluginsFind({
   query,
   limit,
   page,
   categories,
+  versions,
 }: TGetPluginsRequest): Promise<TGetPluginsResponse> {
   const otherConditions = [];
   const textConditions = [];
 
-  if (query)
+  //Query based Filters
+  if (query) {
+    //Search Filter on Title, Description or SubTitle
     textConditions.push(
       or(
         ilike(pluginTable.title, `%${query}%`),
@@ -40,13 +45,9 @@ export default async function pluginsGet({
       ),
     );
 
-  if (categories && categories.length > 0)
-    otherConditions.push(arrayContains(pluginTable.categories, categories));
-
-  //Author Search
-  let authorIds: string[] = [];
-  // Find user ID(s) that match the given name
-  if (query) {
+    //Author Filter
+    let authorIds: string[] = [];
+    // Find user ID(s) that match the given name
     const matchedUsers = await db
       .select({ id: user.id })
       .from(user)
@@ -55,6 +56,13 @@ export default async function pluginsGet({
     // Add condition to check if author matches either a name or an ID
     textConditions.push(inArray(pluginTable.userId, [...authorIds]));
   }
+  //Category Filter
+  if (categories && categories.length > 0)
+    otherConditions.push(arrayContains(pluginTable.categories, categories));
+
+  //Versions Filter
+  if (versions && versions.length > 0)
+    otherConditions.push(arrayContains(pluginTable.versionSupport, versions));
 
   //Query/Filter
   const whereClause = and(or(...textConditions), and(...otherConditions));

@@ -4,11 +4,11 @@ import DTOResourcePlugin from '@/features/resource-plugin/dto/plugin.dto';
 import { pluginTable } from '@/features/resource-plugin/schemas/plugin.table';
 import { db } from '@/lib/db';
 
-export default async function resourceGetById(resourceId: number) {
-  const resource = await db.query.pluginTable.findFirst({
-    where: eq(pluginTable.id, resourceId),
+export default async function pluginsGetByUserId(userId: string) {
+  const plugins = await db.query.pluginTable.findMany({
+    where: eq(pluginTable.userId, userId),
     with: { user: true },
   });
-  if (!resource) return null;
-  return DTOResourcePlugin(resource);
+
+  return plugins.map((plugin) => DTOResourcePlugin(plugin));
 }

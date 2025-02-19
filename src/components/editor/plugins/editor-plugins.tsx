@@ -23,7 +23,6 @@ import { basicNodesPlugins } from '@/components/editor/plugins/basic-nodes-plugi
 import { blockMenuPlugins } from '@/components/editor/plugins/block-menu-plugins';
 import { cursorOverlayPlugin } from '@/components/editor/plugins/cursor-overlay-plugin';
 import { deletePlugins } from '@/components/editor/plugins/delete-plugins';
-import { dndPlugins } from '@/components/editor/plugins/dnd-plugins';
 import { exitBreakPlugin } from '@/components/editor/plugins/exit-break-plugin';
 import { FixedToolbarPlugin } from '@/components/editor/plugins/fixed-toolbar-plugin';
 import { FloatingToolbarPlugin } from '@/components/editor/plugins/floating-toolbar-plugin';
@@ -71,7 +70,7 @@ export const editorPlugins = [
   autoformatPlugin,
   cursorOverlayPlugin,
   ...blockMenuPlugins,
-  ...dndPlugins,
+  // ...dndPlugins,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // EmojiPlugin.configure({ options: { data: emojiMartData as any } }),
   exitBreakPlugin,

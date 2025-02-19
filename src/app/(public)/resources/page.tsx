@@ -7,6 +7,7 @@ import { FilterIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
 import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
+import PluginFilterBadges from '@/features/resource-plugin/components/ui/filter-badges';
 import PluginLimitFilter from '@/features/resource-plugin/components/ui/limit-filter';
 import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
 import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
@@ -44,6 +45,9 @@ export default function ResourceLandingPage() {
             <div className='flex flex-row gap-2'>
               <PluginSortFilter />
               <PluginLimitFilter />
+            </div>
+            <div className='flex flex-wrap gap-2'>
+              <PluginFilterBadges />
             </div>
             <div className='w-full'>
               <ResourceList />

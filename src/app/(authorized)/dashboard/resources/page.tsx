@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ResourceOverview from '@/features/resource-plugin/components/resource-overview';
 import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
-import resourcesGetByUserId from '@/features/resource-plugin/queries/resources-by-user-id.get';
+import pluginsGetByUserId from '@/features/resource-plugin/queries/plugins-by-user-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function Page() {
   const { user } = await validateSession();
-  const plugins = await resourcesGetByUserId(user.id);
+  const plugins = await pluginsGetByUserId(user.id);
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
       <div className='md:col-span-2'>

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { TGetPluginsResponse } from '@/features/resource-plugin/queries/resources-find.filter';
+import { TGetPluginsResponse } from '@/features/resource-plugin/queries/plugins-find.filter';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
 
 export const PluginsGetResponseSchema = z.object({

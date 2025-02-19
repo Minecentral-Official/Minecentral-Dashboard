@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-
 import { BlockquotePlugin } from '@udecode/plate-block-quote/react';
 import { CodeBlockPlugin } from '@udecode/plate-code-block/react';
 import { HEADING_KEYS } from '@udecode/plate-heading';
@@ -33,6 +31,8 @@ import {
   setBlockType,
   STRUCTURAL_TYPES,
 } from '@/components/editor/transforms';
+
+import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 
 import {
   DropdownMenu,
@@ -72,13 +72,13 @@ const turnIntoItems = [
   {
     icon: <ListIcon />,
     keywords: ['unordered', 'ul', '-'],
-    label: 'Bulleted list',
+    label: 'Bullet list',
     value: ListStyleType.Disc,
   },
   {
     icon: <ListOrderedIcon />,
     keywords: ['ordered', 'ol', '1'],
-    label: 'Numbered list',
+    label: 'Number list',
     value: ListStyleType.Decimal,
   },
   {
@@ -124,18 +124,18 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
   const selectedItem = React.useMemo(
     () =>
       turnIntoItems.find(
-        (item) => item.value === (value ?? ParagraphPlugin.key)
+        (item) => item.value === (value ?? ParagraphPlugin.key),
       ) ?? turnIntoItems[0],
-    [value]
+    [value],
   );
 
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton
-          className="min-w-[125px]"
+          className='min-w-[110px] overflow-clip'
           pressed={openState.open}
-          tooltip="Turn into"
+          tooltip='Turn into'
           isDropdown
         >
           {selectedItem.label}
@@ -143,24 +143,24 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="ignore-click-outside/toolbar min-w-0"
+        className='ignore-click-outside/toolbar min-w-0'
         onCloseAutoFocus={(e) => {
           e.preventDefault();
           editor.tf.focus();
         }}
-        align="start"
+        align='start'
       >
         <DropdownMenuRadioGroup
           value={value}
           onValueChange={(type) => {
             setBlockType(editor, type);
           }}
-          label="Turn into"
+          label='Turn into'
         >
           {turnIntoItems.map(({ icon, label, value: itemValue }) => (
             <DropdownMenuRadioItem
               key={itemValue}
-              className="min-w-[180px]"
+              className='min-w-[180px]'
               value={itemValue}
             >
               {icon}
