@@ -1,15 +1,17 @@
 import * as React from 'react';
 
-import type { OurFileRouter } from '@/app/api/uploadthing/route';
+import { generateReactHelpers } from '@uploadthing/react';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+import { OurFileRouter } from '@/lib/uploadthing/uploadthing-filerouter';
+
 import type {
   ClientUploadedFileData,
   UploadFilesOptions,
 } from 'uploadthing/types';
 
-import { generateReactHelpers } from '@uploadthing/react';
-import { toast } from 'sonner';
-import { z } from 'zod';
-
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface UploadedFile<T = unknown> extends ClientUploadedFileData<T> {}
 
 interface UseUploadFileProps
@@ -53,9 +55,9 @@ export function useUploadFile({
       const errorMessage = getErrorMessage(error);
 
       const message =
-        errorMessage.length > 0
-          ? errorMessage
-          : 'Something went wrong, please try again later.';
+        errorMessage.length > 0 ?
+          errorMessage
+        : 'Something went wrong, please try again later.';
 
       toast.error(message);
 
