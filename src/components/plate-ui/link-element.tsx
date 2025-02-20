@@ -1,13 +1,11 @@
 'use client';
 
-import React from 'react';
-
-import type { TLinkElement } from '@udecode/plate-link';
-
 import { cn, withRef } from '@udecode/cn';
 import { useLink } from '@udecode/plate-link/react';
 
-import { PlateElement } from './plate-element';
+import { PlateElement } from '@/components/plate-ui/plate-element';
+
+import type { TLinkElement } from '@udecode/plate-link';
 
 export const LinkElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
@@ -17,16 +15,17 @@ export const LinkElement = withRef<typeof PlateElement>(
     return (
       <PlateElement
         ref={ref}
-        as="a"
+        as='a'
         className={cn(
           className,
-          'font-medium text-primary underline decoration-primary underline-offset-4'
+          'font-medium text-primary underline decoration-primary underline-offset-4',
         )}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         {...(linkProps as any)}
         {...props}
       >
         {children}
       </PlateElement>
     );
-  }
+  },
 );

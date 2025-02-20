@@ -1,18 +1,12 @@
-import React from 'react';
-
-import type { SlateEditor, SlateElementProps, TElement } from '@udecode/plate';
-
 import { cn } from '@udecode/cn';
 import { NodeApi, SlateElement } from '@udecode/plate';
-import {
-  type Heading,
-  BaseTocPlugin,
-  HEADING_KEYS,
-  isHeading,
-} from '@udecode/plate-heading';
+import { BaseTocPlugin, HEADING_KEYS, isHeading } from '@udecode/plate-heading';
 import { cva } from 'class-variance-authority';
 
-import { Button } from './button';
+import { Button } from '@/components/plate-ui/button';
+
+import type { SlateEditor, SlateElementProps, TElement } from '@udecode/plate';
+import type { Heading } from '@udecode/plate-heading';
 
 const headingItemVariants = cva(
   'block h-auto w-full cursor-pointer truncate rounded-none px-0.5 py-1.5 text-left font-medium text-muted-foreground underline decoration-[0.5px] underline-offset-4 hover:bg-accent hover:text-muted-foreground',
@@ -24,7 +18,7 @@ const headingItemVariants = cva(
         3: 'pl-[50px]',
       },
     },
-  }
+  },
 );
 
 export function TocElementStatic({
@@ -38,21 +32,21 @@ export function TocElementStatic({
   return (
     <SlateElement className={cn(className, 'mb-1 p-0')} {...props}>
       <div>
-        {headingList.length > 0 ? (
+        {headingList.length > 0 ?
           headingList.map((item) => (
             <Button
               key={item.title}
-              variant="ghost"
+              variant='ghost'
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               className={cn(headingItemVariants({ depth: item.depth as any }))}
             >
               {item.title}
             </Button>
           ))
-        ) : (
-          <div className="text-sm text-gray-500">
+        : <div className='text-sm text-gray-500'>
             Create a heading to display the table of contents.
           </div>
-        )}
+        }
       </div>
       {children}
     </SlateElement>
@@ -91,6 +85,7 @@ const getHeadingList = (editor?: SlateEditor) => {
     const title = NodeApi.string(node);
     const depth = headingDepth[type];
     const id = node.id as string;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     title && headingList.push({ id, depth, path, title, type });
   });
 

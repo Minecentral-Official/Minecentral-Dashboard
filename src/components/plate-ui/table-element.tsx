@@ -1,10 +1,5 @@
 'use client';
 
-import React from 'react';
-
-import type * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import type { TTableElement } from '@udecode/plate-table';
-
 import { PopoverAnchor } from '@radix-ui/react-popover';
 import { cn, withRef } from '@udecode/cn';
 import { BlockSelectionPlugin } from '@udecode/plate-selection/react';
@@ -45,9 +40,9 @@ import {
   DropdownMenuGroup,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-} from './dropdown-menu';
-import { PlateElement } from './plate-element';
-import { Popover, PopoverContent } from './popover';
+} from '@/components/plate-ui/dropdown-menu';
+import { PlateElement } from '@/components/plate-ui/plate-element';
+import { Popover, PopoverContent } from '@/components/plate-ui/popover';
 import {
   BorderAll,
   BorderBottom,
@@ -55,8 +50,15 @@ import {
   BorderNone,
   BorderRight,
   BorderTop,
-} from './table-icons';
-import { Toolbar, ToolbarButton, ToolbarGroup } from './toolbar';
+} from '@/components/plate-ui/table-icons';
+import {
+  Toolbar,
+  ToolbarButton,
+  ToolbarGroup,
+} from '@/components/plate-ui/toolbar';
+
+import type * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import type { TTableElement } from '@udecode/plate-table';
 
 export const TableElement = withHOC(
   TableProvider,
@@ -64,7 +66,7 @@ export const TableElement = withHOC(
     const readOnly = useReadOnly();
     const isSelectionAreaVisible = usePluginOption(
       BlockSelectionPlugin,
-      'isSelectionAreaVisible'
+      'isSelectionAreaVisible',
     );
     const hasControls = !readOnly && !isSelectionAreaVisible;
     const selected = useSelected();
@@ -79,22 +81,22 @@ export const TableElement = withHOC(
         className={cn(
           className,
           'overflow-x-auto py-5',
-          hasControls && '-ml-2'
+          hasControls && '-ml-2',
         )}
         style={{ paddingLeft: marginLeft }}
         blockSelectionClassName={cn(hasControls && 'left-2')}
         {...props}
       >
-        <div className="group/table relative w-fit">
+        <div className='group/table relative w-fit'>
           <table
             ref={ref}
             className={cn(
-              'mr-0 ml-px table h-px table-fixed border-collapse',
-              isSelectingCell && 'selection:bg-transparent'
+              'ml-px mr-0 table h-px table-fixed border-collapse',
+              isSelectingCell && 'selection:bg-transparent',
             )}
             {...tableProps}
           >
-            <tbody className="min-w-full">{children}</tbody>
+            <tbody className='min-w-full'>{children}</tbody>
           </table>
         </div>
       </PlateElement>
@@ -105,7 +107,7 @@ export const TableElement = withHOC(
     }
 
     return <TableFloatingToolbar>{content}</TableFloatingToolbar>;
-  })
+  }),
 );
 
 export const TableFloatingToolbar = withRef<typeof PopoverContent>(
@@ -115,7 +117,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
     const { props: buttonProps } = useRemoveNodeButton({ element });
     const collapsed = useEditorSelector(
       (editor) => !editor.api.isExpanded(),
-      []
+      [],
     );
 
     const { canMerge, canSplit } = useTableMergeState();
@@ -131,7 +133,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
           {...props}
         >
           <Toolbar
-            className="flex scrollbar-hide w-auto max-w-[80vw] flex-row overflow-x-auto rounded-md border bg-popover p-1 shadow-md print:hidden"
+            className='flex w-auto max-w-[80vw] flex-row overflow-x-auto rounded-md border bg-popover p-1 shadow-md scrollbar-hide print:hidden'
             contentEditable={false}
           >
             <ToolbarGroup>
@@ -139,7 +141,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                 <ToolbarButton
                   onClick={() => tf.table.merge()}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Merge cells"
+                  tooltip='Merge cells'
                 >
                   <CombineIcon />
                 </ToolbarButton>
@@ -148,7 +150,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                 <ToolbarButton
                   onClick={() => tf.table.split()}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Split cell"
+                  tooltip='Split cell'
                 >
                   <SquareSplitHorizontalIcon />
                 </ToolbarButton>
@@ -156,7 +158,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
 
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                  <ToolbarButton tooltip="Cell borders">
+                  <ToolbarButton tooltip='Cell borders'>
                     <Grid2X2Icon />
                   </ToolbarButton>
                 </DropdownMenuTrigger>
@@ -168,7 +170,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
 
               {collapsed && (
                 <ToolbarGroup>
-                  <ToolbarButton tooltip="Delete table" {...buttonProps}>
+                  <ToolbarButton tooltip='Delete table' {...buttonProps}>
                     <Trash2Icon />
                   </ToolbarButton>
                 </ToolbarGroup>
@@ -182,7 +184,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.insert.tableRow({ before: true });
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Insert row before"
+                  tooltip='Insert row before'
                 >
                   <ArrowUp />
                 </ToolbarButton>
@@ -191,7 +193,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.insert.tableRow();
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Insert row after"
+                  tooltip='Insert row after'
                 >
                   <ArrowDown />
                 </ToolbarButton>
@@ -200,7 +202,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.remove.tableRow();
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Delete row"
+                  tooltip='Delete row'
                 >
                   <XIcon />
                 </ToolbarButton>
@@ -214,7 +216,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.insert.tableColumn({ before: true });
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Insert column before"
+                  tooltip='Insert column before'
                 >
                   <ArrowLeft />
                 </ToolbarButton>
@@ -223,7 +225,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.insert.tableColumn();
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Insert column after"
+                  tooltip='Insert column after'
                 >
                   <ArrowRight />
                 </ToolbarButton>
@@ -232,7 +234,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
                     tf.remove.tableColumn();
                   }}
                   onMouseDown={(e) => e.preventDefault()}
-                  tooltip="Delete column"
+                  tooltip='Delete column'
                 >
                   <XIcon />
                 </ToolbarButton>
@@ -242,7 +244,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
         </PopoverContent>
       </Popover>
     );
-  }
+  },
 );
 
 export const TableBordersDropdownMenuContent = withRef<
@@ -267,8 +269,8 @@ export const TableBordersDropdownMenuContent = withRef<
         e.preventDefault();
         editor.tf.focus();
       }}
-      align="start"
-      side="right"
+      align='start'
+      side='right'
       sideOffset={0}
       {...props}
     >

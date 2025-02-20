@@ -2,11 +2,11 @@
 
 import React from 'react';
 
-import type { PlateElementProps } from '@udecode/plate/react';
-
 import { PlateElement as PlateElementPrimitive } from '@udecode/plate/react';
 
-import { BlockSelection } from './block-selection';
+import { BlockSelection } from '@/components/plate-ui/block-selection';
+
+import type { PlateElementProps } from '@udecode/plate/react';
 
 export const PlateElement = React.forwardRef<
   HTMLDivElement,
@@ -22,3 +22,4 @@ export const PlateElement = React.forwardRef<
     </PlateElementPrimitive>
   );
 });
+PlateElement.displayName = 'plateelement';

@@ -1,19 +1,17 @@
 'use client';
 
-import React from 'react';
-
-import type { Editor, TElement } from '@udecode/plate';
-
 import { cn, withRef } from '@udecode/cn';
 import { formatCodeBlock, isLangSupported } from '@udecode/plate-code-block';
 import { useCodeBlockElementState } from '@udecode/plate-code-block/react';
 import { BracesIcon } from 'lucide-react';
 
-import { Button } from './button';
-import { CodeBlockCombobox } from './code-block-combobox';
-import { PlateElement } from './plate-element';
+import { Button } from '@/components/plate-ui/button';
+import { CodeBlockCombobox } from '@/components/plate-ui/code-block-combobox';
+import { PlateElement } from '@/components/plate-ui/plate-element';
 
-import './code-block-element.css';
+import type { Editor, TElement } from '@udecode/plate';
+
+import '@/components/plate-ui/code-block-element.css';
 
 export const CodeBlockElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
@@ -27,13 +25,13 @@ export const CodeBlockElement = withRef<typeof PlateElement>(
         className={cn(className, 'py-1', state.className)}
         {...props}
       >
-        <pre className="overflow-x-auto rounded-md bg-muted px-6 py-8 font-mono text-sm leading-[normal] [tab-size:2]">
+        <pre className='overflow-x-auto rounded-md bg-muted px-6 py-8 font-mono text-sm leading-[normal] [tab-size:2]'>
           <code>{children}</code>
         </pre>
 
         {state.syntax && (
           <div
-            className="absolute top-2 right-2 z-10 flex items-center gap-1 select-none"
+            className='absolute right-2 top-2 z-10 flex select-none items-center gap-1'
             contentEditable={false}
           >
             <CodeBlockFormatButton {...props} />
@@ -42,7 +40,7 @@ export const CodeBlockElement = withRef<typeof PlateElement>(
         )}
       </PlateElement>
     );
-  }
+  },
 );
 
 export function CodeBlockFormatButton({
@@ -58,13 +56,13 @@ export function CodeBlockFormatButton({
 
   return (
     <Button
-      size="xs"
-      variant="ghost"
-      className="h-5 justify-between px-1 text-xs"
+      size='xs'
+      variant='ghost'
+      className='h-5 justify-between px-1 text-xs'
       onClick={() => formatCodeBlock(editor, { element })}
-      title="Format code"
+      title='Format code'
     >
-      <BracesIcon className="text-gray-500" />
+      <BracesIcon className='text-gray-500' />
     </Button>
   );
 }

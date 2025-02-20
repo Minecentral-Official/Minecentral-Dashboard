@@ -1,21 +1,19 @@
 'use client';
 
-import React from 'react';
-
 import { cn, withRef } from '@udecode/cn';
 import { useDraggable } from '@udecode/plate-dnd';
 import { Image, ImagePlugin, useMediaState } from '@udecode/plate-media/react';
 import { ResizableProvider, useResizableValue } from '@udecode/plate-resizable';
 import { withHOC } from '@udecode/plate/react';
 
-import { Caption, CaptionTextarea } from './caption';
-import { MediaPopover } from './media-popover';
-import { PlateElement } from './plate-element';
+import { Caption, CaptionTextarea } from '@/components/plate-ui/caption';
+import { MediaPopover } from '@/components/plate-ui/media-popover';
+import { PlateElement } from '@/components/plate-ui/plate-element';
 import {
   mediaResizeHandleVariants,
   Resizable,
   ResizeHandle,
-} from './resizable';
+} from '@/components/plate-ui/resizable';
 
 export const ImageElement = withHOC(
   ResizableProvider,
@@ -36,7 +34,7 @@ export const ImageElement = withHOC(
             className={cn(className, 'py-2.5')}
             {...props}
           >
-            <figure className="group relative m-0" contentEditable={false}>
+            <figure className='group relative m-0' contentEditable={false}>
               <Resizable
                 align={align}
                 options={{
@@ -54,9 +52,9 @@ export const ImageElement = withHOC(
                     'block w-full max-w-full cursor-pointer object-cover px-0',
                     'rounded-sm',
                     focused && selected && 'ring-2 ring-ring ring-offset-2',
-                    isDragging && 'opacity-50'
+                    isDragging && 'opacity-50',
                   )}
-                  alt=""
+                  alt=''
                   {...nodeProps}
                 />
                 <ResizeHandle
@@ -73,7 +71,7 @@ export const ImageElement = withHOC(
                   onFocus={(e) => {
                     e.preventDefault();
                   }}
-                  placeholder="Write a caption..."
+                  placeholder='Write a caption...'
                 />
               </Caption>
             </figure>
@@ -82,6 +80,6 @@ export const ImageElement = withHOC(
           </PlateElement>
         </MediaPopover>
       );
-    }
-  )
+    },
+  ),
 );

@@ -10,13 +10,15 @@ import {
 import TicketStatus from '@/features/tickets/components/status.ticket';
 import { TicketProvider } from '@/features/tickets/context/ticket.context';
 import ticketsGetAll from '@/features/tickets/queries/all.get';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function TicketListAll() {
   const tickets = await ticketsGetAll();
+  const { user } = await validateSession();
   return (
     <div className='space-y-4'>
       {tickets.map((ticket) => (
-        <TicketProvider key={ticket.id} ticket={ticket}>
+        <TicketProvider key={ticket.id} ticket={ticket} userId={user.id}>
           <Card className='hover:cursor-pointer hover:bg-secondary'>
             <Link href={`./tickets/${ticket.id}`}>
               <CardHeader>

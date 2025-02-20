@@ -16,7 +16,7 @@ import {
 } from '@udecode/plate/react';
 import { GripVertical } from 'lucide-react';
 
-import { Button } from './button';
+import { Button } from '@/components/plate-ui/button';
 
 export const TableRowElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
@@ -26,7 +26,7 @@ export const TableRowElement = withRef<typeof PlateElement>(
     const editor = useEditorRef();
     const isSelectionAreaVisible = usePluginOption(
       BlockSelectionPlugin,
-      'isSelectionAreaVisible'
+      'isSelectionAreaVisible',
     );
     const hasControls = !readOnly && !isSelectionAreaVisible;
 
@@ -36,9 +36,10 @@ export const TableRowElement = withRef<typeof PlateElement>(
       canDropNode: ({ dragEntry, dropEntry }) =>
         PathApi.equals(
           PathApi.parent(dragEntry[1]),
-          PathApi.parent(dropEntry[1])
+          PathApi.parent(dropEntry[1]),
         ),
       onDropHandler: (_, { dragItem }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dragElement = (dragItem as any).element;
 
         if (dragElement) {
@@ -50,13 +51,13 @@ export const TableRowElement = withRef<typeof PlateElement>(
     return (
       <PlateElement
         ref={useComposedRef(ref, previewRef)}
-        as="tr"
+        as='tr'
         className={cn(className, 'group/row', isDragging && 'opacity-50')}
         data-selected={selected ? 'true' : undefined}
         {...props}
       >
         {hasControls && (
-          <td className="w-2 select-none" contentEditable={false}>
+          <td className='w-2 select-none' contentEditable={false}>
             <RowDragHandle dragRef={handleRef} />
             <DropLine />
           </td>
@@ -65,9 +66,10 @@ export const TableRowElement = withRef<typeof PlateElement>(
         {children}
       </PlateElement>
     );
-  }
+  },
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function RowDragHandle({ dragRef }: { dragRef: React.Ref<any> }) {
   const editor = useEditorRef();
   const element = useElement();
@@ -75,17 +77,17 @@ function RowDragHandle({ dragRef }: { dragRef: React.Ref<any> }) {
   return (
     <Button
       ref={dragRef}
-      variant="outline"
+      variant='outline'
       className={cn(
-        'absolute top-1/2 left-0 z-51 h-6 w-4 -translate-y-1/2 p-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+        'z-51 absolute left-0 top-1/2 h-6 w-4 -translate-y-1/2 p-0 focus-visible:ring-0 focus-visible:ring-offset-0',
         'cursor-grab active:cursor-grabbing',
-        'opacity-0 transition-opacity duration-100 group-hover/row:opacity-100 group-has-data-[resizing="true"]/row:opacity-0'
+        'group-has-data-[resizing="true"]/row:opacity-0 opacity-0 transition-opacity duration-100 group-hover/row:opacity-100',
       )}
       onClick={() => {
         editor.tf.select(element);
       }}
     >
-      <GripVertical className="text-muted-foreground" />
+      <GripVertical className='text-muted-foreground' />
     </Button>
   );
 }
@@ -99,7 +101,7 @@ function DropLine() {
     <div
       className={cn(
         'absolute inset-x-0 left-2 z-50 h-0.5 bg-brand/50',
-        dropLine === 'top' ? '-top-px' : '-bottom-px'
+        dropLine === 'top' ? '-top-px' : '-bottom-px',
       )}
     />
   );

@@ -1,9 +1,6 @@
 'use client';
 
 import React, {
-  type HTMLAttributes,
-  type ReactNode,
-  type RefObject,
   createContext,
   forwardRef,
   startTransition,
@@ -14,10 +11,7 @@ import React, {
   useState,
 } from 'react';
 
-import type { PointRef, TElement } from '@udecode/plate';
-
 import {
-  type ComboboxItemProps,
   Combobox,
   ComboboxGroup,
   ComboboxGroupLabel,
@@ -32,16 +26,20 @@ import {
 import { cn, withCn } from '@udecode/cn';
 import { filterWords } from '@udecode/plate-combobox';
 import {
-  type UseComboboxInputResult,
   useComboboxInput,
   useHTMLInputCursorState,
 } from '@udecode/plate-combobox/react';
 import { useComposedRef, useEditorRef } from '@udecode/plate/react';
 import { cva } from 'class-variance-authority';
 
+import type { ComboboxItemProps } from '@ariakit/react';
+import type { PointRef, TElement } from '@udecode/plate';
+import type { UseComboboxInputResult } from '@udecode/plate-combobox/react';
+import type { HTMLAttributes, ReactNode, RefObject } from 'react';
+
 type FilterFn = (
   item: { value: string; group?: string; keywords?: string[]; label?: string },
-  search: string
+  search: string,
 ) => boolean;
 
 interface InlineComboboxContextValue {
@@ -55,19 +53,20 @@ interface InlineComboboxContextValue {
 }
 
 const InlineComboboxContext = createContext<InlineComboboxContextValue>(
-  null as any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  null as any,
 );
 
 export const defaultFilter: FilterFn = (
   { group, keywords = [], label, value },
-  search
+  search,
 ) => {
   const uniqueTerms = new Set(
-    [value, ...keywords, group, label].filter(Boolean)
+    [value, ...keywords, group, label].filter(Boolean),
   );
 
   return Array.from(uniqueTerms).some((keyword) =>
-    filterWords(keyword!, search)
+    filterWords(keyword!, search),
   );
 };
 
@@ -108,7 +107,7 @@ const InlineCombobox = ({
         setValueState(newValue);
       }
     },
-    [setValueProp, hasValueProp]
+    [setValueProp, hasValueProp],
   );
 
   /**
@@ -173,7 +172,7 @@ const InlineCombobox = ({
       inputProps,
       removeInput,
       setHasEmpty,
-    ]
+    ],
   );
 
   const store = useComboboxStore({
@@ -237,10 +236,10 @@ const InlineComboboxInput = forwardRef<
     <>
       {showTrigger && trigger}
 
-      <span className="relative min-h-[1lh]">
+      <span className='relative min-h-[1lh]'>
         <span
-          className="invisible overflow-hidden text-nowrap"
-          aria-hidden="true"
+          className='invisible overflow-hidden text-nowrap'
+          aria-hidden='true'
         >
           {value || '\u200B'}
         </span>
@@ -248,8 +247,8 @@ const InlineComboboxInput = forwardRef<
         <Combobox
           ref={ref}
           className={cn(
-            'absolute top-0 left-0 size-full bg-transparent outline-none',
-            className
+            'absolute left-0 top-0 size-full bg-transparent outline-none',
+            className,
           )}
           value={value}
           autoSelect
@@ -273,7 +272,7 @@ const InlineComboboxContent: typeof ComboboxPopover = ({
       <ComboboxPopover
         className={cn(
           'z-500 max-h-[288px] w-[300px] overflow-y-auto rounded-md bg-popover shadow-md',
-          className
+          className,
         )}
         {...props}
       />
@@ -293,7 +292,7 @@ const comboboxItemVariants = cva(
         true: 'cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground data-[active-item=true]:bg-accent data-[active-item=true]:text-accent-foreground',
       },
     },
-  }
+  },
 );
 
 export type InlineComboboxItemProps = {
@@ -325,7 +324,7 @@ const InlineComboboxItem = ({
   const visible = useMemo(
     () =>
       !filter || filter({ group, keywords, label, value }, search as string),
-    [filter, group, keywords, label, value, search]
+    [filter, group, keywords, label, value, search],
   );
 
   if (!visible) return null;
@@ -373,12 +372,12 @@ const InlineComboboxRow = ComboboxRow;
 
 const InlineComboboxGroup = withCn(
   ComboboxGroup,
-  'hidden py-1.5 not-last:border-b [&:has([role=option])]:block'
+  'hidden py-1.5 not-last:border-b [&:has([role=option])]:block',
 );
 
 const InlineComboboxGroupLabel = withCn(
   ComboboxGroupLabel,
-  'mt-1.5 mb-2 px-3 text-xs font-medium text-muted-foreground'
+  'mt-1.5 mb-2 px-3 text-xs font-medium text-muted-foreground',
 );
 
 export {

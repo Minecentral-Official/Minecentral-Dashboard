@@ -31,9 +31,6 @@ import {
   setBlockType,
   STRUCTURAL_TYPES,
 } from '@/components/editor/transforms';
-
-import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,8 +38,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu';
-import { ToolbarButton } from './toolbar';
+} from '@/components/plate-ui/dropdown-menu';
+import { ToolbarButton } from '@/components/plate-ui/toolbar';
+
+import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 
 const turnIntoItems = [
   {
@@ -119,6 +118,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
   const value = useSelectionFragmentProp({
     defaultValue: ParagraphPlugin.key,
     structuralTypes: STRUCTURAL_TYPES,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getProp: (node) => getBlockType(node as any),
   });
   const selectedItem = React.useMemo(

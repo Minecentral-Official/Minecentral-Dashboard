@@ -1,11 +1,10 @@
-import React from 'react';
+import { cn } from '@udecode/cn';
+import { NodeApi, SlateElement } from '@udecode/plate';
+import Image from 'next/image';
 
 import type { SlateElementProps } from '@udecode/plate';
 import type { TCaptionElement } from '@udecode/plate-caption';
 import type { TImageElement } from '@udecode/plate-media';
-
-import { cn } from '@udecode/cn';
-import { NodeApi, SlateElement } from '@udecode/plate';
 
 export function ImageElementStatic({
   children,
@@ -29,22 +28,22 @@ export function ImageElementStatic({
       {...props}
       nodeProps={nodeProps}
     >
-      <figure className="group relative m-0 inline-block" style={{ width }}>
+      <figure className='group relative m-0 inline-block' style={{ width }}>
         <div
-          className="relative max-w-full min-w-[92px]"
+          className='relative min-w-[92px] max-w-full'
           style={{ textAlign: align }}
         >
-          <img
+          <Image
             className={cn(
               'w-full max-w-full cursor-default object-cover px-0',
-              'rounded-sm'
+              'rounded-sm',
             )}
-            alt=""
+            alt=''
             src={url}
             {...nodeProps}
           />
           {caption && (
-            <figcaption className="mx-auto mt-2 h-[24px] max-w-full">
+            <figcaption className='mx-auto mt-2 h-[24px] max-w-full'>
               {NodeApi.string(caption[0])}
             </figcaption>
           )}

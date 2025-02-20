@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import type { TTableCellElement } from '@udecode/plate-table';
-
 import { cn, withProps, withRef } from '@udecode/cn';
 import {
   BlockSelectionPlugin,
@@ -23,9 +21,11 @@ import {
 } from '@udecode/plate/react';
 import { cva } from 'class-variance-authority';
 
-import { blockSelectionVariants } from './block-selection';
-import { PlateElement } from './plate-element';
-import { ResizeHandle } from './resizable';
+import { blockSelectionVariants } from '@/components/plate-ui/block-selection';
+import { PlateElement } from '@/components/plate-ui/plate-element';
+import { ResizeHandle } from '@/components/plate-ui/resizable';
+
+import type { TTableCellElement } from '@udecode/plate-table';
 
 export const TableCellElement = withRef<
   typeof PlateElement,
@@ -43,7 +43,7 @@ export const TableCellElement = withRef<
   const isSelectingRow = useBlockSelected(rowId);
   const isSelectionAreaVisible = usePluginOption(
     BlockSelectionPlugin,
-    'isSelectionAreaVisible'
+    'isSelectionAreaVisible',
   );
 
   const { borders, colIndex, colSpan, minHeight, rowIndex, selected, width } =
@@ -67,11 +67,11 @@ export const TableCellElement = withRef<
         isHeader && 'text-left *:m-0',
         'before:size-full',
         selected && 'before:z-10 before:bg-brand/5',
-        "before:absolute before:box-border before:content-[''] before:select-none",
+        "before:absolute before:box-border before:select-none before:content-['']",
         borders.bottom?.size && `before:border-b before:border-b-border`,
         borders.right?.size && `before:border-r before:border-r-border`,
         borders.left?.size && `before:border-l before:border-l-border`,
-        borders.top?.size && `before:border-t before:border-t-border`
+        borders.top?.size && `before:border-t before:border-t-border`,
       )}
       style={
         {
@@ -88,7 +88,7 @@ export const TableCellElement = withRef<
       {...props}
     >
       <div
-        className="relative z-20 box-border h-full px-3 py-2"
+        className='relative z-20 box-border h-full px-3 py-2'
         style={{ minHeight }}
       >
         {children}
@@ -96,7 +96,7 @@ export const TableCellElement = withRef<
 
       {!isSelectionAreaVisible && (
         <div
-          className="group absolute top-0 size-full select-none"
+          className='group absolute top-0 size-full select-none'
           contentEditable={false}
           suppressContentEditableWarning={true}
         >
@@ -104,14 +104,14 @@ export const TableCellElement = withRef<
             <>
               <ResizeHandle
                 {...rightProps}
-                className="-top-2 -right-1 h-[calc(100%_+_8px)] w-2"
+                className='-right-1 -top-2 h-[calc(100%_+_8px)] w-2'
                 data-col={colIndex}
               />
-              <ResizeHandle {...bottomProps} className="-bottom-1 h-2" />
+              <ResizeHandle {...bottomProps} className='-bottom-1 h-2' />
               {!hiddenLeft && (
                 <ResizeHandle
                   {...leftProps}
-                  className="top-0 -left-1 w-2"
+                  className='-left-1 top-0 w-2'
                   data-resizer-left={colIndex === 0 ? 'true' : undefined}
                 />
               )}
@@ -120,7 +120,8 @@ export const TableCellElement = withRef<
                 className={cn(
                   'absolute top-0 z-30 hidden h-full w-1 bg-ring',
                   'right-[-1.5px]',
-                  columnResizeVariants({ colIndex: colIndex as any })
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  columnResizeVariants({ colIndex: colIndex as any }),
                 )}
               />
               {colIndex === 0 && (
@@ -128,7 +129,7 @@ export const TableCellElement = withRef<
                   className={cn(
                     'absolute top-0 z-30 h-full w-1 bg-ring',
                     'left-[-1.5px]',
-                    'fade-in hidden animate-in group-has-[[data-resizer-left]:hover]/table:block group-has-[[data-resizer-left][data-resizing="true"]]/table:block'
+                    'hidden animate-in fade-in group-has-[[data-resizer-left]:hover]/table:block group-has-[[data-resizer-left][data-resizing="true"]]/table:block',
                   )}
                 />
               )}

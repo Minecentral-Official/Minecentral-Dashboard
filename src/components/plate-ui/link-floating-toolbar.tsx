@@ -1,15 +1,8 @@
 'use client';
 
-import React from 'react';
-
 import { cn } from '@udecode/cn';
+import { flip, offset } from '@udecode/plate-floating';
 import {
-  type UseVirtualFloatingOptions,
-  flip,
-  offset,
-} from '@udecode/plate-floating';
-import {
-  type LinkFloatingToolbarState,
   FloatingLinkUrlInput,
   LinkOpenButton,
   useFloatingLinkEdit,
@@ -20,10 +13,13 @@ import {
 import { useFormInputProps } from '@udecode/plate/react';
 import { ExternalLink, Link, Text, Unlink } from 'lucide-react';
 
-import { buttonVariants } from './button';
-import { inputVariants } from './input';
-import { popoverVariants } from './popover';
-import { Separator } from './separator';
+import { buttonVariants } from '@/components/plate-ui/button';
+import { inputVariants } from '@/components/plate-ui/input';
+import { popoverVariants } from '@/components/plate-ui/popover';
+import { Separator } from '@/components/plate-ui/separator';
+
+import type { UseVirtualFloatingOptions } from '@udecode/plate-floating';
+import type { LinkFloatingToolbarState } from '@udecode/plate-link/react';
 
 const floatingOptions: UseVirtualFloatingOptions = {
   middleware: [
@@ -75,26 +71,26 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
   if (hidden) return null;
 
   const input = (
-    <div className="flex w-[330px] flex-col" {...inputProps}>
-      <div className="flex items-center">
-        <div className="flex items-center pr-1 pl-2 text-muted-foreground">
-          <Link className="size-4" />
+    <div className='flex w-[330px] flex-col' {...inputProps}>
+      <div className='flex items-center'>
+        <div className='flex items-center pl-2 pr-1 text-muted-foreground'>
+          <Link className='size-4' />
         </div>
 
         <FloatingLinkUrlInput
           className={inputVariants({ h: 'sm', variant: 'ghost' })}
-          placeholder="Paste link"
+          placeholder='Paste link'
           data-plate-focus
         />
       </div>
-      <Separator className="my-1" />
-      <div className="flex items-center">
-        <div className="flex items-center pr-1 pl-2 text-muted-foreground">
-          <Text className="size-4" />
+      <Separator className='my-1' />
+      <div className='flex items-center'>
+        <div className='flex items-center pl-2 pr-1 text-muted-foreground'>
+          <Text className='size-4' />
         </div>
         <input
           className={inputVariants({ h: 'sm', variant: 'ghost' })}
-          placeholder="Text to display"
+          placeholder='Text to display'
           data-plate-focus
           {...textInputProps}
         />
@@ -102,43 +98,42 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
     </div>
   );
 
-  const editContent = editState.isEditing ? (
-    input
-  ) : (
-    <div className="box-content flex items-center">
-      <button
-        className={buttonVariants({ size: 'sm', variant: 'ghost' })}
-        type="button"
-        {...editButtonProps}
-      >
-        Edit link
-      </button>
+  const editContent =
+    editState.isEditing ? input : (
+      <div className='box-content flex items-center'>
+        <button
+          className={buttonVariants({ size: 'sm', variant: 'ghost' })}
+          type='button'
+          {...editButtonProps}
+        >
+          Edit link
+        </button>
 
-      <Separator orientation="vertical" />
+        <Separator orientation='vertical' />
 
-      <LinkOpenButton
-        className={buttonVariants({
-          size: 'icon',
-          variant: 'ghost',
-        })}
-      >
-        <ExternalLink width={18} />
-      </LinkOpenButton>
+        <LinkOpenButton
+          className={buttonVariants({
+            size: 'icon',
+            variant: 'ghost',
+          })}
+        >
+          <ExternalLink width={18} />
+        </LinkOpenButton>
 
-      <Separator orientation="vertical" />
+        <Separator orientation='vertical' />
 
-      <button
-        className={buttonVariants({
-          size: 'icon',
-          variant: 'ghost',
-        })}
-        type="button"
-        {...unlinkButtonProps}
-      >
-        <Unlink width={18} />
-      </button>
-    </div>
-  );
+        <button
+          className={buttonVariants({
+            size: 'icon',
+            variant: 'ghost',
+          })}
+          type='button'
+          {...unlinkButtonProps}
+        >
+          <Unlink width={18} />
+        </button>
+      </div>
+    );
 
   return (
     <>

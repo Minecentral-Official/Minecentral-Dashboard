@@ -7,8 +7,8 @@ import {
 } from '@udecode/plate-heading/react';
 import { cva } from 'class-variance-authority';
 
-import { Button } from './button';
-import { PlateElement } from './plate-element';
+import { Button } from '@/components/plate-ui/button';
+import { PlateElement } from '@/components/plate-ui/plate-element';
 
 const headingItemVariants = cva(
   'block h-auto w-full cursor-pointer truncate rounded-none px-0.5 py-1.5 text-left font-medium text-muted-foreground underline decoration-[0.5px] underline-offset-4 hover:bg-accent hover:text-muted-foreground',
@@ -20,7 +20,7 @@ const headingItemVariants = cva(
         3: 'pl-[50px]',
       },
     },
-  }
+  },
 );
 
 export const TocElement = withRef<typeof PlateElement>(
@@ -34,13 +34,14 @@ export const TocElement = withRef<typeof PlateElement>(
     return (
       <PlateElement ref={ref} className={cn(className, 'mb-1 p-0')} {...props}>
         <div contentEditable={false}>
-          {headingList.length > 0 ? (
+          {headingList.length > 0 ?
             headingList.map((item) => (
               <Button
                 key={item.id}
-                variant="ghost"
+                variant='ghost'
                 className={cn(
-                  headingItemVariants({ depth: item.depth as any })
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  headingItemVariants({ depth: item.depth as any }),
                 )}
                 onClick={(e) => btnProps.onClick(e, item, 'smooth')}
                 aria-current
@@ -48,14 +49,13 @@ export const TocElement = withRef<typeof PlateElement>(
                 {item.title}
               </Button>
             ))
-          ) : (
-            <div className="text-sm text-gray-500">
+          : <div className='text-sm text-gray-500'>
               Create a heading to display the table of contents.
             </div>
-          )}
+          }
         </div>
         {children}
       </PlateElement>
     );
-  }
+  },
 );

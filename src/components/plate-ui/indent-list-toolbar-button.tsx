@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import {
   ListStyleType,
   someIndentList,
@@ -17,12 +15,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu';
+} from '@/components/plate-ui/dropdown-menu';
 import {
   ToolbarSplitButton,
   ToolbarSplitButtonPrimary,
   ToolbarSplitButtonSecondary,
-} from './toolbar';
+} from '@/components/plate-ui/toolbar';
 
 export function NumberedIndentListToolbarButton() {
   const editor = useEditorRef();
@@ -37,22 +35,22 @@ export function NumberedIndentListToolbarButton() {
         ListStyleType.LowerRoman,
         ListStyleType.UpperRoman,
       ]),
-    []
+    [],
   );
 
   return (
     <ToolbarSplitButton pressed={openState.open}>
       <ToolbarSplitButtonPrimary
-        className="data-[state=on]:bg-accent data-[state=on]:text-accent-foreground"
+        className='data-[state=on]:bg-accent data-[state=on]:text-accent-foreground'
         onClick={() =>
           toggleIndentList(editor, {
             listStyleType: ListStyleType.Decimal,
           })
         }
         data-state={pressed ? 'on' : 'off'}
-        tooltip="Numbered List"
+        tooltip='Numbered List'
       >
-        <ListOrdered className="size-4" />
+        <ListOrdered className='size-4' />
       </ToolbarSplitButtonPrimary>
 
       <DropdownMenu {...openState} modal={false}>
@@ -60,7 +58,7 @@ export function NumberedIndentListToolbarButton() {
           <ToolbarSplitButtonSecondary />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="start" alignOffset={-32}>
+        <DropdownMenuContent align='start' alignOffset={-32}>
           <DropdownMenuGroup>
             <DropdownMenuItem
               onSelect={() =>
@@ -125,22 +123,22 @@ export function BulletedIndentListToolbarButton() {
         ListStyleType.Circle,
         ListStyleType.Square,
       ]),
-    []
+    [],
   );
 
   return (
     <ToolbarSplitButton pressed={openState.open}>
       <ToolbarSplitButtonPrimary
-        className="data-[state=on]:bg-accent data-[state=on]:text-accent-foreground"
+        className='data-[state=on]:bg-accent data-[state=on]:text-accent-foreground'
         onClick={() => {
           toggleIndentList(editor, {
             listStyleType: ListStyleType.Disc,
           });
         }}
         data-state={pressed ? 'on' : 'off'}
-        tooltip="Bulleted List"
+        tooltip='Bulleted List'
       >
-        <List className="size-4" />
+        <List className='size-4' />
       </ToolbarSplitButtonPrimary>
 
       <DropdownMenu {...openState} modal={false}>
@@ -148,7 +146,7 @@ export function BulletedIndentListToolbarButton() {
           <ToolbarSplitButtonSecondary />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="start" alignOffset={-32}>
+        <DropdownMenuContent align='start' alignOffset={-32}>
           <DropdownMenuGroup>
             <DropdownMenuItem
               onClick={() =>
@@ -157,8 +155,8 @@ export function BulletedIndentListToolbarButton() {
                 })
               }
             >
-              <div className="flex items-center gap-2">
-                <div className="size-2 rounded-full border border-current bg-current" />
+              <div className='flex items-center gap-2'>
+                <div className='size-2 rounded-full border border-current bg-current' />
                 Default
               </div>
             </DropdownMenuItem>
@@ -169,8 +167,8 @@ export function BulletedIndentListToolbarButton() {
                 })
               }
             >
-              <div className="flex items-center gap-2">
-                <div className="size-2 rounded-full border border-current" />
+              <div className='flex items-center gap-2'>
+                <div className='size-2 rounded-full border border-current' />
                 Circle
               </div>
             </DropdownMenuItem>
@@ -181,8 +179,8 @@ export function BulletedIndentListToolbarButton() {
                 })
               }
             >
-              <div className="flex items-center gap-2">
-                <div className="size-2 border border-current bg-current" />
+              <div className='flex items-center gap-2'>
+                <div className='size-2 border border-current bg-current' />
                 Square
               </div>
             </DropdownMenuItem>

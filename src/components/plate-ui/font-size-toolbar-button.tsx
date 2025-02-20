@@ -9,10 +9,14 @@ import { HEADING_KEYS } from '@udecode/plate-heading';
 import { useEditorPlugin, useEditorSelector } from '@udecode/plate/react';
 import { Minus, Plus } from 'lucide-react';
 
-import type { TElement } from '@udecode/plate';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/plate-ui/popover';
+import { ToolbarButton } from '@/components/plate-ui/toolbar';
 
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { ToolbarButton } from './toolbar';
+import type { TElement } from '@udecode/plate';
 
 const DEFAULT_FONT_SIZE = '16';
 

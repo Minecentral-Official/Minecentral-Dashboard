@@ -3,7 +3,15 @@
 import React, { useMemo } from 'react';
 
 import { cn, withRef } from '@udecode/cn';
-import { isType } from '@udecode/plate';
+import {
+  AnyObject,
+  BasePluginContext,
+  isType,
+  Path,
+  PluginConfig,
+  RenderElementProps,
+  TElement,
+} from '@udecode/plate';
 import { BlockquotePlugin } from '@udecode/plate-block-quote/react';
 import { CodeBlockPlugin } from '@udecode/plate-code-block/react';
 import { useDraggable, useDropLine } from '@udecode/plate-dnd';
@@ -38,6 +46,8 @@ import { STRUCTURAL_TYPES } from '@/components/editor/transforms';
 import { TooltipButton } from '@/components/plate-ui/tooltip';
 
 import type {
+  EditorPlatePlugin,
+  PlateEditor,
   PlateRenderElementProps,
   RenderNodeWrapper,
 } from '@udecode/plate/react';
@@ -87,17 +97,37 @@ export const DraggableAboveNodes: RenderNodeWrapper = (props) => {
 
   if (!enabled) return;
 
-  return (props) => <Draggable {...props} />;
+  const component = (
+    props: React.JSX.IntrinsicAttributes &
+      Omit<
+        React.DetailedHTMLProps<
+          React.HTMLAttributes<HTMLDivElement>,
+          HTMLDivElement
+        >,
+        'ref'
+      > &
+      BasePluginContext<PluginConfig> & {
+        editor: PlateEditor;
+        plugin: EditorPlatePlugin<PluginConfig>;
+      } & {
+        className?: string;
+        nodeProps?: AnyObject;
+      } & RenderElementProps<TElement> & {
+        path: Path;
+      } & React.RefAttributes<HTMLDivElement>,
+  ) => <Draggable {...props} />;
+  return component;
 };
 
 export const Draggable = withRef<'div', PlateRenderElementProps>(
-  ({ className, ...props }, ref) => {
+  ({ ...props }, ref) => {
     const { children, editor, element, path } = props;
     const blockSelectionApi =
       editor.getApi(BlockSelectionPlugin).blockSelection;
     const { isDragging, previewRef, handleRef } = useDraggable({
       element,
       onDropHandler: (_, { dragItem }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const id = (dragItem as any).id;
 
         if (blockSelectionApi && id) {
@@ -218,6 +248,8 @@ const Gutter = React.forwardRef<
   );
 });
 
+Gutter.displayName = 'gutter';
+
 const DragHandle = React.memo(() => {
   const editor = useEditorRef();
   const element = useElement();
@@ -238,6 +270,8 @@ const DragHandle = React.memo(() => {
     </TooltipButton>
   );
 });
+
+DragHandle.displayName = 'draghandle';
 
 const DropLine = React.memo(
   React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

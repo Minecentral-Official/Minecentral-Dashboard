@@ -2,8 +2,6 @@
 
 import React, { useEffect } from 'react';
 
-import type { WithRequiredKey } from '@udecode/plate';
-
 import {
   FloatingMedia as FloatingMediaPrimitive,
   FloatingMediaStore,
@@ -18,11 +16,17 @@ import {
 } from '@udecode/plate/react';
 import { Link, Trash2Icon } from 'lucide-react';
 
-import { Button, buttonVariants } from './button';
-import { CaptionButton } from './caption';
-import { inputVariants } from './input';
-import { Popover, PopoverAnchor, PopoverContent } from './popover';
-import { Separator } from './separator';
+import { Button, buttonVariants } from '@/components/plate-ui/button';
+import { CaptionButton } from '@/components/plate-ui/caption';
+import { inputVariants } from '@/components/plate-ui/input';
+import {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+} from '@/components/plate-ui/popover';
+import { Separator } from '@/components/plate-ui/separator';
+
+import type { WithRequiredKey } from '@udecode/plate';
 
 export interface MediaPopoverProps {
   children: React.ReactNode;
@@ -35,7 +39,7 @@ export function MediaPopover({ children, plugin }: MediaPopoverProps) {
 
   const selectionCollapsed = useEditorSelector(
     (editor) => !editor.api.isExpanded(),
-    []
+    [],
   );
   const isOpen = !readOnly && selected && selectionCollapsed;
   const isEditing = useFloatingMediaValue('isEditing');
@@ -57,40 +61,39 @@ export function MediaPopover({ children, plugin }: MediaPopoverProps) {
       <PopoverAnchor>{children}</PopoverAnchor>
 
       <PopoverContent
-        className="w-auto p-1"
+        className='w-auto p-1'
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        {isEditing ? (
-          <div className="flex w-[330px] flex-col">
-            <div className="flex items-center">
-              <div className="flex items-center pr-1 pl-2 text-muted-foreground">
-                <Link className="size-4" />
+        {isEditing ?
+          <div className='flex w-[330px] flex-col'>
+            <div className='flex items-center'>
+              <div className='flex items-center pl-2 pr-1 text-muted-foreground'>
+                <Link className='size-4' />
               </div>
 
               <FloatingMediaPrimitive.UrlInput
                 className={inputVariants({ h: 'sm', variant: 'ghost' })}
-                placeholder="Paste the embed link..."
+                placeholder='Paste the embed link...'
                 options={{ plugin }}
               />
             </div>
           </div>
-        ) : (
-          <div className="box-content flex items-center">
+        : <div className='box-content flex items-center'>
             <FloatingMediaPrimitive.EditButton
               className={buttonVariants({ size: 'sm', variant: 'ghost' })}
             >
               Edit link
             </FloatingMediaPrimitive.EditButton>
 
-            <CaptionButton variant="ghost">Caption</CaptionButton>
+            <CaptionButton variant='ghost'>Caption</CaptionButton>
 
-            <Separator orientation="vertical" className="mx-1 h-6" />
+            <Separator orientation='vertical' className='mx-1 h-6' />
 
-            <Button size="icon" variant="ghost" {...buttonProps}>
+            <Button size='icon' variant='ghost' {...buttonProps}>
               <Trash2Icon />
             </Button>
           </div>
-        )}
+        }
       </PopoverContent>
     </Popover>
   );

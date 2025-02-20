@@ -4,37 +4,39 @@ import * as React from 'react';
 
 import * as ToolbarPrimitive from '@radix-ui/react-toolbar';
 import { cn, withCn, withRef, withVariants } from '@udecode/cn';
-import { type VariantProps, cva } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 
-import { Separator } from './separator';
-import { withTooltip } from './tooltip';
+import { Separator } from '@/components/plate-ui/separator';
+import { withTooltip } from '@/components/plate-ui/tooltip';
+
+import type { VariantProps } from 'class-variance-authority';
 
 export const Toolbar = withCn(
   ToolbarPrimitive.Root,
-  'relative flex items-center select-none'
+  'relative flex items-center select-none',
 );
 
-const a = cn('flex items-center');
+// const a = cn('flex items-center');
 
 export const ToolbarToggleGroup = withCn(
   ToolbarPrimitive.ToolbarToggleGroup,
-  'flex items-center'
+  'flex items-center',
 );
 
 export const ToolbarLink = withCn(
   ToolbarPrimitive.Link,
-  'font-medium underline underline-offset-4'
+  'font-medium underline underline-offset-4',
 );
 
 export const ToolbarSeparator = withCn(
   ToolbarPrimitive.Separator,
-  'mx-2 my-1 w-px shrink-0 bg-border'
+  'mx-2 my-1 w-px shrink-0 bg-border',
 );
 
 const toolbarButtonVariants = cva(
   cn(
-    'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg:not([data-icon])]:size-4'
+    'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg:not([data-icon])]:size-4',
   ),
   {
     defaultVariants: {
@@ -54,12 +56,12 @@ const toolbarButtonVariants = cva(
           'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
       },
     },
-  }
+  },
 );
 
 const dropdownArrowVariants = cva(
   cn(
-    'inline-flex items-center justify-center rounded-r-md text-sm font-medium text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50'
+    'inline-flex items-center justify-center rounded-r-md text-sm font-medium text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50',
   ),
   {
     defaultVariants: {
@@ -79,30 +81,29 @@ const dropdownArrowVariants = cva(
           'border border-l-0 border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
       },
     },
-  }
+  },
 );
 
-const ToolbarButton = withTooltip(
-  React.forwardRef<
-    React.ElementRef<typeof ToolbarToggleItem>,
-    {
-      isDropdown?: boolean;
-      pressed?: boolean;
-    } & Omit<
-      React.ComponentPropsWithoutRef<typeof ToolbarToggleItem>,
-      'asChild' | 'value'
-    > &
-      VariantProps<typeof toolbarButtonVariants>
-  >(
-    (
-      { children, className, isDropdown, pressed, size, variant, ...props },
-      ref
-    ) => {
-      return typeof pressed === 'boolean' ? (
+const ToolbarButtonComponent = React.forwardRef<
+  React.ElementRef<typeof ToolbarToggleItem>,
+  {
+    isDropdown?: boolean;
+    pressed?: boolean;
+  } & Omit<
+    React.ComponentPropsWithoutRef<typeof ToolbarToggleItem>,
+    'asChild' | 'value'
+  > &
+    VariantProps<typeof toolbarButtonVariants>
+>(
+  (
+    { children, className, isDropdown, pressed, size, variant, ...props },
+    ref,
+  ) => {
+    return typeof pressed === 'boolean' ?
         <ToolbarToggleGroup
           disabled={props.disabled}
-          value="single"
-          type="single"
+          value='single'
+          type='single'
         >
           <ToolbarToggleItem
             ref={ref}
@@ -112,30 +113,27 @@ const ToolbarButton = withTooltip(
                 variant,
               }),
               isDropdown && 'justify-between gap-1 pr-1',
-              className
+              className,
             )}
             value={pressed ? 'single' : ''}
             {...props}
           >
-            {isDropdown ? (
+            {isDropdown ?
               <>
-                <div className="flex flex-1 items-center gap-2 whitespace-nowrap">
+                <div className='flex flex-1 items-center gap-2 whitespace-nowrap'>
                   {children}
                 </div>
                 <div>
                   <ChevronDown
-                    className="size-3.5 text-muted-foreground"
+                    className='size-3.5 text-muted-foreground'
                     data-icon
                   />
                 </div>
               </>
-            ) : (
-              children
-            )}
+            : children}
           </ToolbarToggleItem>
         </ToolbarToggleGroup>
-      ) : (
-        <ToolbarPrimitive.Button
+      : <ToolbarPrimitive.Button
           ref={ref}
           className={cn(
             toolbarButtonVariants({
@@ -143,16 +141,17 @@ const ToolbarButton = withTooltip(
               variant,
             }),
             isDropdown && 'pr-1',
-            className
+            className,
           )}
           {...props}
         >
           {children}
-        </ToolbarPrimitive.Button>
-      );
-    }
-  )
+        </ToolbarPrimitive.Button>;
+  },
 );
+ToolbarButtonComponent.displayName = 'toolbar_button';
+
+const ToolbarButton = withTooltip(ToolbarButtonComponent);
 
 export { ToolbarButton };
 
@@ -171,29 +170,32 @@ export const ToolbarSplitButton = React.forwardRef<
   );
 });
 
+const ToolbarSplitButtonPrimaryComponent = React.forwardRef<
+  React.ElementRef<typeof ToolbarToggleItem>,
+  Omit<React.ComponentPropsWithoutRef<typeof ToolbarToggleItem>, 'value'>
+>(({ children, className, size, variant, ...props }, ref) => {
+  return (
+    <span
+      ref={ref}
+      className={cn(
+        toolbarButtonVariants({
+          size,
+          variant,
+        }),
+        'rounded-r-none',
+        'group-data-[pressed=true]:bg-accent group-data-[pressed=true]:text-accent-foreground',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  );
+});
+ToolbarSplitButtonPrimaryComponent.displayName = 'toolbar_split';
+
 export const ToolbarSplitButtonPrimary = withTooltip(
-  React.forwardRef<
-    React.ElementRef<typeof ToolbarToggleItem>,
-    Omit<React.ComponentPropsWithoutRef<typeof ToolbarToggleItem>, 'value'>
-  >(({ children, className, size, variant, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          toolbarButtonVariants({
-            size,
-            variant,
-          }),
-          'rounded-r-none',
-          'group-data-[pressed=true]:bg-accent group-data-[pressed=true]:text-accent-foreground',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  })
+  ToolbarSplitButtonPrimaryComponent,
 );
 
 export const ToolbarSplitButtonSecondary = React.forwardRef<
@@ -210,23 +212,24 @@ export const ToolbarSplitButtonSecondary = React.forwardRef<
           variant,
         }),
         'group-data-[pressed=true]:bg-accent group-data-[pressed=true]:text-accent-foreground',
-        className
+        className,
       )}
       onClick={(e) => e.stopPropagation()}
-      role="button"
+      role='button'
       {...props}
     >
-      <ChevronDown className="size-3.5 text-muted-foreground" data-icon />
+      <ChevronDown className='size-3.5 text-muted-foreground' data-icon />
     </span>
   );
 });
+ToolbarSplitButtonSecondary.displayName = 'ToolbarButtonSecond';
 
 ToolbarSplitButton.displayName = 'ToolbarButton';
 
 export const ToolbarToggleItem = withVariants(
   ToolbarPrimitive.ToggleItem,
   toolbarButtonVariants,
-  ['variant', 'size']
+  ['variant', 'size'],
 );
 
 export const ToolbarGroup = withRef<'div'>(({ children, className }, ref) => {
@@ -236,13 +239,13 @@ export const ToolbarGroup = withRef<'div'>(({ children, className }, ref) => {
       className={cn(
         'group/toolbar-group',
         'relative hidden has-[button]:flex',
-        className
+        className,
       )}
     >
-      <div className="flex items-center">{children}</div>
+      <div className='flex items-center'>{children}</div>
 
-      <div className="mx-1.5 py-0.5 group-last/toolbar-group:hidden!">
-        <Separator orientation="vertical" />
+      <div className='group-last/toolbar-group:hidden! mx-1.5 py-0.5'>
+        <Separator orientation='vertical' />
       </div>
     </div>
   );

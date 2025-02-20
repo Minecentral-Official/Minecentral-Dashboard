@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import type { TColumnElement } from '@udecode/plate-layout';
-
 import { cn, useComposedRef, withRef } from '@udecode/cn';
 import { PathApi } from '@udecode/plate';
 import { useDraggable, useDropLine } from '@udecode/plate-dnd';
@@ -12,15 +10,17 @@ import { BlockSelectionPlugin } from '@udecode/plate-selection/react';
 import { usePluginOption, useReadOnly, withHOC } from '@udecode/plate/react';
 import { GripHorizontal } from 'lucide-react';
 
-import { Button } from './button';
-import { PlateElement } from './plate-element';
+import { Button } from '@/components/plate-ui/button';
+import { PlateElement } from '@/components/plate-ui/plate-element';
 import {
   Tooltip,
   TooltipContent,
   TooltipPortal,
   TooltipProvider,
   TooltipTrigger,
-} from './tooltip';
+} from '@/components/plate-ui/tooltip';
+
+import type { TColumnElement } from '@udecode/plate-layout';
 
 export const ColumnElement = withHOC(
   ResizableProvider,
@@ -29,7 +29,7 @@ export const ColumnElement = withHOC(
     const readOnly = useReadOnly();
     const isSelectionAreaVisible = usePluginOption(
       BlockSelectionPlugin,
-      'isSelectionAreaVisible'
+      'isSelectionAreaVisible',
     );
 
     const { isDragging, previewRef, handleRef } = useDraggable({
@@ -39,19 +39,19 @@ export const ColumnElement = withHOC(
       canDropNode: ({ dragEntry, dropEntry }) =>
         PathApi.equals(
           PathApi.parent(dragEntry[1]),
-          PathApi.parent(dropEntry[1])
+          PathApi.parent(dropEntry[1]),
         ),
     });
 
     return (
-      <div className="group/column relative" style={{ width: width ?? '100%' }}>
+      <div className='group/column relative' style={{ width: width ?? '100%' }}>
         {!readOnly && !isSelectionAreaVisible && (
           <div
             ref={handleRef}
             className={cn(
-              'absolute top-2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
+              'absolute left-1/2 top-2 z-50 -translate-x-1/2 -translate-y-1/2',
               'pointer-events-auto flex items-center',
-              'opacity-0 transition-opacity group-hover/column:opacity-100'
+              'opacity-0 transition-opacity group-hover/column:opacity-100',
             )}
           >
             <ColumnDragHandle />
@@ -62,7 +62,7 @@ export const ColumnElement = withHOC(
           ref={useComposedRef(ref, previewRef)}
           className={cn(
             className,
-            'h-full px-2 pt-2 group-first/column:pl-0 group-last/column:pr-0'
+            'h-full px-2 pt-2 group-first/column:pl-0 group-last/column:pr-0',
           )}
           {...props}
         >
@@ -70,7 +70,7 @@ export const ColumnElement = withHOC(
             className={cn(
               'relative h-full border border-transparent p-1.5',
               !readOnly && 'rounded-lg border-dashed border-border',
-              isDragging && 'opacity-50'
+              isDragging && 'opacity-50',
             )}
           >
             {children}
@@ -80,7 +80,7 @@ export const ColumnElement = withHOC(
         </PlateElement>
       </div>
     );
-  })
+  }),
 );
 
 const ColumnDragHandle = React.memo(() => {
@@ -88,9 +88,9 @@ const ColumnDragHandle = React.memo(() => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button size="none" variant="ghost" className="h-5 px-1">
+          <Button size='none' variant='ghost' className='h-5 px-1'>
             <GripHorizontal
-              className="size-4 text-muted-foreground"
+              className='size-4 text-muted-foreground'
               onClick={(event) => {
                 event.stopPropagation();
                 event.preventDefault();
@@ -105,6 +105,7 @@ const ColumnDragHandle = React.memo(() => {
     </TooltipProvider>
   );
 });
+ColumnDragHandle.displayName = 'ColumnDrag';
 
 const DropLine = React.forwardRef<
   HTMLDivElement,
@@ -125,8 +126,9 @@ const DropLine = React.forwardRef<
           'inset-y-0 left-[-10.5px] w-1 group-first/column:-left-1',
         dropLine === 'right' &&
           'inset-y-0 right-[-11px] w-1 group-last/column:-right-1',
-        className
+        className,
       )}
     />
   );
 });
+DropLine.displayName = 'DropLine';

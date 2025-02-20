@@ -3,9 +3,13 @@
 import { cn, withRef } from '@udecode/cn';
 import { useReadOnly } from '@udecode/plate/react';
 
-import { Calendar } from './calendar';
-import { PlateElement } from './plate-element';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Calendar } from '@/components/plate-ui/calendar';
+import { PlateElement } from '@/components/plate-ui/plate-element';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/plate-ui/popover';
 
 export const DateElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
@@ -16,12 +20,12 @@ export const DateElement = withRef<typeof PlateElement>(
     const trigger = (
       <span
         className={cn(
-          'w-fit cursor-pointer rounded-sm bg-muted px-1 text-muted-foreground'
+          'w-fit cursor-pointer rounded-sm bg-muted px-1 text-muted-foreground',
         )}
         contentEditable={false}
         draggable
       >
-        {element.date ? (
+        {element.date ?
           (() => {
             const today = new Date();
             const elementDate = new Date(element.date as string);
@@ -47,9 +51,7 @@ export const DateElement = withRef<typeof PlateElement>(
               year: 'numeric',
             });
           })()
-        ) : (
-          <span>Pick a date</span>
-        )}
+        : <span>Pick a date</span>}
       </span>
     );
 
@@ -66,7 +68,7 @@ export const DateElement = withRef<typeof PlateElement>(
       >
         <Popover>
           <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+          <PopoverContent className='w-auto p-0'>
             <Calendar
               selected={new Date(element.date as string)}
               onSelect={(date) => {
@@ -74,10 +76,10 @@ export const DateElement = withRef<typeof PlateElement>(
 
                 editor.tf.setNodes(
                   { date: date.toDateString() },
-                  { at: element }
+                  { at: element },
                 );
               }}
-              mode="single"
+              mode='single'
               initialFocus
             />
           </PopoverContent>
@@ -85,5 +87,5 @@ export const DateElement = withRef<typeof PlateElement>(
         {children}
       </PlateElement>
     );
-  }
+  },
 );

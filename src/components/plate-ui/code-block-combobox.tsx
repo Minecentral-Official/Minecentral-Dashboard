@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { cn } from '@udecode/cn';
 import {
@@ -11,15 +11,19 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 // Prism must be imported before all language files
 import Prism from 'prismjs';
 
-import { Button } from './button';
+import { Button } from '@/components/plate-ui/button';
 import {
   Command,
   CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
-} from './command';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+} from '@/components/plate-ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/plate-ui/popover';
 
 import 'prismjs/components/prism-antlr4.js';
 import 'prismjs/components/prism-bash.js';
@@ -142,32 +146,31 @@ export function CodeBlockCombobox() {
     (language) =>
       !value ||
       language.label.toLowerCase().includes(value.toLowerCase()) ||
-      language.value.toLowerCase().includes(value.toLowerCase())
+      language.value.toLowerCase().includes(value.toLowerCase()),
   );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          size="xs"
-          variant="ghost"
-          className="h-5 justify-between px-1 text-xs"
+          size='xs'
+          variant='ghost'
+          className='h-5 justify-between px-1 text-xs'
           aria-expanded={open}
-          role="combobox"
+          role='combobox'
         >
-          {state.value
-            ? languages.find((language) => language.value === state.value)
-                ?.label
-            : 'Plain Text'}
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+          {state.value ?
+            languages.find((language) => language.value === state.value)?.label
+          : 'Plain Text'}
+          <ChevronsUpDown className='ml-2 size-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className='w-[200px] p-0'>
         <Command shouldFilter={false}>
           <CommandInput
             value={value}
             onValueChange={(value) => setValue(value)}
-            placeholder="Search language..."
+            placeholder='Search language...'
           />
           <CommandEmpty>No language found.</CommandEmpty>
 
@@ -175,7 +178,7 @@ export function CodeBlockCombobox() {
             {items.map((language) => (
               <CommandItem
                 key={language.value}
-                className="cursor-pointer"
+                className='cursor-pointer'
                 value={language.value}
                 onSelect={(_value) => {
                   commandItemProps.onSelect(_value);
@@ -184,7 +187,9 @@ export function CodeBlockCombobox() {
               >
                 <Check
                   className={cn(
-                    state.value === language.value ? 'opacity-100' : 'opacity-0'
+                    state.value === language.value ?
+                      'opacity-100'
+                    : 'opacity-0',
                   )}
                 />
                 {language.label}

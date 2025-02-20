@@ -1,9 +1,5 @@
 'use client';
 
-import React from 'react';
-
-import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-
 import { setAlign } from '@udecode/plate-alignment';
 import { useEditorRef, useSelectionFragmentProp } from '@udecode/plate/react';
 import {
@@ -14,7 +10,6 @@ import {
 } from 'lucide-react';
 
 import { STRUCTURAL_TYPES } from '@/components/editor/transforms';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +17,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu';
-import { ToolbarButton } from './toolbar';
+} from '@/components/plate-ui/dropdown-menu';
+import { ToolbarButton } from '@/components/plate-ui/toolbar';
+
+import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 
 const items = [
   {
@@ -44,7 +41,7 @@ const items = [
   },
 ];
 
-export function AlignDropdownMenu({ children, ...props }: DropdownMenuProps) {
+export function AlignDropdownMenu({ ...props }: DropdownMenuProps) {
   const editor = useEditorRef();
   const value = useSelectionFragmentProp({
     defaultValue: 'start',
@@ -59,14 +56,15 @@ export function AlignDropdownMenu({ children, ...props }: DropdownMenuProps) {
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton pressed={openState.open} tooltip="Align" isDropdown>
+        <ToolbarButton pressed={openState.open} tooltip='Align' isDropdown>
           <IconValue />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="min-w-0" align="start">
+      <DropdownMenuContent className='min-w-0' align='start'>
         <DropdownMenuRadioGroup
           value={value}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onValueChange={(value: any) => {
             setAlign(editor, { value: value });
             editor.tf.focus();

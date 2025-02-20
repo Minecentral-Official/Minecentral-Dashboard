@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ComponentPropsWithoutRef } from 'react';
+import { type ComponentPropsWithoutRef } from 'react';
 
 import { cn } from '@udecode/cn';
 import {
@@ -9,14 +9,13 @@ import {
 } from '@udecode/plate-font/react';
 import { PlusIcon } from 'lucide-react';
 
-import { buttonVariants } from './button';
-import {
-  type TColor,
-  ColorDropdownMenuItems,
-} from './color-dropdown-menu-items';
-import { ColorInput } from './color-input';
+import { buttonVariants } from '@/components/plate-ui/button';
+import { ColorDropdownMenuItems } from '@/components/plate-ui/color-dropdown-menu-items';
+import { ColorInput } from '@/components/plate-ui/color-input';
 // import { ColorInput } from './color-input';
-import { DropdownMenuItem } from './dropdown-menu';
+import { DropdownMenuItem } from '@/components/plate-ui/dropdown-menu';
+
+import type { TColor } from '@/components/plate-ui/color-dropdown-menu-items';
 
 type ColorCustomProps = {
   colors: TColor[];
@@ -58,11 +57,11 @@ export function ColorCustom({
                 size: 'icon',
                 variant: 'outline',
               }),
-              'absolute top-1.5 right-2 bottom-2 flex size-7 items-center justify-center rounded-full'
+              'absolute bottom-2 right-2 top-1.5 flex size-7 items-center justify-center rounded-full',
             )}
             {...menuItemProps}
           >
-            <span className="sr-only">Custom</span>
+            <span className='sr-only'>Custom</span>
             <PlusIcon />
           </DropdownMenuItem>
         </ColorInput>

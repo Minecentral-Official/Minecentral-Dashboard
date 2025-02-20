@@ -1,8 +1,5 @@
 'use client';
 
-import type { SlateEditor } from '@udecode/plate';
-import type { AutoformatRule } from '@udecode/plate-autoformat';
-
 import { ElementApi, isType } from '@udecode/plate';
 import {
   autoformatArrow,
@@ -39,6 +36,10 @@ import {
 import { openNextToggles, TogglePlugin } from '@udecode/plate-toggle/react';
 import { ParagraphPlugin } from '@udecode/plate/react';
 
+import type { SlateEditor } from '@udecode/plate';
+import type { AutoformatRule } from '@udecode/plate-autoformat';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const format = (editor: SlateEditor, customFormatting: any) => {
   if (editor.selection) {
     const parentEntry = editor.api.parent(editor.selection);

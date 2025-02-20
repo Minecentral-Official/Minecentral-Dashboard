@@ -3,13 +3,13 @@
 import { useEditorRef, useEditorSelector, withRef } from '@udecode/plate/react';
 import { Redo2Icon, Undo2Icon } from 'lucide-react';
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from '@/components/plate-ui/toolbar';
 
 export const RedoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
   const editor = useEditorRef();
   const disabled = useEditorSelector(
     (editor) => editor.history.redos.length === 0,
-    []
+    [],
   );
 
   return (
@@ -18,7 +18,7 @@ export const RedoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
       disabled={disabled}
       onClick={() => editor.redo()}
       onMouseDown={(e) => e.preventDefault()}
-      tooltip="Redo"
+      tooltip='Redo'
       {...props}
     >
       <Redo2Icon />
@@ -30,7 +30,7 @@ export const UndoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
   const editor = useEditorRef();
   const disabled = useEditorSelector(
     (editor) => editor.history.undos.length === 0,
-    []
+    [],
   );
 
   return (
@@ -39,7 +39,7 @@ export const UndoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
       disabled={disabled}
       onClick={() => editor.undo()}
       onMouseDown={(e) => e.preventDefault()}
-      tooltip="Undo"
+      tooltip='Undo'
       {...props}
     >
       <Undo2Icon />
