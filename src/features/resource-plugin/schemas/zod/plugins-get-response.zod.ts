@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 import { TGetPluginsResponse } from '@/features/resource-plugin/queries/plugins-find.filter';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-basic.type';
 
-export const PluginsGetResponseSchema = z.object({
-  resources: z.array(z.custom<TResourcePlugin>()),
+export const pluginsGetResponseZod = z.object({
+  resources: z.array(z.custom<TResourcePluginBasic>()),
   totalCount: z.number(),
   currentPage: z.number(),
   totalPages: z.number(),

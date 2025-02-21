@@ -4,8 +4,8 @@ import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
 
 import { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
 import { TPluginVersion } from '@/features/resource-plugin/config/versions.plugin';
-import DTOResourcePlugin from '@/features/resource-plugin/dto/plugin.dto';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import DTOResourcePluginBasic from '@/features/resource-plugin/dto/plugin-basic.dto';
+import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-basic.type';
 import { db } from '@/lib/db';
 import { pluginTable, user } from '@/lib/db/schema';
 
@@ -18,7 +18,7 @@ export type TGetPluginsRequest = {
 };
 
 export type TGetPluginsResponse = {
-  resources: TResourcePlugin[] | [];
+  resources: TResourcePluginBasic[] | [];
   totalCount: number;
   currentPage: number;
   totalPages: number;
@@ -83,7 +83,7 @@ export default async function pluginsFind({
   const totalPages = Math.ceil(totalCount / limit);
 
   const result = {
-    resources: resources.map((resource) => DTOResourcePlugin(resource)),
+    resources: resources.map((resource) => DTOResourcePluginBasic(resource)),
     totalCount,
     currentPage: page,
     totalPages,

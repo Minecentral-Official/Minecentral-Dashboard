@@ -1,6 +1,6 @@
 'use client';
 
-import { Download, Github, MessageSquare } from 'lucide-react';
+import { Github, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,7 +8,8 @@ import { PlateViewer } from '@/components/editor/plate-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import DownloadButton from '@/features/resource-plugin/components/ui/download-button';
+import { TResourcePlugin } from '@/features/resource-plugin/types/plugin-all-data.type';
 
 type props = Pick<
   TResourcePlugin,
@@ -19,6 +20,11 @@ type props = Pick<
   | 'linkSource'
   | 'linkSupport'
   | 'description'
+  | 'languages'
+  | 'versionSupport'
+  | 'categories'
+  | 'tags'
+  | 'release'
 >;
 
 export default function ResourcePageView({
@@ -28,6 +34,7 @@ export default function ResourcePageView({
   linkSource,
   linkSupport,
   description,
+  release,
 }: props) {
   return (
     <div className='min-h-screen bg-background'>
@@ -84,9 +91,9 @@ export default function ResourcePageView({
                 </CardContent>
               </Card> */}
 
-              <Button className='w-full'>
-                <Download className='mr-2 h-4 w-4' /> Download
-              </Button>
+              <DownloadButton
+                downloadUrl={`/api/download/plugin?rId=${release?.downloadId}`}
+              />
 
               <Separator />
 
@@ -94,14 +101,14 @@ export default function ResourcePageView({
                 {linkSupport && (
                   <Button variant='outline' className='w-full' asChild>
                     <Link href={linkSupport}>
-                      <MessageSquare className='mr-2 h-4 w-4' /> Support
+                      <MessageSquare className='h-4 w-4' /> Support
                     </Link>
                   </Button>
                 )}
                 {linkSource && (
-                  <Button variant='outline' className='w-full'>
+                  <Button variant='outline' className='w-full' asChild>
                     <Link href={linkSource}>
-                      <Github className='mr-2 h-4 w-4' /> Source Code
+                      <Github className='h-4 w-4' /> Source Code
                     </Link>
                   </Button>
                 )}

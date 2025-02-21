@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
 import pluginsFind from '@/features/resource-plugin/queries/plugins-find.filter';
-import { PluginsGetRequestSchema } from '@/features/resource-plugin/schemas/zod/plugins-get-request.zod';
+import { pluginsGetRequestZod } from '@/features/resource-plugin/schemas/zod/plugins-get-request.zod';
 
 import type { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
-  const params = PluginsGetRequestSchema.safeParse({
+  const params = pluginsGetRequestZod.safeParse({
     query: searchParams.get('q') || undefined,
     categories: searchParams
       .getAll('category')

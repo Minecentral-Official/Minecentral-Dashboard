@@ -1,12 +1,12 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-basic.type';
 
 export default function ResourceOverview({
   plugins,
 }: {
-  plugins: TResourcePlugin[];
+  plugins: TResourcePluginBasic[];
 }) {
   const stats = {
     totalPlugins: plugins.length,

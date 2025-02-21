@@ -1,64 +1,69 @@
 'use server';
 
-import { parseWithZod } from '@conform-to/zod';
-import { redirect } from 'next/navigation';
+import crypto from 'crypto';
+
+import { z } from 'zod';
 
 import { pluginTable } from '@/features/resource-plugin/schemas/plugin.table';
-import { resourceCreateZod } from '@/features/resource-plugin/schemas/zod/create-resource.zod';
-import {
-  ACTIVITY,
-  activityAddAction,
-} from '@/lib/activity/mutations/activity.add';
-import validateSession from '@/lib/auth/helpers/validate-session';
+import { pluginCreateZod } from '@/features/resource-plugin/schemas/zod/create-plugin.zod';
 import { db } from '@/lib/db';
+import { pluginReleaseTable } from '@/lib/db/schema';
 
-export default async function resourceCreate(
-  // prevState: unknown
-  _: unknown,
-  formData: FormData,
-) {
-  const { user } = await validateSession();
-  const submission = parseWithZod(formData, {
-    schema: resourceCreateZod,
-  });
-
-  if (submission.status !== 'success') {
-    return submission.reply();
-  }
-
-  const { description, subtitle, title, versionSupport, categories } =
-    submission.value;
-
+export default async function resourceCreate({
+  data: {
+    title,
+    subtitle,
+    description,
+    tags,
+    linkSource,
+    linkSupport,
+    versionSupport,
+    categories,
+    discord,
+    languages,
+    releaseFile,
+    releaseVersion,
+  },
+  userId,
+}: {
+  data: Omit<z.infer<typeof pluginCreateZod>, 'releaseFile'> & {
+    releaseFile: string;
+  };
+  userId: string;
+}) {
   const newResource = await db.transaction(async (tx) => {
-    //Insert new ticket info
-    const newTicket = await tx
+    //Insert new plugin info
+    const newPlugin = await tx
       .insert(pluginTable)
       .values({
         title,
-        userId: user.id,
-        description,
         subtitle,
+        description,
+        tags,
+        linkSource,
+        linkSupport,
         versionSupport,
         categories,
-        // tags,
+        discord,
+        languages,
+        userId,
       })
       .returning();
-    //Insert first message as Ticket Message
-    // await tx
-    //   .insert(ticketMessage)
-    //   .values({ message, ticketId: newTicket[0].id, userId: user.id });
-    return newTicket;
+
+    await tx
+      .insert(pluginReleaseTable)
+      .values({
+        title: 'First Release',
+        description: '',
+        fileUrl: releaseFile,
+        version: releaseVersion,
+        pluginId: newPlugin[0].id,
+        downloadId: crypto.randomBytes(16).toString('hex'),
+      })
+      .returning();
+
+    return newPlugin[0];
   });
 
-  await activityAddAction(
-    user.id,
-    ACTIVITY.NEW_RESOURCE,
-    `${newResource[0].id}`,
-  );
-
-  // revalidateTag(`tickets-user-${user.id}`);
-
-  redirect(
-    '/dashboard/resources?toast-success=true&toast-message=Resource%20successfully%20created&toast-id=create-ticket',
-  );
+  return newResource;
 }

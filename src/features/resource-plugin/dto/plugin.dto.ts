@@ -1,41 +1,12 @@
-import { Resource } from '@/features/resource-plugin/types/resource.type';
+import DTOResourcePluginBasic from '@/features/resource-plugin/dto/plugin-basic.dto';
+import { PluginData } from '@/features/resource-plugin/types/resource.type';
 
-export default function DTOResourcePlugin({
-  id,
-  title,
-  subtitle,
-  categories,
-  description,
-  discord,
-  downloads,
-  language,
-  linkSource,
-  linkSupport,
-  releaseId,
-  updatedAt,
-  createdAt,
-  versionSupport,
-  user,
-}: Resource) {
+export default function DTOResourcePlugin({ releases, ...rest }: PluginData) {
   return {
-    id,
-    title,
-    subtitle,
-    categories,
-    description,
-    discord,
-    downloads,
-    language,
-    linkSource,
-    linkSupport,
-    releaseId,
-    updatedAt,
-    createdAt,
-    versionSupport,
-    author: {
-      image: user.image,
-      name: user.name,
-      id: user.id,
+    ...DTOResourcePluginBasic(rest),
+    releases,
+    release: {
+      ...releases[0],
     },
   };
 }

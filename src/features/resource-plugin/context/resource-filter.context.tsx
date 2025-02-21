@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { TResourceSortBy } from '@/features/resource-plugin/config/sort-by.config';
-import { ResourceFilterSchema } from '@/features/resource-plugin/schemas/zod/resource-filter.zod';
+import { resourceFilterZod } from '@/features/resource-plugin/schemas/zod/resource-filter.zod';
 import sortStringToValue from '@/features/resource-plugin/util/sort-string-to-value';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useUpdateSearchParams } from '@/hooks/use-update-search-params';
@@ -51,7 +51,7 @@ export function ResourceFilterProvider({
     page,
     searchQuery: query,
     sortBy,
-  } = ResourceFilterSchema.parse({
+  } = resourceFilterZod.parse({
     limit: searchParams.get('limit'),
     page: searchParams.get('p'),
     sortBy: sortStringToValue(searchParams.get('sort')),

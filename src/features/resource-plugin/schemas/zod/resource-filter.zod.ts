@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { TResourceSort } from '@/features/resource-plugin/config/sort-by.config';
 
-export const ResourceFilterSchema = z.object({
+export const resourceFilterZod = z.object({
   limit: z
     .preprocess((a) => parseInt(a as string, 10), z.number().positive().max(64))
     .catch(16),

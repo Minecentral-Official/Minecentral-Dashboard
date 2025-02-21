@@ -11,9 +11,14 @@ import { Input } from '@/components/ui/input';
 interface TagInputProps {
   initialTags?: string[];
   onChange?: (tags: string[]) => void;
+  placeholder?: string;
 }
 
-export function TagInput({ initialTags = [], onChange }: TagInputProps) {
+export function TagInput({
+  initialTags = [],
+  onChange,
+  placeholder = 'Add a tag...',
+}: TagInputProps) {
   const [tags, setTags] = React.useState<string[]>(initialTags);
   const [inputValue, setInputValue] = React.useState('');
 
@@ -65,7 +70,7 @@ export function TagInput({ initialTags = [], onChange }: TagInputProps) {
       </div>
       <Input
         type='text'
-        placeholder='Add a tag...'
+        placeholder={placeholder}
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}

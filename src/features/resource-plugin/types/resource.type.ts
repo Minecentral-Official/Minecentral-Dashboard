@@ -1,8 +1,9 @@
-import { pluginTable, user } from '@/lib/db/schema';
+import { pluginReleaseTable, pluginTable, user } from '@/lib/db/schema';
 
-export type ResourceBase = typeof pluginTable.$inferSelect;
-
-export type Resource = ResourceBase & {
+export type PluginDataBase = typeof pluginTable.$inferSelect & {
   user: typeof user.$inferSelect;
-  // subscriptions: (typeof hostSubscription.$inferSelect)[];
+};
+
+export type PluginData = PluginDataBase & {
+  releases: (typeof pluginReleaseTable.$inferSelect)[];
 };

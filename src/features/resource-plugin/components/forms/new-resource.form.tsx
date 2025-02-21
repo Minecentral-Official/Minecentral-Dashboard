@@ -16,9 +16,9 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { Separator } from '@/components/ui/separator';
 import { TagInput } from '@/components/ui/tag-input';
 import { Toaster } from '@/components/ui/toaster';
+import resourceCreateAction from '@/features/resource-plugin/actions/create-resource.action';
 import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
 import { TPluginVersions } from '@/features/resource-plugin/config/versions.plugin';
-import resourceCreate from '@/features/resource-plugin/mutations/create.resource';
 import { pluginCreateZod } from '@/features/resource-plugin/schemas/zod/create-plugin.zod';
 
 const mcVersions = TPluginVersions.map((type) => ({
@@ -55,7 +55,7 @@ const defaultContent = [
 ];
 
 export default function CreateResourceForm() {
-  const [lastResult, action] = useActionState(resourceCreate, undefined);
+  const [lastResult, action] = useActionState(resourceCreateAction, undefined);
 
   // function getLocalStorageEditorContent() {
   //   try {
@@ -94,6 +94,7 @@ export default function CreateResourceForm() {
   const versionSupportHandle = useInputControl(fields.versionSupport);
   const relatedCategoriesHandle = useInputControl(fields.categories);
   const tagsHandle = useInputControl(fields.tags);
+  const languagesHandle = useInputControl(fields.languages);
 
   return (
     <div>
@@ -204,6 +205,24 @@ export default function CreateResourceForm() {
         </Field>
 
         <Field>
+          <Label htmlFor={fields.languages.id}>Supported Languages</Label>
+          <TagInput
+            // className='sm:min-w-[450px]'
+            onChange={(e) => languagesHandle.change(e)}
+            placeholder={'Add a langauge...'}
+            // setTags={(newTags) => {
+            //   setTags(newTags);
+            //   const asdf = newTags as [Tag, ...Tag[]];
+            //   const simpleTags = asdf.map(({ text }) => text);
+            //   tagsHandle.change(simpleTags);
+            // }}
+          />
+          {fields.languages.errors && (
+            <FieldError>{fields.languages.errors}</FieldError>
+          )}
+        </Field>
+
+        <Field>
           <Label htmlFor={fields.tags.id}>Tags</Label>
           <TagInput
             // className='sm:min-w-[450px]'
@@ -215,9 +234,7 @@ export default function CreateResourceForm() {
             //   tagsHandle.change(simpleTags);
             // }}
           />
-          {fields.linkSupport.errors && (
-            <FieldError>{fields.tags.errors}</FieldError>
-          )}
+          {fields.tags.errors && <FieldError>{fields.tags.errors}</FieldError>}
         </Field>
 
         <Button>Post Resource</Button>

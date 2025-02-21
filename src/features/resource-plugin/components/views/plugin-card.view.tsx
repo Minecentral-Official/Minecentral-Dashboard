@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-basic.type';
 
 type props = Pick<
-  TResourcePlugin,
+  TResourcePluginBasic,
   'title' | 'author' | 'subtitle' | 'id' | 'categories'
 >;
 

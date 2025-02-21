@@ -7,7 +7,7 @@ import { db } from '@/lib/db';
 export default async function pluginsGetByUserId(userId: string) {
   const plugins = await db.query.pluginTable.findMany({
     where: eq(pluginTable.userId, userId),
-    with: { user: true },
+    with: { user: true, releases: true },
   });
 
   return plugins.map((plugin) => DTOResourcePlugin(plugin));

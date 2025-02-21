@@ -17,8 +17,8 @@ import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resource-plugin/context/resource-filter.context';
-import { PluginsGetResponseSchema } from '@/features/resource-plugin/schemas/zod/plugins-get-response.zod';
-import { TResourcePlugin } from '@/features/resource-plugin/types/plugin.type';
+import { pluginsGetResponseZod } from '@/features/resource-plugin/schemas/zod/plugins-get-response.zod';
+import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-basic.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
@@ -27,8 +27,8 @@ import {
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 interface PluginFilterContextType {
-  plugins: TResourcePlugin[];
-  setPlugins: Dispatch<SetStateAction<TResourcePlugin[]>>;
+  plugins: TResourcePluginBasic[];
+  setPlugins: Dispatch<SetStateAction<TResourcePluginBasic[]>>;
   categories: TPluginCategory[];
   toggleCategory: (category: TPluginCategory) => void;
   versions: TPluginVersion[];
@@ -66,7 +66,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const searchParams = useSearchParams();
   const { searchDebounce, getParams } = useResourceFilterContext();
 
-  const [plugins, setPlugins] = useState<TResourcePlugin[]>([]);
+  const [plugins, setPlugins] = useState<TResourcePluginBasic[]>([]);
   const updateSearchParams = useUpdateSearchParams();
   const categories = searchParams
     .getAll('category')
@@ -97,7 +97,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         return response.json();
       })
       .then((json) => {
-        const parse = PluginsGetResponseSchema.safeParse(json);
+        const parse = pluginsGetResponseZod.safeParse(json);
         if (parse.success) setPlugins(parse.data.resources);
         else {
           toast.error('Query error:' + parse.error);

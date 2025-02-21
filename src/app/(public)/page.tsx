@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Minecental - Home',
-  description: 'Your place for Minecraft',
+  description: 'One-Stop-Shop for anything Minecraft',
 };
 
 // This is the root of our project, our 'landing page'

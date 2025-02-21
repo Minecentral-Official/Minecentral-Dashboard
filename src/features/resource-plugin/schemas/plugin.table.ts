@@ -3,7 +3,7 @@ import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
 import { TPluginVersions } from '@/features/resource-plugin/config/versions.plugin';
-import { resourceRelease } from '@/features/resource-plugin/schemas/resource-release.table';
+import { pluginReleaseTable } from '@/features/resource-plugin/schemas/plugin-release.table';
 import { user } from '@/lib/db/schema';
 
 export const pluginTable = pgTable('resourcePlugin', {
@@ -11,11 +11,9 @@ export const pluginTable = pgTable('resourcePlugin', {
   userId: text()
     .notNull()
     .references(() => user.id),
-  releaseId: integer().references(() => resourceRelease.id),
   title: text().notNull(),
   subtitle: text().notNull(),
   description: text().notNull(),
-
   versionSupport: text('versionSupport', { enum: TPluginVersions })
     .array()
     .notNull(),
@@ -24,7 +22,7 @@ export const pluginTable = pgTable('resourcePlugin', {
   // image?: Types.ObjectId,
   // banner?: Types.ObjectId,
   discord: text(),
-  language: text(),
+  languages: text().array(),
   tags: text().array(),
   linkSource: text(),
   linkSupport: text(),
@@ -34,9 +32,10 @@ export const pluginTable = pgTable('resourcePlugin', {
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 
-export const resourceRelations = relations(pluginTable, ({ one }) => ({
+export const resourceRelations = relations(pluginTable, ({ one, many }) => ({
   user: one(user, {
     fields: [pluginTable.userId],
     references: [user.id],
   }),
+  releases: many(pluginReleaseTable),
 }));
