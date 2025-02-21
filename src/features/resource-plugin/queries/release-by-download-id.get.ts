@@ -10,6 +10,7 @@ export default async function releaseGetByDownloadId(downloadId: string) {
   cacheTag(`release-id-${downloadId}`);
   const release = await db.query.pluginReleaseTable.findFirst({
     where: eq(pluginReleaseTable.downloadId, downloadId),
+    with: { plugin: true },
   });
   return release;
 }

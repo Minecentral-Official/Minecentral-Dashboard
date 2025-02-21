@@ -27,7 +27,7 @@ export const pluginTable = pgTable('resourcePlugin', {
   linkSource: text(),
   linkSupport: text(),
   //Other
-  downloads: integer(),
+  downloads: integer().notNull().default(0),
   updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });

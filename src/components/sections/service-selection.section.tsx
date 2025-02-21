@@ -1,45 +1,61 @@
+import { ArrowRight } from 'lucide-react';
+
 import ServiceLinkCard from '@/components/cards/service-link.card';
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export default function ServiceSelectionSection() {
   return (
     <SectionWrapper>
-      <div className='flex flex-col gap-4'>
-        <div>
-          <Badge variant='outline'>🎉 We&apos;re live!</Badge>
+      <div className='flex flex-col items-center gap-6 text-center'>
+        <Badge variant='outline' className='px-3 py-1 text-sm'>
+          🎉 We&apos;re live!
+        </Badge>
+        <h1 className='max-w-2xl text-5xl font-bold tracking-tighter md:text-7xl'>
+          Explore our services
+        </h1>
+        <p className='max-w-xl text-lg text-muted-foreground'>
+          Discover the best hosting, resources, and tools for your Minecraft
+          experience.
+        </p>
+        <div className='mt-6 grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {services.map((service, index) => (
+            <ServiceLinkCard key={index} {...service} />
+          ))}
         </div>
-        <div className='flex flex-col gap-4'>
-          <h1 className='font-regular max-w-lg text-left text-5xl tracking-tighter md:text-7xl'>
-            Explore Minecentral&apos;s services
-          </h1>
-        </div>
-        <div className='mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3'>
-          <ServiceLinkCard
-            title='Hosting'
-            description='Rent your own Minecraft server and play together for cheap'
-            href='/hosting'
-          />
-          <ServiceLinkCard
-            title='Resources'
-            description='Find community plugins and easily add to your game'
-            href='/resources'
-            enabled={false}
-          />
-          <ServiceLinkCard
-            title='Worlds'
-            description='Find and explore community servers you can connect to now!'
-            href='/worlds'
-            enabled={false}
-          />
-          <ServiceLinkCard
-            title='Docs'
-            description='Find out how to create and manage your Minecentral Services'
-            href='https://docs.minecentral.net'
-            enabled={true}
-          />
-        </div>
+        <Button size='lg' className='mt-8'>
+          Get Started <ArrowRight className='ml-2 h-4 w-4' />
+        </Button>
       </div>
     </SectionWrapper>
   );
 }
+
+const services = [
+  {
+    title: 'Hosting',
+    description: 'Rent a Minecraft server and play together',
+    href: '/hosting',
+    enabled: true,
+  },
+  {
+    title: 'Plugins & Resources',
+    description:
+      'Find fun community made plugins, texture-packs, mod-packs and more!',
+    href: '/resources',
+    enabled: true,
+  },
+  {
+    title: 'Worlds',
+    description: 'A place to boast about your Minecraft server!',
+    href: '/worlds',
+    enabled: false,
+  },
+  {
+    title: 'Docs',
+    description: 'Find out how to manage your Minecentral Services',
+    href: 'https://docs.minecentral.net',
+    enabled: true,
+  },
+];

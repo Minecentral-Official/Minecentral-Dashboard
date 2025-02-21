@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import resourceDownloadTick from '@/features/resource-plugin/mutations/download-tick.rosource';
 import releaseGetByDownloadId from '@/features/resource-plugin/queries/release-by-download-id.get';
 
 import type { NextRequest } from 'next/server';
@@ -16,7 +17,9 @@ export async function GET(request: NextRequest) {
     if (!release) {
       return new NextResponse('Invalid release id', { status: 404 });
     }
-    console.log('Resource Download ID', downloadId);
+    //Tick download counter by one
+    await resourceDownloadTick(release.pluginId);
+
     // Redirect to the actual file URL
     return NextResponse.redirect(release.fileUrl);
   } catch (error) {

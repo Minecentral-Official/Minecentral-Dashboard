@@ -19,6 +19,6 @@ export default async function pluginGetById(resourceId: number) {
       },
     },
   });
-  if (!resource) return null;
+  if (!resource) return undefined;
   return DTOResourcePlugin(resource);
 }

@@ -1,12 +1,14 @@
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+import { Button } from '@/components/ui/button';
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
 
 type ServiceLinkCardProps = {
   title: string;
@@ -22,23 +24,32 @@ export default function ServiceLinkCard({
   enabled = true,
 }: ServiceLinkCardProps) {
   return (
-    <Link href={enabled ? href : '#'}>
+    <div
+      key={title}
+      // whileHover={{ scale: 1.05 }}
+      // whileTap={{ scale: 0.95 }}
+      className='w-full'
+    >
       <Card
-        className={cn(
-          'relative h-[120px] overflow-hidden',
-          enabled && 'transition-shadow hover:shadow-xl',
-        )}
+        className={`transition-all hover:shadow-lg ${!enabled ? 'cursor-not-allowed opacity-50' : ''}`}
       >
-        <CardHeader className='flex h-full flex-col justify-between'>
+        <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
-        {!enabled && (
-          <div className='absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-muted/90'>
-            Coming Soon
-          </div>
-        )}
+        <CardContent>
+          <Button
+            variant='outline'
+            className='w-full'
+            disabled={!enabled}
+            asChild
+          >
+            <Link href={enabled ? href : '#'}>
+              Learn More <ArrowRight className='ml-2 h-4 w-4' />
+            </Link>
+          </Button>
+        </CardContent>
       </Card>
-    </Link>
+    </div>
   );
 }

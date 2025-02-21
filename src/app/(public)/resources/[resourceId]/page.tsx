@@ -9,13 +9,16 @@ export default async function Page({ params }: PageProps) {
   const { resourceId } = await params;
   const plugin = await pluginGetById(resourceId);
 
+  if (!plugin)
+    return (
+      <div className='w-full p-6 text-center text-lg'>
+        Requested Resource not found
+      </div>
+    );
+
   return (
-    <div className='pt-20'>
-      {plugin ?
-        <div className='pt-20'>
-          <ResourcePageView {...plugin} />
-        </div>
-      : <>Requested Resource not found</>}
-    </div>
+    <>
+      <ResourcePageView {...plugin} />
+    </>
   );
 }

@@ -5,12 +5,12 @@ import { baseNavigationConfig } from '@/lib/configs/base-nav.config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Minecental - Home',
+  title: 'Minecentral - Home',
   description: 'One-Stop-Shop for anything Minecraft',
 };
 
 // This is the root of our project, our 'landing page'
-export default async function LandingPage() {
+export default function LandingPage() {
   return (
     <>
       <Header service='services' config={baseNavigationConfig()} />

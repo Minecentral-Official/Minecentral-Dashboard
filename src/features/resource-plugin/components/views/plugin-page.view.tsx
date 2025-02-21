@@ -6,9 +6,7 @@ import Link from 'next/link';
 
 import { PlateViewer } from '@/components/editor/plate-view';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import DownloadButton from '@/features/resource-plugin/components/ui/download-button';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin-all-data.type';
 
 type props = Pick<
@@ -16,7 +14,6 @@ type props = Pick<
   | 'title'
   | 'subtitle'
   | 'author'
-  | 'downloads'
   | 'linkSource'
   | 'linkSupport'
   | 'description'
@@ -24,7 +21,6 @@ type props = Pick<
   | 'versionSupport'
   | 'categories'
   | 'tags'
-  | 'release'
 >;
 
 export default function ResourcePageView({
@@ -40,13 +36,8 @@ export default function ResourcePageView({
     <div className='min-h-screen bg-background'>
       <div className='container mx-auto px-4 py-8'>
         <div className='flex flex-col lg:flex-row lg:space-x-8'>
-          {/* Main content area */}
-          <main className='order-2 flex-1 lg:order-1'>
-            <PlateViewer content={JSON.parse(description)} />
-          </main>
-
-          {/* Right column (former sidebar) */}
-          <aside className='order-1 mb-8 w-full lg:order-2 lg:mb-0 lg:w-80'>
+          {/* Left Column */}
+          <aside className='order-1 mb-8 w-full lg:mb-0 lg:w-80'>
             <div className='space-y-6 lg:sticky lg:top-8'>
               <div className='text-center'>
                 <Image
@@ -59,22 +50,6 @@ export default function ResourcePageView({
                 <h1 className='text-2xl font-bold'>{title}</h1>
                 <p className='text-sm text-muted-foreground'>{subtitle}</p>
               </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Stats</CardTitle>
-                </CardHeader>
-                <CardContent className='space-y-2'>
-                  <div className='flex justify-between'>
-                    <span>Downloads:</span>
-                    <span className='font-semibold'>{downloads || 0}</span>
-                  </div>
-                  {/* <div className='flex justify-between'>
-                    <span>Reviews:</span>
-                    <span className='font-semibold'>4.8 / 5 (156 reviews)</span>
-                  </div> */}
-                </CardContent>
-              </Card>
 
               {/* <Card>
                 <CardHeader>
@@ -90,10 +65,6 @@ export default function ResourcePageView({
                   <Button className='mt-2 w-full'>Submit Review</Button>
                 </CardContent>
               </Card> */}
-
-              <DownloadButton
-                downloadUrl={`/api/download/plugin?rId=${release?.downloadId}`}
-              />
 
               <Separator />
 
@@ -118,6 +89,10 @@ export default function ResourcePageView({
               </div>
             </div>
           </aside>
+          {/* Main content area */}
+          <main className='order-2 flex-1 lg:order-1'>
+            <PlateViewer content={JSON.parse(description)} />
+          </main>
         </div>
       </div>
     </div>

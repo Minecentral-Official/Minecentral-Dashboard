@@ -8,6 +8,7 @@ export default async function ResourceLayout({ children }: PropsWithChildren) {
   return (
     <main>
       <Header service='resources' config={resourcesNavigationConfig} />
+      <div className='pt-20' />
       {children}
       <Footer />
     </main>
