@@ -16,6 +16,7 @@ export default function DTOResourcePluginBasic({
   versionSupport,
   user,
   tags,
+  iconUrl,
 }: PluginDataBase) {
   return {
     id,
@@ -32,6 +33,7 @@ export default function DTOResourcePluginBasic({
     createdAt,
     versionSupport,
     tags,
+    iconUrl,
     author: {
       image: user.image,
       name: user.name,

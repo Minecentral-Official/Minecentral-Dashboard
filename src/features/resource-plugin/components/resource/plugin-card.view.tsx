@@ -10,27 +10,31 @@ import { TResourcePluginBasic } from '@/features/resource-plugin/types/plugin-ba
 
 type props = Pick<
   TResourcePluginBasic,
-  'title' | 'author' | 'subtitle' | 'id' | 'categories'
+  'title' | 'author' | 'subtitle' | 'id' | 'categories' | 'iconUrl'
 >;
 
-export default function ResourceCardView({
+export default function PluginCard({
   title,
   author,
   subtitle,
   id,
   categories,
+  iconUrl,
 }: props) {
+  const url = `/resources/${id}`;
   return (
     <Card className='overflow-hidden'>
-      <Image
-        src={'/placeholder.png'}
-        alt={title}
-        width={300}
-        height={200}
-        className='h-48 w-full object-cover'
-      />
+      <Link href={url}>
+        <Image
+          src={iconUrl || '/placeholder.png'}
+          alt={title}
+          width={300}
+          height={200}
+          className='h-48 w-full object-cover'
+        />
+      </Link>
       <CardContent className='p-4'>
-        <Link href={`/resources/${id}`}>
+        <Link href={url}>
           <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
         </Link>
         <div className='mb-2 flex flex-row gap-2'>

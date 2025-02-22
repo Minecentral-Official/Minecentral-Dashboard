@@ -26,11 +26,9 @@ type props = Pick<
 export default function ResourcePageView({
   title,
   subtitle,
-  downloads,
   linkSource,
   linkSupport,
   description,
-  release,
 }: props) {
   return (
     <div className='min-h-screen bg-background'>

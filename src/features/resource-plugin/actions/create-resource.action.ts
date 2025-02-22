@@ -2,7 +2,6 @@
 
 import { parseWithZod } from '@conform-to/zod';
 import { redirect } from 'next/navigation';
-import { UTApi } from 'uploadthing/server';
 
 import resourceCreate from '@/features/resource-plugin/mutations/create.resource';
 import { pluginCreateZod } from '@/features/resource-plugin/schemas/zod/create-plugin.zod';
@@ -11,8 +10,7 @@ import {
   activityAddAction,
 } from '@/lib/activity/mutations/activity.add';
 import validateSession from '@/lib/auth/helpers/validate-session';
-
-const utapi = new UTApi();
+import { uploadThing_File } from '@/lib/uploadthing/upload-file';
 
 export default async function resourceCreateAction(
   // prevState: unknown
@@ -40,31 +38,37 @@ export default async function resourceCreateAction(
     tags,
     languages,
     discord,
-    releaseFile,
+    resourceType,
+    resourceFile,
+    resourceUrl,
     releaseVersion,
   } = formParsed.value;
 
-  const file = await uploadFile(releaseFile);
-  if (!file) {
-    return;
+  let fileUrl;
+  if (resourceType === 'file') {
+    const fileUpload = await uploadThing_File(resourceFile!);
+    if (!fileUpload) {
+      return;
+    }
+    fileUrl = fileUpload.url;
+  } else {
+    fileUrl = resourceUrl!;
   }
 
   const newPlugin = await resourceCreate({
-    data: {
-      title,
-      subtitle,
-      description,
-      versionSupport,
-      categories,
-      linkSource,
-      linkSupport,
-      tags,
-      languages,
-      discord,
-      releaseFile: file,
-      releaseVersion,
-    },
+    title,
+    subtitle,
+    description,
+    versionSupport,
+    categories,
+    linkSource,
+    linkSupport,
+    tags,
+    languages,
+    discord,
+    releaseVersion,
     userId: user.id,
+    fileUrl,
   });
 
   await activityAddAction(user.id, ACTIVITY.NEW_RESOURCE, `${newPlugin.id}`);
@@ -74,20 +78,4 @@ export default async function resourceCreateAction(
   redirect(
     '/dashboard/resources?toast-success=true&toast-message=Resource%20successfully%20created&toast-id=create-resource',
   );
-}
-
-async function uploadFile(file: File) {
-  try {
-    // Upload file to UploadThing
-    const { data, error } = await utapi.uploadFiles(file);
-
-    if (error) {
-      return null;
-    }
-
-    return data.url;
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return null;
-  }
 }

@@ -10,25 +10,34 @@ import { db } from '@/lib/db';
 import { pluginReleaseTable } from '@/lib/db/schema';
 
 export default async function resourceCreate({
-  data: {
-    title,
-    subtitle,
-    description,
-    tags,
-    linkSource,
-    linkSupport,
-    versionSupport,
-    categories,
-    discord,
-    languages,
-    releaseFile,
-    releaseVersion,
-  },
+  title,
+  subtitle,
+  description,
+  tags,
+  linkSource,
+  linkSupport,
+  versionSupport,
+  categories,
+  discord,
+  languages,
+  releaseVersion,
+  fileUrl,
   userId,
-}: {
-  data: Omit<z.infer<typeof pluginCreateZod>, 'releaseFile'> & {
-    releaseFile: string;
-  };
+}: Pick<
+  z.infer<typeof pluginCreateZod>,
+  | 'title'
+  | 'subtitle'
+  | 'description'
+  | 'categories'
+  | 'discord'
+  | 'languages'
+  | 'linkSource'
+  | 'linkSupport'
+  | 'releaseVersion'
+  | 'tags'
+  | 'versionSupport'
+> & {
+  fileUrl: string;
   userId: string;
 }) {
   const newResource = await db.transaction(async (tx) => {
@@ -55,7 +64,7 @@ export default async function resourceCreate({
       .values({
         title: 'First Release',
         description: '',
-        fileUrl: releaseFile,
+        fileUrl,
         version: releaseVersion,
         pluginId: newPlugin[0].id,
         downloadId: crypto.randomBytes(16).toString('hex'),

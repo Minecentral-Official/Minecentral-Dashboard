@@ -14,4 +14,5 @@ export enum ACTIVITY {
   SUBSCRIPTION_PURCHASED = 'Hosting service purchased - %s Plan',
   NEW_TICKET = 'Created support ticket - #%s',
   NEW_RESOURCE = 'Posted new resource - %s',
+  EDIT_RESOURCE = 'Editted resource %s - %s',
 }

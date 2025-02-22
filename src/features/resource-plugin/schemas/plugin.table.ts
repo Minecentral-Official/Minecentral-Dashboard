@@ -19,7 +19,7 @@ export const pluginTable = pgTable('resourcePlugin', {
     .notNull(),
   categories: text('categories', { enum: TPluginCategories }).array().notNull(),
   //Options
-  // image?: Types.ObjectId,
+  iconUrl: text(),
   // banner?: Types.ObjectId,
   discord: text(),
   languages: text().array(),

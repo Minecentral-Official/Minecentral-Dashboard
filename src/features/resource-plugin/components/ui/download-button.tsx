@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { DownloadIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -30,7 +31,7 @@ export default function DownloadButton({
 
       // You can add additional logic here to track the download attempt
       //   console.log('Download initiated');
-    } catch (error) {
+    } catch {
       //   console.error('Download failed:', error);
     } finally {
       setIsDownloading(false);
@@ -38,8 +39,9 @@ export default function DownloadButton({
   };
 
   return (
-    <Button className='w-full' disabled={isDownloading} asChild>
+    <Button disabled={isDownloading} asChild>
       <Link href={downloadUrl} onClick={handleDownload}>
+        <DownloadIcon className='h-5 w-5' />
         {isDownloading ? 'Downloading...' : 'Download'}
       </Link>
     </Button>

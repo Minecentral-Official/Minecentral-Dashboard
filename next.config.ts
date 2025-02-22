@@ -12,6 +12,20 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     dynamicIO: true,
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+        port: '',
+        pathname: '**',
+        search: '',
+      },
+    ],
   },
 };
 

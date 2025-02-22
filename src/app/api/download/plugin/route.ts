@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import resourceDownloadTick from '@/features/resource-plugin/mutations/download-tick.rosource';
+import resourceDownloadTick from '@/features/resource-plugin/mutations/download-tick.resource';
 import releaseGetByDownloadId from '@/features/resource-plugin/queries/release-by-download-id.get';
 
 import type { NextRequest } from 'next/server';

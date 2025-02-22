@@ -13,6 +13,7 @@ import { Input } from '@/components/plate-ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { TagInput } from '@/components/ui/tag-input';
 import { Toaster } from '@/components/ui/toaster';
@@ -54,22 +55,8 @@ const defaultContent = [
   },
 ];
 
-export default function CreateResourceForm() {
+export default function ResourceCreateForm() {
   const [lastResult, action] = useActionState(resourceCreateAction, undefined);
-
-  // function getLocalStorageEditorContent() {
-  //   try {
-  //     let jsonContent;
-  //     if (typeof window !== 'undefined') {
-  //       jsonContent = window.localStorage.getItem('editorContent');
-  //     }
-  //     return jsonContent && jsonContent.length > 100 ?
-  //         JSON.parse(jsonContent)
-  //       : defaultContent;
-  //   } catch {
-  //     return defaultContent;
-  //   }
-  // }
 
   const [form, fields] = useForm({
     lastResult,
@@ -88,6 +75,7 @@ export default function CreateResourceForm() {
     },
     defaultValue: {
       description: JSON.parse(JSON.stringify(defaultContent)),
+      resourceType: 'file',
     },
   });
   const contentDescriptionHandler = useInputControl(fields.description);
@@ -95,6 +83,7 @@ export default function CreateResourceForm() {
   const relatedCategoriesHandle = useInputControl(fields.categories);
   const tagsHandle = useInputControl(fields.tags);
   const languagesHandle = useInputControl(fields.languages);
+  const resourceTypeHandle = useInputControl(fields.resourceType);
 
   return (
     <div>
@@ -124,11 +113,46 @@ export default function CreateResourceForm() {
         <Separator />
 
         <Field>
-          <Label htmlFor={fields.releaseFile.id}>Your Resource</Label>
-          <Input type='file' name={fields.releaseFile.name} />
-          {fields.releaseFile.errors && (
-            <FieldError>{fields.releaseFile.errors}</FieldError>
-          )}
+          <Label>Resource Type</Label>
+          <RadioGroup
+            defaultValue='file'
+            onValueChange={(value) => resourceTypeHandle.change(value)}
+            className='flex flex-col space-y-1 pt-2'
+          >
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-row gap-2'>
+                <RadioGroupItem value='file' id='resource-file' />
+                <Label htmlFor='resource-file'>File Upload</Label>
+              </div>
+              <Field>
+                <Input
+                  disabled={fields.resourceType.value !== 'file'}
+                  type='file'
+                  name={fields.resourceFile.name}
+                />
+                {fields.resourceFile.errors && (
+                  <FieldError>{fields.resourceFile.errors}</FieldError>
+                )}
+              </Field>
+            </div>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-row gap-2'>
+                <RadioGroupItem value='url' id='resource-url' />
+                <Label htmlFor='resource-url'>Direct URL</Label>
+              </div>
+              <Field>
+                <InputConform
+                  disabled={fields.resourceType.value !== 'url'}
+                  meta={fields.resourceUrl}
+                  type='url'
+                  placeholder='https://example.com/file/1234'
+                />
+                {fields.resourceUrl.errors && (
+                  <FieldError>{fields.resourceUrl.errors}</FieldError>
+                )}
+              </Field>
+            </div>
+          </RadioGroup>
         </Field>
 
         <Field>

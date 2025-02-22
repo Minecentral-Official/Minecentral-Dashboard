@@ -7,10 +7,10 @@ import { FilterIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
 import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
+import PluginCard from '@/features/resource-plugin/components/resource/plugin-card.view';
 import PluginFilterBadges from '@/features/resource-plugin/components/ui/filter-badges';
 import PluginLimitFilter from '@/features/resource-plugin/components/ui/limit-filter';
 import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
-import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
 import {
   PluginFilterProvider,
   usePluginFilterContext,
@@ -21,13 +21,13 @@ export default function ResourceLandingPage() {
 
   return (
     <PluginFilterProvider>
-      <div className='flex min-h-screen flex-col pt-20'>
+      <div className='container mx-auto flex min-h-screen flex-col'>
         <div className='flex flex-1 overflow-hidden'>
           <FilterPluginSidebar
             open={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
-          <main className='flex w-full flex-col gap-2 overflow-y-auto p-4 md:p-6'>
+          <main className='flex w-full flex-col gap-2 overflow-y-auto pl-4 pt-4'>
             <div className='flex w-full flex-row gap-2'>
               <div className='bg-background md:hidden'>
                 <Button
@@ -67,7 +67,7 @@ function ResourceList() {
       {plugins ?
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
           {plugins.map((plugin, index) => (
-            <ResourceCardView key={index} {...plugin} />
+            <PluginCard key={index} {...plugin} />
           ))}
         </div>
       : <p className='mx-auto'>No resources found</p>}

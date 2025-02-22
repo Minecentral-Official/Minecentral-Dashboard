@@ -19,7 +19,7 @@ import { useFilePicker } from 'use-file-picker';
 
 import { PlateElement } from '@/components/plate-ui/plate-element';
 import { Spinner } from '@/components/plate-ui/spinner';
-import { useUploadFile } from '@/lib/uploadthing/uploadthing';
+import { useUploadFile } from '@/lib/uploadthing/uploadthing-hook';
 
 import type { TPlaceholderElement } from '@udecode/plate-media';
 import type { ReactNode } from 'react';

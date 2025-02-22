@@ -8,12 +8,13 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ];
 
-export const pluginCreateZod = z.object({
+export const pluginUploadIconZod = z.object({
   image: z
-    .instanceof(File, { message: 'Resource file is required' })
+    .instanceof(File, { message: 'Choose an image to upload' })
     .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       'Only .jpg, .jpeg, .png and .webp formats are supported.',
     ),
+  resourceId: z.number(),
 });

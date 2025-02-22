@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import ResourceOverview from '@/features/resource-plugin/components/resource-overview';
-import ResourceCardView from '@/features/resource-plugin/components/views/plugin-card.view';
+import PluginCard from '@/features/resource-plugin/components/resource/plugin-card.view';
 import pluginsGetByUserId from '@/features/resource-plugin/queries/plugins-by-user-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
@@ -24,7 +24,7 @@ export default async function Page() {
         <div className='grid gap-4 lg:grid-cols-2'>
           {plugins &&
             plugins.map((plugin, index) => (
-              <ResourceCardView key={index} {...plugin} />
+              <PluginCard key={index} {...plugin} />
             ))}
         </div>
       </div>
