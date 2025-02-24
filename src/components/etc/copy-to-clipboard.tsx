@@ -20,6 +20,7 @@ export default function CopyToClipboard({
 
   return (
     <Comp
+      className='hover:cursor-pointer'
       onClick={() => {
         navigator.clipboard.writeText(clipboardText);
         toast(`Copied ${clipboardText} to clipboard`, {

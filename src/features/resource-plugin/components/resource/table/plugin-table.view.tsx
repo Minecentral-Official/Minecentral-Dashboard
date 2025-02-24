@@ -13,7 +13,7 @@ type props = Pick<
   'title' | 'author' | 'subtitle' | 'id' | 'categories' | 'iconUrl'
 >;
 
-export default function PluginCardView({
+export default function PluginListView({
   title,
   author,
   subtitle,

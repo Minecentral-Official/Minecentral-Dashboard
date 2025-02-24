@@ -6,7 +6,7 @@ export default async function DataAvatar() {
 
   return (
     <WrapperAvatar
-      image={session.user.image ?? undefined}
+      imageUrl={session.user.image ?? undefined}
       name={session.user.name}
     />
   );

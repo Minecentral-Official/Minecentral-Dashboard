@@ -1,11 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type WrapperAvatarProps = {
-  image?: string | null;
+  imageUrl?: string | null;
   name: string;
 };
 
-export default function WrapperAvatar({ image, name }: WrapperAvatarProps) {
+export default function WrapperAvatar({
+  imageUrl: image,
+  name,
+}: WrapperAvatarProps) {
   return (
     <Avatar className='cursor-pointer'>
       <AvatarImage src={image ?? undefined} />

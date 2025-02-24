@@ -21,7 +21,7 @@ export default function TicketMessages() {
               index % 2 ? 'bg-gray-200' : 'bg-secondary'
             }`}
           >
-            <WrapperAvatar name={name} image={image} />
+            <WrapperAvatar name={name} imageUrl={image} />
             <div className='mt-1 flex-1'>
               <div className='flex items-center justify-between'>
                 <h4 className='text-xs font-semibold'>

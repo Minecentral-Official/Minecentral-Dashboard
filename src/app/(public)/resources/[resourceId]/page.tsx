@@ -1,6 +1,7 @@
 import ResourceUploader from '@/features/resource-plugin/components/forms/upload-resource.form';
 import ResourceCompatability from '@/features/resource-plugin/components/resource/resource-compatability';
 import ResourceContent from '@/features/resource-plugin/components/resource/resource-content';
+import ResourceCreators from '@/features/resource-plugin/components/resource/resource-creators';
 import ResourceEditButtons from '@/features/resource-plugin/components/resource/resource-edit-buttons';
 import ResourceHeader from '@/features/resource-plugin/components/resource/resource-header';
 import ResourceHotButtons from '@/features/resource-plugin/components/resource/resource-hot-buttons';
@@ -34,6 +35,7 @@ export default async function Page({ params }: PageProps) {
         <ResourceCompatability {...plugin} />
         <ResourceLinks {...plugin} />
         <ResourceEditButtons {...plugin} />
+        <ResourceCreators {...plugin} />
       </aside>
     </div>
   );

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import PluginLimitFilter from '@/features/resource-plugin/components/filter-with-context/limit-filter';
 import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
 import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
-import PluginCard from '@/features/resource-plugin/components/resource/plugin-card.view';
+import PluginCardView from '@/features/resource-plugin/components/resource/plugin-card.view';
 import PluginFilterBadges from '@/features/resource-plugin/components/ui/filter-badges';
 import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
 import {
@@ -67,7 +67,7 @@ function ResourceList() {
       {plugins ?
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
           {plugins.map((plugin, index) => (
-            <PluginCard key={index} {...plugin} />
+            <PluginCardView key={index} {...plugin} />
           ))}
         </div>
       : <p className='mx-auto'>No resources found</p>}
