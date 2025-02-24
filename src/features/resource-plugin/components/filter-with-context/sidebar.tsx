@@ -1,8 +1,8 @@
 import { XIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import PluginCategoriesFilter from '@/features/resource-plugin/components/ui/categories-filter';
-import PluginVersionsFilter from '@/features/resource-plugin/components/ui/versions-filter';
+import PluginCategoriesFilter from '@/features/resource-plugin/components/filter-with-context/categories-filter';
+import PluginVersionsFilter from '@/features/resource-plugin/components/filter-with-context/versions-filter';
 
 interface FilterSidebarProps {
   open: boolean;

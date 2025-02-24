@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import PluginLimitFilter from '@/features/resource-plugin/components/filter-with-context/limit-filter';
 import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
 import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
 import PluginCard from '@/features/resource-plugin/components/resource/plugin-card.view';
 import PluginFilterBadges from '@/features/resource-plugin/components/ui/filter-badges';
-import PluginLimitFilter from '@/features/resource-plugin/components/ui/limit-filter';
 import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
 import {
   PluginFilterProvider,

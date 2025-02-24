@@ -26,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className={manrope.className}>
+    <html data-color-mode='light' lang='en' className={manrope.className}>
       <body>
         {children}
         <Toaster richColors toastOptions={{}} />

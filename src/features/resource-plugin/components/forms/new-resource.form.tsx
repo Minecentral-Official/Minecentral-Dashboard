@@ -8,7 +8,8 @@ import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
-import { PlateEditor } from '@/components/editor/plate-editor';
+import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
+import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Input } from '@/components/plate-ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -38,22 +39,12 @@ const mcCategories = TPluginCategories.map((type) => ({
     .join(' '),
 }));
 
-const defaultContent = [
-  {
-    children: [{ text: 'New Resource' }],
-    type: 'h1',
-  },
-  {
-    children: [
-      { text: 'Type in your description and ' },
-      { bold: true, text: 'create rich text' },
-      {
-        text: '. \nYou can also use the slash "/" menu to open the in-line editor',
-      },
-    ],
-    type: 'p',
-  },
-];
+const defaultContent = `
+# New Resource
+
+### Use markdown to create your description
+
+Learn some Markdown syntax [here](https://www.markdownguide.org/basic-syntax/)`;
 
 export default function ResourceCreateForm() {
   const [lastResult, action] = useActionState(resourceCreateAction, undefined);
@@ -201,12 +192,12 @@ export default function ResourceCreateForm() {
 
         <Field>
           <Label htmlFor={fields.description.id}>Description</Label>
-          <PlateEditor
-            content={fields.description.value}
-            handleChange={(e) =>
-              contentDescriptionHandler.change(JSON.stringify(e))
-            }
-          />
+          <div className='container w-full px-0 py-4'>
+            <MarkdownProviver initialMarkdown={fields.description.value || ''}>
+              <MarkdownEditor onChange={contentDescriptionHandler.change} />
+            </MarkdownProviver>
+          </div>
+
           {fields.description.errors && (
             <FieldError>{fields.description.errors}</FieldError>
           )}

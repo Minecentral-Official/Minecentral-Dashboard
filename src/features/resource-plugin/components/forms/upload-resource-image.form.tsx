@@ -1,70 +1,39 @@
 'use client';
 
-import { useActionState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
-import { useForm } from '@conform-to/react';
-import { parseWithZod } from '@conform-to/zod';
+import { generateUploadButton } from '@uploadthing/react';
 import { toast } from 'sonner';
 
-import { Field, FieldError } from '@/components/conform/field.conform';
-import { Input } from '@/components/plate-ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Toaster } from '@/components/ui/toaster';
-import resourceUploadIconAction from '@/features/resource-plugin/actions/upload-resource-icon.action';
-import { pluginUploadIconZod } from '@/features/resource-plugin/schemas/zod/upload-icon.zod';
+import { OurFileRouter } from '@/lib/uploadthing/uploadthing-filerouter';
 
 export default function ResourceUploadIconForm({
   resourceId,
+  setOpen,
 }: {
   resourceId: number;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [lastResult, action] = useActionState(
-    resourceUploadIconAction,
-    undefined,
-  );
-
-  const [form, fields] = useForm({
-    lastResult,
-    onValidate({ formData }) {
-      const submission = parseWithZod(formData, {
-        schema: pluginUploadIconZod,
-      });
-      if (submission.status !== 'success') {
-        console.log(submission.error);
-        toast.error('Upload error, please try again', { id: 'icon-upload' });
-      } else {
-        toast.loading('Uploading Icon...', { id: 'icon-upload' });
-      }
-      return submission;
-    },
-    defaultValue: {
-      resourceId,
-    },
-  });
+  const UploadButton = generateUploadButton<OurFileRouter>();
 
   return (
-    <div>
-      <form
-        id={form.id}
-        onSubmit={form.onSubmit}
-        className='flex flex-col gap-6'
-        action={action}
-        noValidate
-      >
-        <input type='hidden' name='resourceId' value={resourceId} />
-
-        <Field>
-          <Label htmlFor={fields.image.id}>Upload a new resource icon</Label>
-          <Input type='file' name={fields.image.name} />
-          {fields.image.errors && (
-            <FieldError>{fields.image.errors}</FieldError>
-          )}
-        </Field>
-
-        <Button>Upload Icon</Button>
-      </form>
-      <Toaster />
+    <div className='flex w-full flex-col justify-between'>
+      <p>Upload a new resource icon, allowed files are</p>
+      <UploadButton
+        endpoint={'iconUploader'}
+        input={{ resourceId }}
+        className='ut-button:w-full ut-button:bg-primary ut-button:text-base'
+        appearance={{ allowedContent: { display: 'none' } }}
+        onClientUploadComplete={() => {
+          setOpen(false);
+          toast.success('Resource Icon Uploaded!', { id: 'resource_icon' });
+        }}
+        onUploadError={(error) => {
+          toast.error(`Upload failed: ${error.message}`, {
+            id: 'resource_icon',
+          });
+        }}
+      />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -35,9 +34,9 @@ export function ResourceUploadImageDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='outline' className='w-full'>
+        <p className='hover:cursor-pointer hover:underline'>
           Edit Resource Icon
-        </Button>
+        </p>
       </DialogTrigger>
       <DialogContent className='max-w-screen-sm md:max-w-screen-md'>
         <DialogHeader>
@@ -51,9 +50,7 @@ export function ResourceUploadImageDialog({
             height={200}
             className='h-32 w-32 object-cover'
           />
-          <div className='flex w-full flex-col gap-4'>
-            <ResourceUploadIconForm resourceId={id} />
-          </div>
+          <ResourceUploadIconForm resourceId={id} setOpen={setOpen} />
         </div>
       </DialogContent>
     </Dialog>

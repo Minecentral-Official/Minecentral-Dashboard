@@ -1,8 +1,23 @@
 import { createUploadthing } from 'uploadthing/next';
+import { UploadThingError } from 'uploadthing/server';
+import { z } from 'zod';
+
+import resourceUploadIconAction from '@/features/resource-plugin/actions/upload-resource-icon.action';
+import pluginGetById from '@/features/resource-plugin/queries/plugin-by-id.get';
+import { pluginUploadToProjectZod } from '@/features/resource-plugin/schemas/zod/upload-icon.zod';
+import validateSession from '@/lib/auth/helpers/validate-session';
+import { detectResourceType } from '@/lib/uploadthing/file-type';
 
 import type { FileRouter } from 'uploadthing/next';
 
-const f = createUploadthing();
+const f = createUploadthing({
+  errorFormatter: (err) => {
+    return {
+      message: err.message,
+      zodError: err.cause instanceof z.ZodError ? err.cause.flatten() : null,
+    };
+  },
+});
 
 export const ourFileRouter = {
   editorUploader: f(['image', 'text', 'blob', 'pdf', 'video', 'audio'])
@@ -12,17 +27,52 @@ export const ourFileRouter = {
     .onUploadComplete(({ file }) => {
       return { file };
     }),
-  jarUploader: f({ blob: { maxFileSize: '32MB' } })
-    // Set permissions and file types for this FileRoute
-    .middleware(async () => {
-      // This code runs on your server before upload
-      return { userId: 'user_id' };
+  iconUploader: f({
+    'image/jpeg': { maxFileSize: '256KB' },
+    'image/png': { maxFileSize: '256KB' },
+    'image/webp': { maxFileSize: '256KB' },
+  })
+    .input(pluginUploadToProjectZod)
+    .middleware(async ({ input }) => {
+      const { user } = await validateSession();
+      if ((await pluginGetById(input.resourceId))?.author.id !== user.id)
+        throw new UploadThingError('You are not the author!');
+      return { userId: user.id, ...input };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log('Upload complete for userId:', metadata.userId);
+    .onUploadComplete(async ({ file, metadata }) => {
+      await resourceUploadIconAction(
+        metadata.userId,
+        metadata.resourceId,
+        file.ufsUrl,
+      );
+      return { file, metadata };
+    }),
 
-      console.log('file url', file.url);
+  resourceUpload: f({
+    'application/java-archive': { maxFileSize: '16MB', maxFileCount: 1 },
+    'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
+  })
+    .input(pluginUploadToProjectZod)
+    .middleware(async ({ input }) => {
+      const { user } = await validateSession();
+      if ((await pluginGetById(input.resourceId))?.author.id !== user.id)
+        throw new UploadThingError('You are not the author!');
+      return { userId: user.id, ...input };
+    })
+    .onUploadComplete(async ({ file }) => {
+      const resourceType = await detectResourceType(file.ufsUrl, file.type);
+
+      if (!resourceType) {
+        throw new Error('Unknown file type');
+      }
+
+      console.log(`Uploaded ${file.name}, detected as ${resourceType}`);
+
+      const obj = {
+        data: { url: file.ufsUrl, type: resourceType, name: file.name },
+      };
+      console.log('Sent to client:', obj);
+      return obj;
     }),
 } satisfies FileRouter;
 

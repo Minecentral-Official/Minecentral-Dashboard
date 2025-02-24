@@ -50,7 +50,7 @@ export default async function resourceCreateAction(
     if (!fileUpload) {
       return;
     }
-    fileUrl = fileUpload.url;
+    fileUrl = fileUpload.ufsUrl;
   } else {
     fileUrl = resourceUrl!;
   }

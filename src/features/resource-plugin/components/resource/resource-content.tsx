@@ -1,4 +1,4 @@
-import { PlateViewer } from '@/components/editor/plate-view';
+import MarkdownViewer from '@/components/markdown-editor/markdown-viewer';
 import { TResourcePlugin } from '@/features/resource-plugin/types/plugin-all-data.type';
 
 export default function ResourceContent({
@@ -6,7 +6,7 @@ export default function ResourceContent({
 }: Pick<TResourcePlugin, 'description'>) {
   return (
     <main className='order-2 flex-1 lg:order-1'>
-      <PlateViewer content={JSON.parse(description)} />
+      <MarkdownViewer markdown={description} />
     </main>
   );
 }

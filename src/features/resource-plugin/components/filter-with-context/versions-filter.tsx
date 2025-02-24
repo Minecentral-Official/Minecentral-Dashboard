@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CustomCheckbox } from '@/features/resource-plugin/components/ui/custom-checkbox';
+import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
 import { TPluginVersions } from '@/features/resource-plugin/config/versions.plugin';
 import { usePluginFilterContext } from '@/features/resource-plugin/context/plugin-filter.context';
 

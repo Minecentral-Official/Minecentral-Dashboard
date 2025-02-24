@@ -1,8 +1,10 @@
+import ResourceUploader from '@/features/resource-plugin/components/forms/upload-resource.form';
+import ResourceCompatability from '@/features/resource-plugin/components/resource/resource-compatability';
 import ResourceContent from '@/features/resource-plugin/components/resource/resource-content';
+import ResourceEditButtons from '@/features/resource-plugin/components/resource/resource-edit-buttons';
 import ResourceHeader from '@/features/resource-plugin/components/resource/resource-header';
 import ResourceHotButtons from '@/features/resource-plugin/components/resource/resource-hot-buttons';
 import ResourceLinks from '@/features/resource-plugin/components/resource/resource-links';
-import { ResourceUploadImageDialog } from '@/features/resource-plugin/components/ui/upload-image-dialog';
 import pluginGetById from '@/features/resource-plugin/queries/plugin-by-id.get';
 
 type PageProps = {
@@ -26,11 +28,12 @@ export default async function Page({ params }: PageProps) {
         <ResourceHeader {...plugin} />
         <ResourceHotButtons {...plugin} />
         <ResourceContent {...plugin} />
+        <ResourceUploader resourceId={plugin.id} />
       </div>
       <aside className='w-full max-w-60 space-y-2'>
+        <ResourceCompatability {...plugin} />
         <ResourceLinks {...plugin} />
-
-        <ResourceUploadImageDialog {...plugin} />
+        <ResourceEditButtons {...plugin} />
       </aside>
     </div>
   );

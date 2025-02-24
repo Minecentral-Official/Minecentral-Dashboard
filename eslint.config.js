@@ -40,6 +40,7 @@ const config = [
             'src/hooks/**/*',
             'src/lib/**/*',
             'src/auth/**/*',
+            'src/context/**/*',
           ],
         },
         {
