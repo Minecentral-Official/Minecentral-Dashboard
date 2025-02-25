@@ -2,19 +2,23 @@
 
 import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
 
-import { TPluginCategory } from '@/features/resources/config/categories.plugin';
+import { T_PluginCategory } from '@/features/resources/config/categories.plugin';
 import { TPluginVersion } from '@/features/resources/config/versions.plugin';
-import DTOResourcePluginBasic from '@/features/resources/dto/plugin-basic.dto';
-import { TResourcePluginBasic } from '@/features/resources/types/plugin-basic.type';
+import DTOResource from '@/features/resources/dto/plugin-basic.dto';
+import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
-import { resourceReleaseTable, resourceTable, user } from '@/lib/db/schema';
+import {
+  resourceReleaseTable,
+  resourceTable,
+  userTable,
+} from '@/lib/db/schema';
 
 export type TGetPluginsRequest = {
   query?: string;
   page: number;
   limit: number;
-  categories?: TPluginCategory[];
+  categories?: T_PluginCategory[];
   versions?: TPluginVersion[];
 };
 
@@ -55,9 +59,9 @@ export default async function resourcesGetFiltered({
     let authorIds: string[] = [];
     // Find user ID(s) that match the given name
     const matchedUsers = await db
-      .select({ id: user.id })
-      .from(user)
-      .where(ilike(user.name, `%${query}%`));
+      .select({ id: userTable.id })
+      .from(userTable)
+      .where(ilike(userTable.name, `%${query}%`));
     authorIds = matchedUsers.map((user) => user.id.toString());
     // Add condition to check if author matches either a name or an ID
     textConditions.push(inArray(resourceTable.userId, [...authorIds]));
@@ -97,7 +101,7 @@ export default async function resourcesGetFiltered({
   const totalPages = Math.ceil(totalCount / limit);
 
   const result = {
-    resources: resources.map((resource) => DTOResourcePluginBasic(resource)),
+    resources: resources.map((resource) => DTOResource(resource)),
     totalCount,
     currentPage: page,
     totalPages,

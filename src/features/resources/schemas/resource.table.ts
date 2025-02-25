@@ -1,28 +1,34 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { TPluginCategories } from '@/features/resources/config/categories.plugin';
+import { CategoriesPlugin } from '@/features/resources/config/categories.plugin';
 import { resourceReleaseTable } from '@/features/resources/schemas/resource-release.table';
-import { likedResourceTable, user } from '@/lib/db/schema';
+import { likedResourceTable, userTable } from '@/lib/db/schema';
+import { CategoriesProjects } from '@/lib/types/project.type';
 
 export const resourceTable = pgTable('resourceTable', {
   id: text().primaryKey(),
   userId: text()
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   //Required to start Project
   title: text().notNull(),
   subtitle: text().notNull(),
   slug: text().notNull(),
   //Required to publish
   description: text(),
-  categories: text('categories', { enum: TPluginCategories }).array(),
+  categories: text('categories', { enum: CategoriesPlugin }).array(),
   iconUrl: text(),
   languages: text().array(),
   status: text('status', {
     enum: ['draft', 'pending', 'rejected', 'accepted'],
   })
     .default('draft')
+    .notNull(),
+  type: text('type', {
+    enum: CategoriesProjects,
+  })
+    .default('project')
     .notNull(),
   //Optional
   linkIssues: text(),
@@ -36,9 +42,9 @@ export const resourceTable = pgTable('resourceTable', {
 });
 
 export const resourceRelations = relations(resourceTable, ({ one, many }) => ({
-  user: one(user, {
+  user: one(userTable, {
     fields: [resourceTable.userId],
-    references: [user.id],
+    references: [userTable.id],
   }),
   releases: many(resourceReleaseTable),
   likes: many(likedResourceTable),

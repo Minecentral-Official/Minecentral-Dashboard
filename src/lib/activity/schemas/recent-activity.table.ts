@@ -1,13 +1,13 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { user } from '@/lib/db/schema';
+import { userTable } from '@/lib/db/schema';
 
 export const recentActivityTable = pgTable('recentActivity', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),
   userId: text()
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   action: text().notNull(),
   timestamp: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
@@ -15,9 +15,9 @@ export const recentActivityTable = pgTable('recentActivity', {
 export const recentActivityRelations = relations(
   recentActivityTable,
   ({ one }) => ({
-    user: one(user, {
+    user: one(userTable, {
       fields: [recentActivityTable.userId],
-      references: [user.id],
+      references: [userTable.id],
     }),
   }),
 );
@@ -25,5 +25,5 @@ export const recentActivityRelations = relations(
 type RecentActivityBase = typeof recentActivityTable.$inferSelect;
 
 export type RecentActivity = RecentActivityBase & {
-  user: typeof user.$inferSelect;
+  user: typeof userTable.$inferSelect;
 };

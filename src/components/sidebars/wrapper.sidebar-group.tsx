@@ -15,7 +15,7 @@ export default function SidebarGroupWrapper({
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
-      <SidebarMenu>{children}</SidebarMenu>
+      <SidebarMenu className='ml-2'>{children}</SidebarMenu>
     </SidebarGroup>
   );
 }

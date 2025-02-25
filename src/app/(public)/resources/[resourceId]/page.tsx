@@ -9,36 +9,36 @@ import resourceGetById from '@/features/resources/queries/resource-by-id.get';
 import getSession from '@/lib/auth/helpers/get-session';
 
 type PageProps = {
-  params: Promise<{ resourceId: number }>;
+  params: Promise<{ resourceId: string }>;
 };
 
 export default async function Page({ params }: PageProps) {
   const { resourceId } = await params;
-  const resourceData = await resourceGetById(
+  const userResourceData = await resourceGetById(
     resourceId,
     (await getSession())?.user.id,
   );
 
-  if (!resourceData) return <>Unable to find resource</>;
+  if (!userResourceData) return <>Unable to find resource</>;
 
   return (
     <div className='mx-auto flex w-full flex-col gap-4 p-4'>
       <div className='flex w-full flex-col gap-4'>
         <div className='flex w-full flex-col items-start justify-between gap-4 lg:flex-row lg:items-center'>
-          <ResourceHeader {...resourceData} />
+          <ResourceHeader {...userResourceData} />
           <div className='flex flex-row gap-2'>
-            <ResourceButtonHot {...resourceData} />
-            <ResourceButtonSettings {...resourceData} />
+            <ResourceButtonHot {...userResourceData} />
+            <ResourceButtonSettings {...userResourceData} />
           </div>
         </div>
         {/* <ResourceUploader resourceId={plugin.id} /> */}
       </div>
       <div className='flex flex-col gap-4 lg:flex-row'>
-        <ResourceCardContent {...resourceData} />
+        <ResourceCardContent {...userResourceData} />
         <aside className='flex w-full flex-col gap-4 lg:max-w-60'>
-          <ResourceCardCompatability {...resourceData} />
-          <ResourceCardLinks {...resourceData} />
-          <ResourceCardCreators {...resourceData} />
+          <ResourceCardCompatability {...userResourceData} />
+          <ResourceCardLinks {...userResourceData} />
+          <ResourceCardCreators {...userResourceData} />
         </aside>
       </div>
     </div>

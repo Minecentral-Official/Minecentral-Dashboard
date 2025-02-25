@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { PlateViewer } from '@/components/editor/plate-view';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 type props = Pick<
   TResourcePlugin,

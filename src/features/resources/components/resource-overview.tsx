@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePluginBasic } from '@/features/resources/types/plugin-basic.type';
+import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceOverview({
   plugins,

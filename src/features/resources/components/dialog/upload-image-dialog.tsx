@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import ResourceUploadIconForm from '@/features/resources/components/forms/upload-resource-image.form';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 // const formSchema = z.object({
 //   image: z

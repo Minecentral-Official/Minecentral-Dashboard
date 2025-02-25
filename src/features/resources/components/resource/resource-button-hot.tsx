@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/tooltip';
 import resourceToggleLikeAction from '@/features/resources/actions/toggle-like-resource.action';
 import DownloadButton from '@/features/resources/components/ui/download-button';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 export default function ResourceButtonHot({
   release,
   liked,
   id,
-}: Pick<TResourcePlugin, 'title' | 'downloads' | 'release' | 'id'> & {
+}: Pick<TResourcePlugin, 'title' | 'release' | 'id'> & {
   liked: boolean;
 }) {
   const handleClick = async () => {

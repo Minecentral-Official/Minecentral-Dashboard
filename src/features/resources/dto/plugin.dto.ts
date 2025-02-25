@@ -1,12 +1,12 @@
-import DTOResourcePluginBasic from '@/features/resources/dto/plugin-basic.dto';
-import { PluginData_All } from '@/features/resources/types/resource.type';
+import DTOResource from '@/features/resources/dto/plugin-basic.dto';
+import { T_ResourceDBData_WithReleases } from '@/features/resources/types/t-resource-db-data-with-reeases.type';
 
-export default function DTOResourcePlugin({
+export default function DTOResource_WithReleases({
   releases,
   ...rest
-}: PluginData_All) {
+}: T_ResourceDBData_WithReleases) {
   return {
-    ...DTOResourcePluginBasic(rest),
+    ...DTOResource(rest),
     releases,
     release: {
       ...releases[0],

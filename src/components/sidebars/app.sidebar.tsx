@@ -3,7 +3,7 @@ import * as React from 'react';
 import Link from 'next/link';
 
 import LogoMark from '@/components/logos/logo-mark';
-import { SidebarUser } from '@/components/sidebars/user.sidebar-menu';
+import { SidebarUser } from '@/components/sidebars/menus/user.sidebar-menu';
 import {
   Sidebar,
   SidebarContent,

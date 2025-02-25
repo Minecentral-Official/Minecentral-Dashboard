@@ -3,10 +3,10 @@ import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 type SidebarGroupWrapperProps = {
   name: string;
   url: string;
-  Icon: React.ElementType;
+  Icon?: React.ElementType;
 };
 
-export default function SidebarLinkWrapper({
+export default function SidebarLink({
   name,
   Icon,
   url,
@@ -15,7 +15,9 @@ export default function SidebarLinkWrapper({
     <SidebarMenuItem>
       <SidebarMenuButton asChild>
         <a href={url}>
-          <Icon />
+          {Icon ?
+            <Icon />
+          : <></>}
           <span>{name}</span>
         </a>
       </SidebarMenuButton>

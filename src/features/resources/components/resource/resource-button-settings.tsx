@@ -2,7 +2,7 @@ import { SettingsIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 export default function ResourceButtonSettings({
   id,

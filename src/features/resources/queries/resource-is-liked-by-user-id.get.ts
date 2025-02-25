@@ -6,7 +6,7 @@ import { likedResourceTable } from '@/lib/db/schema';
 
 // Check if the resource is liked by the user
 export default async function resourceIsLikedByUserId(
-  resourceId: number,
+  resourceId: string,
   userId: string,
 ): Promise<boolean> {
   'use cache';

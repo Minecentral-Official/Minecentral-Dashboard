@@ -1,6 +1,6 @@
 import { desc, eq, sql } from 'drizzle-orm';
 
-import DTOResourcePlugin from '@/features/resources/dto/plugin.dto';
+import DTOResource_WithReleases from '@/features/resources/dto/plugin.dto';
 import resourceIsLikedByUserId from '@/features/resources/queries/resource-is-liked-by-user-id.get';
 import { resourceTable } from '@/features/resources/schemas/resource.table';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
@@ -8,7 +8,7 @@ import { db } from '@/lib/db';
 import { likedResourceTable, resourceReleaseTable } from '@/lib/db/schema';
 
 export default async function resourceGetById(
-  resourceId: number,
+  resourceId: string,
   userId?: string,
 ) {
   const resource = await getResource(resourceId);
@@ -27,7 +27,7 @@ export default async function resourceGetById(
 }
 
 // Caching for the resource details
-async function getResource(resourceId: number) {
+async function getResource(resourceId: string) {
   'use cache';
   cacheLife('hours');
   cacheTag(`resource-id-${resourceId}`);
@@ -43,11 +43,11 @@ async function getResource(resourceId: number) {
   });
 
   if (!resource) return undefined;
-  return DTOResourcePlugin(resource);
+  return DTOResource_WithReleases(resource);
 }
 
 // Get the number of likes (no cache)
-async function getLikeCount(resourceId: number) {
+async function getLikeCount(resourceId: string) {
   const count = await db
     .select({ count: sql<number>`count(*)` })
     .from(likedResourceTable)

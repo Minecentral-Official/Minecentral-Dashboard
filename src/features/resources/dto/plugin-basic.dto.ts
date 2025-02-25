@@ -1,6 +1,6 @@
-import { PluginDataBasic } from '@/features/resources/types/resource.type';
+import { T_ResourceDBData } from '@/features/resources/types/t-resource-db-data.type';
 
-export default function DTOResourcePluginBasic({
+export default function DTOResource({
   id,
   title,
   subtitle,
@@ -18,7 +18,7 @@ export default function DTOResourcePluginBasic({
   createdAt,
   user,
   iconUrl,
-}: PluginDataBasic) {
+}: T_ResourceDBData) {
   return {
     id,
     title,

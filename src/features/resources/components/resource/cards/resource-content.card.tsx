@@ -1,6 +1,6 @@
 import MarkdownViewer from '@/components/markdown-editor/markdown-viewer';
 import { Card, CardContent } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 export default function ResourceCardContent({
   description,

@@ -1,40 +1,19 @@
 import { PropsWithChildren } from 'react';
 
-import { ZapIcon } from 'lucide-react';
-
 import SidebarDashboardWrapper from '@/components/sidebars/dashboard.wrapper';
-import SidebarGeneral from '@/components/sidebars/general.sidebar-menu';
-import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
-import SidebarLinkWrapper from '@/components/sidebars/wrapper.sidebar-link';
-import SidebarHostAdmin from '@/features/host/components/sidebar/host-admin.sidebar-menu';
-import HostSidebar from '@/features/host/components/sidebar/host.sidebar-group';
-import SidebarResourceAdmin from '@/features/resources/components/sidebar/resource-admin.sidebar-menu';
-import ResourceSidebar from '@/features/resources/components/sidebar/resource.sidebar-menu';
-import validateRole from '@/lib/auth/helpers/validate-role';
+import { SidebarAdmin } from '@/components/sidebars/menus/admin.sidebar-menu';
+import SidebarGeneral from '@/components/sidebars/menus/general.sidebar-menu';
+import SidebarManage from '@/components/sidebars/menus/manage.sidebar-menu';
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
-  const isAdmin = await validateRole('admin');
   return (
     <SidebarDashboardWrapper
       sidebarChildren={
         <>
-          <SidebarGroupWrapper title='Products'>
-            <HostSidebar />
-            <ResourceSidebar />
-          </SidebarGroupWrapper>
           <SidebarGeneral />
-          {isAdmin && (
-            <SidebarGroupWrapper title='Admin'>
-              <SidebarLinkWrapper
-                Icon={ZapIcon}
-                name='Dashboard'
-                url='/dashboard/admin'
-              />
-              <SidebarHostAdmin />
-              <SidebarResourceAdmin />
-            </SidebarGroupWrapper>
-          )}
-          {/* Add Additional sidebar menus here */}
+          <SidebarManage />
+          {/* Will check if user is admin before displaying */}
+          <SidebarAdmin />
         </>
       }
     >

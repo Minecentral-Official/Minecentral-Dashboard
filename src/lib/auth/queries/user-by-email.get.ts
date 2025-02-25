@@ -1,13 +1,13 @@
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { user } from '@/lib/db/schema';
+import { userTable } from '@/lib/db/schema';
 
 import 'server-only';
 
 export default async function getUserByEmail(email: string) {
   const _user = await db.query.user.findFirst({
-    where: eq(user.email, email),
+    where: eq(userTable.email, email),
   });
   return _user;
 }

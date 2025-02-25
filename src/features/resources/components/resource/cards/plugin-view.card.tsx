@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ResourceCategoryBadges from '@/features/resources/components/resource/resource-category-badges';
-import { TResourcePluginBasic } from '@/features/resources/types/plugin-basic.type';
+import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
 
 type props = Pick<
   TResourcePluginBasic,

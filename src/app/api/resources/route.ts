@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { TPluginCategories } from '@/features/resources/config/categories.plugin';
+import { CategoriesPlugin } from '@/features/resources/config/categories.plugin';
 import resourcesGetFiltered from '@/features/resources/queries/resources-filter.get';
 import { pluginsGetRequestZod } from '@/features/resources/schemas/zod/plugins-get-request.zod';
 
-import type { TPluginCategory } from '@/features/resources/config/categories.plugin';
+import type { T_PluginCategory } from '@/features/resources/config/categories.plugin';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
     query: searchParams.get('q') || undefined,
     categories: searchParams
       .getAll('category')
-      .filter((category): category is TPluginCategory =>
-        TPluginCategories.includes(category as TPluginCategory),
+      .filter((category): category is T_PluginCategory =>
+        CategoriesPlugin.includes(category as T_PluginCategory),
       ),
     page: Number.parseInt(searchParams.get('p') || '0', 10),
     limit: Number.parseInt(searchParams.get('limit') || '10', 10),

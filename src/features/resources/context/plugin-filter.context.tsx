@@ -6,8 +6,8 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import {
-  TPluginCategories,
-  TPluginCategory,
+  CategoriesPlugin,
+  T_PluginCategory,
 } from '@/features/resources/config/categories.plugin';
 import {
   TPluginVersion,
@@ -18,7 +18,7 @@ import {
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
 import { pluginsGetResponseZod } from '@/features/resources/schemas/zod/plugins-get-response.zod';
-import { TResourcePluginBasic } from '@/features/resources/types/plugin-basic.type';
+import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
@@ -29,8 +29,8 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react';
 interface PluginFilterContextType {
   plugins: TResourcePluginBasic[];
   setPlugins: Dispatch<SetStateAction<TResourcePluginBasic[]>>;
-  categories: TPluginCategory[];
-  toggleCategory: (category: TPluginCategory) => void;
+  categories: T_PluginCategory[];
+  toggleCategory: (category: T_PluginCategory) => void;
   versions: TPluginVersion[];
   toggleVersions: (version: TPluginVersion) => void;
   performSearch: () => void;
@@ -70,8 +70,8 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const updateSearchParams = useUpdateSearchParams();
   const categories = searchParams
     .getAll('category')
-    .filter((category): category is TPluginCategory =>
-      TPluginCategories.includes(category as TPluginCategory),
+    .filter((category): category is T_PluginCategory =>
+      CategoriesPlugin.includes(category as T_PluginCategory),
     );
   const versions = searchParams
     .getAll('v')
@@ -106,11 +106,11 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   };
 
   //#region Togglers
-  function toggleCategory(category: TPluginCategory) {
+  function toggleCategory(category: T_PluginCategory) {
     const currentCategories = searchParams
       .getAll('category')
-      .filter((category): category is TPluginCategory =>
-        TPluginCategories.includes(category as TPluginCategory),
+      .filter((category): category is T_PluginCategory =>
+        CategoriesPlugin.includes(category as T_PluginCategory),
       );
 
     const newCategories =

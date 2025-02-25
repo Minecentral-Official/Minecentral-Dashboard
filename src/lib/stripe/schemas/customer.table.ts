@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm';
 import { pgTable, text } from 'drizzle-orm/pg-core';
 
 import { minecentralServicesConfig } from '@/lib/configs/minecentral-services.config';
-import { user } from '@/lib/db/schema';
+import { userTable } from '@/lib/db/schema';
 
 import type { MinecentralServices } from '@/lib/types/minecentral-services.type';
 
@@ -21,13 +21,13 @@ const asdf = minecentralServicesConfig.reduce(
 export const customer = pgTable('customer', {
   userId: text()
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   ...asdf,
 });
 
 export const customerRelations = relations(customer, ({ one }) => ({
-  user: one(user, {
+  user: one(userTable, {
     fields: [customer.userId],
-    references: [user.id],
+    references: [userTable.id],
   }),
 }));

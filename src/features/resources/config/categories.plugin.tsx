@@ -1,4 +1,4 @@
-export const TPluginCategories = [
+export const CategoriesPlugin = [
   'chat',
   'economy',
   'cosmetic',
@@ -10,5 +10,5 @@ export const TPluginCategories = [
   'misc',
 ] as const;
 
-export type TPluginCategories = typeof TPluginCategories;
-export type TPluginCategory = TPluginCategories[number];
+export type T_PluginCategories = typeof CategoriesPlugin;
+export type T_PluginCategory = T_PluginCategories[number];

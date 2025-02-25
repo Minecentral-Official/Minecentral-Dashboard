@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 import { likedResourceTable } from '@/lib/db/schema';
 
 export default async function resourceToggleLike(
-  resourceId: number,
+  resourceId: string,
   userId: string,
 ) {
   revalidateTag(`resource-like-${resourceId}-${userId}`);

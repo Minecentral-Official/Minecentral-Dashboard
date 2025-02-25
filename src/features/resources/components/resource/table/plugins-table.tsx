@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
 type PluginsTableResource = Pick<
   TResourcePlugin,
@@ -33,6 +33,7 @@ export function ProjectsUserTable({
           <TableHead className='w-[100px]'>Icon</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Id</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
@@ -59,6 +60,12 @@ export function ProjectsUserTable({
                   {project.id} <ClipboardCopyIcon className='ml-2 h-3 w-3' />
                 </Badge>
               </CopyToClipboard>
+            </TableCell>
+            <TableCell>
+              {project. ?
+                project.status.slice(0, 1).toUpperCase() +
+                project.status.slice(1)
+              : 'Draft'}
             </TableCell>
             <TableCell>
               {project.status ?

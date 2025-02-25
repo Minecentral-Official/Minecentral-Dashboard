@@ -2,14 +2,14 @@ import { relations } from 'drizzle-orm';
 import { date, integer, pgTable, text } from 'drizzle-orm/pg-core';
 
 import { ticketStatusConfig } from '@/features/tickets/config/ticket-status.config';
-import { user } from '@/lib/auth/schema/auth.table';
+import { userTable } from '@/lib/auth/schema/auth.table';
 import { ticketMessage } from '@/lib/db/schema';
 
 export const ticket = pgTable('ticket', {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
   userId: text()
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   title: text().notNull(),
   category: text().notNull(),
   // description: text().notNull(),
@@ -20,9 +20,9 @@ export const ticket = pgTable('ticket', {
 });
 
 export const ticketRelations = relations(ticket, ({ one, many }) => ({
-  user: one(user, {
+  user: one(userTable, {
     fields: [ticket.userId],
-    references: [user.id],
+    references: [userTable.id],
   }),
   messages: many(ticketMessage),
 }));

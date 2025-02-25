@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResourceUploadImageDialog } from '@/features/resources/components/dialog/upload-image-dialog';
-import { TResourcePlugin } from '@/features/resources/types/plugin-all-data.type';
+import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
 import getSession from '@/lib/auth/helpers/get-session';
 
 export default async function ResourceCardEdit({

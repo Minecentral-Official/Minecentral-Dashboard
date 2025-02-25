@@ -1,14 +1,14 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { resourceTable, user } from '@/lib/db/schema';
+import { resourceTable, userTable } from '@/lib/db/schema';
 
 export const likedResourceTable = pgTable(
   'liked_resources',
   {
     userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: 'cascade' }),
+      .references(() => userTable.id, { onDelete: 'cascade' }),
     resourceId: text('resource_id')
       .notNull()
       .references(() => resourceTable.id, { onDelete: 'cascade' }),
@@ -26,9 +26,9 @@ export const likedResourcesRelations = relations(
       fields: [likedResourceTable.resourceId],
       references: [resourceTable.id],
     }),
-    user: one(user, {
+    user: one(userTable, {
       fields: [likedResourceTable.userId],
-      references: [user.id],
+      references: [userTable.id],
     }),
   }),
 );

@@ -2,7 +2,7 @@ import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { roleConfig } from '@/lib/auth/configs/roles.config';
 
-export const user = pgTable('user', {
+export const userTable = pgTable('user', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
@@ -16,9 +16,9 @@ export const user = pgTable('user', {
   banExpires: timestamp('banExpires'),
 });
 
-export type TUserSelect = typeof user.$inferSelect;
+export type TUserSelect = typeof userTable.$inferSelect;
 
-export const session = pgTable('session', {
+export const sessionTable = pgTable('session', {
   id: text('id').primaryKey(),
   expiresAt: timestamp('expiresAt').notNull(),
   token: text('token').notNull().unique(),
@@ -28,17 +28,17 @@ export const session = pgTable('session', {
   userAgent: text('userAgent'),
   userId: text('userId')
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   impersonatedBy: text('impersonatedBy'),
 });
 
-export const account = pgTable('account', {
+export const accountTable = pgTable('account', {
   id: text('id').primaryKey(),
   accountId: text('accountId').notNull(),
   providerId: text('providerId').notNull(),
   userId: text('userId')
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   accessToken: text('accessToken'),
   refreshToken: text('refreshToken'),
   idToken: text('idToken'),
@@ -50,7 +50,7 @@ export const account = pgTable('account', {
   updatedAt: timestamp('updatedAt').notNull(),
 });
 
-export const verification = pgTable('verification', {
+export const verificationTable = pgTable('verification', {
   id: text('id').primaryKey(),
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
