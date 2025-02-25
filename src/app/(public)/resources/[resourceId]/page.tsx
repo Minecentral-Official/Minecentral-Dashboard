@@ -1,12 +1,12 @@
-import ResourceUploader from '@/features/resource-plugin/components/forms/upload-resource.form';
-import ResourceCompatability from '@/features/resource-plugin/components/resource/resource-compatability';
-import ResourceContent from '@/features/resource-plugin/components/resource/resource-content';
-import ResourceCreators from '@/features/resource-plugin/components/resource/resource-creators';
-import ResourceEditButtons from '@/features/resource-plugin/components/resource/resource-edit-buttons';
-import ResourceHeader from '@/features/resource-plugin/components/resource/resource-header';
-import ResourceHotButtons from '@/features/resource-plugin/components/resource/resource-hot-buttons';
-import ResourceLinks from '@/features/resource-plugin/components/resource/resource-links';
-import pluginGetById from '@/features/resource-plugin/queries/plugin-by-id.get';
+import ResourceCardCompatability from '@/features/resources/components/resource/cards/resource-compatability.card';
+import ResourceCardContent from '@/features/resources/components/resource/cards/resource-content.card';
+import ResourceCardCreators from '@/features/resources/components/resource/cards/resource-creators.card';
+import ResourceCardLinks from '@/features/resources/components/resource/cards/resource-links.card';
+import ResourceButtonHot from '@/features/resources/components/resource/resource-button-hot';
+import ResourceButtonSettings from '@/features/resources/components/resource/resource-button-settings';
+import ResourceHeader from '@/features/resources/components/resource/resource-header';
+import resourceGetById from '@/features/resources/queries/resource-by-id.get';
+import getSession from '@/lib/auth/helpers/get-session';
 
 type PageProps = {
   params: Promise<{ resourceId: number }>;
@@ -14,29 +14,33 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { resourceId } = await params;
-  const plugin = await pluginGetById(resourceId);
+  const resourceData = await resourceGetById(
+    resourceId,
+    (await getSession())?.user.id,
+  );
 
-  if (!plugin)
-    return (
-      <div className='w-full p-6 text-center text-lg'>
-        Requested Resource not found
-      </div>
-    );
+  if (!resourceData) return <>Unable to find resource</>;
 
   return (
-    <div className='mx-auto flex w-full flex-row gap-4 p-4'>
+    <div className='mx-auto flex w-full flex-col gap-4 p-4'>
       <div className='flex w-full flex-col gap-4'>
-        <ResourceHeader {...plugin} />
-        <ResourceHotButtons {...plugin} />
-        <ResourceContent {...plugin} />
-        <ResourceUploader resourceId={plugin.id} />
+        <div className='flex w-full flex-col items-start justify-between gap-4 lg:flex-row lg:items-center'>
+          <ResourceHeader {...resourceData} />
+          <div className='flex flex-row gap-2'>
+            <ResourceButtonHot {...resourceData} />
+            <ResourceButtonSettings {...resourceData} />
+          </div>
+        </div>
+        {/* <ResourceUploader resourceId={plugin.id} /> */}
       </div>
-      <aside className='w-full max-w-60 space-y-2'>
-        <ResourceCompatability {...plugin} />
-        <ResourceLinks {...plugin} />
-        <ResourceEditButtons {...plugin} />
-        <ResourceCreators {...plugin} />
-      </aside>
+      <div className='flex flex-col gap-4 lg:flex-row'>
+        <ResourceCardContent {...resourceData} />
+        <aside className='flex w-full flex-col gap-4 lg:max-w-60'>
+          <ResourceCardCompatability {...resourceData} />
+          <ResourceCardLinks {...resourceData} />
+          <ResourceCardCreators {...resourceData} />
+        </aside>
+      </div>
     </div>
   );
 }

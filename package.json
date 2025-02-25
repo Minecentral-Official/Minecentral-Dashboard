@@ -116,6 +116,7 @@
     "input-otp": "^1.4.2",
     "jiti": "^2.4.2",
     "lucide-react": "^0.471.2",
+    "nanoid": "^5.1.2",
     "next": "15.2.0-canary.8",
     "next-remove-imports": "^1.0.12",
     "next-safe-action": "^7.10.4",

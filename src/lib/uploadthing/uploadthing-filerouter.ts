@@ -2,9 +2,9 @@ import { createUploadthing } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 import { z } from 'zod';
 
-import resourceUploadIconAction from '@/features/resource-plugin/actions/upload-resource-icon.action';
-import pluginGetById from '@/features/resource-plugin/queries/plugin-by-id.get';
-import { pluginUploadToProjectZod } from '@/features/resource-plugin/schemas/zod/upload-icon.zod';
+import resourceUploadIconAction from '@/features/resources/actions/upload-resource-icon.action';
+import resourceGetById from '@/features/resources/queries/resource-by-id.get';
+import { pluginUploadToProjectZod } from '@/features/resources/schemas/zod/upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';
 
@@ -35,7 +35,7 @@ export const ourFileRouter = {
     .input(pluginUploadToProjectZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await pluginGetById(input.resourceId))?.author.id !== user.id)
+      if ((await resourceGetById(input.resourceId))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })
@@ -55,7 +55,7 @@ export const ourFileRouter = {
     .input(pluginUploadToProjectZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await pluginGetById(input.resourceId))?.author.id !== user.id)
+      if ((await resourceGetById(input.resourceId))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })

@@ -5,16 +5,16 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import PluginLimitFilter from '@/features/resource-plugin/components/filter-with-context/limit-filter';
-import PluginFilterSearchBar from '@/features/resource-plugin/components/filter-with-context/searchbar';
-import FilterPluginSidebar from '@/features/resource-plugin/components/filter-with-context/sidebar';
-import PluginCardView from '@/features/resource-plugin/components/resource/plugin-card.view';
-import PluginFilterBadges from '@/features/resource-plugin/components/ui/filter-badges';
-import PluginSortFilter from '@/features/resource-plugin/components/ui/sort-by-filter';
+import PluginLimitFilter from '@/features/resources/components/filter-with-context/limit-filter';
+import PluginFilterSearchBar from '@/features/resources/components/filter-with-context/searchbar';
+import FilterPluginSidebar from '@/features/resources/components/filter-with-context/sidebar';
+import PluginCardView from '@/features/resources/components/resource/cards/plugin-view.card';
+import PluginFilterBadges from '@/features/resources/components/ui/filter-badges';
+import PluginSortFilter from '@/features/resources/components/ui/sort-by-filter';
 import {
   PluginFilterProvider,
   usePluginFilterContext,
-} from '@/features/resource-plugin/context/plugin-filter.context';
+} from '@/features/resources/context/plugin-filter.context';
 
 export default function ResourceLandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

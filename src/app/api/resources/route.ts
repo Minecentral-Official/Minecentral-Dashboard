@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { TPluginCategories } from '@/features/resource-plugin/config/categories.plugin';
-import pluginsFind from '@/features/resource-plugin/queries/plugins-find.filter';
-import { pluginsGetRequestZod } from '@/features/resource-plugin/schemas/zod/plugins-get-request.zod';
+import { TPluginCategories } from '@/features/resources/config/categories.plugin';
+import resourcesGetFiltered from '@/features/resources/queries/resources-filter.get';
+import { pluginsGetRequestZod } from '@/features/resources/schemas/zod/plugins-get-request.zod';
 
-import type { TPluginCategory } from '@/features/resource-plugin/config/categories.plugin';
+import type { TPluginCategory } from '@/features/resources/config/categories.plugin';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   });
 
   if (params.success) {
-    const result = await pluginsFind({
+    const result = await resourcesGetFiltered({
       ...params.data,
     });
 

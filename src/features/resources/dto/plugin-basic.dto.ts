@@ -1,0 +1,45 @@
+import { PluginDataBasic } from '@/features/resources/types/resource.type';
+
+export default function DTOResourcePluginBasic({
+  id,
+  title,
+  subtitle,
+  categories,
+  description,
+  languages,
+  linkSource,
+  linkSupport,
+  linkDiscord,
+  linkDonation,
+  linkIssues,
+  slug,
+  status,
+  updatedAt,
+  createdAt,
+  user,
+  iconUrl,
+}: PluginDataBasic) {
+  return {
+    id,
+    title,
+    subtitle,
+    categories,
+    description,
+    languages,
+    linkSource,
+    linkSupport,
+    linkDiscord,
+    linkDonation,
+    linkIssues,
+    slug,
+    status,
+    updatedAt,
+    createdAt,
+    iconUrl,
+    author: {
+      image: user.image,
+      name: user.name,
+      id: user.id,
+    },
+  };
+}

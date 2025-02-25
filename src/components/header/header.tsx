@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Logo from '@/components/logos/logo';
 import NavDesktop from '@/components/nav/desktop.nav';
 import NavMobile from '@/components/nav/mobile.nav';
@@ -18,9 +20,10 @@ export default function Header({ service, config }: HeaderProps) {
         <div className='hidden flex-row items-center justify-start gap-4 lg:flex'>
           <NavDesktop config={config} />
         </div>
-        <div className='flex lg:justify-center'>
+        <Link href={`/${service}`} className='flex lg:justify-center'>
           <Logo service={service} />
-        </div>
+        </Link>
+
         <div className='flex w-full justify-end gap-4'>
           <AuthNav>
             <DataAvatar />
