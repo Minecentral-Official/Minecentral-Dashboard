@@ -6,16 +6,17 @@ import ResourceButtonHot from '@/features/resources/components/resource/resource
 import ResourceButtonSettings from '@/features/resources/components/resource/resource-button-settings';
 import ResourceHeader from '@/features/resources/components/resource/resource-header';
 import resourceGetById from '@/features/resources/queries/resource-by-id.get';
+import resourceGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
 import getSession from '@/lib/auth/helpers/get-session';
 
 type PageProps = {
-  params: Promise<{ resourceId: string }>;
+  params: Promise<{ slug: string }>;
 };
 
 export default async function Page({ params }: PageProps) {
-  const { resourceId } = await params;
+  const { slug } = await params;
   const userResourceData = await resourceGetById(
-    resourceId,
+    (await resourceGetIdBySlug(slug))!,
     (await getSession())?.user.id,
   );
 

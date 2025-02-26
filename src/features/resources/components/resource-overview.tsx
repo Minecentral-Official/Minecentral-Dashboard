@@ -1,17 +1,17 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceOverview({
   plugins,
 }: {
-  plugins: TResourcePluginBasic[];
+  plugins: T_DTOResource[];
 }) {
   const stats = {
     totalPlugins: plugins.length,
     totalDownloads: plugins.reduce((acc, plugin) => {
-      return acc + (plugin.downloads || 0);
+      return acc + 0;
     }, 0),
   };
 

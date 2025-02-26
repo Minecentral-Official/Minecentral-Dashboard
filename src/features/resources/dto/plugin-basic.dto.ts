@@ -18,6 +18,7 @@ export default function DTOResource({
   createdAt,
   user,
   iconUrl,
+  type,
 }: T_ResourceDBData) {
   return {
     id,
@@ -36,6 +37,7 @@ export default function DTOResource({
     updatedAt,
     createdAt,
     iconUrl,
+    type,
     author: {
       image: user.image,
       name: user.name,

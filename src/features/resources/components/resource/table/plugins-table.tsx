@@ -13,11 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 type PluginsTableResource = Pick<
-  TResourcePlugin,
-  'id' | 'iconUrl' | 'title' | 'status'
+  T_DTOResource,
+  'id' | 'iconUrl' | 'title' | 'status' | 'type'
 >;
 
 export function ProjectsUserTable({
@@ -62,10 +62,10 @@ export function ProjectsUserTable({
               </CopyToClipboard>
             </TableCell>
             <TableCell>
-              {project. ?
+              {project.type ?
                 project.status.slice(0, 1).toUpperCase() +
                 project.status.slice(1)
-              : 'Draft'}
+              : 'Project N/A'}
             </TableCell>
             <TableCell>
               {project.status ?

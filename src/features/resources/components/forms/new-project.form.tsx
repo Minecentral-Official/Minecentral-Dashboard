@@ -25,7 +25,7 @@ export default function ProjectCreateForm() {
       if (submission.status !== 'success') {
         toast.error('Form data invalid', { id: 'create-resource' });
       } else {
-        toast.loading('Posting Resource...', { id: 'create-resource' });
+        toast.loading('Creating project...', { id: 'create-resource' });
         //Clear Editor Cache
         // window?.localStorage.removeItem('editorContent');
       }

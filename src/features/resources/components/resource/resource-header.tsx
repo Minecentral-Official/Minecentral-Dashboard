@@ -1,16 +1,13 @@
 import Image from 'next/image';
 
-import ResourceStats from '@/features/resources/components/resource/resource-stats';
-import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceHeader({
   title,
   subtitle,
   // downloads,
   iconUrl,
-  likeCount,
-  categories,
-}: Pick<TResourcePlugin, 'title' | 'subtitle' | 'iconUrl' | 'categories'> & {
+}: Pick<T_DTOResource, 'title' | 'subtitle' | 'iconUrl' | 'categories'> & {
   likeCount: number;
 }) {
   return (
@@ -29,9 +26,9 @@ export default function ResourceHeader({
             <p className='text-sm'>{subtitle}</p>
           </div>
           <div className='flex flex-row gap-2'>
-            <ResourceStats
+            {/* <ResourceStats
               {...{ categories, downloads: 10543677, likeCount }}
-            />
+            /> */}
           </div>
         </div>
       </div>

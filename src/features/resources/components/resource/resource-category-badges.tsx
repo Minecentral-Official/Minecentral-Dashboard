@@ -1,10 +1,10 @@
 import { Badge } from '@/components/ui/badge';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceCategoryBadges({
   categories,
   maxBadges,
-}: Pick<TResourcePluginBasic, 'categories'> & { maxBadges?: number }) {
+}: Pick<T_DTOResource, 'categories'> & { maxBadges?: number }) {
   return (
     <div className='mb-2 flex flex-row gap-2'>
       {categories?.slice(0, maxBadges).map((category) => (

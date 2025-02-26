@@ -22,7 +22,7 @@ export function ProjectCreateDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Resources
+          <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Project
         </Button>
       </DialogTrigger>
       <DialogContent className='max-w-screen-sm md:max-w-screen-md'>

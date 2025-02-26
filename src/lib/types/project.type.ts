@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const projectTypes = [
+export const CategoriesProjects = [
   'project', //added by default to projects knowing data is missing
   'plugin',
   'mod',
@@ -8,7 +8,7 @@ const projectTypes = [
   'shader-pack',
 ] as const;
 
-export type T_Project = (typeof projectTypes)[number];
+export type T_ProjectCategory = (typeof CategoriesProjects)[number];
 
 // export type PluginDataBasic = typeof resourceTable.$inferSelect & {
 //   user: typeof user.$inferSelect;
