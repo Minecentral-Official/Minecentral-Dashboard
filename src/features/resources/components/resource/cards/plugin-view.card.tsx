@@ -4,25 +4,24 @@ import { Download } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ResourceCategoryBadges from '@/features/resources/components/resource/resource-category-badges';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 type props = Pick<
-  TResourcePluginBasic,
-  'title' | 'author' | 'subtitle' | 'id' | 'categories' | 'iconUrl'
+  T_DTOResource,
+  'title' | 'author' | 'subtitle' | 'categories' | 'iconUrl' | 'slug'
 >;
 
 export default function PluginCardView({
   title,
   author,
   subtitle,
-  id,
   categories,
   iconUrl,
+  slug,
 }: props) {
-  const url = `/resources/${id}`;
+  const url = `/resources/${slug}`;
   return (
     <Card className='overflow-hidden'>
       <Link href={url}>
@@ -47,7 +46,6 @@ export default function PluginCardView({
           <Download className='mr-2 h-4 w-4' />
           <span className='text-sm'>{subtitle}</span>
         </div>
-        <Badge variant='default'>Download</Badge>
       </CardFooter>
     </Card>
   );

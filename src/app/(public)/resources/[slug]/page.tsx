@@ -3,7 +3,6 @@ import ResourceCardContent from '@/features/resources/components/resource/cards/
 import ResourceCardCreators from '@/features/resources/components/resource/cards/resource-creators.card';
 import ResourceCardLinks from '@/features/resources/components/resource/cards/resource-links.card';
 import ResourceButtonHot from '@/features/resources/components/resource/resource-button-hot';
-import ResourceButtonSettings from '@/features/resources/components/resource/resource-button-settings';
 import ResourceHeader from '@/features/resources/components/resource/resource-header';
 import resourceGetById from '@/features/resources/queries/resource-by-id.get';
 import resourceGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
@@ -25,11 +24,10 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className='mx-auto flex w-full flex-col gap-4 p-4'>
       <div className='flex w-full flex-col gap-4'>
-        <div className='flex w-full flex-col items-start justify-between gap-4 lg:flex-row lg:items-center'>
+        <div className='flex w-full flex-col items-start justify-between gap-4 md:flex-row md:items-center'>
           <ResourceHeader {...userResourceData} />
           <div className='flex flex-row gap-2'>
             <ResourceButtonHot {...userResourceData} />
-            <ResourceButtonSettings {...userResourceData} />
           </div>
         </div>
         {/* <ResourceUploader resourceId={plugin.id} /> */}

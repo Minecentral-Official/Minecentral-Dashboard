@@ -17,7 +17,7 @@ import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 type PluginsTableResource = Pick<
   T_DTOResource,
-  'id' | 'iconUrl' | 'title' | 'status' | 'type'
+  'id' | 'iconUrl' | 'title' | 'status' | 'type' | 'slug'
 >;
 
 export function ProjectsUserTable({
@@ -41,7 +41,7 @@ export function ProjectsUserTable({
         {projects.map((project) => (
           <TableRow key={project.id}>
             <TableCell className='font-medium'>
-              <Link href={`/resources/${project.id}`}>
+              <Link href={`/resources/${project.slug}`}>
                 <Image
                   src={project.iconUrl || '/placeholder.png'}
                   alt='Resource Icon'
@@ -52,7 +52,7 @@ export function ProjectsUserTable({
               </Link>
             </TableCell>
             <TableCell className='font-medium'>
-              <Link href={`/resources/${project.id}`}> {project.title}</Link>
+              <Link href={`/resources/${project.slug}`}> {project.title}</Link>
             </TableCell>
             <TableCell>
               <CopyToClipboard clipboardText={`${project.id}`}>

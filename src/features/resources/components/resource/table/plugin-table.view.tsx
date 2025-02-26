@@ -6,22 +6,22 @@ import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 type props = Pick<
-  TResourcePluginBasic,
-  'title' | 'author' | 'subtitle' | 'id' | 'categories' | 'iconUrl'
+  T_DTOResource,
+  'title' | 'author' | 'subtitle' | 'id' | 'categories' | 'iconUrl' | 'slug'
 >;
 
 export default function PluginListView({
   title,
   author,
   subtitle,
-  id,
+  slug,
   categories,
   iconUrl,
 }: props) {
-  const url = `/resources/${id}`;
+  const url = `/resources/${slug}`;
   return (
     <Card className='overflow-hidden'>
       <Link href={url}>
@@ -38,7 +38,7 @@ export default function PluginListView({
           <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
         </Link>
         <div className='mb-2 flex flex-row gap-2'>
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <Badge key={category} variant='outline'>
               {category}
             </Badge>
