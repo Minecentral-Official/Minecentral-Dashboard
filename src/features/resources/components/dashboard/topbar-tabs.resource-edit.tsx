@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { Card } from '@/components/ui/card';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -42,7 +43,8 @@ export default function ResourceEditTopbarTabs({
   const urlPrefix = `/dashboard/resources/${slug}`;
   const pathname = usePathname();
   return (
-    <NavigationMenu className='w-full justify-start rounded-md p-2 shadow-md'>
+    <Card className='p-2'>
+    <NavigationMenu className='justify-start'>
       <NavigationMenuList className=''>
         {navItems.map((item) => (
           <NavigationMenuItem key={item.title}>
@@ -57,6 +59,6 @@ export default function ResourceEditTopbarTabs({
           </NavigationMenuItem>
         ))}
       </NavigationMenuList>
-    </NavigationMenu>
+    </NavigationMenu></Card>
   );
 }

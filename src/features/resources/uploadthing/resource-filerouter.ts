@@ -3,13 +3,13 @@ import { UploadThingError } from 'uploadthing/server';
 import { z } from 'zod';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
-import resourceGetById from '@/features/resources/queries/resource-by-id.get';
-import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
-import { resourceUpdateIconZod } from '@/features/resources/schemas/zod/update-icon.zod';
+import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
+import { projectUploadIconZod } from '@/features/resources/schemas/zod/upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';
 
 import type { FileRouter } from 'uploadthing/next';
+import { projectUploadResourceFileZod } from '../schemas/zod/upload-resource-file.zod';
 
 const f = createUploadthing({
   errorFormatter: (err) => {
@@ -26,10 +26,10 @@ export const resourceFileRouter = {
     'image/png': { maxFileSize: '256KB' },
     'image/webp': { maxFileSize: '256KB' },
   })
-    .input(resourceUpdateIconZod)
+    .input(projectUploadIconZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await resourceGetById(input.resourceId))?.author.id !== user.id)
+      if ((await resourceGetById_WithUser(input.resourceId))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })
@@ -42,10 +42,10 @@ export const resourceFileRouter = {
     'application/java-archive': { maxFileSize: '16MB', maxFileCount: 1 },
     'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
   })
-    .input(resourceUpdateGeneralZod)
+    .input(projectUploadResourceFileZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await resourceGetById(input.resourceId))?.author.id !== user.id)
+      if ((await resourceGetById_WithUser(input.resourceId))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })

@@ -12,11 +12,11 @@ import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import resourceUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
-import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
 import { getChangedFields } from '@/lib/utils/get-changed-fields';
+import projectUpdateAction from '../../actions/update-resource.action';
 
 export default function ResourceUpdateGeneralForm({
   id: resourceId,
@@ -25,10 +25,9 @@ export default function ResourceUpdateGeneralForm({
   subtitle,
   title,
 }: Pick<T_DTOResource, 'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle'>) {
-  const [lastResult, action] = useActionState(
-    resourceUpdateGeneralAction,
-    undefined,
-  );
+  const [lastResult, action] = useActionState((_:unknown, formData: FormData) => {
+      return projectUpdateAction(_, formData, projectUpdateGeneralZod)
+    }, undefined);
 
   const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
@@ -37,7 +36,7 @@ export default function ResourceUpdateGeneralForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //Upload icon if different
     if (iconUrl !== oldIconUrl && iconFile) {
-      await uploadFile(iconFile, { resourceId });
+      await uploadFile(iconFile, { id: resourceId });
     }
     //Submit form, but cancel if no changes applied
     form.onSubmit(e);
@@ -67,13 +66,13 @@ export default function ResourceUpdateGeneralForm({
         Object.fromEntries(formData.entries()) as typeof defaultValue,
       );
       const formDataObject = new FormData();
-      formDataObject.append('resourceId', resourceId);
+      formDataObject.append('id', resourceId);
       Object.entries(changedData).forEach(([key, value]) => {
         formDataObject.append(key, String(value)); // Convert value to string if necessary
       });
 
       const submission = parseWithZod(formDataObject, {
-        schema: resourceUpdateGeneralZod,
+        schema: projectUpdateGeneralZod,
       });
       if (submission.status !== 'success') {
         console.log(submission.error);

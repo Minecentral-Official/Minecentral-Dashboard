@@ -10,19 +10,19 @@ import { Field, FieldError } from '@/components/conform/field.conform';
 import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import resourceUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
-import { resourceUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
+import { projectUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import projectUpdateAction from '../../actions/update-resource.action';
 
 export default function ResourceUpdateDescriptionForm({
   description,
   id: resourceId,
 }: Pick<T_DTOResource, 'id' | 'description'>) {
-  const [lastResult, action] = useActionState(
-    resourceUpdateGeneralAction,
-    undefined,
-  );
+  
+
+  const [lastResult, action] = useActionState(async (_:unknown, formData: FormData) => {
+    return await projectUpdateAction(_, formData, projectUpdateDescriptionZod)
+  }, undefined);
 
   const defaultValue = {
     description,
@@ -33,15 +33,13 @@ export default function ResourceUpdateDescriptionForm({
     lastResult,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: resourceUpdateDescriptionZod,
+        schema: projectUpdateDescriptionZod,
       });
       if (submission.status !== 'success') {
         console.log(submission.error);
         toast.error('Form data invalid', { id: 'update-resource' });
       } else {
         toast.loading('Updating project...', { id: 'update-resource' });
-        //Clear Editor Cache
-        // window?.localStorage.removeItem('editorContent');
       }
       return submission;
     },
@@ -61,7 +59,6 @@ export default function ResourceUpdateDescriptionForm({
       <input type='hidden' name={fields.resourceId.name} value={resourceId} />
 
       <Field>
-        <Label htmlFor={fields.description.id}>Description</Label>
         <div className='container w-full px-0 py-4'>
           <MarkdownProviver initialMarkdown={fields.description.value || ''}>
             <MarkdownEditor onChange={contentDescriptionHandler.change} />

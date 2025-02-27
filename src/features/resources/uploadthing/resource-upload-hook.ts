@@ -4,8 +4,8 @@ import { generateReactHelpers } from '@uploadthing/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
-import { resourceUpdateIconZod } from '@/features/resources/schemas/zod/update-icon.zod';
+import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { projectUploadIconZod } from '@/features/resources/schemas/zod/upload-icon.zod';
 import { ResourceFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
 
 interface UseUploadFileProps {
@@ -37,9 +37,10 @@ export function useResourceUpload({
   const [isUploading, setIsUploading] = React.useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const asdf = z.union([resourceUpdateGeneralZod, resourceUpdateIconZod]);
+  //UPDATE WHEN ADDING NEW FILE ROUTERS WITH INPUTS!
+  const acceptableSchemas = z.union([projectUpdateGeneralZod, projectUploadIconZod]);
 
-  async function uploadThing(file: File, customData: z.infer<typeof asdf>) {
+  async function uploadThing(file: File, customData: z.infer<typeof acceptableSchemas>) {
     setIsUploading(true);
     setUploadingFile(file);
 

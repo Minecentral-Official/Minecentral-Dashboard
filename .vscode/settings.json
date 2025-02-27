@@ -62,5 +62,9 @@
       "folderPath": "Minecentral\\src\\features\\tickets\\",
       "badge": "📝"
     }
-  ]
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
 }

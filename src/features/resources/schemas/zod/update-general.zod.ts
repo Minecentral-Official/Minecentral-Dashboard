@@ -1,8 +1,5 @@
-import { z } from 'zod';
+import { projectUpdateZod_Base } from './resource-base.zod';
 
-export const resourceUpdateGeneralZod = z.object({
-  resourceId: z.string(),
-  title: z.string().optional(),
-  slug: z.string().optional(),
-  subtitle: z.string().optional(),
-});
+export const projectUpdateGeneralZod = projectUpdateZod_Base.partial().pick(
+  {id: true, title: true, subtitle: true, slug: true}
+);
