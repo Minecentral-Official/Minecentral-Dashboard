@@ -1,4 +1,5 @@
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import SidebarMenuSubButtonClient from '@/components/sidebars/collapsible/sidebar-menu-sub-button-client';
+import { SidebarMenuItem } from '@/components/ui/sidebar';
 
 type SidebarGroupWrapperProps = {
   name: string;
@@ -13,14 +14,12 @@ export default function SidebarLink({
 }: SidebarGroupWrapperProps) {
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild>
-        <a href={url}>
-          {Icon ?
-            <Icon />
-          : <></>}
-          <span>{name}</span>
-        </a>
-      </SidebarMenuButton>
+      <SidebarMenuSubButtonClient url={url}>
+        {Icon ?
+          <Icon />
+        : <></>}
+        <span>{name}</span>
+      </SidebarMenuSubButtonClient>
     </SidebarMenuItem>
   );
 }

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { BadgeCheck, ChartBarBig, CreditCard } from 'lucide-react';
+import { BadgeCheck, ChartBarBig, LayoutListIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import ResponsiveDropdownMenuContent from '@/components/dropdown/responsive-dropdown-menu-content';
@@ -73,9 +73,11 @@ export default async function AuthNav({ children }: PropsWithChildren) {
               Account
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Billing
+          <DropdownMenuItem asChild>
+            <Link href='/dashboard/resources'>
+              <LayoutListIcon />
+              Resources
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

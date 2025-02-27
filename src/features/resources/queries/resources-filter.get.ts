@@ -1,6 +1,6 @@
 'use server';
 
-import { and, arrayContains, desc, ilike, inArray, or } from 'drizzle-orm';
+import { and, arrayContains, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 
 import { T_PluginCategory } from '@/features/resources/config/categories.plugin';
 import { TPluginVersion } from '@/features/resources/config/versions.plugin';
@@ -41,7 +41,7 @@ export default async function resourcesGetFiltered({
   cacheTag(
     `filter-${query}-${limit}-${page}-${categories?.toString()}-${versions?.toString()}`,
   );
-  const otherConditions = [];
+  const otherConditions = [eq(resourceTable.status, 'accepted')];
   const textConditions = [];
 
   //Query based Filters

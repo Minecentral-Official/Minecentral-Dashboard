@@ -49,10 +49,10 @@ export default function TicketReplyForm({ ticketId }: { ticketId: number }) {
       // Prevent default Enter key behavior
       if (e.key === 'Enter') {
         e.preventDefault();
-        console.log('enter key was pressed');
+        // console.log('enter key was pressed');
         // Add a new line only when Shift + Enter is pressed
         if (!e.shiftKey) {
-          console.log('proper keys were pressed');
+          // console.log('proper keys were pressed');
           formRef.current?.requestSubmit();
         }
       }

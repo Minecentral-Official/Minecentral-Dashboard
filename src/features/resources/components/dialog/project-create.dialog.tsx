@@ -25,7 +25,7 @@ export function ProjectCreateDialog() {
           <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Project
         </Button>
       </DialogTrigger>
-      <DialogContent className='max-w-screen-sm md:max-w-screen-md'>
+      <DialogContent className='max-w-screen-sm'>
         <DialogHeader>
           <DialogTitle>Create a new Project</DialogTitle>
         </DialogHeader>

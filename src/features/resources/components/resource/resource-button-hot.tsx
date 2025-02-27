@@ -33,7 +33,8 @@ export default function ResourceButtonHot({
   release,
   liked,
   id,
-}: Pick<T_DTOResource_WithReleases, 'title' | 'release' | 'id'> & {
+  slug,
+}: Pick<T_DTOResource_WithReleases, 'title' | 'release' | 'id' | 'slug'> & {
   liked: boolean;
 }) {
   const [followLoading, setFollowLoading] = useState(false);
@@ -62,7 +63,7 @@ export default function ResourceButtonHot({
           onClick={handleClick}
         />
 
-        <ResourceButtonSettings id={id} />
+        <ResourceButtonSettings slug={slug} />
 
         <TooltipProvider>
           <Popover>

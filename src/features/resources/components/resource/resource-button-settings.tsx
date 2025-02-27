@@ -5,10 +5,10 @@ import ButtonTooltip from '@/components/ui/tooltip-button';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceButtonSettings({
-  id,
-}: Pick<T_DTOResource, 'id'>) {
+  slug,
+}: Pick<T_DTOResource, 'slug'>) {
   return (
-    <Link href={`/dashboard/resources/edit/${id}`}>
+    <Link href={`/dashboard/resources/${slug}`}>
       <ButtonTooltip tooltip={'Settings'} Icon={SettingsIcon} />
     </Link>
   );

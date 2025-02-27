@@ -6,6 +6,7 @@ import { pluginsGetRequestZod } from '@/features/resources/schemas/zod/plugins-g
 
 import type { T_PluginCategory } from '@/features/resources/config/categories.plugin';
 
+//The fetch clients use to query search results
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 

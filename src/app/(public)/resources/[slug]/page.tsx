@@ -30,7 +30,6 @@ export default async function Page({ params }: PageProps) {
             <ResourceButtonHot {...userResourceData} />
           </div>
         </div>
-        {/* <ResourceUploader resourceId={plugin.id} /> */}
       </div>
       <div className='flex flex-col gap-4 lg:flex-row'>
         <ResourceCardContent {...userResourceData} />

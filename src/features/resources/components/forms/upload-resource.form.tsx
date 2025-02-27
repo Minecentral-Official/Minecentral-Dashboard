@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { generateUploadButton } from '@uploadthing/react';
 import { toast } from 'sonner';
 
-import { OurFileRouter } from '@/lib/uploadthing/uploadthing-filerouter';
+import { OurFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
 
 export default function ResourceUploader({
   resourceId,

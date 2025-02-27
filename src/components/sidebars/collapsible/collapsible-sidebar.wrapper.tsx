@@ -4,6 +4,7 @@ import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import CollapsibleClientWrapper from '@/components/sidebars/collapsible/collapsible-client.wrapper';
+import SidebarMenuSubButtonClient from '@/components/sidebars/collapsible/sidebar-menu-sub-button-client';
 import {
   CollapsibleContent,
   CollapsibleTrigger,
@@ -13,7 +14,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
@@ -26,7 +26,6 @@ type Params = {
 
 export default function CollapsibleSidebarWrapper(params: Params) {
   const { title, Icon, links, urlSuffix } = params;
-  // const pathname = usePathname();
 
   return (
     <SidebarMenu>
@@ -47,19 +46,10 @@ export default function CollapsibleSidebarWrapper(params: Params) {
             <SidebarMenuSub>
               {links.map(({ name, url, ...rest }) => (
                 <SidebarMenuSubItem key={name}>
-                  <SidebarMenuSubButton
-                    asChild
-                    className={
-                      'test' === url ?
-                        'bg-sidebar-border hover:bg-sidebar-border'
-                      : ''
-                    }
-                  >
-                    <Link href={url}>
-                      {rest.icon && <rest.icon />}
-                      <span>{name}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
+                  <SidebarMenuSubButtonClient url={url}>
+                    {rest.icon && <rest.icon />}
+                    <span>{name}</span>
+                  </SidebarMenuSubButtonClient>
                 </SidebarMenuSubItem>
               ))}
             </SidebarMenuSub>

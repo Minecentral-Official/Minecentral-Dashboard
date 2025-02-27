@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function middlewareResources(req: NextRequest) {
+export async function middlewareResources(
+  req: NextRequest,
+  urlPrefix?: string,
+) {
   const { pathname } = req.nextUrl;
-  const match = pathname.match(/^\/resources\/([^/]+)$/);
+  const pathArray = pathname.split('/');
 
-  if (match) {
-    const slug = match[1];
+  if (pathArray) {
+    const slug = pathArray[pathArray.length - 1];
 
     // Fetch resource from DB by slug or ID
 
@@ -15,7 +18,7 @@ export async function middlewareResources(req: NextRequest) {
       })
       .then((data) => {
         if (data.slug) {
-          const correctUrl = `/resources/${data.slug}`;
+          const correctUrl = `${urlPrefix || ''}/resources/${data.slug}`;
           if (pathname !== correctUrl) {
             const url = req.nextUrl.clone();
             url.pathname = correctUrl;

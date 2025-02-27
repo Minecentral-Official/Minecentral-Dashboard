@@ -1,11 +1,11 @@
 import AdmZip from 'adm-zip';
 
-import { ProjectType } from '@/lib/types/project.type';
+import { T_ProjectCategory } from '@/lib/types/project.type';
 
 export async function detectResourceType(
   fileUrl: string,
   fileType: string,
-): Promise<ProjectType | null> {
+): Promise<T_ProjectCategory | null> {
   const response = await fetch(fileUrl);
   const buffer = await response.arrayBuffer();
   const zip = new AdmZip(Buffer.from(buffer));
