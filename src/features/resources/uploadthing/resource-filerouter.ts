@@ -2,9 +2,10 @@ import { createUploadthing } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 import { z } from 'zod';
 
-import resourceUploadIconAction from '@/features/resources/actions/upload-resource-icon.action';
+import projectUpdate from '@/features/resources/mutations/update.project';
 import resourceGetById from '@/features/resources/queries/resource-by-id.get';
-import { pluginUploadToProjectZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { resourceUpdateIconZod } from '@/features/resources/schemas/zod/update-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';
 
@@ -20,19 +21,12 @@ const f = createUploadthing({
 });
 
 export const resourceFileRouter = {
-  editorUploader: f(['image', 'text', 'blob', 'pdf', 'video', 'audio'])
-    .middleware(() => {
-      return {};
-    })
-    .onUploadComplete(({ file }) => {
-      return { file };
-    }),
   iconUploader: f({
     'image/jpeg': { maxFileSize: '256KB' },
     'image/png': { maxFileSize: '256KB' },
     'image/webp': { maxFileSize: '256KB' },
   })
-    .input(pluginUploadToProjectZod)
+    .input(resourceUpdateIconZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
       if ((await resourceGetById(input.resourceId))?.author.id !== user.id)
@@ -40,11 +34,7 @@ export const resourceFileRouter = {
       return { userId: user.id, ...input };
     })
     .onUploadComplete(async ({ file, metadata }) => {
-      await resourceUploadIconAction(
-        metadata.userId,
-        metadata.resourceId,
-        file.ufsUrl,
-      );
+      await projectUpdate(metadata.resourceId, { iconUrl: file.ufsUrl });
       return { file, metadata };
     }),
 
@@ -52,7 +42,7 @@ export const resourceFileRouter = {
     'application/java-archive': { maxFileSize: '16MB', maxFileCount: 1 },
     'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
   })
-    .input(pluginUploadToProjectZod)
+    .input(resourceUpdateGeneralZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
       if ((await resourceGetById(input.resourceId))?.author.id !== user.id)

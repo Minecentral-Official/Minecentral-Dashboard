@@ -4,6 +4,8 @@ import { generateReactHelpers } from '@uploadthing/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { resourceUpdateIconZod } from '@/features/resources/schemas/zod/update-icon.zod';
 import { ResourceFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
 
 interface UseUploadFileProps {
@@ -34,13 +36,17 @@ export function useResourceUpload({
   const [progress, setProgress] = React.useState<number>(0);
   const [isUploading, setIsUploading] = React.useState(false);
 
-  async function uploadThing(file: File) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const asdf = z.union([resourceUpdateGeneralZod, resourceUpdateIconZod]);
+
+  async function uploadThing(file: File, customData: z.infer<typeof asdf>) {
     setIsUploading(true);
     setUploadingFile(file);
 
     try {
       const res = await uploadFiles(router, {
         ...props,
+        input: customData,
         files: [file],
         onUploadProgress: ({ progress }) => {
           setProgress(Math.min(progress, 100));
@@ -80,8 +86,7 @@ export function useResourceUpload({
   };
 }
 
-export const { uploadFiles, useUploadThing } =
-  generateReactHelpers<ResourceFileRouter>();
+const { uploadFiles } = generateReactHelpers<ResourceFileRouter>();
 
 export function getErrorMessage(err: unknown) {
   const unknownError = 'Something went wrong, please try again later.';

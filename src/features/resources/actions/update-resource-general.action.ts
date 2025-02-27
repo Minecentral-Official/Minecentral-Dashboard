@@ -1,16 +1,10 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
-import { NextResponse } from 'next/server';
 
-import projectCreate from '@/features/resources/mutations/create.project';
+import projectUpdate from '@/features/resources/mutations/update.project';
 import { resourceUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
-import {
-  ACTIVITY,
-  activityAddAction,
-} from '@/lib/activity/mutations/activity.add';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { uploadThing_File } from '@/lib/uploadthing/upload-file';
 
 export default async function resourceUpdateGeneralAction(
   // prevState: unknown
@@ -27,26 +21,16 @@ export default async function resourceUpdateGeneralAction(
   }
 
   //DeConstruct fields
-  const { resourceId, newIconFile, newSlug, newSubtitle, newTitle } =
-    formParsed.value;
+  const { resourceId, slug, subtitle, title } = formParsed.value;
 
-  const iconUrl = await uploadThing_File(newIconFile);
-  if (!fileUpload) {
-    return;
-  }
-  fileUrl = fileUpload.ufsUrl;
-
-  const newPlugin = await projectCreate({
-    title,
-    subtitle,
+  await projectUpdate(resourceId, {
     slug,
-    userId: user.id,
+    subtitle,
+    title,
   });
 
-  await activityAddAction(user.id, ACTIVITY.NEW_RESOURCE, `${newPlugin.id}`);
-
   // revalidateTag(`tickets-user-${user.id}`);
-  return NextResponse.json({ success: true });
+  return;
 }
 // prevState: unknown
 //   _: unknown,
