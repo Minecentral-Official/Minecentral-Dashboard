@@ -16,4 +16,4 @@ export const projectUpdateZod_Base = createUpdateSchema(resourceTable, {
     .min(3, 'Something a little longer'),
   description: (schema) => 
     schema.min(100, "Please make an effort to make a good description").max(50000, "Bit excessive eyy"),
-}).omit({createdAt: true, updatedAt: true});
+})

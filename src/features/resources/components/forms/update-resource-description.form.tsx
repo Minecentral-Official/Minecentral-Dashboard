@@ -20,14 +20,7 @@ export default function ResourceUpdateDescriptionForm({
 }: Pick<T_DTOResource, 'id' | 'description'>) {
   
 
-  const [lastResult, action] = useActionState(async (_:unknown, formData: FormData) => {
-    return await projectUpdateAction(_, formData, projectUpdateDescriptionZod)
-  }, undefined);
-
-  const defaultValue = {
-    description,
-    resourceId,
-  };
+  const [lastResult, action] = useActionState(projectUpdateAction, undefined);
 
   const [form, fields] = useForm({
     lastResult,
@@ -42,8 +35,9 @@ export default function ResourceUpdateDescriptionForm({
         toast.loading('Updating project...', { id: 'update-resource' });
       }
       return submission;
-    },
-    defaultValue,
+    },defaultValue: {
+      description, id: resourceId
+    }
   });
 
   const contentDescriptionHandler = useInputControl(fields.description);
@@ -56,7 +50,9 @@ export default function ResourceUpdateDescriptionForm({
       action={action}
       noValidate
     >
-      <input type='hidden' name={fields.resourceId.name} value={resourceId} />
+      <input type='hidden' name={fields.id.name} value={resourceId} />
+      <input type='hidden' name={fields.urlTab.name} value={"description"} />
+
 
       <Field>
         <div className='container w-full px-0 py-4'>

@@ -25,9 +25,7 @@ export default function ResourceUpdateGeneralForm({
   subtitle,
   title,
 }: Pick<T_DTOResource, 'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle'>) {
-  const [lastResult, action] = useActionState((_:unknown, formData: FormData) => {
-      return projectUpdateAction(_, formData, projectUpdateGeneralZod)
-    }, undefined);
+  const [lastResult, action] = useActionState(projectUpdateAction, undefined);
 
   const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
@@ -52,7 +50,7 @@ export default function ResourceUpdateGeneralForm({
   };
 
   const defaultValue = {
-    resourceId,
+    id: resourceId,
     slug,
     subtitle,
     title,
@@ -97,7 +95,7 @@ export default function ResourceUpdateGeneralForm({
       action={action}
       noValidate
     >
-      <input type='hidden' name={fields.resourceId.name} value={resourceId} />
+      <input type='hidden' name={fields.id.name} value={resourceId} />
 
       <Field>
         <Label>Icon</Label>

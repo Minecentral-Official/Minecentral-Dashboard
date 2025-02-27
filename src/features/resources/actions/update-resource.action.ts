@@ -4,37 +4,35 @@ import { parseWithZod } from '@conform-to/zod';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 import resourceCanEdit from '../queries/user-can-edit-resource.boolean';
-import { projectUpdateZod_Base } from '../schemas/zod/resource-base.zod';
+import { projectUpdateZod_Action } from '../schemas/zod/resource-actions.zod';
 
 
-export default async function projectUpdateAction<T extends Partial<z.infer<typeof projectUpdateZod_Base>>> (
-  // prevState: unknown
+export default async function projectUpdateAction (
   _: unknown,
-  formData: FormData,
-  schema: z.ZodType<T>
+  formData: FormData
 ) {
   
   const formParsed = parseWithZod(formData, {
-    schema,
+    schema: projectUpdateZod_Action,
   });
 
   if (formParsed.status !== 'success') {
+    console.log(formParsed.error)
     return formParsed.reply();
   }
 
   //DeConstruct fields
-  const resourceId = formParsed.value.id!;
+  const {id: resourceId, urlTab} = formParsed.value;
 
   //Check permissions
   if (!(await resourceCanEdit(resourceId))) return redirect(
-        `/dashboard/resources?toast-success=false&toast-message=Cannot%20edit%20resource&toast-id=resource-update`,
+        `/dashboard/resources/${resourceId}/${urlTab || ""}?toast-success=false&toast-message=Cannot%20edit%20resource&toast-id=update-resource`,
       );
 
   const updatedResource = await projectUpdate(resourceId, {...formParsed.value});
 
   redirect(
-    `/dashboard/resources/${updatedResource.slug}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=resource-update`,
+    `/dashboard/resources/${updatedResource.slug}/${urlTab || ""}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=update-resource`,
   );
 }
