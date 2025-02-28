@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
@@ -14,10 +14,9 @@ import resourceCreateAction from '@/features/resources/actions/create-resource.a
 import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
 
 export default function ProjectCreateForm() {
-  const [lastResult, action] = useActionState(resourceCreateAction, undefined);
+  const [actionState, action] = useActionState(resourceCreateAction, undefined);
 
   const [form, fields] = useForm({
-    lastResult,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
         schema: projectCreateZod,
@@ -32,6 +31,17 @@ export default function ProjectCreateForm() {
       return submission;
     },
   });
+
+  // Show toast when state changes
+  useEffect(() => {
+    if (actionState?.success) {
+      toast.success(actionState.message, {
+        id: 'update-resource',
+      });
+    } else if (actionState?.success === false) {
+      toast.error(actionState?.message, { id: 'update-resource' });
+    }
+  }, [actionState]);
 
   return (
     <form

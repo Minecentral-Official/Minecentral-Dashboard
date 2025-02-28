@@ -22,11 +22,11 @@ export default async function resourceCreateAction(
   });
 
   if (formParsed.status !== 'success') {
-    return formParsed.reply();
+    console.log(formParsed.error);
+    return { success: false, message: 'Invalid form data!' };
   }
-
   //DeConstruct fields
-  const { title, subtitle, slug } = formParsed.value;
+  const { title, subtitle, slug, type } = formParsed.value;
 
   // let fileUrl;
   // if (resourceType === 'file') {
@@ -43,6 +43,7 @@ export default async function resourceCreateAction(
     title,
     subtitle,
     slug,
+    type,
     userId: user.id,
   });
 

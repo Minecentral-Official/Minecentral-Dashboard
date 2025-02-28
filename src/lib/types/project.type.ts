@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const CategoriesProjects = [
-  'project', //added by default to projects knowing data is missing
   'plugin',
   'mod',
   'datapack',

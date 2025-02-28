@@ -1,17 +1,11 @@
-
-
-import { roleConfig, T_Roles } from '@/lib/auth/configs/roles.config';
+import { resourceGetById } from '@/features/resources/queries/resource-by-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { resourceGetById } from './resource-by-id.get';
 
-export default async function resourceCanEdit(
-  resourceId: string
-) {
-
-  const {user} = await validateSession();
+export default async function projectCanEdit(resourceId: string) {
+  const { user } = await validateSession();
 
   if (!user) return false;
-  if (user.role === "admin") return true;
+  if (user.role === 'admin') return true;
 
   const resource = await resourceGetById(resourceId);
 
@@ -19,4 +13,3 @@ export default async function resourceCanEdit(
 
   return resource.author.id === user.id;
 }
-

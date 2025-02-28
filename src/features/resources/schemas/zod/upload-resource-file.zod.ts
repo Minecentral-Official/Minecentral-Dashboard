@@ -1,3 +1,5 @@
-import { projectUpdateZod_Base } from './resource-base.zod';
+import { projectDataZod_Base } from './project-validation-base.zod';
 
-export const projectUploadResourceFileZod = projectUpdateZod_Base.pick({id: true});
+export const projectUploadResourceFileZod = projectDataZod_Base.pick({
+  id: true,
+});

@@ -5,7 +5,7 @@ import ResourceCardLinks from '@/features/resources/components/resource/cards/re
 import ResourceButtonHot from '@/features/resources/components/resource/resource-button-hot';
 import ResourceHeader from '@/features/resources/components/resource/resource-header';
 import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
-import resourceGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
+import projectGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
 import getSession from '@/lib/auth/helpers/get-session';
 
 type PageProps = {
@@ -15,7 +15,7 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const userResourceData = await resourceGetById_WithUser(
-    (await resourceGetIdBySlug(slug))!,
+    (await projectGetIdBySlug(slug))!,
     (await getSession())?.user.id,
   );
 

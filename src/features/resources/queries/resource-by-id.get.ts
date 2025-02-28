@@ -1,9 +1,9 @@
-import { cacheLife, cacheTag } from "@/lib/cache/cache-exports";
-import { desc, eq } from "drizzle-orm";
-import { resourceTable } from "../schemas/resource.table";
-import { db } from "@/lib/db";
-import { resourceReleaseTable } from "../schemas/resource-release.table";
-import DTOResource_WithReleases from "../dto/plugin.dto";
+import { desc, eq } from 'drizzle-orm';
+
+import DTOResource_WithReleases from '@/features/resources/dto/plugin.dto';
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
+import { db } from '@/lib/db';
+import { resourceReleaseTable, resourceTable } from '@/lib/db/schema';
 
 export async function resourceGetById(resourceId: string) {
   'use cache';

@@ -1,4 +1,5 @@
-import { projectUpdateZod_Action } from './resource-actions.zod';
+import { projectDataZod_Base } from '@/features/resources/schemas/zod/project-validation-base.zod';
 
-export const projectUpdateDescriptionZod = projectUpdateZod_Action.partial()
-    .pick({id: true, description: true, urlTab: true});
+export const projectUpdateDescriptionZod = projectDataZod_Base
+  .partial()
+  .pick({ id: true, description: true });

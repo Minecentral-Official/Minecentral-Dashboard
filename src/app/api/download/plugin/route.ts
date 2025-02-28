@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Invalid release id', { status: 404 });
     }
     //Tick download counter by one
-    await resourceDownloadTick(release.pluginId);
+    await resourceDownloadTick(release.id);
 
     // Redirect to the actual file URL
     return NextResponse.redirect(release.fileUrl);

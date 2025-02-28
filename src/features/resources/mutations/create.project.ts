@@ -1,9 +1,6 @@
 'use server';
 
-import { z } from 'zod';
-
 import { resourceTable } from '@/features/resources/schemas/resource.table';
-import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
 import { db } from '@/lib/db';
 import createUUID from '@/lib/utils/create-uuid';
 
@@ -11,16 +8,19 @@ export default async function projectCreate({
   title,
   subtitle,
   slug,
+  type,
   userId,
-}: z.infer<typeof projectCreateZod> & {
-  userId: string;
-}) {
+}: Pick<
+  typeof resourceTable.$inferInsert,
+  'title' | 'subtitle' | 'slug' | 'type' | 'userId'
+>) {
   const newResource = await db.transaction(async (tx) => {
     //Insert new plugin info
     const newPlugin = await tx
       .insert(resourceTable)
       .values({
         id: createUUID(),
+        type,
         title,
         subtitle,
         slug,

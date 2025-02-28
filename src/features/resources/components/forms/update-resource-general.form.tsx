@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
@@ -12,11 +12,11 @@ import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import projectUpdateAction from '@/features/resources/actions/update-resource.action';
 import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
 import { getChangedFields } from '@/lib/utils/get-changed-fields';
-import projectUpdateAction from '../../actions/update-resource.action';
 
 export default function ResourceUpdateGeneralForm({
   id: resourceId,
@@ -25,7 +25,7 @@ export default function ResourceUpdateGeneralForm({
   subtitle,
   title,
 }: Pick<T_DTOResource, 'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle'>) {
-  const [lastResult, action] = useActionState(projectUpdateAction, undefined);
+  const [actionState, action] = useActionState(projectUpdateAction, undefined);
 
   const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
@@ -39,6 +39,17 @@ export default function ResourceUpdateGeneralForm({
     //Submit form, but cancel if no changes applied
     form.onSubmit(e);
   };
+
+  // Show toast when state changes
+  useEffect(() => {
+    if (actionState?.success) {
+      toast.success(actionState.message, {
+        id: 'update-resource',
+      });
+    } else if (actionState?.success === false) {
+      toast.error(actionState?.message, { id: 'update-resource' });
+    }
+  }, [actionState]);
 
   const handleImageChange = (file: FileList | null) => {
     if (file && file[0]) {
@@ -57,7 +68,6 @@ export default function ResourceUpdateGeneralForm({
   };
 
   const [form, fields] = useForm({
-    lastResult,
     onValidate({ formData }) {
       const changedData = getChangedFields(
         defaultValue,

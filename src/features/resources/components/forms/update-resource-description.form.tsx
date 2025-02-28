@@ -10,20 +10,18 @@ import { Field, FieldError } from '@/components/conform/field.conform';
 import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
+import projectUpdateAction from '@/features/resources/actions/update-resource.action';
 import { projectUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import projectUpdateAction from '../../actions/update-resource.action';
 
 export default function ResourceUpdateDescriptionForm({
   description,
   id: resourceId,
 }: Pick<T_DTOResource, 'id' | 'description'>) {
-  
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [lastResult, action] = useActionState(projectUpdateAction, undefined);
 
   const [form, fields] = useForm({
-    lastResult,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
         schema: projectUpdateDescriptionZod,
@@ -35,9 +33,11 @@ export default function ResourceUpdateDescriptionForm({
         toast.loading('Updating project...', { id: 'update-resource' });
       }
       return submission;
-    },defaultValue: {
-      description, id: resourceId
-    }
+    },
+    defaultValue: {
+      description,
+      id: resourceId,
+    },
   });
 
   const contentDescriptionHandler = useInputControl(fields.description);
@@ -51,8 +51,6 @@ export default function ResourceUpdateDescriptionForm({
       noValidate
     >
       <input type='hidden' name={fields.id.name} value={resourceId} />
-      <input type='hidden' name={fields.urlTab.name} value={"description"} />
-
 
       <Field>
         <div className='container w-full px-0 py-4'>

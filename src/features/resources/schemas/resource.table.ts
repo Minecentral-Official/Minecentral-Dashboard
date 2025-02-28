@@ -15,6 +15,9 @@ export const resourceTable = pgTable('resourceTable', {
   title: text().notNull(),
   subtitle: text().notNull(),
   slug: text().notNull(),
+  type: text('type', {
+    enum: CategoriesProjects,
+  }).notNull(),
   //Required to publish
   description: text(),
   categories: text('categories', { enum: CategoriesPlugin }).array(),
@@ -25,11 +28,7 @@ export const resourceTable = pgTable('resourceTable', {
   })
     .default('draft')
     .notNull(),
-  type: text('type', {
-    enum: CategoriesProjects,
-  })
-    .default('project')
-    .notNull(),
+
   //Optional
   linkIssues: text(),
   linkSource: text(),
