@@ -18,7 +18,7 @@ import {
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
 import { pluginsGetResponseZod } from '@/features/resources/schemas/zod/plugins-get-response.zod';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
@@ -27,8 +27,8 @@ import {
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 interface PluginFilterContextType {
-  plugins: TResourcePluginBasic[];
-  setPlugins: Dispatch<SetStateAction<TResourcePluginBasic[]>>;
+  plugins: T_DTOResource[];
+  setPlugins: Dispatch<SetStateAction<T_DTOResource[]>>;
   categories: T_PluginCategory[];
   toggleCategory: (category: T_PluginCategory) => void;
   versions: TPluginVersion[];
@@ -66,7 +66,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const searchParams = useSearchParams();
   const { searchDebounce, getParams } = useResourceFilterContext();
 
-  const [plugins, setPlugins] = useState<TResourcePluginBasic[]>([]);
+  const [plugins, setPlugins] = useState<T_DTOResource[]>([]);
   const updateSearchParams = useUpdateSearchParams();
   const categories = searchParams
     .getAll('category')

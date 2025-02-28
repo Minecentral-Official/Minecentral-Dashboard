@@ -1,11 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
 import pluginGroupVersions from '@/features/resources/util/version-group.plugin';
 
 export default function ResourceCardCompatability({
   release,
-}: Pick<TResourcePlugin, 'release'>) {
+}: Pick<T_DTOResource_WithReleases, 'release'>) {
   if (!release || !(release.compatibleVersions?.length > 0)) return <></>;
   return (
     <Card>

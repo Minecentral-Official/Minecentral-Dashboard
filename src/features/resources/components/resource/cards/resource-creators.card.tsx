@@ -1,12 +1,12 @@
 import { CrownIcon } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
 
 export default function ResourceCardCreators({
   author,
-}: Pick<TResourcePlugin, 'author'>) {
+}: Pick<T_DTOResource, 'author'>) {
   return (
     <Card>
       <CardHeader>

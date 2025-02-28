@@ -10,7 +10,7 @@ export default function ResourceOverview({
 }) {
   const stats = {
     totalPlugins: plugins.length,
-    totalDownloads: plugins.reduce((acc, plugin) => {
+    totalDownloads: plugins.reduce((acc) => {
       return acc + 0;
     }, 0),
   };

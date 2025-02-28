@@ -3,12 +3,12 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TResourcePlugin } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceCardLinks({
   linkSupport,
   linkSource,
-}: Pick<TResourcePlugin, 'linkSupport' | 'linkSource'>) {
+}: Pick<T_DTOResource, 'linkSupport' | 'linkSource'>) {
   if (!linkSupport && !linkSource) return <></>;
 
   return (

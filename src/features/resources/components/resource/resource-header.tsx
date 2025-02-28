@@ -7,7 +7,7 @@ export default function ResourceHeader({
   subtitle,
   // downloads,
   iconUrl,
-}: Pick<T_DTOResource, 'title' | 'subtitle' | 'iconUrl' | 'categories'> & {
+}: Pick<T_DTOResource, 'title' | 'subtitle' | 'iconUrl'> & {
   likeCount: number;
 }) {
   return (

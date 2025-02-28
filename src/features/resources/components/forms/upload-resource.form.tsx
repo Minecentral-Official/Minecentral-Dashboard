@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { generateUploadButton } from '@uploadthing/react';
 import { toast } from 'sonner';
 
-import { OurFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
+import { ResourceFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
 
 export default function ResourceUploader({
   resourceId,
 }: {
-  resourceId: number;
+  resourceId: string;
 }) {
   const [uploadResponse, setUploadResponse] = useState<{
     data: {
@@ -20,13 +20,13 @@ export default function ResourceUploader({
     };
   } | null>(null);
 
-  const UploadButton = generateUploadButton<OurFileRouter>();
+  const UploadButton = generateUploadButton<ResourceFileRouter>();
 
   return (
     <div className='rounded-lg border p-4'>
       <h2 className='text-lg font-bold'>Upload a Minecraft Resource</h2>
       <UploadButton
-        input={{ resourceId }}
+        input={{ id: resourceId }}
         endpoint='resourceUpload'
         onClientUploadComplete={(res) => {
           if (res) {

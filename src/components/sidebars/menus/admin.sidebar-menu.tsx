@@ -1,3 +1,4 @@
+/* eslint-disable boundaries/element-types */
 import { TerminalIcon } from 'lucide-react';
 
 import SidebarLink from '@/components/sidebars/link.sidebar';

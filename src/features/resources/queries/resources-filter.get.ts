@@ -5,7 +5,7 @@ import { and, arrayContains, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 import { T_PluginCategory } from '@/features/resources/config/categories.plugin';
 import { TPluginVersion } from '@/features/resources/config/versions.plugin';
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { TResourcePluginBasic } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {
@@ -23,7 +23,7 @@ export type TGetPluginsRequest = {
 };
 
 export type TGetPluginsResponse = {
-  resources: TResourcePluginBasic[] | [];
+  resources: T_DTOResource[] | [];
   totalCount: number;
   currentPage: number;
   totalPages: number;

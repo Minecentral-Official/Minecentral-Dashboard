@@ -35,7 +35,7 @@ export const resourceFileRouter = {
     })
     .onUploadComplete(async ({ file, metadata }) => {
       await projectUpdate(metadata.id, { iconUrl: file.ufsUrl });
-      return { file, metadata };
+      return { data: { url: file.ufsUrl, ...metadata } };
     }),
 
   resourceUpload: f({
