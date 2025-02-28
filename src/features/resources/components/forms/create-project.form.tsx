@@ -8,10 +8,20 @@ import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
+import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import resourceCreateAction from '@/features/resources/actions/create-resource.action';
 import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
+import { CategoriesProjects } from '@/lib/types/project.type';
+
+const typeSelectData = CategoriesProjects.map((category) => ({
+  value: category,
+  name: category
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '),
+}));
 
 export default function ProjectCreateForm() {
   const [actionState, action] = useActionState(resourceCreateAction, undefined);
@@ -65,6 +75,16 @@ export default function ProjectCreateForm() {
           <span className='text-accent-foreground'>{`https://minecentral.net/resource/`}</span>
           {fields.slug.value}
         </p>
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.type.id}>Resource Type</Label>
+        <SelectConform
+          placeholder='Select a type...'
+          meta={fields.type}
+          items={typeSelectData}
+        />
+        {fields.type.errors && <FieldError>{fields.type.errors}</FieldError>}
       </Field>
 
       <Field>

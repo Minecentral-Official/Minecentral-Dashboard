@@ -13,6 +13,14 @@ import { useTicketContext } from '@/features/tickets/context/ticket.context';
 import ticketChangeStatus from '@/features/tickets/mutations/change-status.ticket';
 import { ticketUpdateStatusZod } from '@/features/tickets/schemas/zod/ticket-status.zod';
 
+const statusSelectData = ticketStatusConfig.map((category) => ({
+  value: category,
+  name: category
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '),
+}));
+
 export default function TicketStatusSelect() {
   const {
     ticket: { status: currentStatus, id: ticketId },
@@ -33,13 +41,6 @@ export default function TicketStatusSelect() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const statusSelectData = ticketStatusConfig.map((category) => ({
-    value: category,
-    name: category
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' '),
-  }));
   return (
     <Form
       id={form.id}
@@ -50,7 +51,7 @@ export default function TicketStatusSelect() {
     >
       <InputConform meta={fields.id} type='hidden' />
       <SelectConform
-        placeholder='Select your status'
+        placeholder='Select your status...'
         meta={fields.status}
         items={statusSelectData}
         onValueChange={() => formRef.current?.requestSubmit()}

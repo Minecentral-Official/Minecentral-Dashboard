@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import ProjectCreateForm from '@/features/resources/components/forms/new-project.form';
+import ProjectCreateForm from '@/features/resources/components/forms/create-project.form';
 
 export function ProjectCreateDialog() {
   const [open, setOpen] = useState(false);
