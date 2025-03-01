@@ -1,5 +1,26 @@
-import { projectDataZod_Base } from '@/features/resources/schemas/zod/project-validation-base.zod';
+import { z } from 'zod';
 
-export const projectUpdateGeneralZod = projectDataZod_Base
-  .partial()
-  .pick({ id: true, title: true, subtitle: true, slug: true });
+import { isSlug } from '@/lib/utils/slugify';
+
+export const projectUpdateGeneralZod = z.object({
+  id: z.string(),
+  title: z
+    .string()
+    .min(5, 'Title must be at least 5 characters')
+    .max(50, 'Max characters 50'),
+  subtitle: z
+    .string()
+    .max(120, `Please provide a brief summary (120 max characters)`)
+    .min(3, 'Put some effort in'),
+  slug: z
+    .string()
+    .max(120, `Please provide a memorizable url slug`)
+    .min(3, 'Something a little longer')
+    .transform((val) => {
+      return val.toLowerCase();
+    })
+    .refine((val) => isSlug(val), {
+      message:
+        'Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.',
+    }),
+});

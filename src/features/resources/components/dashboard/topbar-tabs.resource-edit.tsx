@@ -1,5 +1,6 @@
 'use client';
 
+import { ExternalLinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -43,22 +44,26 @@ export default function ResourceEditTopbarTabs({
   const urlPrefix = `/dashboard/resources/${slug}`;
   const pathname = usePathname();
   return (
-    <Card className='p-2'>
-    <NavigationMenu className='justify-start'>
-      <NavigationMenuList className=''>
-        {navItems.map((item) => (
-          <NavigationMenuItem key={item.title}>
-            <Link href={`${urlPrefix}${item.url}`} legacyBehavior passHref>
-              <NavigationMenuLink
-                active={pathname === `${urlPrefix}${item.url}`}
-                className={cn(navigationMenuTriggerStyle())}
-              >
-                {item.title}
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-    </NavigationMenu></Card>
+    <Card className='flex flex-row items-center justify-between p-2'>
+      <NavigationMenu className='justify-start'>
+        <NavigationMenuList className=''>
+          {navItems.map((item) => (
+            <NavigationMenuItem key={item.title}>
+              <Link href={`${urlPrefix}${item.url}`} legacyBehavior passHref>
+                <NavigationMenuLink
+                  active={pathname === `${urlPrefix}${item.url}`}
+                  className={cn(navigationMenuTriggerStyle())}
+                >
+                  {item.title}
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+      <Link href={`/resources/${slug}`}>
+        <ExternalLinkIcon className='mr-2 h-5 w-5' />
+      </Link>
+    </Card>
   );
 }

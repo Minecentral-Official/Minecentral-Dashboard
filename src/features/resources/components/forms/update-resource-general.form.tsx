@@ -12,11 +12,10 @@ import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import projectUpdateAction from '@/features/resources/actions/update-resource.action';
+import projectUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
 import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
-import { getChangedFields } from '@/lib/utils/get-changed-fields';
 
 export default function ResourceUpdateGeneralForm({
   id: resourceId,
@@ -25,7 +24,10 @@ export default function ResourceUpdateGeneralForm({
   subtitle,
   title,
 }: Pick<T_DTOResource, 'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle'>) {
-  const [actionState, action] = useActionState(projectUpdateAction, undefined);
+  const [actionState, action] = useActionState(
+    projectUpdateGeneralAction,
+    undefined,
+  );
 
   const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
@@ -68,34 +70,22 @@ export default function ResourceUpdateGeneralForm({
   };
 
   const [form, fields] = useForm({
+    lastResult: undefined,
     onValidate({ formData }) {
-      const changedData = getChangedFields(
-        defaultValue,
-        Object.fromEntries(formData.entries()) as typeof defaultValue,
-      );
-      const formDataObject = new FormData();
-      formDataObject.append('id', resourceId);
-      Object.entries(changedData).forEach(([key, value]) => {
-        formDataObject.append(key, String(value)); // Convert value to string if necessary
-      });
-
-      const submission = parseWithZod(formDataObject, {
+      const submission = parseWithZod(formData, {
         schema: projectUpdateGeneralZod,
       });
       if (submission.status !== 'success') {
-        console.log(submission.error);
-        toast.error('Form data invalid', { id: 'update-resource' });
+        toast.error('Form data invalid, please fix any errors', {
+          id: 'update-resource',
+        });
       } else {
         toast.loading('Updating project...', { id: 'update-resource' });
-        //Clear Editor Cache
-        // window?.localStorage.removeItem('editorContent');
       }
       return submission;
     },
     defaultValue,
   });
-
-  console.log(oldIconUrl, iconUrl, iconUrl === oldIconUrl);
 
   return (
     <form

@@ -19,23 +19,5 @@ export const projectDataZod_Base = createUpdateSchema(resourceTable, {
       .max(120, `Please provide a memorizable url slug`)
       .min(3, 'Something a little longer'),
   description: (schema) =>
-    schema
-      .min(100, 'Please make an effort to make a good description')
-      .max(50000, 'Bit excessive eyy'),
-}).pick({
-  title: true,
-  categories: true,
-  description: true,
-  languages: true,
-  linkDiscord: true,
-  linkDonation: true,
-  linkIssues: true,
-  linkSource: true,
-  linkSupport: true,
-  slug: true,
-  subtitle: true,
-  status: true,
-  id: true,
-  userId: true,
-  type: true,
+    schema.min(100, 'Please make an effort to make a good description'),
 });

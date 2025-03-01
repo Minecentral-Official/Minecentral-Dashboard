@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
@@ -10,7 +10,7 @@ import { Field, FieldError } from '@/components/conform/field.conform';
 import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
-import projectUpdateAction from '@/features/resources/actions/update-resource.action';
+import projectUpdateDescriptionAction from '@/features/resources/actions/update-resource-description.action';
 import { projectUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
@@ -18,8 +18,15 @@ export default function ResourceUpdateDescriptionForm({
   description,
   id: resourceId,
 }: Pick<T_DTOResource, 'id' | 'description'>) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lastResult, action] = useActionState(projectUpdateAction, undefined);
+  const [actionState, action] = useActionState(
+    projectUpdateDescriptionAction,
+    undefined,
+  );
+
+  const defaultValue = {
+    description,
+    id: resourceId,
+  };
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
@@ -34,11 +41,19 @@ export default function ResourceUpdateDescriptionForm({
       }
       return submission;
     },
-    defaultValue: {
-      description,
-      id: resourceId,
-    },
+    defaultValue,
   });
+
+  // Show toast when state changes
+  useEffect(() => {
+    if (actionState?.success) {
+      toast.success(actionState.message, {
+        id: 'update-resource',
+      });
+    } else if (actionState?.success === false) {
+      toast.error(actionState?.message, { id: 'update-resource' });
+    }
+  }, [actionState]);
 
   const contentDescriptionHandler = useInputControl(fields.description);
 

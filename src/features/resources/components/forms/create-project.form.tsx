@@ -40,6 +40,7 @@ export default function ProjectCreateForm() {
       }
       return submission;
     },
+    onSubmit(event, {}) {},
   });
 
   // Show toast when state changes

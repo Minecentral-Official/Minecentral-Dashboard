@@ -4,8 +4,7 @@ import { z } from 'zod';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
-import { projectUploadIconZod } from '@/features/resources/schemas/zod/upload-icon.zod';
-import { projectUploadResourceFileZod } from '@/features/resources/schemas/zod/upload-resource-file.zod';
+import { projectUploadResourceZod } from '@/features/resources/schemas/zod/upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';
 
@@ -26,7 +25,7 @@ export const resourceFileRouter = {
     'image/png': { maxFileSize: '256KB' },
     'image/webp': { maxFileSize: '256KB' },
   })
-    .input(projectUploadIconZod)
+    .input(projectUploadResourceZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
       if ((await resourceGetById_WithUser(input.id))?.author.id !== user.id)
@@ -42,7 +41,7 @@ export const resourceFileRouter = {
     'application/java-archive': { maxFileSize: '16MB', maxFileCount: 1 },
     'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
   })
-    .input(projectUploadResourceFileZod)
+    .input(projectUploadResourceZod)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
       if ((await resourceGetById_WithUser(input.id))?.author.id !== user.id)

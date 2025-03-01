@@ -1,6 +1,7 @@
 import { createInsertSchema } from 'drizzle-zod';
 
 import { resourceTable } from '@/lib/db/schema';
+import { isSlug } from '@/lib/utils/slugify';
 
 export const projectCreateZod = createInsertSchema(resourceTable, {
   title: (schema) =>
@@ -14,7 +15,14 @@ export const projectCreateZod = createInsertSchema(resourceTable, {
   slug: (schema) =>
     schema
       .max(120, `Please provide a memorizable url slug`)
-      .min(3, 'Something a little longer'),
+      .min(3, 'Something a little longer')
+      .transform((val) => {
+        return val.toLowerCase();
+      })
+      .refine((val) => isSlug(val), {
+        message:
+          'Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.',
+      }),
 }).pick({
   title: true,
   subtitle: true,

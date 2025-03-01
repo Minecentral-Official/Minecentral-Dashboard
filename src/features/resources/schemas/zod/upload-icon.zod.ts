@@ -1,3 +1,3 @@
-import { projectDataZod_Base } from '@/features/resources/schemas/zod/project-validation-base.zod';
+import { z } from 'zod';
 
-export const projectUploadIconZod = projectDataZod_Base.pick({ id: true });
+export const projectUploadResourceZod = z.object({ id: z.string() });
