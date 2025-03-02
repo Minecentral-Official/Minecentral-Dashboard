@@ -1,6 +1,10 @@
 import { UTApi } from 'uploadthing/server';
 
-const utapi = new UTApi();
+import { serverEnv } from '@/lib/env/server.env';
+
+const utapi = new UTApi({
+  token: serverEnv.UPLOADTHING_TOKEN,
+});
 export async function uploadThing_File(file: File) {
   try {
     // Upload file to UploadThing
