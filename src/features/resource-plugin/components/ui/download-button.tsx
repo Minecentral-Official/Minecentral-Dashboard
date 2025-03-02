@@ -31,7 +31,7 @@ export default function DownloadButton({
       // You can add additional logic here to track the download attempt
       //   console.log('Download initiated');
     } catch (error) {
-      //   console.error('Download failed:', error);
+      console.error('Download failed:', error);
     } finally {
       setIsDownloading(false);
     }
