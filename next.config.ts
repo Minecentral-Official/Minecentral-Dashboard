@@ -14,6 +14,9 @@ jiti.esmResolve('./src/lib/env/client.env.ts');
 const nextConfig: NextConfig = removeImports({
   /* config options here */
   experimental: {
+    turbo: {
+      resolveExtensions: ['.tsx', '.ts'],
+    },
     dynamicIO: true,
     serverActions: {
       bodySizeLimit: '10mb',

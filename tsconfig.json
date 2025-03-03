@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "eslint.config.js",
-    "src/features/activity/mutations"
+    "src/features/activity/mutations",
+    "debug.js"
   ],
   "exclude": ["node_modules"]
 }

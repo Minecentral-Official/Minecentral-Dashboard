@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "debug": "node debug.js",
     "start": "next start",
     "lint": "next lint",
     "stripe": "stripe listen -f localhost:3000/api/stripe/host",
