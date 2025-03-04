@@ -6,7 +6,7 @@ import { resourceTable } from '@/lib/db/schema';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { idorslug: string } },
+  { params }: { params: Promise<{ idorslug: string }> },
 ) {
   const { idorslug } = await params;
   const { searchParams } = new URL(request.url);
@@ -18,8 +18,6 @@ export async function GET(
     const resource = await db.query.resourceTable.findFirst({
       where: eq(resourceTable.id, idorslug),
     });
-
-    console.log('TEST 1');
     // If found by ID and has a different slug, redirect to the slug URL
     if (resource && resource.slug && resource.slug !== idorslug) {
       const prefix = isDashboard ? '/dashboard' : '';
@@ -28,11 +26,9 @@ export async function GET(
         request.url,
       );
 
-      console.log('TEST 2');
       return NextResponse.redirect(redirectUrl, 307);
     }
 
-    console.log('TEST 3');
     // If not found by ID or already at the correct URL, return not found
     return NextResponse.json(
       { message: 'Resource not found' },
