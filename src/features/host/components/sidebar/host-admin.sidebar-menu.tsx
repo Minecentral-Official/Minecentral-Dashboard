@@ -18,9 +18,9 @@ const sidebarMenuConfig = [
 export default function SidebarHostAdmin() {
   return (
     <CollapsibleSidebarWrapper
-      urlSuffix='admin'
+      urlSuffix='admin/host'
       Icon={ServerIcon}
-      title='Host'
+      title='Server Hosting'
       links={sidebarMenuConfig}
     />
   );

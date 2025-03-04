@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { resourceTable } from '@/lib/db/schema';
 
+//Basically middlware to check if we can find a resource based off the id/slug of a resource
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> },

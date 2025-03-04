@@ -17,7 +17,7 @@ import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
-import { pluginsGetResponseZod } from '@/features/resources/schemas/zod/plugins-get-response.zod';
+import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import {
   SearchParamsConsume,
@@ -97,7 +97,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         return response.json();
       })
       .then((json) => {
-        const parse = pluginsGetResponseZod.safeParse(json);
+        const parse = resourcesListFilterApiResponseZod.safeParse(json);
         if (parse.success) setPlugins(parse.data.resources);
         else {
           toast.error('Query error:' + parse.error);

@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { TResourceSortBy } from '@/features/resources/config/sort-by.config';
-import { resourceFilterZod } from '@/features/resources/schemas/zod/resource-filter.zod';
+import { resourceListFilterZod } from '@/features/resources/schemas/zod/resource-list-filter.zod';
 import sortStringToValue from '@/features/resources/util/sort-string-to-value';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useUpdateSearchParams } from '@/hooks/use-update-search-params';
@@ -46,12 +46,13 @@ export function ResourceFilterProvider({
 }: ResourceFilterProviderProps) {
   const searchParams = useSearchParams();
 
+  //Stateful via searchparams, somehow, idk how this works
   const {
     limit,
     page,
     searchQuery: query,
     sortBy,
-  } = resourceFilterZod.parse({
+  } = resourceListFilterZod.parse({
     limit: searchParams.get('limit'),
     page: searchParams.get('p'),
     sortBy: sortStringToValue(searchParams.get('sort')),
@@ -61,14 +62,6 @@ export function ResourceFilterProvider({
   //Use State this search param data because we want to slightly delay the search bar
   const [searchQuery, setSearchQuery] = useState<string>(query);
   const updateSearchParams = useUpdateSearchParams();
-  // const [limit, setLimitState] = useState<number>(parsedParams.limit);
-  // const [sortBy, setSortByState] = useState<TResourceSortBy>(
-  //   parsedParams.sortBy,
-  // );
-  // const [page, setPageState] = useState<number>(parsedParams.page);
-
-  // const [page, setPage] = useState<number>(0);
-  // const [searchQuery, setSearchQuery] = useState<string>('');
 
   function getParams(): { [key: string]: string | string[] | null } {
     const data = {

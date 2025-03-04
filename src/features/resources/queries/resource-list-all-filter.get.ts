@@ -29,7 +29,7 @@ export type TGetPluginsResponse = {
   totalPages: number;
 };
 
-export default async function resourcesGetFiltered({
+export default async function resourcesListAllFiltered({
   query,
   limit,
   page,

@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import PluginLimitFilter from '@/features/resources/components/filter-with-context/limit-filter';
-import PluginFilterSearchBar from '@/features/resources/components/filter-with-context/searchbar';
-import FilterPluginSidebar from '@/features/resources/components/filter-with-context/sidebar';
+import PluginLimitFilter from '@/features/resources/components/filter/limit-filter';
+import PluginFilterSearchBar from '@/features/resources/components/filter/searchbar';
+import FilterPluginSidebar from '@/features/resources/components/filter/sidebar';
+import PluginSortFilter from '@/features/resources/components/filter/sort-by-filter';
 import PluginCardView from '@/features/resources/components/resource/cards/plugin-view.card';
 import PluginFilterBadges from '@/features/resources/components/ui/filter-badges';
-import PluginSortFilter from '@/features/resources/components/ui/sort-by-filter';
 import {
   PluginFilterProvider,
   usePluginFilterContext,
