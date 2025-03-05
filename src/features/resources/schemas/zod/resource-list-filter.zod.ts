@@ -8,7 +8,7 @@ export const resourceListFilterZod = z.object({
     .catch(16),
   page: z
     .preprocess((a) => parseInt(a as string, 10), z.number().positive())
-    .catch(0),
+    .catch(1),
   sortBy: z.enum(C_ResourceSort).default('relevance').catch('relevance'),
   searchQuery: z.string().catch(''),
 });

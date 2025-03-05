@@ -2,9 +2,9 @@ import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_ResourceType } from '@/features/resources/config/resource-type.config';
 import { resourceReleaseTable } from '@/features/resources/schemas/resource-release.table';
 import { likedResourceTable, userTable } from '@/lib/db/schema';
-import { CategoriesProjects } from '@/lib/types/project.type';
 
 export const resourceTable = pgTable('resourceTable', {
   id: text().primaryKey(),
@@ -16,7 +16,7 @@ export const resourceTable = pgTable('resourceTable', {
   subtitle: text().notNull(),
   slug: text().notNull(),
   type: text('type', {
-    enum: CategoriesProjects,
+    enum: C_ResourceType,
   }).notNull(),
   //Required to publish
   description: text(),

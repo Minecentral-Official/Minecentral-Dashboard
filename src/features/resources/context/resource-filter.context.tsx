@@ -5,7 +5,8 @@ import { createContext, useContext, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { resourceListFilterZod } from '@/features/resources/schemas/zod/resource-list-filter.zod';
-import { TResourceSortBy } from '@/features/resources/types/t-resource-type.type';
+import { TResourceSortBy } from '@/features/resources/types/t-resource-sort-by.type';
+import { T_ResourceType } from '@/features/resources/types/t-resource-type.type';
 import sortStringToValue from '@/features/resources/util/sort-string-to-value';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useUpdateSearchParams } from '@/hooks/use-update-search-params';
@@ -18,6 +19,8 @@ interface ResourceFilterContextType {
   limit: number;
   setLimit: (newLimit: number) => void;
   page: number;
+  totalPages: number;
+  setTotalPages: Dispatch<SetStateAction<number>>;
   setPage: (page: number) => void;
   sortBy: TResourceSortBy | undefined;
   setSortBy: (sortBy: TResourceSortBy | null | undefined) => void;
@@ -39,10 +42,12 @@ export function useResourceFilterContext() {
 
 interface ResourceFilterProviderProps {
   children: ReactNode;
+  searchType: T_ResourceType;
 }
 
 export function ResourceFilterProvider({
   children,
+  searchType,
 }: ResourceFilterProviderProps) {
   const searchParams = useSearchParams();
 
@@ -61,14 +66,16 @@ export function ResourceFilterProvider({
 
   //Use State this search param data because we want to slightly delay the search bar
   const [searchQuery, setSearchQuery] = useState<string>(query);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const updateSearchParams = useUpdateSearchParams();
 
   function getParams(): { [key: string]: string | string[] | null } {
     const data = {
       q: searchQuery,
-      p: page > 0 ? page.toString() : null,
+      p: page > 1 ? page.toString() : null,
       sort: sortBy != 'relevance' ? sortBy : null,
       limit: limit != 16 ? limit.toString() : null,
+      type: searchType,
     };
     return data;
   }
@@ -102,6 +109,8 @@ export function ResourceFilterProvider({
         setSortBy,
         searchDebounce,
         getParams,
+        totalPages,
+        setTotalPages,
       }}
     >
       {children}

@@ -11,20 +11,19 @@ import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
-import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api.zod';
-import { T_PluginCategory } from '@/features/resources/types/t-category.type';
+import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
 } from '@/hooks/use-update-search-params';
 
-import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import type { ReactNode } from 'react';
 
 interface PluginFilterContextType {
   plugins: T_DTOResource[];
-  setPlugins: Dispatch<SetStateAction<T_DTOResource[]>>;
   categories: T_PluginCategory[];
   toggleCategory: (category: T_PluginCategory) => void;
   versions: TPluginVersion[];
@@ -52,7 +51,7 @@ interface FilterPluginProviderProps {
 
 export function PluginFilterProvider({ children }: FilterPluginProviderProps) {
   return (
-    <ResourceFilterProvider>
+    <ResourceFilterProvider searchType='plugin'>
       <FilterPluginWrapper>{children}</FilterPluginWrapper>
     </ResourceFilterProvider>
   );
@@ -60,7 +59,8 @@ export function PluginFilterProvider({ children }: FilterPluginProviderProps) {
 
 function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const searchParams = useSearchParams();
-  const { searchDebounce, getParams } = useResourceFilterContext();
+  const { searchDebounce, getParams, setTotalPages } =
+    useResourceFilterContext();
 
   const [plugins, setPlugins] = useState<T_DTOResource[]>([]);
   const updateSearchParams = useUpdateSearchParams();
@@ -94,9 +94,12 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       })
       .then((json) => {
         const parse = resourcesListFilterApiResponseZod.safeParse(json);
-        if (parse.success) setPlugins(parse.data.resources);
-        else {
-          toast.error('Query error:' + parse.error);
+        if (parse.success) {
+          setPlugins(parse.data.resources);
+          setTotalPages(parse.data.totalPages);
+        } else {
+          console.log(parse.error);
+          toast.error('Could not fetch data, please contact an admin!');
         }
       });
   };
@@ -141,7 +144,6 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     <FilterPluginContext.Provider
       value={{
         plugins,
-        setPlugins,
         categories,
         toggleCategory,
         versions,

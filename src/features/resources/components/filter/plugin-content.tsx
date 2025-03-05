@@ -6,6 +6,7 @@ import { FilterIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import PluginLimitFilter from '@/features/resources/components/filter/limit-filter';
+import { ResourceFilterPage } from '@/features/resources/components/filter/resource-pagination';
 import PluginFilterSearchBar from '@/features/resources/components/filter/searchbar';
 import FilterPluginSidebar from '@/features/resources/components/filter/sidebar';
 import PluginSortFilter from '@/features/resources/components/filter/sort-by-filter';
@@ -13,7 +14,7 @@ import PluginCardView from '@/features/resources/components/resource/cards/plugi
 import PluginFilterBadges from '@/features/resources/components/ui/filter-badges';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 
-export default function ResourceFilterSidebar() {
+export default function PluginContent() {
   const { plugins } = usePluginFilterContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
@@ -44,7 +45,8 @@ export default function ResourceFilterSidebar() {
         <div className='flex flex-wrap gap-2'>
           <PluginFilterBadges />
         </div>
-        <div className='w-full'>
+        <div className='flex w-full flex-col gap-2'>
+          <ResourceFilterPage />
           {plugins ?
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
               {plugins.map((plugin, index) => (
@@ -52,6 +54,7 @@ export default function ResourceFilterSidebar() {
               ))}
             </div>
           : <p className='mx-auto'>No resources found</p>}
+          <ResourceFilterPage />
         </div>
       </main>
     </div>

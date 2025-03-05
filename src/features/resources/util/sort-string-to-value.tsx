@@ -1,5 +1,5 @@
 import { C_ResourceSort } from '@/features/resources/config/resource-sort-by.config';
-import { TResourceSortBy } from '@/features/resources/types/t-resource-type.type';
+import { TResourceSortBy } from '@/features/resources/types/t-resource-sort-by.type';
 
 export default function sortStringToValue(value: string | null) {
   if (!value) return null;

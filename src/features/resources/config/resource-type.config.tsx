@@ -1,8 +1,8 @@
 export const C_ResourceType = [
   'plugin',
-  'resource-packs',
-  'data-packs',
+  'resource-pack',
+  'data-pack',
   'shaders',
-  'mod-packs',
-  'mods',
+  'mod-pack',
+  'mod',
 ] as const;

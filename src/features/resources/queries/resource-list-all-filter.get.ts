@@ -3,9 +3,10 @@
 import { and, arrayContains, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { T_PluginCategory } from '@/features/resources/types/t-category.type';
-import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
+import {
+  T_ResourceFilterRequest,
+  T_ResourcesResponse,
+} from '@/features/resources/types/t-resource-api-responses.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {
@@ -14,34 +15,23 @@ import {
   userTable,
 } from '@/lib/db/schema';
 
-export type TGetPluginsRequest = {
-  query?: string;
-  page: number;
-  limit: number;
-  categories?: T_PluginCategory[];
-  versions?: TPluginVersion[];
-};
-
-export type TGetPluginsResponse = {
-  resources: T_DTOResource[] | [];
-  totalCount: number;
-  currentPage: number;
-  totalPages: number;
-};
-
 export default async function resourcesListAllFiltered({
   query,
   limit,
   page,
   categories,
   versions,
-}: TGetPluginsRequest): Promise<TGetPluginsResponse> {
+  type,
+}: T_ResourceFilterRequest): Promise<T_ResourcesResponse> {
   'use cache';
   cacheLife('minutes');
   cacheTag(
     `filter-${query}-${limit}-${page}-${categories?.toString()}-${versions?.toString()}`,
   );
-  const otherConditions = [eq(resourceTable.status, 'accepted')];
+  const otherConditions = [
+    eq(resourceTable.status, 'accepted'),
+    eq(resourceTable.type, type),
+  ];
   const textConditions = [];
 
   //Query based Filters
@@ -102,8 +92,6 @@ export default async function resourcesListAllFiltered({
 
   const result = {
     resources: resources.map((resource) => DTOResource(resource)),
-    totalCount,
-    currentPage: page,
     totalPages,
   };
   return result;

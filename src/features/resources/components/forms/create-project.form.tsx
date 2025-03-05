@@ -12,10 +12,10 @@ import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import resourceCreateAction from '@/features/resources/actions/create-resource.action';
+import { C_ResourceType } from '@/features/resources/config/resource-type.config';
 import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
-import { CategoriesProjects } from '@/lib/types/project.type';
 
-const typeSelectData = CategoriesProjects.map((category) => ({
+const typeSelectData = C_ResourceType.map((category) => ({
   value: category,
   name: category
     .split('-')

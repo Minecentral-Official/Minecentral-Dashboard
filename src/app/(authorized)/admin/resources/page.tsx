@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 
 import { ProjectsUserTable } from '@/features/resources/components/resource/table/project-list-table';
 import { resourceListAllZod } from '@/features/resources/schemas/zod/resource-list-all.zod';
-import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api.zod';
+import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { SearchParamsConsume } from '@/hooks/use-update-search-params';
 

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import ResourceFilterSidebar from '@/features/resources/components/filter/filter-sidebar';
+import PluginContent from '@/features/resources/components/filter/plugin-content';
 import { PluginFilterProvider } from '@/features/resources/context/plugin-filter.context';
 
 // Define valid content types
@@ -24,7 +24,7 @@ export default async function ContentPage({ params }: PageParams) {
   return (
     <PluginFilterProvider>
       <div className='container mx-auto flex min-h-screen flex-col'>
-        <ResourceFilterSidebar />
+        <PluginContent />
       </div>
     </PluginFilterProvider>
   );

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import resourcesListAll from '@/features/resources/queries/resource-list-all.get';
-import { resourcesListFilterApiRequestZod } from '@/features/resources/schemas/zod/resources-list-filter-api.zod';
+import { resourcesListFilterApiRequestZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
 
 //The fetch all resources, for admins
 export async function GET(request: NextRequest) {

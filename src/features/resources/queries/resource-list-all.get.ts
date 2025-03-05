@@ -3,8 +3,8 @@
 import { desc } from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { T_PluginCategory } from '@/features/resources/types/t-category.type';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
