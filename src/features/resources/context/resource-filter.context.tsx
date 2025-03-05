@@ -4,8 +4,8 @@ import { createContext, useContext, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { TResourceSortBy } from '@/features/resources/config/sort-by.config';
 import { resourceListFilterZod } from '@/features/resources/schemas/zod/resource-list-filter.zod';
+import { TResourceSortBy } from '@/features/resources/types/t-resource-type.type';
 import sortStringToValue from '@/features/resources/util/sort-string-to-value';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useUpdateSearchParams } from '@/hooks/use-update-search-params';

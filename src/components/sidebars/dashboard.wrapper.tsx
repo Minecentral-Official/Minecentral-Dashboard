@@ -12,10 +12,18 @@ import {
 export default function SidebarDashboardWrapper({
   children,
   sidebarChildren,
-}: PropsWithChildren<{ sidebarChildren: ReactNode }>) {
+  className,
+  homeUrl,
+}: PropsWithChildren<{
+  sidebarChildren: ReactNode;
+  className?: string;
+  homeUrl?: string;
+}>) {
   return (
     <SidebarProvider>
-      <AppSidebar>{sidebarChildren}</AppSidebar>
+      <AppSidebar homeUrl={homeUrl} className={className}>
+        {sidebarChildren}
+      </AppSidebar>
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2'>
           <div className='flex items-center gap-2 px-4'>

@@ -1,15 +1,15 @@
 import { eq, sql } from 'drizzle-orm';
 
-import { resourceGetById } from '@/features/resources/queries/resource-by-id.get';
+import { projectGetById } from '@/features/resources/queries/project-by-id.get';
 import resourceIsLikedByUserId from '@/features/resources/queries/resource-is-liked-by-user-id.get';
 import { db } from '@/lib/db';
 import { likedResourceTable } from '@/lib/db/schema';
 
-export default async function resourceGetById_WithUser(
+export default async function projectGetById_WithUser(
   resourceId: string,
   userId?: string,
 ) {
-  const resource = await resourceGetById(resourceId);
+  const resource = await projectGetById(resourceId);
   if (!resource) return undefined;
 
   // Fetch like count (cached) separately

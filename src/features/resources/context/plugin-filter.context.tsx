@@ -5,20 +5,16 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
-import {
-  CategoriesPlugin,
-  T_PluginCategory,
-} from '@/features/resources/config/categories.plugin';
-import {
-  TPluginVersion,
-  TPluginVersions,
-} from '@/features/resources/config/versions.plugin';
+import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
 import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api.zod';
+import { T_PluginCategory } from '@/features/resources/types/t-category.type';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
@@ -71,12 +67,12 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const categories = searchParams
     .getAll('category')
     .filter((category): category is T_PluginCategory =>
-      CategoriesPlugin.includes(category as T_PluginCategory),
+      C_CategoriesPlugin.includes(category as T_PluginCategory),
     );
   const versions = searchParams
     .getAll('v')
     .filter((version): version is TPluginVersion =>
-      TPluginVersions.includes(version as TPluginVersion),
+      C_ResourceVersionSupport.includes(version as TPluginVersion),
     );
 
   useEffect(() => {
@@ -110,7 +106,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     const currentCategories = searchParams
       .getAll('category')
       .filter((category): category is T_PluginCategory =>
-        CategoriesPlugin.includes(category as T_PluginCategory),
+        C_CategoriesPlugin.includes(category as T_PluginCategory),
       );
 
     const newCategories =
@@ -127,7 +123,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     const currentVersions = searchParams
       .getAll('v')
       .filter((version): version is TPluginVersion =>
-        TPluginVersions.includes(version as TPluginVersion),
+        C_ResourceVersionSupport.includes(version as TPluginVersion),
       );
 
     const newVersions =

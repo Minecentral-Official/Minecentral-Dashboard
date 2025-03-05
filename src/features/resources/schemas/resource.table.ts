@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { CategoriesPlugin } from '@/features/resources/config/categories.plugin';
+import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
 import { resourceReleaseTable } from '@/features/resources/schemas/resource-release.table';
 import { likedResourceTable, userTable } from '@/lib/db/schema';
 import { CategoriesProjects } from '@/lib/types/project.type';
@@ -20,7 +20,7 @@ export const resourceTable = pgTable('resourceTable', {
   }).notNull(),
   //Required to publish
   description: text(),
-  categories: text('categories', { enum: CategoriesPlugin }).array(),
+  categories: text('categories', { enum: C_CategoriesPlugin }).array(),
   iconUrl: text(),
   languages: text().array(),
   status: text('status', {

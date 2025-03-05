@@ -5,7 +5,7 @@ import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { resourceReleaseTable, resourceTable } from '@/lib/db/schema';
 
-export async function resourceGetById(resourceId: string) {
+export async function projectGetById(resourceId: string) {
   'use cache';
   cacheLife('hours');
   cacheTag(`resource-id-${resourceId}`);

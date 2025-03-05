@@ -3,7 +3,7 @@ import { UploadThingError } from 'uploadthing/server';
 import { z } from 'zod';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
-import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
+import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
 import { projectUploadResourceZod } from '@/features/resources/schemas/zod/upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 import ResourceEditTopbarTabs from '@/features/resources/components/dashboard/topbar-tabs.resource-edit';
-import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
+import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
 import projectGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
 
 type PageProps = {

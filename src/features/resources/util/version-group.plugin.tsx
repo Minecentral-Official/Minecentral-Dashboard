@@ -1,10 +1,10 @@
-import { TPluginVersions } from '@/features/resources/config/versions.plugin';
+import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 
 export default function pluginGroupVersions(selected: string[]): string[] {
   const versionGroups: Record<string, Set<string>> = {};
 
   // Group versions by their major.minor prefix
-  TPluginVersions.forEach((version) => {
+  C_ResourceVersionSupport.forEach((version) => {
     const [major, minor] = version.split('.');
     const key = `${major}.${minor}`;
     if (!versionGroups[key]) versionGroups[key] = new Set();

@@ -1,4 +1,4 @@
-import { resourceGetById } from '@/features/resources/queries/resource-by-id.get';
+import { projectGetById } from '@/features/resources/queries/project-by-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function projectCanEdit(resourceId: string) {
@@ -7,7 +7,7 @@ export default async function projectCanEdit(resourceId: string) {
   if (!user) return false;
   if (user.role === 'admin') return true;
 
-  const resource = await resourceGetById(resourceId);
+  const resource = await projectGetById(resourceId);
 
   if (!resource) return false;
 

@@ -28,17 +28,6 @@ export default async function resourceCreateAction(
   //DeConstruct fields
   const { title, subtitle, slug, type } = formParsed.value;
 
-  // let fileUrl;
-  // if (resourceType === 'file') {
-  //   const fileUpload = await uploadThing_File(resourceFile!);
-  //   if (!fileUpload) {
-  //     return;
-  //   }
-  //   fileUrl = fileUpload.ufsUrl;
-  // } else {
-  //   fileUrl = resourceUrl!;
-  // }
-
   const newPlugin = await projectCreate({
     title,
     subtitle,
@@ -47,11 +36,9 @@ export default async function resourceCreateAction(
     userId: user.id,
   });
 
-  await activityAddAction(user.id, ACTIVITY.NEW_RESOURCE, `${newPlugin.id}`);
-
-  // revalidateTag(`tickets-user-${user.id}`);
+  await activityAddAction(user.id, ACTIVITY.RESOURCE_NEW, `${newPlugin.id}`);
 
   redirect(
-    '/dashboard/resources?toast-success=true&toast-message=Resource%20successfully%20created&toast-id=create-resource',
+    `/dashboard/resources/${newPlugin.slug}?toast-success=true&toast-message=Resource%20successfully%20created&toast-id=create-resource`,
   );
 }

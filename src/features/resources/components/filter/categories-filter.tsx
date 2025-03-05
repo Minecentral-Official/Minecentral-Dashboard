@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { CategoriesPlugin } from '@/features/resources/config/categories.plugin';
+import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 
 export default function PluginCategoriesFilter() {
@@ -29,7 +29,7 @@ export default function PluginCategoriesFilter() {
         }`}
       >
         <CardContent className='w-full space-y-1 px-4'>
-          {CategoriesPlugin.map((item) => (
+          {C_CategoriesPlugin.map((item) => (
             <CustomCheckbox
               key={item}
               label={item.charAt(0).toUpperCase() + item.slice(1)}

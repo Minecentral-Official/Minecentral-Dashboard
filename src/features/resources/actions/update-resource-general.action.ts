@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
-import { resourceGetById } from '@/features/resources/queries/resource-by-id.get';
+import { projectGetById } from '@/features/resources/queries/project-by-id.get';
 import projectSlugAvailable from '@/features/resources/queries/slug-available.boolean';
 import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
 import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
@@ -29,7 +29,7 @@ export default async function projectUpdateGeneralAction(
     return { success: false, message: 'No Permission' };
   }
 
-  const resource = await resourceGetById(resourceId);
+  const resource = await projectGetById(resourceId);
 
   let redirectTo = undefined;
   //Are we updating the slug?

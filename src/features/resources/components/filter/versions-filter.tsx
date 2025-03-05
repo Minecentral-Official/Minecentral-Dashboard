@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { TPluginVersions } from '@/features/resources/config/versions.plugin';
+import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 
 export default function PluginVersionsFilter() {
@@ -29,7 +29,7 @@ export default function PluginVersionsFilter() {
         }`}
       >
         <CardContent className='h-48 w-full space-y-1 overflow-y-auto px-4'>
-          {TPluginVersions.map((item) => (
+          {C_ResourceVersionSupport.map((item) => (
             <CustomCheckbox
               key={item}
               label={item.charAt(0).toUpperCase() + item.slice(1)}

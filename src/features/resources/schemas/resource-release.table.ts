@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { TPluginVersions } from '@/features/resources/config/versions.plugin';
+import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceRelease', {
@@ -11,7 +11,7 @@ export const resourceReleaseTable = pgTable('resourceRelease', {
     .notNull(),
   title: text().notNull(),
   description: text().notNull(),
-  compatibleVersions: text('versionSupport', { enum: TPluginVersions })
+  compatibleVersions: text('versionSupport', { enum: C_ResourceVersionSupport })
     .array()
     .notNull(),
   // compatiblePlatforms: text('versionSupport', { enum: TPluginVersions })

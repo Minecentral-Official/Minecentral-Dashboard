@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { CategoriesPlugin } from '@/features/resources/config/categories.plugin';
+import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
 import {
   TGetPluginsRequest,
   TGetPluginsResponse,
@@ -13,7 +13,7 @@ export const resourcesListFilterApiRequestZod = z.object({
   query: z.optional(z.string()),
   limit: z.number(),
   page: z.number(),
-  categories: z.optional(z.enum(CategoriesPlugin).array()),
+  categories: z.optional(z.enum(C_CategoriesPlugin).array()),
 }) satisfies z.ZodType<TGetPluginsRequest>;
 
 export const resourcesListFilterApiResponseZod = z.object({

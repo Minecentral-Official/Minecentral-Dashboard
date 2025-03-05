@@ -21,7 +21,7 @@ export default function ResourceOverview({
         <CardTitle>Resource Statistics</CardTitle>
       </CardHeader>
       <CardContent>
-        <dl className='grid grid-cols-1 gap-4 text-center'>
+        <dl className='grid grid-cols-2 gap-4 text-center lg:grid-cols-1'>
           <div>
             <dt className='text-sm font-medium text-muted-foreground'>
               Total Resources

@@ -2,6 +2,8 @@ import { PropsWithChildren } from 'react';
 
 import { notFound } from 'next/navigation';
 
+import { serverEnv } from '@/lib/env/server.env';
+
 export default async function layout({
   params,
   children,
@@ -10,7 +12,7 @@ export default async function layout({
 
   // First, check if we need to redirect
   const checkResponse = await fetch(
-    `localhost:3000/api/redirect-resource/${slug}`,
+    `${serverEnv.FRONTEND_URL}/api/redirect-resource/${slug}`,
   );
   if (!checkResponse.ok) {
     return <>{children}</>;

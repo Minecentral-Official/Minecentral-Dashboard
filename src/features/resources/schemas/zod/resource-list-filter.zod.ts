@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { TResourceSort } from '@/features/resources/config/sort-by.config';
+import { C_ResourceSort } from '@/features/resources/config/resource-sort-by.config';
 
 export const resourceListFilterZod = z.object({
   limit: z
@@ -9,6 +9,6 @@ export const resourceListFilterZod = z.object({
   page: z
     .preprocess((a) => parseInt(a as string, 10), z.number().positive())
     .catch(0),
-  sortBy: z.enum(TResourceSort).default('relevance').catch('relevance'),
+  sortBy: z.enum(C_ResourceSort).default('relevance').catch('relevance'),
   searchQuery: z.string().catch(''),
 });

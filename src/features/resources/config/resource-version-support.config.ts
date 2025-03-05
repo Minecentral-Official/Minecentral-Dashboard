@@ -1,4 +1,4 @@
-export const TPluginVersions = [
+export const C_ResourceVersionSupport = [
   '1.21.4',
   '1.21.3',
   '1.21.2',
@@ -72,6 +72,3 @@ export const TPluginVersions = [
   '1.7.3',
   '1.7.2',
 ] as const;
-
-export type TPluginVersions = typeof TPluginVersions;
-export type TPluginVersion = TPluginVersions[number];

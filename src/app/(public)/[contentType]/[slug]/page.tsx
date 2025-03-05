@@ -4,7 +4,7 @@ import ResourceCardCreators from '@/features/resources/components/resource/cards
 import ResourceCardLinks from '@/features/resources/components/resource/cards/resource-links.card';
 import ResourceButtonHot from '@/features/resources/components/resource/resource-button-hot';
 import ResourceHeader from '@/features/resources/components/resource/resource-header';
-import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
+import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
 import projectGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
 import getSession from '@/lib/auth/helpers/get-session';
 

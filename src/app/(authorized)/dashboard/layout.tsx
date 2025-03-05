@@ -1,20 +1,22 @@
 import { PropsWithChildren } from 'react';
 
+import AdminToggleButton from '@/components/buttons/admin.toggle';
 import SidebarDashboardWrapper from '@/components/sidebars/dashboard.wrapper';
-import { SidebarAdmin } from '@/components/sidebars/menus/admin.sidebar-menu';
-import SidebarGeneral from '@/components/sidebars/menus/general.sidebar-menu';
-import SidebarManage from '@/components/sidebars/menus/manage.sidebar-menu';
+import SidebarDashboardGeneral from '@/components/sidebars/menus/dashboard-general.sidebar-menu';
+import SidebarDashboardManage from '@/components/sidebars/menus/dashboard-manage.sidebar-menu';
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <SidebarDashboardWrapper
+      homeUrl='/dashboard'
       sidebarChildren={
-        <>
-          <SidebarGeneral />
-          <SidebarManage />
-          {/* Will check if user is admin before displaying */}
-          <SidebarAdmin />
-        </>
+        <div className='flex h-full flex-col justify-between'>
+          <div>
+            <SidebarDashboardGeneral />
+            <SidebarDashboardManage />
+          </div>
+          <AdminToggleButton isOnAdmin={false} />
+        </div>
       }
     >
       <div className='h-full w-full p-6'>{children}</div>

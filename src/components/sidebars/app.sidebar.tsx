@@ -17,8 +17,9 @@ import validateRole from '@/lib/auth/helpers/validate-role';
 
 export async function AppSidebar({
   children,
+  homeUrl,
   ...props
-}: React.ComponentProps<typeof Sidebar>) {
+}: React.ComponentProps<typeof Sidebar> & { homeUrl?: string }) {
   const isAdmin = await validateRole('admin');
   return (
     <Sidebar variant='inset' {...props}>
@@ -26,7 +27,7 @@ export async function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size='lg' asChild>
-              <Link href='/dashboard'>
+              <Link href={homeUrl || '/dashboard'}>
                 <div className='flex aspect-square size-8 items-center justify-center'>
                   <LogoMark className='size-8' />
                 </div>

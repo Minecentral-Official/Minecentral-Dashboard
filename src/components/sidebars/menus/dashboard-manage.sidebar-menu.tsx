@@ -3,7 +3,7 @@ import { LayoutListIcon, ServerIcon } from 'lucide-react';
 import SidebarLink from '@/components/sidebars/link.sidebar';
 import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
 
-export default function SidebarManage() {
+export default function SidebarDashboardManage() {
   return (
     <SidebarGroupWrapper title='Manage'>
       <SidebarLink

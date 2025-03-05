@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ResourceUpdateDescriptionForm from '@/features/resources/components/forms/update-resource-description.form';
-import resourceGetById_WithUser from '@/features/resources/queries/resource-by-id-with-user.get';
+import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
 import projectGetIdBySlug from '@/features/resources/queries/resource-get-id-by-slug.get';
 
 type PageProps = {
