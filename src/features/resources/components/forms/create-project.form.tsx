@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import resourceCreateAction from '@/features/resources/actions/create-resource.action';
 import { C_ResourceType } from '@/features/resources/config/resource-type.config';
-import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
+import { S_ProjectCreate } from '@/features/resources/schemas/zod/s-project-create.zod';
 
 const typeSelectData = C_ResourceType.map((category) => ({
   value: category,
@@ -29,7 +29,7 @@ export default function ProjectCreateForm() {
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: projectCreateZod,
+        schema: S_ProjectCreate,
       });
       if (submission.status !== 'success') {
         toast.error('Form data invalid', { id: 'create-resource' });

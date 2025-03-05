@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const projectUpdateDescriptionZod = z.object({
+export const S_ProjectUpdateDescription = z.object({
   id: z.string(),
   description: z
     .string()

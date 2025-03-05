@@ -7,7 +7,7 @@ import projectUpdate from '@/features/resources/mutations/update.project';
 import { projectGetById } from '@/features/resources/queries/project-by-id.get';
 import projectSlugAvailable from '@/features/resources/queries/slug-available.boolean';
 import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
-import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import parseFormWithSchema from '@/lib/utils/parse-form-with-schema.util';
 
 export default async function projectUpdateGeneralAction(
@@ -16,7 +16,7 @@ export default async function projectUpdateGeneralAction(
 ) {
   const parsedForm = await parseFormWithSchema(
     formData,
-    projectUpdateGeneralZod,
+    S_ProjectUpdateGeneral,
   );
 
   if (parsedForm.status !== 'success') {

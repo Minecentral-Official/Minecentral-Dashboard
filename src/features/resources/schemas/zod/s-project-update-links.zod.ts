@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const projectUpdateLinksZod = z.object({
+export const S_ProjectUpdateLinks = z.object({
   id: z.string(),
   linkDiscord: z.string().url().optional(),
   linkDonation: z.string().url().optional(),

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import projectUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
-import { projectUpdateGeneralZod } from '@/features/resources/schemas/zod/update-general.zod';
+import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
 
@@ -73,7 +73,7 @@ export default function ResourceUpdateGeneralForm({
     lastResult: undefined,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: projectUpdateGeneralZod,
+        schema: S_ProjectUpdateGeneral,
       });
       if (submission.status !== 'success') {
         toast.error('Form data invalid, please fix any errors', {

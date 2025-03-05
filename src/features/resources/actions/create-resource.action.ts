@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { redirect } from 'next/navigation';
 
 import projectCreate from '@/features/resources/mutations/create.project';
-import { projectCreateZod } from '@/features/resources/schemas/zod/project-create.zod';
+import { S_ProjectCreate } from '@/features/resources/schemas/zod/s-project-create.zod';
 import {
   ACTIVITY,
   activityAddAction,
@@ -18,7 +18,7 @@ export default async function resourceCreateAction(
 ) {
   const { user } = await validateSession();
   const formParsed = parseWithZod(formData, {
-    schema: projectCreateZod,
+    schema: S_ProjectCreate,
   });
 
   if (formParsed.status !== 'success') {

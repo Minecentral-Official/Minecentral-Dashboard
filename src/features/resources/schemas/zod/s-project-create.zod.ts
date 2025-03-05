@@ -3,7 +3,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { resourceTable } from '@/lib/db/schema';
 import { isSlug } from '@/lib/utils/slugify';
 
-export const projectCreateZod = createInsertSchema(resourceTable, {
+export const S_ProjectCreate = createInsertSchema(resourceTable, {
   title: (schema) =>
     schema
       .min(5, 'Title must be at least 5 characters')

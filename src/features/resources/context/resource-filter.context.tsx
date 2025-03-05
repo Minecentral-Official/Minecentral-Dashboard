@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { resourceListFilterZod } from '@/features/resources/schemas/zod/resource-list-filter.zod';
+import { S_ResourceListFilter } from '@/features/resources/schemas/zod/resource-list-filter.zod';
 import { TResourceSortBy } from '@/features/resources/types/t-resource-sort-by.type';
 import { T_ResourceType } from '@/features/resources/types/t-resource-type.type';
 import sortStringToValue from '@/features/resources/util/sort-string-to-value';
@@ -57,7 +57,7 @@ export function ResourceFilterProvider({
     page,
     searchQuery: query,
     sortBy,
-  } = resourceListFilterZod.parse({
+  } = S_ResourceListFilter.parse({
     limit: searchParams.get('limit'),
     page: searchParams.get('p'),
     sortBy: sortStringToValue(searchParams.get('sort')),

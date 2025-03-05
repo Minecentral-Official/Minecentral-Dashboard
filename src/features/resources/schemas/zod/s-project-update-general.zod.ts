@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { isSlug } from '@/lib/utils/slugify';
 
-export const projectUpdateGeneralZod = z.object({
+export const S_ProjectUpdateGeneral = z.object({
   id: z.string(),
   title: z
     .string()

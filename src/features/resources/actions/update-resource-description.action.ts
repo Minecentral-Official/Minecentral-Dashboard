@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
-import { projectUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
+import { S_ProjectUpdateDescription } from '@/features/resources/schemas/zod/s-project-update-description.zod';
 import parseFormWithSchema from '@/lib/utils/parse-form-with-schema.util';
 
 export default async function projectUpdateDescriptionAction(
@@ -13,7 +13,7 @@ export default async function projectUpdateDescriptionAction(
 ) {
   const parsedForm = await parseFormWithSchema(
     formData,
-    projectUpdateDescriptionZod,
+    S_ProjectUpdateDescription,
   );
 
   if (parsedForm.status !== 'success') {

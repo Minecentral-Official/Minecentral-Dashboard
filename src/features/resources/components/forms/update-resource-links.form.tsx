@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import projectUpdateDescriptionAction from '@/features/resources/actions/update-resource-description.action';
-import { projectUpdateLinksZod } from '@/features/resources/schemas/zod/update-links.zod';
+import { S_ProjectUpdateLinks } from '@/features/resources/schemas/zod/s-project-update-links.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceUpdateLinksForm({
@@ -45,7 +45,7 @@ export default function ResourceUpdateLinksForm({
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: projectUpdateLinksZod,
+        schema: S_ProjectUpdateLinks,
       });
       if (submission.status !== 'success') {
         console.log(submission.error);

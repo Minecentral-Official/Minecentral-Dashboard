@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const resourceListAllZod = z.object({
+export const S_ResourceListAll = z.object({
   limit: z
     .preprocess((a) => parseInt(a as string, 10), z.number().positive().max(64))
     .catch(16),

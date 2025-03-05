@@ -4,14 +4,14 @@ import { revalidateTag } from 'next/cache';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
-import { projectUpdateLinksZod } from '@/features/resources/schemas/zod/update-links.zod';
+import { S_ProjectUpdateLinks } from '@/features/resources/schemas/zod/s-project-update-links.zod';
 import parseFormWithSchema from '@/lib/utils/parse-form-with-schema.util';
 
 export default async function projectUpdateLinksAction(
   _: unknown,
   formData: FormData,
 ) {
-  const parsedForm = await parseFormWithSchema(formData, projectUpdateLinksZod);
+  const parsedForm = await parseFormWithSchema(formData, S_ProjectUpdateLinks);
 
   if (parsedForm.status !== 'success') {
     return { success: false, message: 'Invalid form data!' };

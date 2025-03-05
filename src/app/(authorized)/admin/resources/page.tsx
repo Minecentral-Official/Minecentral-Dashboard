@@ -6,14 +6,14 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { ProjectsUserTable } from '@/features/resources/components/resource/table/project-list-table';
-import { resourceListAllZod } from '@/features/resources/schemas/zod/resource-list-all.zod';
 import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
+import { S_ResourceListAll } from '@/features/resources/schemas/zod/s-resource-list-all.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { SearchParamsConsume } from '@/hooks/use-update-search-params';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const { limit, page } = resourceListAllZod.parse({
+  const { limit, page } = S_ResourceListAll.parse({
     limit: searchParams.get('limit'),
     page: searchParams.get('p'),
   });

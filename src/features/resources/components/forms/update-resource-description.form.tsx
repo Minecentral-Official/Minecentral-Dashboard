@@ -11,7 +11,7 @@ import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
 import projectUpdateDescriptionAction from '@/features/resources/actions/update-resource-description.action';
-import { projectUpdateDescriptionZod } from '@/features/resources/schemas/zod/update-description.zod';
+import { S_ProjectUpdateDescription } from '@/features/resources/schemas/zod/s-project-update-description.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceUpdateDescriptionForm({
@@ -31,7 +31,7 @@ export default function ResourceUpdateDescriptionForm({
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: projectUpdateDescriptionZod,
+        schema: S_ProjectUpdateDescription,
       });
       if (submission.status !== 'success') {
         console.log(submission.error);
