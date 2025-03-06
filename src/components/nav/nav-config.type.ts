@@ -2,16 +2,16 @@ export type NavigationConfig = (
   | {
       title: string;
       href: string;
-      description: string;
       items?: undefined;
+      Icon?: React.ElementType;
     }
   | {
       title: string;
-      description: string;
+      Icon?: React.ElementType;
       items: {
         title: string;
         href: string;
-        disabled?: boolean;
+        Icon?: React.ElementType;
       }[];
       href?: undefined;
     }

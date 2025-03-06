@@ -22,10 +22,10 @@ export default function ButtonTooltip({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            className={`relative h-10 w-10 items-center justify-center rounded-full ${className}`}
+            className={`h-10 w-10 items-center justify-center rounded-full ${className}`}
             onClick={onClick}
           >
-            <Icon className='absolute inset-0 m-auto h-5 w-5' />
+            <Icon className='h-5 w-5' />
           </Button>
         </TooltipTrigger>
         <TooltipContent>

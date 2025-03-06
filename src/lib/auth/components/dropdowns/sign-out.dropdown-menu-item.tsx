@@ -10,7 +10,7 @@ export default function SignOutDropdownMenuItem() {
 
   return (
     <DropdownMenuItem
-      className='items-center text-red-500 focus:text-red-500'
+      className='items-center text-red-500 hover:cursor-pointer focus:text-red-500'
       onClick={handleSignOut}
     >
       <LogOut />

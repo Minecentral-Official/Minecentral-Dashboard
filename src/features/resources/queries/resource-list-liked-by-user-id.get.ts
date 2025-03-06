@@ -1,17 +1,18 @@
 import { eq } from 'drizzle-orm';
 
-import DTOResource_WithReleases from '@/features/resources/dto/plugin.dto';
-import { resourceTable } from '@/features/resources/schemas/resource.table';
-import { cacheLife } from '@/lib/cache/cache-exports';
+import DTOResource from '@/features/resources/dto/plugin-basic.dto';
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
+import { likedResourceTable } from '@/lib/db/schema';
 
 export default async function resourceListLikedByUserId(userId: string) {
   'use cache';
   cacheLife('hours');
-  const plugins = await db.query.resourceTable.findMany({
-    where: eq(resourceTable.userId, userId),
-    with: { user: true, releases: true, likes: true },
+  cacheTag(`like-${userId}`);
+  const plugins = await db.query.likedResourceTable.findMany({
+    where: eq(likedResourceTable.userId, userId),
+    with: { resource: { with: { user: true } } },
   });
 
-  return plugins.map((plugin) => DTOResource_WithReleases(plugin));
+  return plugins.map((plugin) => DTOResource(plugin.resource));
 }

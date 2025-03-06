@@ -22,7 +22,7 @@ export const likedResourceTable = pgTable(
 export const likedResourcesRelations = relations(
   likedResourceTable,
   ({ one }) => ({
-    plugin: one(resourceTable, {
+    resource: one(resourceTable, {
       fields: [likedResourceTable.resourceId],
       references: [resourceTable.id],
     }),

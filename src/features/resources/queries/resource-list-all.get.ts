@@ -3,32 +3,16 @@
 import { desc } from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
-import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
+import { T_ResourceSimpleRequest } from '@/features/resources/types/t-resource-api-request.type';
+import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-response.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { resourceTable } from '@/lib/db/schema';
 
-export type TGetPluginsRequest = {
-  query?: string;
-  page: number;
-  limit: number;
-  categories?: T_PluginCategory[];
-  versions?: TPluginVersion[];
-};
-
-export type TGetPluginsResponse = {
-  resources: T_DTOResource[] | [];
-  totalCount: number;
-  currentPage: number;
-  totalPages: number;
-};
-
 export default async function resourcesListAll({
   limit,
   page,
-}: TGetPluginsRequest): Promise<TGetPluginsResponse> {
+}: T_ResourceSimpleRequest): Promise<T_ResourcesResponse> {
   'use cache';
   cacheLife('minutes');
   cacheTag(`resources-all-${limit}-${page}`);
@@ -55,8 +39,6 @@ export default async function resourcesListAll({
 
   const result = {
     resources: resources.map((resource) => DTOResource(resource)),
-    totalCount,
-    currentPage: page,
     totalPages,
   };
   return result;

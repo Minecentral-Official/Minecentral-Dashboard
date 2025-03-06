@@ -8,46 +8,40 @@ export const Footer = () => {
       description: '',
     },
     {
-      title: 'Product',
-      description: 'Managing a small business today is already tough.',
+      title: 'Discover',
       items: [
         {
-          title: 'Reports',
-          href: '/reports',
+          title: 'Plugins',
+          href: '/plugins',
         },
         {
-          title: 'Statistics',
-          href: '/statistics',
+          title: 'Mods',
+          href: '/mods',
         },
         {
-          title: 'Dashboards',
-          href: '/dashboards',
+          title: 'Mod Packs',
+          href: '/modpacks',
         },
         {
-          title: 'Recordings',
-          href: '/recordings',
+          title: 'Data Packs',
+          href: '/datapacks',
+        },
+        {
+          title: 'Resource Packs',
+          href: '/resourcepacks',
+        },
+        {
+          title: 'Shaders',
+          href: '/shaders',
         },
       ],
     },
     {
       title: 'Company',
-      description: 'Managing a small business today is already tough.',
       items: [
         {
           title: 'About us',
           href: '/about',
-        },
-        {
-          title: 'Fundraising',
-          href: '/fundraising',
-        },
-        {
-          title: 'Investors',
-          href: '/investors',
-        },
-        {
-          title: 'Contact us',
-          href: '/contact',
         },
       ],
     },
@@ -63,7 +57,7 @@ export const Footer = () => {
                 Minecentral™
               </h2>
               <p className='max-w-lg text-left text-lg leading-relaxed tracking-tight text-background/75'>
-                Managing a game server just got a whole lot easier.
+                All things Minecraft in one place, search, download and host.
               </p>
             </div>
             <div className='flex flex-row gap-20'>

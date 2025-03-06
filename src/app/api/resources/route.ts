@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
 import resourcesListAllFiltered from '@/features/resources/queries/resource-list-all-filter.get';
-import { resourcesListFilterApiRequestZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
+import { S_ResourceFilterRequestSchema } from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 
 //The fetch clients use to query search results
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
-  const params = resourcesListFilterApiRequestZod.safeParse({
+  const params = S_ResourceFilterRequestSchema.safeParse({
     query: searchParams.get('q') || undefined,
     categories: searchParams
       .getAll('category')

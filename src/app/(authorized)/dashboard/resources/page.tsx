@@ -1,6 +1,6 @@
 import { ProjectCreateDialog } from '@/features/resources/components/dialog/project-create.dialog';
 import ResourceOverview from '@/features/resources/components/resource-overview';
-import { ProjectsUserTable } from '@/features/resources/components/resource/table/project-list-table';
+import { TableProjectsUser } from '@/features/resources/components/resource/table/table-projects-user';
 import resourceListAllByUserId from '@/features/resources/queries/resource-list-all-by-user-id.get';
 import validateSession from '@/lib/auth/helpers/validate-session';
 
@@ -14,7 +14,7 @@ export default async function Page() {
           <h2 className='text-2xl font-semibold'>Published Resources</h2>
           <ProjectCreateDialog />
         </div>
-        <ProjectsUserTable plugins={projects} />
+        <TableProjectsUser plugins={projects} />
       </div>
       <div>
         <h2 className='mb-4 text-2xl font-semibold'>Resource Overview</h2>

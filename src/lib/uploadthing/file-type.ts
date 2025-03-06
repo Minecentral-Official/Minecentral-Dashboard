@@ -1,11 +1,11 @@
 import AdmZip from 'adm-zip';
 
-import { T_ProjectCategory } from '@/lib/types/project.type';
+import { T_ResourceType } from '@/lib/types/t-resource-type.type';
 
 export async function detectResourceType(
   fileUrl: string,
   fileType: string,
-): Promise<T_ProjectCategory | null> {
+): Promise<T_ResourceType | null> {
   const response = await fetch(fileUrl);
   const buffer = await response.arrayBuffer();
   const zip = new AdmZip(Buffer.from(buffer));
@@ -32,7 +32,7 @@ export async function detectResourceType(
           entry.endsWith('.vsh'),
       )
     ) {
-      return 'shader-pack';
+      return 'shader';
     }
   }
 

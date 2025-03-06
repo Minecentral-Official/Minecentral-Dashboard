@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
-import { C_ResourceType } from '@/features/resources/config/resource-type.config';
 import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_ResourceType } from '@/lib/configs/resource-type.config';
 
 export const S_ResourceFilterRequestSchema = z.object({
   query: z.string().optional(),

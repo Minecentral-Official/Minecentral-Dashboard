@@ -2,8 +2,8 @@ import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
-import { C_ResourceType } from '@/features/resources/config/resource-type.config';
 import { resourceReleaseTable } from '@/features/resources/schemas/resource-release.table';
+import { C_ResourceType } from '@/lib/configs/resource-type.config';
 import { likedResourceTable, userTable } from '@/lib/db/schema';
 
 export const resourceTable = pgTable('resourceTable', {

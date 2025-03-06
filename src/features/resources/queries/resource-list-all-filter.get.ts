@@ -3,10 +3,8 @@
 import { and, arrayContains, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import {
-  T_ResourceFilterRequest,
-  T_ResourcesResponse,
-} from '@/features/resources/types/t-resource-api-responses.type';
+import { T_ResourceFilterRequest } from '@/features/resources/types/t-resource-api-request.type';
+import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-response.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {

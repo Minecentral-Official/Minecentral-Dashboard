@@ -1,36 +1,57 @@
-import { minecentralServicesConfig } from '@/lib/configs/minecentral-services.config';
+import {
+  BetweenVerticalEndIcon,
+  BoxIcon,
+  CloudMoonIcon,
+  PackageIcon,
+  PlugIcon,
+  ServerIcon,
+  SwatchBookIcon,
+} from 'lucide-react';
 
-export function baseNavigationConfig(
-  service?: (typeof minecentralServicesConfig)[number],
-) {
+import { NavigationConfig } from '@/components/nav/nav-config.type';
+
+export function baseNavigationConfig() {
   return [
     {
-      title: 'Home',
-      href: `/${service || ''}`,
-      description: '',
-    },
-    {
-      title: 'Services',
-      description: 'Your one stop shop for all things minecraft',
+      title: 'Discover More',
+      Icon: BoxIcon,
       items: [
         {
-          title: 'Minecraft Hosting',
-          href: '/hosting',
+          title: 'Plugins',
+          href: '/plugins',
+          Icon: PlugIcon,
         },
         {
-          title: 'Plugins & Resources',
-          href: '/resources',
+          title: 'Mods',
+          href: '/mods',
+          Icon: SwatchBookIcon,
         },
         {
-          title: 'Server List',
-          href: '/worlds',
-          disabled: true,
+          title: 'Data Packs',
+          href: '/datapacks',
+          Icon: BetweenVerticalEndIcon,
         },
         {
-          title: 'Docs',
-          href: 'https://docs.minecentral.net',
+          title: 'Mod Packs',
+          href: '/modpacks',
+          Icon: PackageIcon,
+        },
+        {
+          title: 'Resource Packs',
+          href: '/resourcepacks',
+          Icon: BoxIcon,
+        },
+        {
+          title: 'Shaders',
+          href: '/shaders',
+          Icon: CloudMoonIcon,
         },
       ],
     },
-  ];
+    {
+      title: 'Host a Server',
+      href: '/hosting',
+      Icon: ServerIcon,
+    },
+  ] satisfies NavigationConfig;
 }

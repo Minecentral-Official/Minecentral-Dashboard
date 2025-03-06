@@ -1,21 +1,47 @@
-import { LayoutListIcon, ServerIcon } from 'lucide-react';
+import {
+  LayoutListIcon,
+  ListIcon,
+  ServerIcon,
+  ThumbsUpIcon,
+} from 'lucide-react';
 
+import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collapsible-sidebar.wrapper';
 import SidebarLink from '@/components/sidebars/link.sidebar';
-import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
+import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
 
 export default function SidebarDashboardManage() {
   return (
-    <SidebarGroupWrapper title='Manage'>
-      <SidebarLink
-        Icon={LayoutListIcon}
-        name='Resources'
-        url='/dashboard/resources'
-      />
-      <SidebarLink
-        Icon={ServerIcon}
-        name='My Servers'
-        url='/dashboard/hosting'
-      />
-    </SidebarGroupWrapper>
+    <SidebarGroup>
+      <SidebarMenu>
+        <SidebarDashboardResouces />
+        <SidebarLink
+          Icon={ServerIcon}
+          name='My Servers'
+          url='/dashboard/hosting'
+        />
+      </SidebarMenu>
+    </SidebarGroup>
+  );
+}
+
+function SidebarDashboardResouces() {
+  return (
+    <CollapsibleSidebarWrapper
+      urlSuffix='resources'
+      title='Resouces'
+      Icon={LayoutListIcon}
+      links={[
+        {
+          name: 'Liked',
+          url: '/dashboard/resources/liked',
+          icon: ThumbsUpIcon,
+        },
+        {
+          name: 'Collections',
+          url: '/dashboard/resources/collections',
+          icon: ListIcon,
+        },
+      ]}
+    />
   );
 }

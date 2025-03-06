@@ -4,12 +4,12 @@ import { createContext, useContext, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { S_ResourceListFilter } from '@/features/resources/schemas/zod/resource-list-filter.zod';
+import { S_ResourceListFilter } from '@/features/resources/schemas/zod/s-resource-list-filter.zod';
 import { TResourceSortBy } from '@/features/resources/types/t-resource-sort-by.type';
-import { T_ResourceType } from '@/features/resources/types/t-resource-type.type';
 import sortStringToValue from '@/features/resources/util/sort-string-to-value';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useUpdateSearchParams } from '@/hooks/use-update-search-params';
+import { T_ResourceType } from '@/lib/types/t-resource-type.type';
 
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 

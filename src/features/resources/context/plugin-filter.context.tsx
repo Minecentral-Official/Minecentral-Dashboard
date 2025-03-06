@@ -11,7 +11,7 @@ import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
-import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
+import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
@@ -93,7 +93,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
         return response.json();
       })
       .then((json) => {
-        const parse = resourcesListFilterApiResponseZod.safeParse(json);
+        const parse = S_ResourceResponse.safeParse(json);
         if (parse.success) {
           setPlugins(parse.data.resources);
           setTotalPages(parse.data.totalPages);

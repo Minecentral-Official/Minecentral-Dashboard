@@ -16,6 +16,7 @@ import projectUpdateGeneralAction from '@/features/resources/actions/update-reso
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
+import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
 export default function ResourceUpdateGeneralForm({
   id: resourceId,
@@ -23,7 +24,11 @@ export default function ResourceUpdateGeneralForm({
   slug,
   subtitle,
   title,
-}: Pick<T_DTOResource, 'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle'>) {
+  type,
+}: Pick<
+  T_DTOResource,
+  'id' | 'iconUrl' | 'slug' | 'title' | 'subtitle' | 'type'
+>) {
   const [actionState, action] = useActionState(
     projectUpdateGeneralAction,
     undefined,
@@ -125,7 +130,7 @@ export default function ResourceUpdateGeneralForm({
         <InputConform meta={fields.slug} type='text' />
         {fields.slug.errors && <FieldError>{fields.slug.errors}</FieldError>}
         <p className=''>
-          <span className='text-accent-foreground'>{`https://minecentral.net/resource/`}</span>
+          <span className='text-accent-foreground'>{`https://minecentral.net/${getResourceUrl(type)}/`}</span>
           {fields.slug.value}
         </p>
       </Field>

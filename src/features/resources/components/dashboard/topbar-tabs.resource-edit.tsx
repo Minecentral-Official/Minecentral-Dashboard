@@ -61,7 +61,7 @@ export default function ResourceEditTopbarTabs({
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <Link href={`/resources/${slug}`}>
+      <Link href={`/plugins/${slug}`}>
         <ExternalLinkIcon className='mr-2 h-5 w-5' />
       </Link>
     </Card>

@@ -7,10 +7,11 @@ import Link from 'next/link';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ResourceCategoryBadges from '@/features/resources/components/resource/resource-category-badges';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
 type props = Pick<
   T_DTOResource,
-  'title' | 'author' | 'subtitle' | 'categories' | 'iconUrl' | 'slug'
+  'title' | 'author' | 'subtitle' | 'categories' | 'iconUrl' | 'slug' | 'type'
 >;
 
 export default function PluginCardView({
@@ -20,8 +21,9 @@ export default function PluginCardView({
   categories,
   iconUrl,
   slug,
+  type,
 }: props) {
-  const url = `/resources/${slug}`;
+  const url = `/${getResourceUrl(type)}/${slug}`;
   return (
     <Card className='overflow-hidden'>
       <Link href={url}>

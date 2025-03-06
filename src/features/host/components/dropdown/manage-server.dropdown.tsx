@@ -22,7 +22,7 @@ export default function ManageServerDropdown({
   serverUuid: uuid,
 }: ManageServerDropdownProps) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button className='h-6 w-6 p-0' variant='ghost'>
           <EllipsisVertical />

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { resourceTable } from '@/lib/db/schema';
 
 //Single source of truth and validation for all update schemas
-export const projectDataZod_Base = createUpdateSchema(resourceTable, {
+export const S_ProjectDataBase = createUpdateSchema(resourceTable, {
   id: z.string(),
   title: (schema) =>
     schema

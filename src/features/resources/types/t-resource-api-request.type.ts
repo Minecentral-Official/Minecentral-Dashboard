@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   S_ResourceFilterRequestSchema,
   S_ResourceSimpleRequestSchema,
-} from '@/features/resources/schemas/zod/resource-api-requests.zod';
+} from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
 
 export type T_ResourceFilterRequest = z.infer<
   typeof S_ResourceFilterRequestSchema

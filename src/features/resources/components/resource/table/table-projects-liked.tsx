@@ -1,9 +1,6 @@
-import { ClipboardCopyIcon, SettingsIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import CopyToClipboard from '@/components/etc/copy-to-clipboard';
-import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -13,29 +10,27 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import ButtonTooltip from '@/components/ui/tooltip-button';
+import ResourceToggleLikeButton from '@/features/resources/components/resource/resource-toggle-like-button';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 
 type PluginsTableResource = Pick<
   T_DTOResource,
-  'id' | 'iconUrl' | 'title' | 'status' | 'type' | 'slug'
+  'id' | 'iconUrl' | 'title' | 'type' | 'slug'
 >;
 
-export function ProjectsUserTable({
+export function TableProjectsLiked({
   plugins: projects,
 }: {
   plugins: PluginsTableResource[];
 }) {
   return (
     <Table className='w-full'>
-      <TableCaption>A list of your resources.</TableCaption>
+      <TableCaption>List of your liked resources.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className='w-[100px]'>Icon</TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>Id</TableHead>
           <TableHead>Type</TableHead>
-          <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -53,30 +48,15 @@ export function ProjectsUserTable({
               </Link>
             </TableCell>
             <TableCell className='grow font-medium'>
-              <Link href={`/resources/${project.slug}`}> {project.title}</Link>
-            </TableCell>
-            <TableCell>
-              <CopyToClipboard clipboardText={`${project.id}`}>
-                <Badge>
-                  {project.id} <ClipboardCopyIcon className='ml-2 h-3 w-3' />
-                </Badge>
-              </CopyToClipboard>
+              <Link href={`/plugins/${project.slug}`}> {project.title}</Link>
             </TableCell>
             <TableCell>
               {project.type ?
                 project.type.slice(0, 1).toUpperCase() + project.type.slice(1)
               : 'Project N/A'}
             </TableCell>
-            <TableCell>
-              {project.status ?
-                project.status.slice(0, 1).toUpperCase() +
-                project.status.slice(1)
-              : 'Draft'}
-            </TableCell>
             <TableCell className='shrink-0 text-right'>
-              <Link href={`/dashboard/resources/${project.slug}`}>
-                <ButtonTooltip Icon={SettingsIcon} tooltip='Settings' />
-              </Link>
+              <ResourceToggleLikeButton liked={true} resourceId={project.id} />
             </TableCell>
           </TableRow>
         ))}

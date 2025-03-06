@@ -12,8 +12,8 @@ import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import resourceCreateAction from '@/features/resources/actions/create-resource.action';
-import { C_ResourceType } from '@/features/resources/config/resource-type.config';
 import { S_ProjectCreate } from '@/features/resources/schemas/zod/s-project-create.zod';
+import { C_ResourceType } from '@/lib/configs/resource-type.config';
 
 const typeSelectData = C_ResourceType.map((category) => ({
   value: category,

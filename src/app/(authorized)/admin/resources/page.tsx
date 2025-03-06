@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { ProjectsUserTable } from '@/features/resources/components/resource/table/project-list-table';
-import { resourcesListFilterApiResponseZod } from '@/features/resources/schemas/zod/resources-list-filter-api-request.zod';
+import { TableProjectsUser } from '@/features/resources/components/resource/table/table-projects-user';
+import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { S_ResourceListAll } from '@/features/resources/schemas/zod/s-resource-list-all.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { SearchParamsConsume } from '@/hooks/use-update-search-params';
@@ -38,7 +38,7 @@ export default function Page() {
         return response.json();
       })
       .then((json) => {
-        const parse = resourcesListFilterApiResponseZod.safeParse(json);
+        const parse = S_ResourceResponse.safeParse(json);
         if (parse.success) setResources(parse.data.resources);
         else {
           toast.error('Query error:' + parse.error);
@@ -48,7 +48,7 @@ export default function Page() {
 
   return (
     <>
-      <ProjectsUserTable plugins={resources} />
+      <TableProjectsUser plugins={resources} />
     </>
   );
 }

@@ -34,16 +34,16 @@ export default function ServiceSelectionSection() {
 
 const services = [
   {
-    title: 'Hosting',
+    title: 'Server Hosting',
     description: 'Rent a Minecraft server and play together',
     href: '/hosting',
     enabled: true,
   },
   {
-    title: 'Plugins & Resources',
+    title: 'Resources',
     description:
       'Find fun community made plugins, texture-packs, mod-packs and more!',
-    href: '/resources',
+    href: '/plugins',
     enabled: true,
   },
   {

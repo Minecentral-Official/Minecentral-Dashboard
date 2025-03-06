@@ -2,20 +2,26 @@ import { CogIcon, ReceiptIcon, TicketIcon, UserIcon } from 'lucide-react';
 
 import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collapsible-sidebar.wrapper';
 import SidebarLink from '@/components/sidebars/link.sidebar';
-import SidebarGroupWrapper from '@/components/sidebars/wrapper.sidebar-group';
+import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
 
 export default function SidebarDashboardGeneral() {
   return (
-    <SidebarGroupWrapper title='General'>
-      {/* <SidebarGeneral />*/}
-      <SidebarDashboardAccount />
-      <SidebarLink Icon={TicketIcon} name='Tickets' url='/dashboard/tickets' />
-      <SidebarLink
-        Icon={ReceiptIcon}
-        name='Invoices'
-        url='/dashboard/invoices'
-      />
-    </SidebarGroupWrapper>
+    <SidebarGroup>
+      <SidebarMenu>
+        {/* <SidebarGeneral />*/}
+        <SidebarDashboardAccount />
+        <SidebarLink
+          Icon={TicketIcon}
+          name='Tickets'
+          url='/dashboard/tickets'
+        />
+        <SidebarLink
+          Icon={ReceiptIcon}
+          name='Invoices'
+          url='/dashboard/invoices'
+        />
+      </SidebarMenu>
+    </SidebarGroup>
   );
 }
 

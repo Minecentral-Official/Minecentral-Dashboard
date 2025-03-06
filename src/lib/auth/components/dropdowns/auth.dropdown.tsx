@@ -1,7 +1,13 @@
 import { PropsWithChildren } from 'react';
 
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { BadgeCheck, ChartBarBig, LayoutListIcon } from 'lucide-react';
+import {
+  BadgeCheck,
+  ChartBarBig,
+  LayoutListIcon,
+  ListIcon,
+  ThumbsUpIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 
 import ResponsiveDropdownMenuContent from '@/components/dropdown/responsive-dropdown-menu-content';
@@ -31,7 +37,7 @@ export default async function AuthNav({ children }: PropsWithChildren) {
   const userInitials = session.user.name.charAt(0).toUpperCase();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         {/* Keep the div here otherwise avatar will not load here */}
         <div>{children}</div>
@@ -59,24 +65,42 @@ export default async function AuthNav({ children }: PropsWithChildren) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href='/dashboard'>
+            <Link href='/dashboard' className='hover:cursor-pointer'>
               <ChartBarBig />
               Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href='/dashboard/account' className='hover:cursor-pointer'>
+              <BadgeCheck />
+              Account
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href='/dashboard/account'>
-              <BadgeCheck />
-              Account
+            <Link href='/dashboard/resources' className='hover:cursor-pointer'>
+              <LayoutListIcon />
+              My Resources
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href='/dashboard/resources'>
-              <LayoutListIcon />
-              Resources
+            <Link
+              href='/dashboard/resources/liked'
+              className='hover:cursor-pointer'
+            >
+              <ThumbsUpIcon />
+              My Likes
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link
+              href='/dashboard/resources/collections'
+              className='hover:cursor-pointer'
+            >
+              <ListIcon />
+              My Collections
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -86,50 +110,3 @@ export default async function AuthNav({ children }: PropsWithChildren) {
     </DropdownMenu>
   );
 }
-
-// export default function DropdownDemo() {
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button variant="outline">
-//           Labeled grouped items
-//           <ChevronDown
-//             className="-me-1 ms-2 opacity-60"
-//             size={16}
-//             strokeWidth={2}
-//             aria-hidden="true"
-//           />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent>
-//         <DropdownMenuLabel>Label</DropdownMenuLabel>
-//         <DropdownMenuGroup>
-//           <DropdownMenuItem>
-//             <CopyPlus size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
-//             Copy
-//           </DropdownMenuItem>
-//           <DropdownMenuItem>
-//             <Bolt size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
-//             Edit
-//           </DropdownMenuItem>
-//         </DropdownMenuGroup>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuLabel>Label</DropdownMenuLabel>
-//         <DropdownMenuGroup>
-//           <DropdownMenuItem>
-//             <Layers2 size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
-//             Group
-//           </DropdownMenuItem>
-//           <DropdownMenuItem>
-//             <Files size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
-//             Clone
-//           </DropdownMenuItem>
-//           <DropdownMenuItem className="text-destructive focus:text-destructive">
-//             <Trash size={16} strokeWidth={2} aria-hidden="true" />
-//             Delete
-//           </DropdownMenuItem>
-//         </DropdownMenuGroup>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   );
-// }

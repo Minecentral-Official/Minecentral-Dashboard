@@ -1,14 +1,4 @@
-'use client';
-
-import { useState } from 'react';
-
-import {
-  ClipboardCopyIcon,
-  FlagIcon,
-  HeartIcon,
-  LoaderPinwheelIcon,
-  MoreVertical,
-} from 'lucide-react';
+import { ClipboardCopyIcon, FlagIcon, MoreVertical } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -23,9 +13,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import ButtonTooltip from '@/components/ui/tooltip-button';
-import resourceToggleLikeAction from '@/features/resources/actions/toggle-like-resource.action';
 import ResourceButtonSettings from '@/features/resources/components/resource/resource-button-settings';
+import ResourceToggleLikeButton from '@/features/resources/components/resource/resource-toggle-like-button';
 import DownloadButton from '@/features/resources/components/ui/download-button';
 import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
 
@@ -37,31 +26,13 @@ export default function ResourceButtonHot({
 }: Pick<T_DTOResource_WithReleases, 'title' | 'release' | 'id' | 'slug'> & {
   liked: boolean;
 }) {
-  const [followLoading, setFollowLoading] = useState(false);
-
-  const handleClick = async () => {
-    setFollowLoading(true);
-    await resourceToggleLikeAction(id);
-    setFollowLoading(false);
-  };
-
   return (
     <div className='flex flex-row-reverse flex-wrap items-end gap-2 md:flex-col'>
       <DownloadButton
         downloadUrl={`/api/download/plugin?rId=${release?.downloadId}`}
       />
       <div className='flex flex-row gap-2'>
-        <ButtonTooltip
-          tooltip={liked ? 'Unfollow' : 'Follow'}
-          className={
-            followLoading ? 'animate-spin'
-            : liked ?
-              'bg-red-600 hover:bg-red-400'
-            : ''
-          }
-          Icon={followLoading ? LoaderPinwheelIcon : HeartIcon}
-          onClick={handleClick}
-        />
+        <ResourceToggleLikeButton liked={liked} resourceId={id} />
 
         <ResourceButtonSettings slug={slug} />
 

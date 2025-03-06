@@ -1,64 +1,64 @@
-import { MoveRight } from 'lucide-react';
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@radix-ui/react-dropdown-menu';
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 
 import { NavigationConfig } from '@/components/nav/nav-config.type';
 import { Button } from '@/components/ui/button';
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { cn } from '@/lib/utils';
 
 export default function NavDesktop({ config }: { config: NavigationConfig }) {
   return (
     <NavigationMenu className='flex items-start justify-start'>
-      <NavigationMenuList className='flex flex-row justify-start gap-4'>
+      <NavigationMenuList className='flex flex-row justify-start gap-2 text-nowrap'>
         {config.map((item) => (
           <NavigationMenuItem key={item.title}>
             {item.href ?
               <>
                 <NavigationMenuLink href={item.href}>
-                  <Button variant='ghost'>{item.title}</Button>
+                  <Button variant='ghost' className='flex flex-row gap-1'>
+                    {item.Icon && <item.Icon className='h-4 w-4' />}
+                    {item.title}
+                  </Button>
                 </NavigationMenuLink>
               </>
-            : <>
-                <NavigationMenuTrigger className='text-sm font-medium'>
+            : <DropdownMenu modal={false}>
+                <DropdownMenuTrigger className='flex flex-row items-center gap-1 rounded-md p-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground'>
+                  {item.Icon && <item.Icon className='h-4 w-4' />}
                   {item.title}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className='!w-[450px] p-4'>
-                  <div className='flex grid-cols-2 flex-col gap-4 lg:grid'>
-                    <div className='flex h-full flex-col justify-between'>
-                      <div className='flex flex-col'>
-                        <p className='text-base'>{item.title}</p>
-                        <p className='text-sm text-muted-foreground'>
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                    <div className='flex h-full flex-col text-sm'>
-                      {item.items?.map(({ href, title, disabled }) => (
-                        <NavigationMenuLink
-                          href={!disabled ? href : '#'}
-                          key={title}
-                          className={cn(
-                            'flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted',
-                            disabled &&
-                              'text-muted-foreground/70 hover:bg-inherit',
-                          )}
-                        >
-                          <span>
-                            {title} {disabled && '(Under dev)'}
-                          </span>
-                          <MoveRight className='h-4 w-4 text-muted-foreground' />
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </>
+                  <ChevronDown className='h-4 w-4' />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='flex flex-col gap-1 rounded-md bg-secondary p-2'>
+                  {item.items?.map(({ href, title, Icon }) => (
+                    <DropdownMenuItem
+                      key={title}
+                      className={
+                        'w-full text-nowrap rounded-md p-1 px-2 text-sm hover:cursor-pointer hover:bg-accent'
+                      }
+                      asChild
+                    >
+                      <Link
+                        href={href}
+                        className='flex flex-row items-center gap-1'
+                      >
+                        {Icon && <Icon className='h-4 w-4' />}
+                        {title}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             }
           </NavigationMenuItem>
         ))}

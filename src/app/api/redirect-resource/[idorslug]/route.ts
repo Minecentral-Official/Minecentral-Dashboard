@@ -22,7 +22,7 @@ export async function GET(
     if (resource && resource.slug && resource.slug !== idorslug) {
       const prefix = isDashboard ? '/dashboard' : '';
       const redirectUrl = new URL(
-        `${prefix}/resources/${resource.slug}`,
+        `${prefix}/plugins/${resource.slug}`,
         request.url,
       );
 
