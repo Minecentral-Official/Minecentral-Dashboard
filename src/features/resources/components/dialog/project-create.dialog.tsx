@@ -15,7 +15,7 @@ import ProjectCreateForm from '@/features/resources/components/forms/create-proj
 export function ProjectCreateDialog({
   children,
   className,
-}: PropsWithChildren & { className: string }) {
+}: PropsWithChildren & { className?: string }) {
   const [open, setOpen] = useState(false);
 
   return (
