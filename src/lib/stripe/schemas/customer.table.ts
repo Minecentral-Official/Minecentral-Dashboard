@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text } from 'drizzle-orm/pg-core';
 
-import { minecentralServicesConfig } from '@/lib/configs/minecentral-services.config';
+import { minecentralServicesConfig } from '@/lib/configs/c-minecentral-services.config';
 import { userTable } from '@/lib/db/schema';
 
 import type { MinecentralServices } from '@/lib/types/minecentral-services.type';
