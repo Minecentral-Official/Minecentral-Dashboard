@@ -23,7 +23,10 @@ import {
 import SignOutDropdownMenuItem from '@/lib/auth/components/dropdowns/sign-out.dropdown-menu-item';
 import getSession from '@/lib/auth/helpers/get-session';
 
-export default async function AuthNav({ children }: PropsWithChildren) {
+export default async function AuthNav({
+  children,
+  className,
+}: PropsWithChildren & { className: string }) {
   const session = await getSession();
 
   if (!session) {
@@ -40,7 +43,7 @@ export default async function AuthNav({ children }: PropsWithChildren) {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         {/* Keep the div here otherwise avatar will not load here */}
-        <div>{children}</div>
+        <div className={className}>{children}</div>
       </DropdownMenuTrigger>
       <ResponsiveDropdownMenuContent>
         <DropdownMenuLabel className='p-0 font-normal'>

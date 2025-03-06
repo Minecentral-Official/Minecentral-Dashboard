@@ -18,12 +18,12 @@ export default function PluginContent() {
   const { plugins } = usePluginFilterContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className='flex flex-1 overflow-hidden'>
+    <div className='flex flex-1 gap-4 overflow-hidden'>
       <FilterPluginSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
-      <main className='flex w-full flex-col gap-2 overflow-y-auto pl-4 pt-4'>
+      <main className='flex w-full flex-col gap-2 overflow-y-auto pt-4'>
         <div className='flex w-full flex-row gap-2'>
           <div className='bg-background md:hidden'>
             <Button

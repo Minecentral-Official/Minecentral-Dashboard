@@ -13,7 +13,7 @@ import { NavigationConfig } from '@/components/nav/nav-config.type';
 export function baseNavigationConfig() {
   return [
     {
-      title: 'Discover More',
+      title: 'Resources',
       Icon: BoxIcon,
       items: [
         {
@@ -49,7 +49,12 @@ export function baseNavigationConfig() {
       ],
     },
     {
-      title: 'Host a Server',
+      title: 'Hosting',
+      href: '/hosting',
+      Icon: ServerIcon,
+    },
+    {
+      title: 'Server List',
       href: '/hosting',
       Icon: ServerIcon,
     },

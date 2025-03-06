@@ -4,7 +4,7 @@ import { Footer } from '@/components/footer';
 import Header from '@/components/header/header';
 import { resourcesNavigationConfig } from '@/features/resources/lib/nav.config';
 
-export default async function ResourceLayout({ children }: PropsWithChildren) {
+export default async function Page({ children }: PropsWithChildren) {
   return (
     <main>
       <Header service='resources' config={resourcesNavigationConfig} />

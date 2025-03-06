@@ -1,10 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 
-import { PlusCircleIcon } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -15,15 +12,16 @@ import {
 import { Separator } from '@/components/ui/separator';
 import ProjectCreateForm from '@/features/resources/components/forms/create-project.form';
 
-export function ProjectCreateDialog() {
+export function ProjectCreateDialog({
+  children,
+  className,
+}: PropsWithChildren & { className: string }) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <PlusCircleIcon className='mr-2 h-4 w-4' /> Create New Project
-        </Button>
+        <div className={className}>{children}</div>
       </DialogTrigger>
       <DialogContent className='max-w-screen-sm'>
         <DialogHeader>

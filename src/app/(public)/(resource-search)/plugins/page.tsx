@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function ContentPage() {
   return (
     <PluginFilterProvider>
-      <div className='container mx-auto flex min-h-screen flex-col'>
+      <div className='mx-auto flex min-h-screen flex-col'>
         <PluginContent />
       </div>
     </PluginFilterProvider>
