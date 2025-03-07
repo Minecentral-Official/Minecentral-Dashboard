@@ -47,9 +47,9 @@ const services = [
     enabled: true,
   },
   {
-    title: 'Worlds',
+    title: 'Server List',
     description: 'A place to boast about your Minecraft server!',
-    href: '/worlds',
+    href: '/server-list',
     enabled: false,
   },
   {

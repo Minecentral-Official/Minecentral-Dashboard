@@ -8,9 +8,9 @@ export default async function AccountQuickaccess() {
   // const router = useRouter();
 
   const quickLinks = [
-    { icon: Server, label: 'Manage Servers', href: 'dashboard/hosting' },
-    { icon: List, label: 'Worlds List', href: 'dashboard/worlds' },
-    { icon: Plugin, label: 'Resource Manager', href: 'dashboard/resources' },
+    { icon: Plugin, label: 'My Resources', href: 'dashboard/resources' },
+    { icon: Server, label: 'My Servers', href: 'dashboard/hosting' },
+    { icon: List, label: 'My Worlds', href: 'dashboard/servers' },
     { icon: Settings, label: 'Account Settings', href: 'dashboard/account' },
   ];
 
@@ -26,7 +26,6 @@ export default async function AccountQuickaccess() {
               key={index}
               variant='outline'
               className='flex h-20 flex-col items-center justify-center'
-              // onClick={() => router.push(link.href)}
               asChild
             >
               <Link href={href}>
