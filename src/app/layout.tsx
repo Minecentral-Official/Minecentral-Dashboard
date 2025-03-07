@@ -6,8 +6,11 @@ import '@/app/globals.css';
 
 import { Manrope } from 'next/font/google';
 
+import { Footer } from '@/components/footer';
+import Header from '@/components/header/header';
 import SearchParamTriggerSonner from '@/components/sonner/search-param-trigger.sonner';
 import { Toaster } from '@/components/ui/sonner';
+import { resourcesNavigationConfig } from '@/features/resources/lib/nav.config';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -28,9 +31,11 @@ export default async function RootLayout({
   return (
     <html data-color-mode='light' lang='en' className={manrope.className}>
       <body>
-        {children}
+        <Header config={resourcesNavigationConfig} />
+        <main className='pt-20'>{children}</main>
         <Toaster richColors toastOptions={{}} />
         <SearchParamTriggerSonner />
+        <Footer />
       </body>
     </html>
   );
