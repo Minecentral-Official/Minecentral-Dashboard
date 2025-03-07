@@ -8,6 +8,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 export default function SidebarDashboardWrapper({
   children,
@@ -20,8 +21,11 @@ export default function SidebarDashboardWrapper({
   homeUrl?: string;
 }>) {
   return (
-    <SidebarProvider>
-      <AppSidebar homeUrl={homeUrl} className={className}>
+    <SidebarProvider className=''>
+      <AppSidebar
+        homeUrl={homeUrl}
+        className={cn('sticky top-16 h-[93svh]', className)}
+      >
         {sidebarChildren}
       </AppSidebar>
       <SidebarInset>

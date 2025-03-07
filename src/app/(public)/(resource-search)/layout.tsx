@@ -7,7 +7,7 @@ import { resourcesNavigationConfig } from '@/features/resources/lib/nav.config';
 export default async function Page({ children }: PropsWithChildren) {
   return (
     <main>
-      <Header service='resources' config={resourcesNavigationConfig} />
+      <Header config={resourcesNavigationConfig} />
       <div className='container pb-4 pt-16'>{children}</div>
       <Footer />
     </main>
