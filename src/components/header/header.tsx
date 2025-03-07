@@ -17,14 +17,14 @@ type HeaderProps = {
 export default function Header({ config }: HeaderProps) {
   return (
     <header className='fixed left-0 top-0 z-40 w-full bg-background'>
-      <div className='container relative mx-auto flex min-h-20 flex-row items-center gap-4 lg:grid lg:grid-cols-3'>
-        <div className='flex w-12 shrink lg:hidden'>
+      <div className='container relative mx-auto flex min-h-20 flex-row items-center gap-4 xl:grid xl:grid-cols-3'>
+        <div className='flex w-12 shrink xl:hidden'>
           <NavMobile config={config} />
         </div>
-        <div className='hidden flex-row items-center justify-start gap-4 lg:flex'>
+        <div className='hidden flex-row items-center justify-start gap-4 xl:flex'>
           <NavDesktop config={config} />
         </div>
-        <Link href={`/`} className='flex lg:justify-center'>
+        <Link href={`/`} className='flex xl:justify-center'>
           <Logo />
         </Link>
 

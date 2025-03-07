@@ -5,11 +5,8 @@ import 'server-only';
 
 export async function hostGetDefaultProducts() {
   const products = await hostGetProducts();
-  const defaultProducts = products.filter(
-    ({ metadata }) => metadata.isDefaultPlan,
-  );
-  const filteredDefaultProducts = defaultProducts.map((product) =>
+  const filteredDefaultProducts = products.map((product) =>
     DTOProductDefault(product),
-  );
+  ).reverse();
   return filteredDefaultProducts;
 }

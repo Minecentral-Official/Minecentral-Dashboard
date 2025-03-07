@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProjectDeleteDialog } from '@/features/resources/components/dialog/project-delete.dialog';
 import ResourceUpdateGeneralForm from '@/features/resources/components/forms/update-resource-general.form';
 import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
@@ -23,8 +23,11 @@ export default async function EditResourcePage({ params }: PageProps) {
       <Card>
         <CardHeader>
           <CardTitle>
-            <p>Resource Information</p>
+            Resource Information
           </CardTitle>
+          <CardDescription>
+            Edit your resource information here.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ResourceUpdateGeneralForm {...resource} />

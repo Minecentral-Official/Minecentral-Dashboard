@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
 import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
+import { cn } from '@/lib/utils';
 
 export default function PluginVersionsFilter() {
   const [isOpen, setOpen] = useState(true);
@@ -19,14 +20,11 @@ export default function PluginVersionsFilter() {
         onClick={() => setOpen((prev) => !prev)}
       >
         <CardTitle>Versions</CardTitle>
-        {isOpen ?
-          <ChevronUp className='h-4 w-4' />
-        : <ChevronDown className='h-4 w-4' />}
+        <ChevronDown className={cn('h-4 w-4 transition duration-300', isOpen && 'rotate-180')} />
       </CardHeader>
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0'
-        }`}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0'
+          }`}
       >
         <CardContent className='h-48 w-full space-y-1 overflow-y-auto px-4'>
           {C_ResourceVersionSupport.map((item) => (

@@ -7,7 +7,7 @@ export default function ResourceCardContent({
 }: Pick<T_DTOResource, 'description'>) {
   return (
     <Card className='w-full'>
-      <CardContent className='my-2'>
+      <CardContent className='pt-6'>
         <main className='flex-1'>
           <MarkdownViewer markdown={description || ''} />
         </main>

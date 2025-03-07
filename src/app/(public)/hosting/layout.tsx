@@ -7,7 +7,7 @@ import { baseNavigationConfig } from '@/lib/configs/base-nav.config';
 export default async function HostLayout({ children }: PropsWithChildren) {
   return (
     <main>
-      <Header service='hosting' config={baseNavigationConfig()} />
+      <Header config={baseNavigationConfig()} />
       <div className='container pt-20'>{children}</div>
       <Footer />
     </main>

@@ -4,10 +4,11 @@ import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { hostGetDefaultProducts } from '@/features/host/queries/products/default-product.get';
+import Link from 'next/link';
 
 export default async function PricingTableSection() {
   const defaultProducts = await hostGetDefaultProducts();
-
+  console.log(defaultProducts)
   return (
     <SectionWrapper>
       <div className='flex flex-col items-center justify-center gap-4 text-center'>
@@ -23,7 +24,7 @@ export default async function PricingTableSection() {
         <div className='grid w-full grid-cols-3 divide-x pt-20 text-left lg:grid-cols-4'>
           <div className='col-span-3 lg:col-span-1'></div>
           <div className='row-span-4 grid grid-rows-subgrid flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='grid-rows-1 text-2xl'>Iron</p>
+            <p className='grid-rows-1 text-2xl'>{defaultProducts[0].name}</p>
             <p className='grid-rows-2 text-sm text-muted-foreground'>
               {defaultProducts[0].description}
             </p>
@@ -33,12 +34,14 @@ export default async function PricingTableSection() {
               </span>
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
-            <Button variant='outline' className='mt-8 grid-rows-4 gap-4'>
-              Try it <MoveRight className='h-4 w-4' />
+            <Button variant='outline' className='mt-8 grid-rows-4 gap-4' asChild>
+              <Link href={`/dashboard/hosting/add/${defaultProducts[0].default_price}`}>
+                Try it <MoveRight className='h-4 w-4' />
+              </Link>
             </Button>
           </div>
           <div className='row-span-4 grid grid-rows-subgrid flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='grid-rows-1 text-2xl'>Gold</p>
+            <p className='grid-rows-1 text-2xl'>{defaultProducts[1].name}</p>
             <p className='grid-rows-2 text-sm text-muted-foreground'>
               {defaultProducts[1].description}
             </p>
@@ -48,22 +51,26 @@ export default async function PricingTableSection() {
               </span>
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
-            <Button className='mt-8 grid-rows-4 gap-4'>
-              Try it <MoveRight className='h-4 w-4' />
+            <Button className='mt-8 grid-rows-4 gap-4' asChild>
+              <Link href={`/dashboard/hosting/add/${defaultProducts[1].default_price}`}>
+                Try it <MoveRight className='h-4 w-4' />
+              </Link>
             </Button>
           </div>
           <div className='row-span-4 grid grid-rows-subgrid flex-col gap-2 px-3 py-1 md:px-6 md:py-4'>
-            <p className='grid-rows-1 text-2xl'>Emerald</p>
+            <p className='grid-rows-1 text-2xl'>{defaultProducts[2].name}</p>
             <p className='grid-rows-2 text-sm text-muted-foreground'>
               Our goal is to streamline SMB trade, making it easier and faster
               than ever for everyone and everywhere.
             </p>
             <p className='mt-8 flex grid-rows-3 flex-col gap-2 text-xl lg:flex-row lg:items-center'>
-              <span className='text-4xl'>$40</span>
+              <span className='text-4xl'>${(defaultProducts[2].prices[0].price ?? 0) / 100}</span>
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
-            <Button variant='outline' className='mt-8 grid-rows-4 gap-4'>
-              Contact us <PhoneCall className='h-4 w-4' />
+            <Button variant='outline' className='mt-8 grid-rows-4 gap-4' asChild>
+              <Link href={`/dashboard/hosting/add/${defaultProducts[2].default_price}`}>
+                Try it <MoveRight className='h-4 w-4' />
+              </Link>
             </Button>
           </div>
           <div></div>
