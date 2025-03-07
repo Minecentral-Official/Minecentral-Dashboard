@@ -29,7 +29,7 @@ GENERAL
 - Make the /dashboard/hosting/add look WAY better -->
 
 RESOUCES
-- Make the arrows chevrons in the /plugins page rotate/animate 180 when toggling the Categories and Versions filters
+<!-- - Make the arrows chevrons in the /plugins page rotate/animate 180 when toggling the Categories and Versions filters -->
 - Add some tabs on the (resource-search)/layout.tsx file so people can quickly navigate to /plugins,/mods,/shaders
 - Style this page better, this is copying modrinth almost exactly, want a fresh view from you
 http://localhost:3000/plugins/betterrtp1234
