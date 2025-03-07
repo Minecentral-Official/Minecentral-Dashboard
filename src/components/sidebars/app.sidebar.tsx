@@ -3,9 +3,11 @@ import * as React from 'react';
 import Link from 'next/link';
 
 import LogoMark from '@/components/logos/logo-mark';
+import { SidebarUser } from '@/components/sidebars/menus/user.sidebar-menu';
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -41,6 +43,9 @@ export async function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>{children}</SidebarContent>
+      <SidebarFooter>
+        <SidebarUser />
+      </SidebarFooter>
     </Sidebar>
   );
 }

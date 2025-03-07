@@ -19,7 +19,7 @@ export async function SidebarUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <AuthNav className=''>
+        <AuthNav>
           <SidebarMenuButton
             size='lg'
             className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'

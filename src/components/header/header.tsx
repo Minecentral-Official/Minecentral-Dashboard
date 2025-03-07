@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-
 import { BoxIcon, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
@@ -39,11 +37,9 @@ export default function Header({ config }: HeaderProps) {
               </ProjectCreateDialog>
             }
           />
-          <Suspense>
-            <AuthNav className='flex flex-row items-center gap-2 hover:cursor-pointer'>
-              <DataAvatar /> <ChevronDown className='h-4 w-4' />
-            </AuthNav>
-          </Suspense>
+          <AuthNav className='flex flex-row items-center gap-2 hover:cursor-pointer'>
+            <DataAvatar /> <ChevronDown className='h-4 w-4' />
+          </AuthNav>
         </div>
       </div>
     </header>
