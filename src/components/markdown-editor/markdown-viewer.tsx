@@ -1,12 +1,14 @@
 'use client';
 
-import MarkdownEditor from '@uiw/react-markdown-editor';
+import MarkdownPreview from '@uiw/react-markdown-preview';
+//Plugin to CLEAR markdown
+import rehypeSanitize from 'rehype-sanitize';
 
 export default function MarkdownViewer({ markdown }: { markdown: string }) {
-  console.log(markdown)
+  const rehypePlugins = [rehypeSanitize];
   return (
     <article className='article'>
-      <MarkdownEditor.Markdown source={markdown} />
+      <MarkdownPreview source={markdown} rehypePlugins={rehypePlugins} />
     </article>
   );
 }
