@@ -19,7 +19,6 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
   }
   return (
     <SidebarWrapper
-      homeUrl='/admin'
       sidebar={
         <div className='flex h-full flex-col justify-between'>
           <div>

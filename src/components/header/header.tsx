@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
@@ -27,9 +29,11 @@ export default function Header({ config }: HeaderProps) {
         </Link>
 
         <div className='flex w-full items-center justify-end gap-4'>
-          <AuthNav className='flex flex-row items-center gap-2 hover:cursor-pointer'>
-            <DataAvatar /> <ChevronDown className='h-4 w-4' />
-          </AuthNav>
+          <Suspense>
+            <AuthNav className='flex flex-row items-center gap-2 hover:cursor-pointer'>
+              <DataAvatar /> <ChevronDown className='h-4 w-4' />
+            </AuthNav>
+          </Suspense>
         </div>
       </div>
     </header>

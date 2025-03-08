@@ -19,11 +19,17 @@ export default function SidebarWrapper({
   className?: string;
 }>) {
   return (
-    <SidebarProvider>
-      <AppSidebar className={cn('sticky top-20 h-[93svh]', className)}>
+    <SidebarProvider className='gap-2 bg-none'>
+      <AppSidebar
+        className={cn(
+          'sticky top-20 h-[calc(100svh-5rem)]',
+          'bg-sidebar',
+          className,
+        )}
+      >
         {sidebar}
       </AppSidebar>
-      <SidebarInset>
+      <SidebarInset className='bg-none pt-2'>
         <header className='flex shrink-0 items-center gap-2'>
           <div className='flex items-center gap-2 px-4'>
             <SidebarTrigger className='-ml-1' />

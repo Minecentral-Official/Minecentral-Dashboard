@@ -11,30 +11,28 @@ import { usePluginFilterContext } from '@/features/resources/context/plugin-filt
 export default function PluginContent() {
   const { plugins } = usePluginFilterContext();
   return (
-    <>
-      <main className='flex w-full flex-col gap-2 overflow-y-auto pt-4'>
-        <div className='flex w-full flex-row gap-2'>
-          <PluginFilterSearchBar />
-        </div>
-        <div className='flex flex-row gap-2'>
-          <PluginSortFilter />
-          <PluginLimitFilter />
-        </div>
-        <div className='flex flex-wrap gap-2'>
-          <PluginFilterBadges />
-        </div>
-        <div className='flex w-full flex-col gap-2'>
-          <ResourceFilterPage />
-          {plugins ?
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
-              {plugins.map((plugin, index) => (
-                <PluginCardView key={index} {...plugin} />
-              ))}
-            </div>
-          : <p className='mx-auto'>No resources found</p>}
-          <ResourceFilterPage />
-        </div>
-      </main>
-    </>
+    <main className='flex w-full flex-col gap-2 overflow-y-auto pt-4'>
+      <div className='flex w-full flex-row gap-2'>
+        <PluginFilterSearchBar />
+      </div>
+      <div className='flex flex-row gap-2'>
+        <PluginSortFilter />
+        <PluginLimitFilter />
+      </div>
+      <div className='flex flex-wrap gap-2'>
+        <PluginFilterBadges />
+      </div>
+      <div className='flex w-full flex-col gap-2'>
+        <ResourceFilterPage />
+        {plugins ?
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3'>
+            {plugins.map((plugin, index) => (
+              <PluginCardView key={index} {...plugin} />
+            ))}
+          </div>
+        : <p className='mx-auto'>No resources found</p>}
+        <ResourceFilterPage />
+      </div>
+    </main>
   );
 }

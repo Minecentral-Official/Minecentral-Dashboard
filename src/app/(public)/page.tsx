@@ -2,8 +2,6 @@ import { CheckIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Footer } from '@/components/footer';
-import Header from '@/components/header/header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { baseNavigationConfig } from '@/lib/configs/base-nav.config';
 
 import type { Metadata } from 'next';
 
@@ -27,7 +24,6 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <>
-      <Header config={baseNavigationConfig()} />
       <div className='top-16 flex min-h-screen flex-col'>
         <main className='flex-1'>
           {/* Hero Section */}
@@ -314,7 +310,6 @@ export default function LandingPage() {
           </section>
         </main>
       </div>
-      <Footer />
     </>
   );
 }

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default async function ContentPage() {
   return (
-    <div className='mx-auto flex min-h-screen w-full gap-4'>
+    <div className='mx-auto flex min-h-screen w-full'>
       <PluginContent />
     </div>
   );

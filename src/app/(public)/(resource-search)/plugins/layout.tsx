@@ -10,13 +10,13 @@ export default function Layout({ children }: PropsWithChildren) {
     <PluginFilterProvider>
       <SidebarWrapper
         sidebar={
-          <div className='flex h-full flex-col justify-between'>
+          <div className='flex h-full flex-col justify-start gap-4'>
             <PluginCategoriesFilter />
             <PluginVersionsFilter />
           </div>
         }
       >
-        <div className='h-full w-full p-6'>{children}</div>
+        <div className='h-full w-full px-4'>{children}</div>
       </SidebarWrapper>
     </PluginFilterProvider>
   );
