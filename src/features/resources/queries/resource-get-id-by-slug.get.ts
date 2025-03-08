@@ -5,7 +5,7 @@ import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import lower from '@/lib/db/utils/lower';
 
-export default async function projectGetIdBySlug(slug: string) {
+export async function projectGetIdBySlug(slug: string) {
   'use cache';
   cacheLife('hours');
   cacheTag(`resource-slug-${slug}`);

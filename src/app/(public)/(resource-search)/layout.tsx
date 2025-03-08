@@ -8,7 +8,7 @@ export default async function Page({ children }: PropsWithChildren) {
   return (
     <main>
       <Header config={resourcesNavigationConfig} />
-      <div className='container pb-4 pt-16'>{children}</div>
+      <div className='container pb-4 pt-20'>{children}</div>
       <Footer />
     </main>
   );

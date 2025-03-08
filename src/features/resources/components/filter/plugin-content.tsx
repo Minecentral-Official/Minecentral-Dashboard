@@ -1,14 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-
-import { FilterIcon } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
 import PluginLimitFilter from '@/features/resources/components/filter/limit-filter';
 import { ResourceFilterPage } from '@/features/resources/components/filter/resource-pagination';
 import PluginFilterSearchBar from '@/features/resources/components/filter/searchbar';
-import FilterPluginSidebar from '@/features/resources/components/filter/sidebar';
 import PluginSortFilter from '@/features/resources/components/filter/sort-by-filter';
 import PluginCardView from '@/features/resources/components/resource/cards/plugin-view.card';
 import PluginFilterBadges from '@/features/resources/components/ui/filter-badges';
@@ -16,26 +10,10 @@ import { usePluginFilterContext } from '@/features/resources/context/plugin-filt
 
 export default function PluginContent() {
   const { plugins } = usePluginFilterContext();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className='flex flex-1 gap-4 overflow-hidden'>
-      <FilterPluginSidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <>
       <main className='flex w-full flex-col gap-2 overflow-y-auto pt-4'>
         <div className='flex w-full flex-row gap-2'>
-          <div className='bg-background md:hidden'>
-            <Button
-              variant='outline'
-              size='icon'
-              className='h-10'
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <FilterIcon className='h-4 w-4' />
-              <span className='sr-only'>Toggle sidebar</span>
-            </Button>
-          </div>
           <PluginFilterSearchBar />
         </div>
         <div className='flex flex-row gap-2'>
@@ -57,6 +35,6 @@ export default function PluginContent() {
           <ResourceFilterPage />
         </div>
       </main>
-    </div>
+    </>
   );
 }

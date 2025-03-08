@@ -1,29 +1,24 @@
 import * as React from 'react';
 
-import Link from 'next/link';
-
-import LogoMark from '@/components/logos/logo-mark';
 import { SidebarUser } from '@/components/sidebars/menus/user.sidebar-menu';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import validateRole from '@/lib/auth/helpers/validate-role';
 
-export async function AppSidebar({
-  children,
-  homeUrl,
-  ...props
-}: React.ComponentProps<typeof Sidebar> & { homeUrl?: string }) {
-  const isAdmin = await validateRole('admin');
+export async function AppSidebar(
+  {
+    children,
+    // homeUrl,
+    ...props
+  }: React.ComponentProps<typeof Sidebar>,
+  //  & { homeUrl?: string }
+) {
+  // const isAdmin = await validateRole('admin');
   return (
     <Sidebar variant='inset' {...props}>
-      <SidebarHeader>
+      {/* <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size='lg' asChild>
@@ -41,7 +36,7 @@ export async function AppSidebar({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarHeader>
+      </SidebarHeader> */}
       <SidebarContent>{children}</SidebarContent>
       <SidebarFooter>
         <SidebarUser />

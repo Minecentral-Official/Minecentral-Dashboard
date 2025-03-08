@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import AdminToggleButton from '@/components/buttons/admin.toggle';
-import SidebarDashboardWrapper from '@/components/sidebars/dashboard.wrapper';
 import { SidebarAdminHosting } from '@/components/sidebars/menus/admin-hosting.sidebar-menu copy';
 import { SidebarAdminResources } from '@/components/sidebars/menus/admin-resources.sidebar-menu';
+import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
 import validateRole from '@/lib/auth/helpers/validate-role';
 
 export const metadata: Metadata = {
@@ -18,9 +18,9 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
     return redirect('/dashboard');
   }
   return (
-    <SidebarDashboardWrapper
+    <SidebarWrapper
       homeUrl='/admin'
-      sidebarChildren={
+      sidebar={
         <div className='flex h-full flex-col justify-between'>
           <div>
             <SidebarAdminResources />
@@ -31,6 +31,6 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
       }
     >
       <div className='h-full w-full p-6'>{children}</div>
-    </SidebarDashboardWrapper>
+    </SidebarWrapper>
   );
 }

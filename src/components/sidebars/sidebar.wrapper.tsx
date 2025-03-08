@@ -10,26 +10,21 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
-export default function SidebarDashboardWrapper({
+export default function SidebarWrapper({
   children,
-  sidebarChildren,
+  sidebar,
   className,
-  homeUrl,
 }: PropsWithChildren<{
-  sidebarChildren: ReactNode;
+  sidebar: ReactNode;
   className?: string;
-  homeUrl?: string;
 }>) {
   return (
-    <SidebarProvider className=''>
-      <AppSidebar
-        homeUrl={homeUrl}
-        className={cn('sticky top-16 h-[93svh]', className)}
-      >
-        {sidebarChildren}
+    <SidebarProvider>
+      <AppSidebar className={cn('sticky top-20 h-[93svh]', className)}>
+        {sidebar}
       </AppSidebar>
       <SidebarInset>
-        <header className='flex h-16 shrink-0 items-center gap-2'>
+        <header className='flex shrink-0 items-center gap-2'>
           <div className='flex items-center gap-2 px-4'>
             <SidebarTrigger className='-ml-1' />
             <Separator orientation='vertical' className='mr-2 h-4' />

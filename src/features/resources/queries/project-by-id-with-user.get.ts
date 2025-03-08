@@ -5,7 +5,7 @@ import resourceIsLikedByUserId from '@/features/resources/queries/resource-is-li
 import { db } from '@/lib/db';
 import { likedResourceTable } from '@/lib/db/schema';
 
-export default async function projectGetById_WithUser(
+export async function projectGetById_WithUser(
   resourceId: string,
   userId?: string,
 ) {
@@ -34,21 +34,3 @@ async function getLikeCount(resourceId: string) {
 
   return count[0]?.count ?? 0;
 }
-
-// export default async function resourceGetById(resourceId: number) {
-//   'use cache';
-//   cacheLife('hours');
-//   cacheTag(`resource-id-${resourceId}`);
-//   const resource = await db.query.resourceTable.findFirst({
-//     where: eq(resourceTable.id, resourceId),
-//     with: {
-//       user: true,
-//       releases: {
-//         orderBy: desc(resourceReleaseTable.createdAt),
-//       },
-//       likes: true,
-//     },
-//   });
-//   if (!resource) return undefined;
-//   return DTOResourcePlugin(resource);
-// }

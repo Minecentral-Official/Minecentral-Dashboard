@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import PluginContent from '@/features/resources/components/filter/plugin-content';
-import { PluginFilterProvider } from '@/features/resources/context/plugin-filter.context';
 
 export const metadata: Metadata = {
   title: 'Plugins',
@@ -9,10 +8,8 @@ export const metadata: Metadata = {
 
 export default async function ContentPage() {
   return (
-    <PluginFilterProvider>
-      <div className='mx-auto flex min-h-screen flex-col'>
-        <PluginContent />
-      </div>
-    </PluginFilterProvider>
+    <div className='mx-auto flex min-h-screen w-full gap-4'>
+      <PluginContent />
+    </div>
   );
 }
