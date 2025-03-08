@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { ICommand } from '@uiw/react-markdown-editor';
+import { ICommand } from '@uiw/react-md-editor';
 import { ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -24,10 +24,13 @@ export function markdownCommandAddImage({
   return {
     name: 'Image',
     keyCommand: 'image',
-    button: { 'aria-label': 'Insert Image' },
-    icon: <ImageIcon className='h-4 w-4' />,
-    execute: ({ state }) => {
-      if (!state) return;
+    icon: <ImageIcon className='h-3 w-3' />,
+    buttonProps: {
+      'aria-label': 'Insert Image',
+      'aria-describedby': 'Dialog to insert image',
+    },
+    execute: () => {
+      // if (!state) return;
       setOpen(true);
     },
   };

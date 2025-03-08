@@ -8,7 +8,11 @@ export default function MarkdownViewer({ markdown }: { markdown: string }) {
   const rehypePlugins = [rehypeSanitize];
   return (
     <article className='article'>
-      <MarkdownPreview source={markdown} rehypePlugins={rehypePlugins} />
+      <MarkdownPreview
+        source={markdown}
+        rehypePlugins={rehypePlugins}
+        style={{ background: 'none' }}
+      />
     </article>
   );
 }
