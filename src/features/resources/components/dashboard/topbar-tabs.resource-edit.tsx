@@ -12,6 +12,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import ButtonTooltip from '@/components/ui/tooltip-button';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { cn } from '@/lib/utils';
 
@@ -62,7 +63,11 @@ export default function ResourceEditTopbarTabs({
         </NavigationMenuList>
       </NavigationMenu>
       <Link href={`/plugins/${slug}`}>
-        <ExternalLinkIcon className='mr-2 h-5 w-5' />
+        <ButtonTooltip
+          Icon={ExternalLinkIcon}
+          tooltip='Go to Resource'
+          variant={'ghost'}
+        />
       </Link>
     </Card>
   );

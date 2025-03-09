@@ -3,7 +3,9 @@
 import React from 'react';
 
 import { codeEdit, codeLive, getCommands } from '@uiw/react-md-editor';
+import { TriangleAlertIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 
@@ -49,6 +51,16 @@ export default function MarkdownEditor() {
         }}
       />
       <MarkdownAddImageDialog />
+      <p className='flex items-center gap-1 text-sm font-extralight'>
+        <TriangleAlertIcon className='h-4 w-4' />
+        {`This editor supports `}
+        <Link
+          className='text-primary hover:cursor-pointer hover:underline'
+          href={'https://www.markdownguide.org/basic-syntax/'}
+        >
+          Markdown formatting
+        </Link>
+      </p>
     </>
   );
 }

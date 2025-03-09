@@ -6,7 +6,6 @@ import pluginGroupVersions from '@/features/resources/util/version-group.plugin'
 export default function ResourceCardCompatability({
   release,
 }: Pick<T_DTOResource_WithReleases, 'release'>) {
-  if (!release || !(release.compatibleVersions?.length > 0)) return <></>;
   return (
     <Card>
       <CardHeader>
@@ -14,9 +13,11 @@ export default function ResourceCardCompatability({
       </CardHeader>
       <CardContent>
         <div className='flex w-full flex-row flex-wrap gap-1'>
-          {pluginGroupVersions(release.compatibleVersions).map((version) => (
-            <Badge key={version}>{version}</Badge>
-          ))}
+          {release &&
+            release.compatibleVersions?.length > 0 &&
+            pluginGroupVersions(release.compatibleVersions).map((version) => (
+              <Badge key={version}>{version}</Badge>
+            ))}
         </div>
       </CardContent>
     </Card>

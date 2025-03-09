@@ -1,11 +1,6 @@
 import * as React from 'react';
 
-import { SidebarUser } from '@/components/sidebars/menus/user.sidebar-menu';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
 
 export async function AppSidebar(
   {
@@ -38,9 +33,9 @@ export async function AppSidebar(
         </SidebarMenu>
       </SidebarHeader> */}
       <SidebarContent>{children}</SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <SidebarUser />
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   );
 }

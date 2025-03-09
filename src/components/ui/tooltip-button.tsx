@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
@@ -11,7 +11,8 @@ export default function ButtonTooltip({
   Icon,
   onClick,
   className,
-}: {
+  variant,
+}: ButtonProps & {
   tooltip: string;
   Icon: React.ElementType;
   onClick?: () => void;
@@ -24,6 +25,7 @@ export default function ButtonTooltip({
           <Button
             className={`h-10 w-10 items-center justify-center rounded-full ${className}`}
             onClick={onClick}
+            variant={variant}
           >
             <Icon className='h-5 w-5' />
           </Button>

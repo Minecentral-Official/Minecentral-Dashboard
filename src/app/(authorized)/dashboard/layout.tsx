@@ -1,6 +1,5 @@
 import { PropsWithChildren } from 'react';
 
-import AdminToggleButton from '@/components/buttons/admin.toggle';
 import SidebarDashboardGeneral from '@/components/sidebars/menus/dashboard-general.sidebar-menu';
 import SidebarDashboardManage from '@/components/sidebars/menus/dashboard-manage.sidebar-menu';
 import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
@@ -17,11 +16,13 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
               <Separator />
               <SidebarDashboardManage />
             </div>
-            <AdminToggleButton isOnAdmin={false} />
+            {/* <Suspense>
+              <AdminToggleButton isOnAdmin={false} />
+            </Suspense> */}
           </div>
         }
       >
-        <div className='h-full w-full p-6 pt-20'>{children}</div>
+        <div className='h-full w-full px-4'>{children}</div>
       </SidebarWrapper>
     </>
   );

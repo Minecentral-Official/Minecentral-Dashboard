@@ -3,7 +3,7 @@ import { UploadThingError } from 'uploadthing/server';
 import { z } from 'zod';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
-import resourceGetById_WithUser from '@/features/resources/queries/project-by-id-with-user.get';
+import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { detectResourceType } from '@/lib/uploadthing/file-type';
@@ -28,7 +28,7 @@ export const resourceFileRouter = {
     .input(S_ProjectUploadOnResource)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await resourceGetById_WithUser(input.id))?.author.id !== user.id)
+      if ((await projectGetById_WithUser(input.id))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })
@@ -44,7 +44,7 @@ export const resourceFileRouter = {
     .input(S_ProjectUploadOnResource)
     .middleware(async ({ input }) => {
       const { user } = await validateSession();
-      if ((await resourceGetById_WithUser(input.id))?.author.id !== user.id)
+      if ((await projectGetById_WithUser(input.id))?.author.id !== user.id)
         throw new UploadThingError('You are not the author!');
       return { userId: user.id, ...input };
     })
