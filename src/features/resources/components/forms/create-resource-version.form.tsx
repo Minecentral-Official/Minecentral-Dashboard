@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { HashIcon } from 'lucide-react';
@@ -9,7 +7,7 @@ import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
-import { useMarkdown } from '@/components/markdown-editor/context/markdown.context';
+import { MarkdownProvider } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -29,15 +27,13 @@ const supportVersions = C_ResourceVersionSupport.map((type) => ({
 export default function ResourceCreateVersion({
   id: resourceId,
 }: Pick<T_DTOResource, 'id'>) {
-  const [uploadResponse, setUploadResponse] = useState<{
-    data: {
-      url: string;
-      type: string;
-      name: string;
-    };
-  } | null>(null);
-
-  const { markdown } = useMarkdown();
+  // const [uploadResponse, setUploadResponse] = useState<{
+  //   data: {
+  //     url: string;
+  //     type: string;
+  //     name: string;
+  //   };
+  // } | null>(null);
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
@@ -66,6 +62,7 @@ export default function ResourceCreateVersion({
   // }, [uploadResponse]);
 
   const versionSupportHandle = useInputControl(fields.compataibleVersions);
+  const descriptionHandler = useInputControl(fields.description);
 
   function handleSubmit() {
     toast.warning('Something happened', { id: 'update-resource' });
@@ -90,11 +87,12 @@ export default function ResourceCreateVersion({
       </Field>
 
       <Field>
-        <input type='hidden' name={fields.description.name} value={markdown} />
         <Label htmlFor={fields.description.id} className='flex gap-2'>
           Change Log
         </Label>
-        <MarkdownEditor />
+        <MarkdownProvider>
+          <MarkdownEditor onChange={descriptionHandler.change} />
+        </MarkdownProvider>
         {fields.description.errors && (
           <FieldError>{fields.description.errors}</FieldError>
         )}

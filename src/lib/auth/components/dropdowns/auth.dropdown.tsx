@@ -26,7 +26,7 @@ import getSession from '@/lib/auth/helpers/get-session';
 export default async function AuthNav({
   children,
   className,
-}: PropsWithChildren & { className: string }) {
+}: PropsWithChildren & { className?: string }) {
   const session = await getSession();
 
   if (!session) {

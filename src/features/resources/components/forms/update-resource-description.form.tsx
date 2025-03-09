@@ -7,7 +7,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
-import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
+import { MarkdownProvider } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
 import projectUpdateDescriptionAction from '@/features/resources/actions/update-resource-description.action';
@@ -69,9 +69,9 @@ export default function ResourceUpdateDescriptionForm({
 
       <Field>
         <div className='container w-full px-0 py-4'>
-          <MarkdownProviver initialMarkdown={fields.description.value || ''}>
+          <MarkdownProvider initialMarkdown={fields.description.value || ''}>
             <MarkdownEditor onChange={contentDescriptionHandler.change} />
-          </MarkdownProviver>
+          </MarkdownProvider>
         </div>
 
         {fields.description.errors && (

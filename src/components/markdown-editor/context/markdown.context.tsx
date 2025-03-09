@@ -27,14 +27,14 @@ export function useMarkdown() {
 
 interface FilterPluginProviderProps {
   children: ReactNode;
-  initialMarkdown: string;
+  initialMarkdown?: string;
 }
 
-export function MarkdownProviver({
+export function MarkdownProvider({
   children,
   initialMarkdown,
 }: FilterPluginProviderProps) {
-  const [markdown, setMarkdown] = useState(initialMarkdown);
+  const [markdown, setMarkdown] = useState(initialMarkdown || '');
   const [openImage, setOpenImage] = useState(false);
 
   return (

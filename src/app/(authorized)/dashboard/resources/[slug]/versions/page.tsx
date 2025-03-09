@@ -1,4 +1,3 @@
-import { MarkdownProviver } from '@/components/markdown-editor/context/markdown.context';
 import {
   Card,
   CardContent,
@@ -28,9 +27,7 @@ export default async function Page({ params }: PageProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <MarkdownProviver initialMarkdown=''>
-          <ResourceCreateVersion {...resource!} />
-        </MarkdownProviver>
+        <ResourceCreateVersion {...resource!} />
       </CardContent>
     </Card>
   );

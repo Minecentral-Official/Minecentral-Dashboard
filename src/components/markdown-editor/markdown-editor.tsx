@@ -19,14 +19,21 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 //Tutorial on how I leanrt to make safe youtube embeds
 // https://ttoss.dev/blog/2023/09/28/embedding-videos-in-markdown-using-react
-export default function MarkdownEditor() {
+export default function MarkdownEditor({
+  onChange,
+}: {
+  onChange: (val: string) => void;
+}) {
   const { markdown, setMarkdown, setOpenImage } = useMarkdown();
   return (
     <>
       <MDEditor
         height={'100%'}
         value={markdown}
-        onChange={(e) => setMarkdown(e || '')}
+        onChange={(e) => {
+          setMarkdown(e || '');
+          onChange(e || '');
+        }}
         commands={[
           ...getCommands(),
           markdownCommandAddImage({ setOpen: setOpenImage }),

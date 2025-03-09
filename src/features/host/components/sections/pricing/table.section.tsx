@@ -1,14 +1,14 @@
-import { Minus, MoveRight, PhoneCall } from 'lucide-react';
+import { Minus, MoveRight } from 'lucide-react';
+import Link from 'next/link';
 
 import SectionWrapper from '@/components/sections/primitives/section.wrapper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { hostGetDefaultProducts } from '@/features/host/queries/products/default-product.get';
-import Link from 'next/link';
 
 export default async function PricingTableSection() {
   const defaultProducts = await hostGetDefaultProducts();
-  console.log(defaultProducts)
+  console.log(defaultProducts);
   return (
     <SectionWrapper>
       <div className='flex flex-col items-center justify-center gap-4 text-center'>
@@ -34,8 +34,14 @@ export default async function PricingTableSection() {
               </span>
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
-            <Button variant='outline' className='mt-8 grid-rows-4 gap-4' asChild>
-              <Link href={`/dashboard/hosting/add/${defaultProducts[0].default_price}`}>
+            <Button
+              variant='outline'
+              className='mt-8 grid-rows-4 gap-4'
+              asChild
+            >
+              <Link
+                href={`/dashboard/hosting/add/${defaultProducts[0].default_price}`}
+              >
                 Try it <MoveRight className='h-4 w-4' />
               </Link>
             </Button>
@@ -52,7 +58,9 @@ export default async function PricingTableSection() {
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
             <Button className='mt-8 grid-rows-4 gap-4' asChild>
-              <Link href={`/dashboard/hosting/add/${defaultProducts[1].default_price}`}>
+              <Link
+                href={`/dashboard/hosting/add/${defaultProducts[1].default_price}`}
+              >
                 Try it <MoveRight className='h-4 w-4' />
               </Link>
             </Button>
@@ -64,11 +72,19 @@ export default async function PricingTableSection() {
               than ever for everyone and everywhere.
             </p>
             <p className='mt-8 flex grid-rows-3 flex-col gap-2 text-xl lg:flex-row lg:items-center'>
-              <span className='text-4xl'>${(defaultProducts[2].prices[0].price ?? 0) / 100}</span>
+              <span className='text-4xl'>
+                ${(defaultProducts[2].prices[0].price ?? 0) / 100}
+              </span>
               <span className='text-sm text-muted-foreground'> / month</span>
             </p>
-            <Button variant='outline' className='mt-8 grid-rows-4 gap-4' asChild>
-              <Link href={`/dashboard/hosting/add/${defaultProducts[2].default_price}`}>
+            <Button
+              variant='outline'
+              className='mt-8 grid-rows-4 gap-4'
+              asChild
+            >
+              <Link
+                href={`/dashboard/hosting/add/${defaultProducts[2].default_price}`}
+              >
                 Try it <MoveRight className='h-4 w-4' />
               </Link>
             </Button>
