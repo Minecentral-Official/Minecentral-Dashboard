@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { HashIcon } from 'lucide-react';
@@ -10,6 +12,7 @@ import { InputConform } from '@/components/conform/input.conform';
 import { MarkdownProvider } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
@@ -27,13 +30,9 @@ const supportVersions = C_ResourceVersionSupport.map((type) => ({
 export default function ResourceCreateVersion({
   id: resourceId,
 }: Pick<T_DTOResource, 'id'>) {
-  // const [uploadResponse, setUploadResponse] = useState<{
-  //   data: {
-  //     url: string;
-  //     type: string;
-  //     name: string;
-  //   };
-  // } | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [file, setFile] = useState<File>();
+  // const { uploadFile } = useResourceUpload({ router: 'resourceUpload' });
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
@@ -64,6 +63,14 @@ export default function ResourceCreateVersion({
   const versionSupportHandle = useInputControl(fields.compataibleVersions);
   const descriptionHandler = useInputControl(fields.description);
 
+  const handleFileChange = (file: FileList | null) => {
+    if (file && file[0]) {
+      setFile(file[0]);
+    } else {
+      setFile(undefined);
+    }
+  };
+
   function handleSubmit() {
     toast.warning('Something happened', { id: 'update-resource' });
   }
@@ -77,6 +84,16 @@ export default function ResourceCreateVersion({
       action={handleSubmit}
     >
       <input type='hidden' name={fields.id.name} value={resourceId} />
+
+      <Field>
+        <Label>Icon</Label>
+        <div className='flex flex-row gap-2'>
+          <Input
+            type='file'
+            onChange={(event) => handleFileChange(event.target.files)}
+          />
+        </div>
+      </Field>
 
       <Field>
         <Label htmlFor={fields.title.id} className='flex gap-2'>

@@ -2,6 +2,9 @@
 
 import React from 'react';
 
+import '@uiw/react-markdown-preview/markdown.css';
+import '@uiw/react-md-editor/markdown-editor.css';
+
 import { codeEdit, codeLive, getCommands } from '@uiw/react-md-editor';
 import { TriangleAlertIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
