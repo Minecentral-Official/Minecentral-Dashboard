@@ -86,13 +86,11 @@ export default function ResourceCreateVersion({
       <input type='hidden' name={fields.id.name} value={resourceId} />
 
       <Field>
-        <Label>Icon</Label>
-        <div className='flex flex-row gap-2'>
-          <Input
-            type='file'
-            onChange={(event) => handleFileChange(event.target.files)}
-          />
-        </div>
+        <Label>Release File</Label>
+        <Input
+          type='file'
+          onChange={(event) => handleFileChange(event.target.files)}
+        />
       </Field>
 
       <Field>

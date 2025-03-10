@@ -8,7 +8,6 @@ export default function SidebarDashboardGeneral() {
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {/* <SidebarGeneral />*/}
         <SidebarDashboardAccount />
         <SidebarLink
           Icon={TicketIcon}

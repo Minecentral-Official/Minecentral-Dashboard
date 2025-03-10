@@ -23,4 +23,5 @@ export const S_ProjectUpdateGeneral = z.object({
       message:
         'Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.',
     }),
+  deletingIcon: z.string().transform((val) => val === 'true'),
 });

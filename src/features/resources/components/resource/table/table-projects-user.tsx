@@ -1,5 +1,4 @@
 import { ClipboardCopyIcon, SettingsIcon } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import CopyToClipboard from '@/components/etc/copy-to-clipboard';
@@ -14,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import ButtonTooltip from '@/components/ui/tooltip-button';
+import { ResourceImage } from '@/features/resources/components/ui/resource-image';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
@@ -44,12 +44,9 @@ export function TableProjectsUser({
           <TableRow key={project.id}>
             <TableCell className='font-medium'>
               <Link href={`/resources/${project.slug}`}>
-                <Image
-                  src={project.iconUrl || '/placeholder.png'}
-                  alt='Resource Icon'
-                  width={48}
-                  height={48}
-                  className='h-12 w-12 object-cover'
+                <ResourceImage
+                  url={project.iconUrl || '/placeholder.png'}
+                  size={48}
                 />
               </Link>
             </TableCell>

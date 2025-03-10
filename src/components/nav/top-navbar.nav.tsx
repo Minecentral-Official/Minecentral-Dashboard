@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 
-export default function NavDesktop({ config }: { config: NavigationConfig }) {
+export default function NavTopbar({ config }: { config: NavigationConfig }) {
   return (
     <NavigationMenu className='flex items-start justify-start'>
       <NavigationMenuList className='flex justify-start gap-2 text-nowrap'>

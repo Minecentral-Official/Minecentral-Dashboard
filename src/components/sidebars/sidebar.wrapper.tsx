@@ -2,7 +2,6 @@ import { PropsWithChildren, ReactNode } from 'react';
 
 import DataBreadcrumbs from '@/components/breadcrumbs/data.breadcrumbs';
 import { AppSidebar } from '@/components/sidebars/app.sidebar';
-import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
@@ -19,21 +18,20 @@ export default function SidebarWrapper({
   className?: string;
 }>) {
   return (
-    <SidebarProvider className='gap-2 bg-none'>
+    <SidebarProvider className='bg-none'>
       <AppSidebar
         className={cn(
-          'sticky top-20 h-[calc(100svh-5rem)]',
-          'bg-sidebar',
+          'sticky top-[100px] h-[calc(100svh-100px)] xl:h-[calc(100svh-5rem)]',
+          'rounded-md bg-sidebar',
           className,
         )}
       >
         {sidebar}
       </AppSidebar>
-      <SidebarInset className='bg-none pt-2'>
+      <SidebarInset className='md:pl-4'>
         <header className='flex shrink-0 items-center gap-2'>
-          <div className='flex items-center gap-2 px-4'>
-            <SidebarTrigger className='-ml-1' />
-            <Separator orientation='vertical' className='mr-2 h-4' />
+          <div className='flex items-center gap-2'>
+            <SidebarTrigger className='md:hidden' />
             <DataBreadcrumbs />
           </div>
         </header>

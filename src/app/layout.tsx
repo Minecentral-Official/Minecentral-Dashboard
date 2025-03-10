@@ -7,7 +7,7 @@ import '@/app/globals.css';
 import { Manrope } from 'next/font/google';
 
 import { Footer } from '@/components/footer';
-import Header from '@/components/header/header';
+import Header, { HeaderGap } from '@/components/header/header';
 import SearchParamTriggerSonner from '@/components/sonner/search-param-trigger.sonner';
 import { Toaster } from '@/components/ui/sonner';
 import { resourcesNavigationConfig } from '@/features/resources/lib/nav.config';
@@ -40,7 +40,9 @@ export default async function RootLayout({
     >
       <body>
         <Header config={resourcesNavigationConfig} />
-        <div className='container pb-4 pt-20'>{children}</div>
+        <div className='container pb-4'>
+          <HeaderGap>{children} </HeaderGap>
+        </div>
         <Footer />
         <Toaster richColors toastOptions={{}} />
         <SearchParamTriggerSonner />

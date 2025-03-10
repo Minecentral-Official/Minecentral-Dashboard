@@ -12,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
 
 export default function DataBreadcrumbs() {
   const paths = usePathname();
@@ -26,22 +27,27 @@ export default function DataBreadcrumbs() {
   const pathLinkItems = pathItems.slice(0, -1);
   const currentPath = pathItems[pathItems.length - 1];
 
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {pathLinkItems.map(({ name, path }) => (
-          <Fragment key={name}>
-            <BreadcrumbItem>
-              <BreadcrumbLink href={path}>{name}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-          </Fragment>
-        ))}
+  if (pathLinkItems.length < 1) return <></>;
 
-        <BreadcrumbItem>
-          <BreadcrumbPage>{currentPath.name}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+  return (
+    <>
+      <Separator orientation='vertical' className='mr-2 h-4 md:hidden' />
+      <Breadcrumb>
+        <BreadcrumbList>
+          {pathLinkItems.map(({ name, path }) => (
+            <Fragment key={name}>
+              <BreadcrumbItem>
+                <BreadcrumbLink href={path}>{name}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+            </Fragment>
+          ))}
+
+          <BreadcrumbItem>
+            <BreadcrumbPage>{currentPath.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </>
   );
 }

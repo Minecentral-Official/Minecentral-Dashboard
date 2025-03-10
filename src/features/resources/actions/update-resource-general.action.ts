@@ -20,6 +20,7 @@ export default async function projectUpdateGeneralAction(
   );
 
   if (parsedForm.status !== 'success') {
+    console.log(parsedForm.error);
     return { success: false, message: 'Invalid form data!' };
   }
 
@@ -45,8 +46,11 @@ export default async function projectUpdateGeneralAction(
     }
   }
 
+  const { deletingIcon, ...data } = parsedForm.value;
+
   const updatedResource = await projectUpdate(resourceId, {
-    ...parsedForm.value,
+    ...data,
+    iconUrl: deletingIcon ? null : undefined,
   });
 
   revalidateTag(`resource-id-${updatedResource.id}`);

@@ -13,6 +13,7 @@ export default function SidebarDashboardManage() {
   return (
     <SidebarGroup>
       <SidebarMenu>
+        <p className='text-md font-semibold'>Manage</p>
         <SidebarDashboardResouces />
         <SidebarLink
           Icon={ServerIcon}

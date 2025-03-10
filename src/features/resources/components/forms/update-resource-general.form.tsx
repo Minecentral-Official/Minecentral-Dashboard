@@ -4,15 +4,16 @@ import { useActionState, useEffect, useState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import Image from 'next/image';
+import { TrashIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
 import projectUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
+import { ResourceImage } from '@/features/resources/components/ui/resource-image';
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
@@ -35,6 +36,7 @@ export default function ResourceUpdateGeneralForm({
   );
 
   const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
+  const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();
 
@@ -58,13 +60,10 @@ export default function ResourceUpdateGeneralForm({
     }
   }, [actionState]);
 
-  const handleImageChange = (file: FileList | null) => {
-    if (file && file[0]) {
-      setIconFile(file[0]);
-      setIconUrl(URL.createObjectURL(file[0]));
-    } else {
-      setIconUrl(oldIconUrl);
-    }
+  const handleImageChange = (url: string, file: File) => {
+    setIconFile(file);
+    setIconUrl(url);
+    setDeleteIcon(false);
   };
 
   const defaultValue = {
@@ -72,6 +71,7 @@ export default function ResourceUpdateGeneralForm({
     slug,
     subtitle,
     title,
+    deletingIcon: false,
   };
 
   const [form, fields] = useForm({
@@ -84,6 +84,7 @@ export default function ResourceUpdateGeneralForm({
         toast.error('Form data invalid, please fix any errors', {
           id: 'update-resource',
         });
+        console.log(submission.error);
       } else {
         toast.loading('Updating project...', { id: 'update-resource' });
       }
@@ -101,21 +102,33 @@ export default function ResourceUpdateGeneralForm({
       noValidate
     >
       <input type='hidden' name={fields.id.name} value={resourceId} />
+      <input
+        type='hidden'
+        name={fields.deletingIcon.name}
+        value={deleteIcon ? 'true' : 'false'}
+      />
 
       <Field>
         <Label>Icon</Label>
-        <div className='flex flex-row gap-2'>
-          <Image
-            width={100}
-            height={100}
-            alt='Resource Icon'
-            src={iconUrl || '/placeholder.png'}
-            className='h-[100px] w-[100px] object-cover'
-          />
-          <Input
+        <div className='flex flex-row items-center gap-2'>
+          <ResourceImage url={iconUrl || '/placeholder.png'} />
+          <div className='flex flex-col gap-2'>
+            <FileUploadButton onFileSelect={handleImageChange} />
+            <Button
+              disabled={deleteIcon}
+              onClick={(e) => {
+                setDeleteIcon(true);
+                setIconUrl(null);
+                e.preventDefault();
+              }}
+            >
+              <TrashIcon className='mr-1 h-4 w-4' /> Delete Icon
+            </Button>
+          </div>
+          {/* <Input
             type='file'
             onChange={(event) => handleImageChange(event.target.files)}
-          />
+          /> */}
         </div>
       </Field>
 
@@ -129,15 +142,15 @@ export default function ResourceUpdateGeneralForm({
         <Label htmlFor={fields.slug.id}>URL Slug</Label>
         <InputConform meta={fields.slug} type='text' />
         {fields.slug.errors && <FieldError>{fields.slug.errors}</FieldError>}
-        <p className=''>
-          <span className='text-accent-foreground'>{`https://minecentral.net/${getResourceUrl(type)}/`}</span>
+        <p className='text-sm text-accent-foreground'>
+          <span className='text-accent-foreground/75'>{`https://minecentral.net/${getResourceUrl(type)}/`}</span>
           {fields.slug.value}
         </p>
       </Field>
 
       <Field>
         <Label htmlFor={fields.subtitle.id}>Summary</Label>
-        <p className='text-accent-foreground'>
+        <p className='text-sm text-accent-foreground/75'>
           Short sentence describing your project.
         </p>
         <InputConform meta={fields.subtitle} type='text' />

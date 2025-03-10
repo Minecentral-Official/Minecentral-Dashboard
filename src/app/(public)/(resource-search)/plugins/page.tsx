@@ -29,7 +29,7 @@ export default function PluginContent() {
           </div>
         }
       >
-        <main className='flex h-full w-full flex-col gap-2 overflow-y-auto px-4 pt-4'>
+        <main className='flex h-full w-full flex-col gap-2 overflow-y-auto'>
           <div className='flex w-full flex-row gap-2'>
             <PluginFilterSearchBar />
           </div>
