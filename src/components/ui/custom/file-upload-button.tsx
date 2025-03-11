@@ -2,9 +2,10 @@
 
 import { useRef } from 'react';
 
-import { UploadIcon } from 'lucide-react';
+import { PencilLineIcon, UploadIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 import type { ChangeEvent } from 'react';
 
@@ -19,6 +20,7 @@ interface FileUploadButtonProps {
     | 'link';
   accept?: string;
   className?: string;
+  selected?: boolean;
 }
 
 export default function FileUploadButton({
@@ -26,6 +28,7 @@ export default function FileUploadButton({
   variant = 'default',
   accept = 'image/*',
   className,
+  selected = false,
 }: FileUploadButtonProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -58,14 +61,13 @@ export default function FileUploadButton({
         type='button'
         onClick={handleButtonClick}
         variant={variant}
-        className={className}
+        className={cn(selected ? 'bg-primary/70' : '', className)}
       >
-        <UploadIcon className='mr-1 h-4 w-4' />
-        Choose File
-        {/* {fileName ? "Change File" : "Upload File"} */}
+        {selected ?
+          <PencilLineIcon className='mr-1 h-4 w-4' />
+        : <UploadIcon className='mr-1 h-4 w-4' />}
+        {selected ? 'Change File' : 'Choose File'}
       </Button>
-
-      {/* {fileName && <p className="text-sm text-muted-foreground mt-1">Selected: {fileName}</p>} */}
     </div>
   );
 }

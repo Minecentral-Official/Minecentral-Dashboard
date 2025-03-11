@@ -2,8 +2,8 @@ import { UploadThingError } from 'uploadthing/server';
 
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
+import { resourceTypeDetector } from '@/features/resources/util/resource-type-detector';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { detectResourceType } from '@/lib/uploadthing/file-type';
 import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading resources
@@ -22,7 +22,7 @@ export const fileRouterResource = uploadBuilder({
   })
   //on valid response from uploadthing
   .onUploadComplete(async ({ file }) => {
-    const resourceType = await detectResourceType(file.ufsUrl, file.type);
+    const resourceType = await resourceTypeDetector(file.ufsUrl, file.type);
 
     if (!resourceType) {
       throw new Error('Unknown file type');

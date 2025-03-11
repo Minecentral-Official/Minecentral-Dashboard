@@ -12,12 +12,13 @@ import { InputConform } from '@/components/conform/input.conform';
 import { MarkdownProvider } from '@/components/markdown-editor/context/markdown.context';
 import MarkdownEditor from '@/components/markdown-editor/markdown-editor';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { analyzeMinecraftFile } from '@/features/resources/util/analyze-file';
 
 const supportVersions = C_ResourceVersionSupport.map((type) => ({
   value: type,
@@ -30,7 +31,6 @@ const supportVersions = C_ResourceVersionSupport.map((type) => ({
 export default function ResourceCreateVersion({
   id: resourceId,
 }: Pick<T_DTOResource, 'id'>) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [file, setFile] = useState<File>();
   // const { uploadFile } = useResourceUpload({ router: 'resourceUpload' });
 
@@ -61,11 +61,20 @@ export default function ResourceCreateVersion({
   // }, [uploadResponse]);
 
   const versionSupportHandle = useInputControl(fields.compataibleVersions);
+  const versionTitleHandle = useInputControl(fields.title);
+  const versionNumberHandle = useInputControl(fields.version);
   const descriptionHandler = useInputControl(fields.description);
 
-  const handleFileChange = (file: FileList | null) => {
-    if (file && file[0]) {
-      setFile(file[0]);
+  const handleFileChange = async (url: string, file: File) => {
+    if (file) {
+      setFile(file);
+      const data = await analyzeMinecraftFile(file);
+      if (data.success) {
+        if (data.fileInfo?.fileName)
+          versionTitleHandle.change(data.fileInfo.fileName);
+        if (data.fileInfo?.version)
+          versionNumberHandle.change(data.fileInfo.version);
+      }
     } else {
       setFile(undefined);
     }
@@ -87,10 +96,15 @@ export default function ResourceCreateVersion({
 
       <Field>
         <Label>Release File</Label>
-        <Input
+        <FileUploadButton
+          accept='.jar,.zip'
+          onFileSelect={handleFileChange}
+          selected={file !== undefined}
+        />
+        {/* <Input
           type='file'
           onChange={(event) => handleFileChange(event.target.files)}
-        />
+        /> */}
       </Field>
 
       <Field>

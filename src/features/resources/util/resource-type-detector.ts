@@ -2,7 +2,7 @@ import AdmZip from 'adm-zip';
 
 import { T_ResourceType } from '@/lib/types/t-resource-type.type';
 
-export async function detectResourceType(
+export async function resourceTypeDetector(
   fileUrl: string,
   fileType: string,
 ): Promise<T_ResourceType | null> {
