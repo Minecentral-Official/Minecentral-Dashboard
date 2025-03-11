@@ -4,14 +4,12 @@ import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { resourceReleaseTable } from '@/lib/db/schema';
 
-export default async function resourceGetReleaseByDownloadId(
-  downloadId: string,
-) {
+export default async function resourceGetReleaseById(id: string) {
   'use cache';
   cacheLife('minutes');
-  cacheTag(`release-id-${downloadId}`);
+  cacheTag(`release-id-${id}`);
   const release = await db.query.resourceReleaseTable.findFirst({
-    where: eq(resourceReleaseTable.downloadId, downloadId),
+    where: eq(resourceReleaseTable.id, id),
     with: { plugin: true },
   });
   return release;

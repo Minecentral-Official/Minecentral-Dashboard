@@ -3,7 +3,7 @@ import { eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { resourceReleaseTable } from '@/lib/db/schema';
 
-export default async function resourceDownloadTick(releaseId: number) {
+export default async function resourceDownloadTick(releaseId: string) {
   // revalidateTag(`resource-id-${resourceId}`);
   return await db
     .update(resourceReleaseTable)

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { HashIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -18,7 +19,9 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
 import { analyzeMinecraftFile } from '@/features/resources/util/analyze-file';
+import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
 const supportVersions = C_ResourceVersionSupport.map((type) => ({
   value: type,
@@ -30,24 +33,46 @@ const supportVersions = C_ResourceVersionSupport.map((type) => ({
 
 export default function ResourceCreateVersion({
   id: resourceId,
-}: Pick<T_DTOResource, 'id'>) {
+  type,
+  slug,
+}: Pick<T_DTOResource, 'id' | 'type' | 'slug'>) {
   const [file, setFile] = useState<File>();
-  // const { uploadFile } = useResourceUpload({ router: 'resourceUpload' });
+  const [fileError, setFileError] = useState<boolean>(false);
+  const route = useRouter();
+  const { uploadFile, isUploading } = useResourceUpload({
+    //Message when upload fails
+    onUploadError: () => {
+      toast.error('Error while uploading file!', { id: 'update-resource' });
+    },
+    //Message when upload is successful
+    onUploadComplete: () => {
+      toast.success('New resource version uploaded!', {
+        id: 'update-resource',
+      });
+      route.push(`/${getResourceUrl(type)}/${slug}`);
+    },
+    router: 'fileRouterResource',
+  });
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
         schema: S_ProjectUploadVersion,
       });
-      if (submission.status !== 'success') {
-        console.log(submission.error);
-        toast.error('Form data invalid', { id: 'update-resource' });
-      } else {
-        toast.loading('Updating project...', { id: 'update-resource' });
-      }
       return submission;
     },
   });
+
+  const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!file) {
+      toast.error('Please choose a resource file!', { id: 'update-resource' });
+      setFileError(true);
+      e.preventDefault();
+      return;
+    }
+    setFileError(false);
+    return form.onSubmit(e);
+  };
 
   // // Show toast when state changes
   // useEffect(() => {
@@ -60,7 +85,7 @@ export default function ResourceCreateVersion({
   //   }
   // }, [uploadResponse]);
 
-  const versionSupportHandle = useInputControl(fields.compataibleVersions);
+  const versionSupportHandle = useInputControl(fields.compatibleVersions);
   const versionTitleHandle = useInputControl(fields.title);
   const versionNumberHandle = useInputControl(fields.version);
   const descriptionHandler = useInputControl(fields.description);
@@ -80,14 +105,20 @@ export default function ResourceCreateVersion({
     }
   };
 
-  function handleSubmit() {
-    toast.warning('Something happened', { id: 'update-resource' });
+  function handleSubmit(formData: FormData) {
+    toast.loading('Uploading new resource version...', {
+      id: 'update-resource',
+    });
+    const submission = parseWithZod(formData, {
+      schema: S_ProjectUploadVersion,
+    });
+    if (submission.status === 'success') uploadFile(file!, submission.value);
   }
 
   return (
     <form
       id={form.id}
-      onSubmit={form.onSubmit}
+      onSubmit={formSubmit}
       className='flex w-full flex-col gap-6'
       noValidate
       action={handleSubmit}
@@ -101,10 +132,7 @@ export default function ResourceCreateVersion({
           onFileSelect={handleFileChange}
           selected={file !== undefined}
         />
-        {/* <Input
-          type='file'
-          onChange={(event) => handleFileChange(event.target.files)}
-        /> */}
+        {fileError && <FieldError>Please choose a file to upload!</FieldError>}
       </Field>
 
       <Field>
@@ -144,7 +172,7 @@ export default function ResourceCreateVersion({
       </Field>
 
       <Field>
-        <Label htmlFor={fields.compataibleVersions.id} className='flex gap-2'>
+        <Label htmlFor={fields.compatibleVersions.id} className='flex gap-2'>
           Supported Versions
         </Label>
         <div className='flex flex-row gap-4'>
@@ -152,16 +180,18 @@ export default function ResourceCreateVersion({
             options={supportVersions}
             onValueChange={(e) => versionSupportHandle.change(e)}
             variant={'inverted'}
+            maxCount={16}
           />
         </div>
-        {fields.compataibleVersions.errors && (
-          <FieldError>{fields.compataibleVersions.errors}</FieldError>
+        {fields.compatibleVersions.errors && (
+          <FieldError>{fields.compatibleVersions.errors}</FieldError>
         )}
       </Field>
 
       <Button
         disabled={
-          JSON.stringify(form.value) === JSON.stringify(form.initialValue)
+          JSON.stringify(form.value) === JSON.stringify(form.initialValue) ||
+          isUploading
         }
       >
         Save Changes

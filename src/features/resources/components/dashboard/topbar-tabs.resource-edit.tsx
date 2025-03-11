@@ -62,13 +62,15 @@ export default function ResourceEditTopbarTabs({
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <Link href={`/plugins/${slug}`}>
-        <ButtonTooltip
-          Icon={ExternalLinkIcon}
-          tooltip='Go to Resource'
-          variant={'ghost'}
-        />
-      </Link>
+      <div>
+        <Link href={`/plugins/${slug}`}>
+          <ButtonTooltip
+            Icon={ExternalLinkIcon}
+            tooltip='Go to Resource'
+            variant={'ghost'}
+          />
+        </Link>
+      </div>
     </Card>
   );
 }

@@ -5,20 +5,22 @@ import { C_ResourceVersionSupport } from '@/features/resources/config/resource-v
 import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceRelease', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+  // id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
   pluginId: text()
     .references(() => resourceTable.id)
     .notNull(),
   title: text().notNull(),
-  description: text().notNull(),
-  compatibleVersions: text('versionSupport', { enum: C_ResourceVersionSupport })
+  description: text(),
+  compatibleVersions: text('compatibleVersions', {
+    enum: C_ResourceVersionSupport,
+  })
     .array()
     .notNull(),
   // compatiblePlatforms: text('versionSupport', { enum: TPluginVersions })
   //   .array()
   //   .notNull(),
   fileUrl: text().notNull(),
-  downloadId: text().unique().notNull(),
+  id: text().unique().primaryKey().notNull(),
   version: text().notNull(),
   //Stats
   downloads: integer().default(0),

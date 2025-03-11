@@ -28,9 +28,7 @@ export default function ResourceButtonHot({
 }) {
   return (
     <div className='flex flex-row-reverse flex-wrap items-end gap-2 md:flex-col'>
-      <DownloadButton
-        downloadUrl={`/api/download/plugin?rId=${release?.downloadId}`}
-      />
+      <DownloadButton downloadUrl={`/api/download?rId=${release?.id}`} />
       <div className='flex flex-row gap-2'>
         <ResourceToggleLikeButton liked={liked} resourceId={id} />
 

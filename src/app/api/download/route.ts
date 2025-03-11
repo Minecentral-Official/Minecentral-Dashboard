@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import resourceDownloadTick from '@/features/resources/mutations/download-tick.resource';
-import resourceGetReleaseByDownloadId from '@/features/resources/queries/release-by-download-id.get';
+import resourceGetReleaseById from '@/features/resources/queries/release-by-download-id.get';
 
 import type { NextRequest } from 'next/server';
 
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Find the file in the database
-    const release = await resourceGetReleaseByDownloadId(downloadId);
+    const release = await resourceGetReleaseById(downloadId);
     if (!release) {
       return new NextResponse('Invalid release id', { status: 404 });
     }

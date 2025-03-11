@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { TableProjectsUser } from '@/features/resources/components/resource/table/table-projects-user';
+import { TableProjectsAdmin } from '@/features/resources/components/resource/table/table-projects-admin';
 import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { S_ResourceListAll } from '@/features/resources/schemas/zod/s-resource-list-all.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
@@ -48,7 +48,7 @@ export default function Page() {
 
   return (
     <>
-      <TableProjectsUser plugins={resources} />
+      <TableProjectsAdmin plugins={resources} />
     </>
   );
 }

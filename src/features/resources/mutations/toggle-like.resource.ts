@@ -28,9 +28,9 @@ export default async function resourceToggleLike(
           ),
         );
 
-      return { liked: false };
+      return false;
     }
 
-    return { liked: true };
+    return true;
   });
 }

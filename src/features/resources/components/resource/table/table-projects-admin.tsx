@@ -22,7 +22,7 @@ type PluginsTableResource = Pick<
   'id' | 'iconUrl' | 'title' | 'status' | 'type' | 'slug'
 >;
 
-export function TableProjectsUser({
+export function TableProjectsAdmin({
   plugins: projects,
 }: {
   plugins: PluginsTableResource[];
@@ -68,10 +68,17 @@ export function TableProjectsUser({
               : 'Project N/A'}
             </TableCell>
             <TableCell>
-              {project.status ?
-                project.status.slice(0, 1).toUpperCase() +
-                project.status.slice(1)
-              : 'Draft'}
+              <Badge
+                variant={
+                  project.status === 'pending' ? 'destructive'
+                  : project.status === 'accepted' ?
+                    'default'
+                  : 'secondary'
+                }
+              >
+                {project.status.slice(0, 1).toUpperCase() +
+                  project.status.slice(1)}
+              </Badge>
             </TableCell>
             <TableCell className='shrink-0 text-right'>
               <Link href={`/dashboard/resources/${project.slug}`}>

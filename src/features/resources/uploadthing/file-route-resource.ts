@@ -1,8 +1,8 @@
 import { UploadThingError } from 'uploadthing/server';
 
+import projectCreateRelease from '@/features/resources/mutations/create.release';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
-import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
-import { resourceTypeDetector } from '@/features/resources/util/resource-type-detector';
+import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
 
@@ -12,7 +12,7 @@ export const fileRouterResource = uploadBuilder({
   'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
 })
   //Input required schema data for this route
-  .input(S_ProjectUploadOnResource)
+  .input(S_ProjectUploadVersion)
   //Provides context such as the user who attempts to upload to this route
   .middleware(async ({ input }) => {
     const { user } = await validateSession();
@@ -21,18 +21,26 @@ export const fileRouterResource = uploadBuilder({
     return { userId: user.id, ...input };
   })
   //on valid response from uploadthing
-  .onUploadComplete(async ({ file }) => {
-    const resourceType = await resourceTypeDetector(file.ufsUrl, file.type);
+  .onUploadComplete(async ({ file, metadata }) => {
+    // const resourceType = await resourceTypeDetector(file.ufsUrl, file.type);
 
-    if (!resourceType) {
-      throw new Error('Unknown file type');
-    }
+    // if (!resourceType) {
+    //   throw new Error('Unknown file type');
+    // }
 
-    console.log(`Uploaded ${file.name}, detected as ${resourceType}`);
-
+    // console.log(`Uploaded ${file.name}, detected as ${resourceType}`);
+    const release = await projectCreateRelease({
+      pluginId: metadata.id,
+      fileUrl: file.ufsUrl,
+      ...metadata,
+    });
     const obj = {
-      data: { url: file.ufsUrl, type: resourceType, name: file.name },
+      data: {
+        url: file.ufsUrl,
+        name: file.name,
+        data: JSON.stringify(release),
+      },
     };
-    console.log('Sent to client:', obj);
+    // console.log('Sent to client:', obj);
     return obj;
   });
