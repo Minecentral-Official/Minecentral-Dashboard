@@ -21,7 +21,7 @@ export default function SidebarWrapper({
     <SidebarProvider className='bg-none'>
       <AppSidebar
         className={cn(
-          'sticky top-[100px] h-[calc(100svh-100px)] xl:h-[calc(100svh-5rem)]',
+          'sticky top-[100px] my-0 h-[calc(100svh-100px)] xl:top-[80px] xl:h-[calc(100svh-80px)]',
           'rounded-md bg-sidebar',
           className,
         )}

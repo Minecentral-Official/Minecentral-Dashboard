@@ -35,7 +35,7 @@ export default function ResourceUpdateGeneralForm({
     undefined,
   );
 
-  const { uploadFile } = useResourceUpload({ router: 'iconUploader' });
+  const { uploadFile } = useResourceUpload({ router: 'fileRouterIcon' });
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();

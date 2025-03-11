@@ -5,8 +5,10 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
-import { ResourceFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
+import { ResourceFileRouter } from '@/features/resources/uploadthing/file-routes';
 
+//This hook allows the client to upload files and use the file router needed to upload a file
+//With errors and complete events
 interface UseUploadFileProps {
   onUploadComplete?: (file: UploadedFile) => void;
   onUploadError?: (error: unknown) => void;
@@ -36,6 +38,7 @@ export function useResourceUpload({
   const [isUploading, setIsUploading] = React.useState(false);
 
   //UPDATE WHEN ADDING NEW FILE ROUTERS WITH INPUTS!
+  //Needed to satisfy the return type of this hook, should be improved!
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const acceptableSchemas = z.union([
     S_ProjectUploadOnResource,
@@ -94,7 +97,7 @@ export function useResourceUpload({
 
 const { uploadFiles } = generateReactHelpers<ResourceFileRouter>();
 
-export function getErrorMessage(err: unknown) {
+function getErrorMessage(err: unknown) {
   const unknownError = 'Something went wrong, please try again later.';
 
   if (err instanceof z.ZodError) {
@@ -108,10 +111,4 @@ export function getErrorMessage(err: unknown) {
   } else {
     return unknownError;
   }
-}
-
-export function showErrorToast(err: unknown) {
-  const errorMessage = getErrorMessage(err);
-
-  return toast.error(errorMessage);
 }

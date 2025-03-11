@@ -58,7 +58,7 @@ export const PanelSection = () => (
           src={'/host/panel-console.png'}
           alt='Server Panel'
           fill={true}
-          objectFit='cover'
+          className='object-cover'
         />
       </div>
     </div>

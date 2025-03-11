@@ -7,6 +7,7 @@ export async function SidebarAdminHosting() {
   return (
     <SidebarGroup className='pt-1'>
       <SidebarMenu>
+        <p className='text-md font-semibold'>Hosting</p>
         <SidebarLink
           Icon={DatabaseIcon}
           name='Nodes'

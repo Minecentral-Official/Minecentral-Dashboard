@@ -1,11 +1,12 @@
 import { PropsWithChildren } from 'react';
 
+import AdminToggleButton from '@/components/buttons/admin.toggle';
 import SidebarDashboardGeneral from '@/components/sidebars/menus/dashboard-general.sidebar-menu';
 import SidebarDashboardManage from '@/components/sidebars/menus/dashboard-manage.sidebar-menu';
 import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
 import { Separator } from '@/components/ui/separator';
 
-export function DashboardLayout({ children }: PropsWithChildren) {
+export async function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <SidebarWrapper
       sidebar={
@@ -18,9 +19,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
             <Separator />
             <SidebarDashboardManage />
           </div>
-          {/* <Suspense>
           <AdminToggleButton isOnAdmin={false} />
-        </Suspense> */}
         </div>
       }
     >

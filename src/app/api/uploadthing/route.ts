@@ -1,7 +1,7 @@
 import { createRouteHandler } from 'uploadthing/next';
 
-import { resourceFileRouter } from '@/features/resources/uploadthing/resource-filerouter';
+import { resourceFileRoutes } from '@/features/resources/uploadthing/file-routes';
 
 export const { GET, POST } = createRouteHandler({
-  router: resourceFileRouter,
+  router: resourceFileRoutes,
 });

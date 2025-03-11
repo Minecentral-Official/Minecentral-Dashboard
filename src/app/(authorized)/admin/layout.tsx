@@ -22,6 +22,7 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
       sidebar={
         <div className='flex h-full flex-col justify-between'>
           <div>
+            <p className='font-semiborder-l-purple-800 pl-2 text-xl'>Admin</p>
             <SidebarAdminResources />
             <SidebarAdminHosting />
           </div>
@@ -29,7 +30,7 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
         </div>
       }
     >
-      <div className='h-full w-full p-6'>{children}</div>
+      <div className='h-full w-full pl-2'>{children}</div>
     </SidebarWrapper>
   );
 }

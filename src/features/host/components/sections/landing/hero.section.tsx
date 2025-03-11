@@ -19,8 +19,8 @@ export const HeroSection = () => (
           </h1>
           <p className='max-w-md text-left text-xl leading-relaxed tracking-tight text-muted-foreground'>
             Hosting your Minecraft server has never been this easy. Minecentral
-            Hosting offers unbeatable prices and an intuitive setup process, so
-            you can start crafting your world without the hassle.
+            Hosting offers unbeatable prices and one-click setup process, so you
+            can start crafting your world without hassle.
           </p>
         </div>
         <div className='flex flex-row gap-4'>

@@ -8,7 +8,7 @@ export default async function AdminToggleButton({
 }: {
   isOnAdmin: boolean;
 }) {
-  const isAdmin = validateRole('admin');
+  const isAdmin = await validateRole('admin');
   if (!isAdmin) return <></>;
   const text = isOnAdmin ? 'Back to Dashboard' : 'Admin';
   const link = isOnAdmin ? '/dashboard' : '/admin';

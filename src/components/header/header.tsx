@@ -15,7 +15,7 @@ type HeaderProps = {
 
 //Returns the padding neccessary due to the changing thickness of the Header component
 export function HeaderGap({ children }: PropsWithChildren) {
-  return <div className='mt-2 md:pt-[100px] xl:pt-20'>{children}</div>;
+  return <div className='md:pt-[100px] xl:pt-20'>{children}</div>;
 }
 
 export default function Header({ config }: HeaderProps) {

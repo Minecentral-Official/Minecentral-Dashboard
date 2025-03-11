@@ -55,7 +55,7 @@ export function baseNavigationConfig() {
     },
     {
       title: 'Server List',
-      href: '/hosting',
+      href: '/servers',
       Icon: ServerIcon,
     },
   ] satisfies NavigationConfig;
