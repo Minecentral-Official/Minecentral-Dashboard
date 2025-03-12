@@ -5,8 +5,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
 import {
   ResourceFilterProvider,
   useResourceFilterContext,
@@ -72,7 +72,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const versions = searchParams
     .getAll('v')
     .filter((version): version is TPluginVersion =>
-      C_ResourceVersionSupport.includes(version as TPluginVersion),
+      C_GameVersions.includes(version as TPluginVersion),
     );
 
   useEffect(() => {
@@ -126,7 +126,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     const currentVersions = searchParams
       .getAll('v')
       .filter((version): version is TPluginVersion =>
-        C_ResourceVersionSupport.includes(version as TPluginVersion),
+        C_GameVersions.includes(version as TPluginVersion),
       );
 
     const newVersions =

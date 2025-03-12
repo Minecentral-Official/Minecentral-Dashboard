@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 import { cn } from '@/lib/utils';
 
@@ -32,7 +32,7 @@ export default function FilterVersions() {
         }`}
       >
         <div className='h-48 w-full space-y-1 overflow-y-auto px-4'>
-          {C_ResourceVersionSupport.map((item) => (
+          {C_GameVersions.map((item) => (
             <CustomCheckbox
               key={item}
               label={item.charAt(0).toUpperCase() + item.slice(1)}

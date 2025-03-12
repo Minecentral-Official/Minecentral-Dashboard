@@ -2,7 +2,7 @@ import { UploadThingError } from 'uploadthing/server';
 
 import projectCreateRelease from '@/features/resources/mutations/create.release';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
-import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
+import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
 
@@ -12,7 +12,7 @@ export const fileRouterResource = uploadBuilder({
   'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
 })
   //Input required schema data for this route
-  .input(S_ProjectUploadVersion)
+  .input(S_ProjectCreateVersion_Plugin)
   //Provides context such as the user who attempts to upload to this route
   .middleware(async ({ input }) => {
     const { user } = await validateSession();

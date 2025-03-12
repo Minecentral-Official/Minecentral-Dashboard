@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import ResourceCreateVersion from '@/features/resources/components/forms/create-resource-version.form';
+import ResourceCreateVersionForm from '@/features/resources/components/forms/version/resource-add-version-plugin.form';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { projectGetIdBySlug } from '@/features/resources/queries/resource-get-id-by-slug.get';
 
@@ -27,7 +27,7 @@ export default async function Page({ params }: PageProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ResourceCreateVersion {...resource!} />
+        <ResourceCreateVersionForm {...resource!} />
       </CardContent>
     </Card>
   );

@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, json, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceTableRelease', {
@@ -13,13 +13,11 @@ export const resourceReleaseTable = pgTable('resourceTableRelease', {
   title: text().notNull(),
   description: text(),
   compatibleVersions: text('compatibleVersions', {
-    enum: C_ResourceVersionSupport,
+    enum: C_GameVersions,
   })
     .array()
     .notNull(),
-  // compatiblePlatforms: text('versionSupport', { enum: TPluginVersions })
-  //   .array()
-  //   .notNull(),
+  metadata: json().notNull(), // Flexible JSON field for different metadata
   fileUrl: text().notNull(),
   version: text().notNull(),
   //Stats

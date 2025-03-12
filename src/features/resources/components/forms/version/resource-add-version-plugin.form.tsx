@@ -16,14 +16,14 @@ import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
-import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
 import { analyzeMinecraftFile } from '@/features/resources/util/analyze-file';
-import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
-const supportVersions = C_ResourceVersionSupport.map((type) => ({
+const supportVersions = C_GameVersions.map((type) => ({
   value: type,
   label: type
     .split('-')
@@ -31,11 +31,18 @@ const supportVersions = C_ResourceVersionSupport.map((type) => ({
     .join(' '),
 }));
 
-export default function ResourceCreateVersion({
+const loaders = C_PluginLoaders.map((plat) => ({
+  value: plat,
+  label: plat
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '),
+}));
+
+export default function ResourceCreateVersionForm({
   id: resourceId,
-  type,
   slug,
-}: Pick<T_DTOResource, 'id' | 'type' | 'slug'>) {
+}: Pick<T_DTOResource, 'id' | 'slug'>) {
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState<boolean>(false);
   const route = useRouter();
@@ -49,7 +56,7 @@ export default function ResourceCreateVersion({
       toast.success('New resource version uploaded!', {
         id: 'update-resource',
       });
-      route.push(`/${getResourceUrl(type)}/${slug}`);
+      route.push(`/dashboard/resources/${slug}/versions`);
     },
     router: 'fileRouterResource',
   });
@@ -57,7 +64,7 @@ export default function ResourceCreateVersion({
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: S_ProjectUploadVersion,
+        schema: S_ProjectCreateVersion_Plugin,
       });
       return submission;
     },
@@ -74,21 +81,11 @@ export default function ResourceCreateVersion({
     return form.onSubmit(e);
   };
 
-  // // Show toast when state changes
-  // useEffect(() => {
-  //   if (uploadResponse?.data) {
-  //     toast.success(actionState.message, {
-  //       id: 'create-release',
-  //     });
-  //   } else if (actionState?.success === false) {
-  //     toast.error(actionState?.message, { id: 'update-resource' });
-  //   }
-  // }, [uploadResponse]);
-
   const versionSupportHandle = useInputControl(fields.compatibleVersions);
   const versionTitleHandle = useInputControl(fields.title);
   const versionNumberHandle = useInputControl(fields.version);
   const descriptionHandler = useInputControl(fields.description);
+  const versionLoaderHandler = useInputControl(fields.loader);
 
   const handleFileChange = async (url: string, file: File) => {
     if (file) {
@@ -110,7 +107,7 @@ export default function ResourceCreateVersion({
       id: 'update-resource',
     });
     const submission = parseWithZod(formData, {
-      schema: S_ProjectUploadVersion,
+      schema: S_ProjectCreateVersion_Plugin,
     });
     if (submission.status === 'success') uploadFile(file!, submission.value);
   }
@@ -185,6 +182,27 @@ export default function ResourceCreateVersion({
         </div>
         {fields.compatibleVersions.errors && (
           <FieldError>{fields.compatibleVersions.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label
+          htmlFor={fields.loader.id}
+          className='flex gap-2 text-sm font-thin'
+        >
+          Loaders
+        </Label>
+        <div className='flex flex-row gap-4'>
+          <MultiSelect
+            options={loaders}
+            onValueChange={(e) => versionLoaderHandler.change(e)}
+            variant={'inverted'}
+            maxCount={16}
+          />
+        </div>
+
+        {fields.compatibleVersions.errors && (
+          <FieldError>{fields.loader.errors}</FieldError>
         )}
       </Field>
 

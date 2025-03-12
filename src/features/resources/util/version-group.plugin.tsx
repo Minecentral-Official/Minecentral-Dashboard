@@ -1,10 +1,10 @@
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 
 export default function pluginGroupVersions(selected: string[]): string[] {
   const versionGroups: Record<string, Set<string>> = {};
 
   // Group versions by their major.minor prefix
-  C_ResourceVersionSupport.forEach((version) => {
+  C_GameVersions.forEach((version) => {
     const [major, minor] = version.split('.');
     const key = `${major}.${minor}`;
     if (!versionGroups[key]) versionGroups[key] = new Set();

@@ -1,4 +1,4 @@
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 
-export type TPluginVersions = typeof C_ResourceVersionSupport;
+export type TPluginVersions = typeof C_GameVersions;
 export type TPluginVersion = TPluginVersions[number];

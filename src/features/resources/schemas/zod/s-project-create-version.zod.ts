@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
-import { C_ResourceVersionSupport } from '@/features/resources/config/resource-version-support.config';
+import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
 
-export const S_ProjectUploadVersion = z.object({
+export const S_ProjectCreateVersion_Plugin = z.object({
   id: z.string(),
   title: z
     .string()
@@ -11,6 +12,7 @@ export const S_ProjectUploadVersion = z.object({
   description: z.string().optional(),
   version: z.string().max(16, 'Max characters 16'),
   compatibleVersions: z
-    .array(z.enum(C_ResourceVersionSupport))
+    .array(z.enum(C_GameVersions))
     .min(1, 'Please select atleast 1 supported version'),
+  loader: z.array(z.enum(C_PluginLoaders)),
 });

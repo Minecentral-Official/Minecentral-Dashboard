@@ -4,8 +4,8 @@ import { generateReactHelpers } from '@uploadthing/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
-import { S_ProjectUploadVersion } from '@/features/resources/schemas/zod/s-project-upload-version.zod';
 import { ResourceFileRouter } from '@/features/resources/uploadthing/file-routes';
 
 //This hook allows the client to upload files and use the file router needed to upload a file
@@ -43,7 +43,7 @@ export function useResourceUpload({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const acceptableSchemas = z.union([
     S_ProjectUploadOnResource,
-    S_ProjectUploadVersion,
+    S_ProjectCreateVersion_Plugin,
   ]);
 
   async function uploadThing(

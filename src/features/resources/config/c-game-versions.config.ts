@@ -1,4 +1,4 @@
-export const C_ResourceVersionSupport = [
+export const C_GameVersions = [
   '1.21.4',
   '1.21.3',
   '1.21.2',
