@@ -14,5 +14,5 @@ export const S_ProjectCreateVersion_Plugin = z.object({
   compatibleVersions: z
     .array(z.enum(C_GameVersions))
     .min(1, 'Please select atleast 1 supported version'),
-  loader: z.array(z.enum(C_PluginLoaders)),
+  loaders: z.array(z.enum(C_PluginLoaders)),
 });

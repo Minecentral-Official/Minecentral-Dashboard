@@ -20,21 +20,25 @@ export default async function resourcesListAllFiltered({
   categories,
   versions,
   type,
+  loaders,
 }: T_ResourceFilterRequest): Promise<T_ResourcesResponse> {
   'use cache';
   cacheLife('minutes');
   cacheTag(
     `filter-${query}-${limit}-${page}-${categories?.toString()}-${versions?.toString()}`,
   );
-  const otherConditions = [
+  // Base conditions for the resource table
+  const resourceConditions = [
     eq(resourceTable.status, 'accepted'),
     eq(resourceTable.type, type),
   ];
+
+  // Text search conditions
   const textConditions = [];
 
-  //Query based Filters
+  // Query based Filters
   if (query) {
-    //Search Filter on Title, Description or SubTitle
+    // Search Filter on Title, Description or SubTitle
     textConditions.push(
       or(
         ilike(resourceTable.title, `%${query}%`),
@@ -43,7 +47,7 @@ export default async function resourcesListAllFiltered({
       ),
     );
 
-    //Author Filter
+    // Author Filter
     let authorIds: string[] = [];
     // Find user ID(s) that match the given name
     const matchedUsers = await db
@@ -54,42 +58,81 @@ export default async function resourcesListAllFiltered({
     // Add condition to check if author matches either a name or an ID
     textConditions.push(inArray(resourceTable.userId, [...authorIds]));
   }
-  //Category Filter
-  if (categories && categories.length > 0)
-    otherConditions.push(arrayContains(resourceTable.categories, categories));
 
-  //Versions Filter
-  if (versions && versions.length > 0)
-    otherConditions.push(
-      arrayContains(resourceReleaseTable.compatibleVersions, versions),
+  // Category Filter
+  if (categories && categories.length > 0)
+    resourceConditions.push(
+      arrayContains(resourceTable.categories, categories),
     );
 
-  //Query/Filter
-  const whereClause = and(or(...textConditions), and(...otherConditions));
+  // Combine resource conditions with text conditions
+  const resourceWhereClause =
+    textConditions.length > 0 ?
+      and(or(...textConditions), and(...resourceConditions))
+    : and(...resourceConditions);
 
+  // Release conditions for filtering by version and loaders
+  const releaseConditions = [];
+
+  // Versions Filter
+  if (versions && versions.length > 0) {
+    releaseConditions.push(
+      arrayContains(resourceReleaseTable.compatibleVersions, versions),
+    );
+  }
+
+  // Loaders Filter
+  if (loaders && loaders.length > 0) {
+    releaseConditions.push(
+      arrayContains(resourceReleaseTable.loaders, loaders),
+    );
+  }
+  // Query/Filter
   const [resources, total] = await Promise.all([
     db.query.resourceTable.findMany({
       with: {
         user: true,
         releases: {
-          limit: 1,
+          where:
+            releaseConditions.length > 0 ?
+              and(...releaseConditions)
+            : undefined,
           orderBy: (releases, { desc }) => [desc(releases.createdAt)],
+          limit: 1,
         },
       },
-      where: whereClause,
+      where: resourceWhereClause,
       orderBy: desc(resourceTable.updatedAt),
       limit,
       offset: Math.max(0, page - 1) * limit,
     }),
-    //Total Count
-    db.query.resourceTable.findMany({ where: whereClause }),
+    // For total count, we need to consider resources that have at least one matching release
+    db
+      .select({ id: resourceTable.id })
+      .from(resourceTable)
+      .leftJoin(
+        resourceReleaseTable,
+        eq(resourceTable.id, resourceReleaseTable.pluginId),
+      )
+      .where(
+        and(
+          resourceWhereClause,
+          releaseConditions.length > 0 ? and(...releaseConditions) : undefined,
+        ),
+      )
+      .groupBy(resourceTable.id),
   ]);
+
+  // Filter out resources that don't have any releases matching the criteria
+  const filteredResources = resources.filter(
+    (resource) => resource.releases && resource.releases.length > 0,
+  );
 
   const totalCount = total.length;
   const totalPages = Math.ceil(totalCount / limit);
 
   const result = {
-    resources: resources.map((resource) => DTOResource(resource)),
+    resources: filteredResources.map((resource) => DTOResource(resource)),
     totalPages,
   };
   return result;

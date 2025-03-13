@@ -8,12 +8,14 @@ export default async function projectUpdate(
   resourceId: string,
   values: Partial<typeof resourceTable.$inferInsert>,
 ) {
-  revalidateTag(`resource-id-${resourceId}`);
-  return (
+  const updated = (
     await db
       .update(resourceTable)
       .set(values)
       .where(eq(resourceTable.id, resourceId))
       .returning()
   )[0];
+
+  revalidateTag(`resource-id-${resourceId}`);
+  return updated;
 }

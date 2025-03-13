@@ -85,7 +85,7 @@ export default function ResourceCreateVersionForm({
   const versionTitleHandle = useInputControl(fields.title);
   const versionNumberHandle = useInputControl(fields.version);
   const descriptionHandler = useInputControl(fields.description);
-  const versionLoaderHandler = useInputControl(fields.loader);
+  const versionLoaderHandler = useInputControl(fields.loaders);
 
   const handleFileChange = async (url: string, file: File) => {
     if (file) {
@@ -187,7 +187,7 @@ export default function ResourceCreateVersionForm({
 
       <Field>
         <Label
-          htmlFor={fields.loader.id}
+          htmlFor={fields.loaders.id}
           className='flex gap-2 text-sm font-thin'
         >
           Loaders
@@ -202,7 +202,7 @@ export default function ResourceCreateVersionForm({
         </div>
 
         {fields.compatibleVersions.errors && (
-          <FieldError>{fields.loader.errors}</FieldError>
+          <FieldError>{fields.loaders.errors}</FieldError>
         )}
       </Field>
 

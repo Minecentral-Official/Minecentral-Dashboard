@@ -18,6 +18,7 @@ export default async function Page({ params }: PageProps) {
   const resource = await projectGetById_WithUser(
     (await projectGetIdBySlug(slug))!,
   );
+
   return (
     <Card>
       <CardHeader>

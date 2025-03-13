@@ -31,7 +31,7 @@ export default async function layout({
     <PluginFilterProvider>
       <SidebarWrapper
         // Undo sticky sidebar for this page
-        className='relative top-0'
+
         sidebar={
           <div className='flex h-full flex-col justify-start gap-4 pt-2'>
             <ResourceCardCompatability {...userResourceData} />

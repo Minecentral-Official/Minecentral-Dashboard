@@ -11,7 +11,7 @@ import { pluginGetCategoryIcon } from '@/features/resources/util/plugin-category
 import { pluginGetCategoryText } from '@/features/resources/util/plugin-category-text.get';
 import { cn } from '@/lib/utils';
 
-export default function FilterCategories() {
+export default function FilterCategories_Plugin() {
   const [isOpen, setOpen] = useState(true);
   const { toggleCategory, categories } = usePluginFilterContext();
   return (

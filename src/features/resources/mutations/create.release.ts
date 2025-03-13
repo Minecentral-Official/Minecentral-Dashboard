@@ -12,6 +12,7 @@ export default async function projectCreateRelease({
   fileUrl,
   version,
   pluginId,
+  loaders,
 }: Pick<
   typeof resourceReleaseTable.$inferInsert,
   | 'compatibleVersions'
@@ -20,6 +21,7 @@ export default async function projectCreateRelease({
   | 'title'
   | 'version'
   | 'pluginId'
+  | 'loaders'
 >) {
   const newRelease = await db.transaction(async (tx) => {
     //Insert new resource release
@@ -33,6 +35,7 @@ export default async function projectCreateRelease({
         description,
         fileUrl,
         version,
+        loaders,
       })
       .returning();
 

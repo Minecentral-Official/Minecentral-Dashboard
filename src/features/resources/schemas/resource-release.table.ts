@@ -1,7 +1,8 @@
 import { relations } from 'drizzle-orm';
-import { integer, json, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
 import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceTableRelease', {
@@ -17,7 +18,9 @@ export const resourceReleaseTable = pgTable('resourceTableRelease', {
   })
     .array()
     .notNull(),
-  metadata: json().notNull(), // Flexible JSON field for different metadata
+  loaders: text('loaders', {
+    enum: C_PluginLoaders,
+  }).array(),
   fileUrl: text().notNull(),
   version: text().notNull(),
   //Stats

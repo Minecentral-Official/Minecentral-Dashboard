@@ -8,7 +8,7 @@ export default function Layout({ children }: PropsWithChildren) {
     <>
       <Header config={resourcesNavigationConfig} />
       <div className='container pb-4'>
-        <HeaderGap>{children} </HeaderGap>
+        <HeaderGap>{children}</HeaderGap>
       </div>
     </>
   );

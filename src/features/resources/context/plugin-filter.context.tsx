@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
 import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
 import {
   ResourceFilterProvider,
@@ -13,8 +14,9 @@ import {
 } from '@/features/resources/context/resource-filter.context';
 import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { T_GameVersion } from '@/features/resources/types/t-game-version.type';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
-import { TPluginVersion } from '@/features/resources/types/t-resource-version-support.type';
+import { T_PluginLoader } from '@/features/resources/types/t-plugin-loader.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
@@ -26,8 +28,10 @@ interface PluginFilterContextType {
   plugins: T_DTOResource[];
   categories: T_PluginCategory[];
   toggleCategory: (category: T_PluginCategory) => void;
-  versions: TPluginVersion[];
-  toggleVersions: (version: TPluginVersion) => void;
+  versions: T_GameVersion[];
+  toggleVersions: (version: T_GameVersion) => void;
+  loaders: T_PluginLoader[];
+  toggleLoaders: (loader: T_PluginLoader) => void;
   performSearch: () => void;
 }
 
@@ -64,15 +68,20 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
 
   const [plugins, setPlugins] = useState<T_DTOResource[]>([]);
   const updateSearchParams = useUpdateSearchParams();
-  const categories = searchParams
-    .getAll('category')
+  const filterCategories = searchParams
+    .getAll('c')
     .filter((category): category is T_PluginCategory =>
       C_PluginCategories.includes(category as T_PluginCategory),
     );
-  const versions = searchParams
+  const filterVersions = searchParams
     .getAll('v')
-    .filter((version): version is TPluginVersion =>
-      C_GameVersions.includes(version as TPluginVersion),
+    .filter((version): version is T_GameVersion =>
+      C_GameVersions.includes(version as T_GameVersion),
+    );
+  const filterLoaders = searchParams
+    .getAll('l')
+    .filter((loader): loader is T_PluginLoader =>
+      C_PluginLoaders.includes(loader as T_PluginLoader),
     );
 
   useEffect(() => {
@@ -85,8 +94,9 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const performSearch = async () => {
     const params = new URLSearchParams();
     SearchParamsConsume(params, getParams());
-    categories.forEach((category) => params.append('category', category));
-    versions.forEach((version) => params.append('v', version));
+    filterCategories.forEach((category) => params.append('c', category));
+    filterVersions.forEach((version) => params.append('v', version));
+    filterLoaders.forEach((loader) => params.append('l', loader));
 
     fetch(`/api/resources?${params.toString()}`)
       .then((response) => {
@@ -107,7 +117,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   //#region Togglers
   function toggleCategory(category: T_PluginCategory) {
     const currentCategories = searchParams
-      .getAll('category')
+      .getAll('c')
       .filter((category): category is T_PluginCategory =>
         C_PluginCategories.includes(category as T_PluginCategory),
       );
@@ -118,15 +128,15 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       : [...currentCategories, category];
 
     updateSearchParams({
-      category: newCategories.map((cat) => cat),
+      c: newCategories.map((cat) => cat),
     });
   }
 
-  function toggleVersions(version: TPluginVersion) {
+  function toggleVersions(version: T_GameVersion) {
     const currentVersions = searchParams
       .getAll('v')
-      .filter((version): version is TPluginVersion =>
-        C_GameVersions.includes(version as TPluginVersion),
+      .filter((version): version is T_GameVersion =>
+        C_GameVersions.includes(version as T_GameVersion),
       );
 
     const newVersions =
@@ -138,16 +148,35 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       v: newVersions.map((cat) => cat),
     });
   }
+
+  function toggleLoaders(loader: T_PluginLoader) {
+    const currentLoaders = searchParams
+      .getAll('l')
+      .filter((loader): loader is T_PluginLoader =>
+        C_PluginLoaders.includes(loader as T_PluginLoader),
+      );
+
+    const newLoaders =
+      currentLoaders.includes(loader) ?
+        currentLoaders.filter((l) => l !== loader)
+      : [...currentLoaders, loader];
+
+    updateSearchParams({
+      l: newLoaders.map((cat) => cat),
+    });
+  }
   //#endregion
 
   return (
     <FilterPluginContext.Provider
       value={{
         plugins,
-        categories,
+        categories: filterCategories,
         toggleCategory,
-        versions,
+        versions: filterVersions,
         toggleVersions,
+        loaders: filterLoaders,
+        toggleLoaders,
         performSearch,
       }}
     >

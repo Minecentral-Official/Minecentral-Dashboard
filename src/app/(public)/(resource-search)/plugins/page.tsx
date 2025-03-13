@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 
 import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
 import { Separator } from '@/components/ui/separator';
-import FilterCategories from '@/features/resources/components/filter/filter-categories';
+import FilterCategories_Plugin from '@/features/resources/components/filter/filter-categories-plugin';
+import FilterLoaders_Plugin from '@/features/resources/components/filter/filter-loaders-plugin';
 import FilterVersions from '@/features/resources/components/filter/filter-versions';
 import PluginLimitFilter from '@/features/resources/components/filter/limit-filter';
 import ResourceList from '@/features/resources/components/filter/resource-list';
@@ -22,10 +23,11 @@ export default function PluginContent() {
       <SidebarWrapper
         sidebar={
           <div className='flex h-full flex-col justify-start gap-4 pt-2'>
-            <FilterCategories />
+            <FilterCategories_Plugin />
             <Separator />
             <FilterVersions />
             <Separator />
+            <FilterLoaders_Plugin />
           </div>
         }
       >

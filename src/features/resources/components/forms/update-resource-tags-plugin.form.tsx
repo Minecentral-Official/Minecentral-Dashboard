@@ -33,12 +33,13 @@ export default function ResourceUpdateTagsForm_Plugin({
   );
 
   const defaultValue = {
-    categories,
+    categories: categories || [],
     id: resourceId,
   };
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
+      console.log();
       const submission = parseWithZod(formData, {
         schema: S_ProjectUpdateTags_Plugin,
       });
@@ -66,6 +67,31 @@ export default function ResourceUpdateTagsForm_Plugin({
 
   const categoriesHandle = useInputControl(fields.categories);
 
+  const toggleCategory = (category: string) => {
+    const categories = fields.categories.value || [];
+    if (typeof categories === 'string') {
+      if (categories === category) return categoriesHandle.change(undefined);
+      return categoriesHandle.change([categories, category]);
+    }
+
+    const elementExists = categories.includes(category);
+
+    if (elementExists) {
+      // Remove the element (filter it out)
+      const filtered = categories
+        .filter((item) => item !== category)
+        .filter((val) => val !== undefined);
+      // If the array becomes empty, return undefined
+      return categoriesHandle.change(filtered.length === 0 ? [] : filtered);
+    } else {
+      // Add the element to the array
+      return categoriesHandle.change([
+        ...categories.filter((val) => val !== undefined),
+        category,
+      ]);
+    }
+  };
+
   return (
     <form
       id={form.id}
@@ -75,7 +101,6 @@ export default function ResourceUpdateTagsForm_Plugin({
       noValidate
     >
       <input type='hidden' name={fields.id.name} value={resourceId} />
-
       <Field>
         <Label htmlFor={fields.categories.id} className='flex gap-2'>
           Categories
@@ -90,34 +115,24 @@ export default function ResourceUpdateTagsForm_Plugin({
                 >
                   <Checkbox
                     checked={fields.categories.value?.includes(value)}
-                    onChange={(e) =>
-                      categoriesHandle.change(e.currentTarget.value)
-                    }
+                    onClick={() => toggleCategory(value)}
                   />
                   <label className='flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
-                    <Icon className='mr-1 h-4 w-4' /> {label}
+                    <Icon className='mr-2 h-4 w-4' /> {label}
                   </label>
                 </div>
               );
             })}
           </div>
-
-          {/* <MultiSelect
-            options={categoriesList}
-            onValueChange={(e) => categoriesHandle.change(e)}
-            variant={'inverted'}
-            maxCount={16}
-          /> */}
         </div>
         {fields.categories.errors && (
           <FieldError>{fields.categories.errors}</FieldError>
         )}
       </Field>
-
       <Button
-      // disabled={
-      //   JSON.stringify(form.value) === JSON.stringify(form.initialValue)
-      // }
+        disabled={
+          JSON.stringify(form.value) === JSON.stringify(form.initialValue)
+        }
       >
         Save Changes
       </Button>
