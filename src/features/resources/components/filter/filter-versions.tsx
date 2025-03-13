@@ -35,12 +35,13 @@ export default function FilterVersions() {
           {C_GameVersions.map((item) => (
             <CustomCheckbox
               key={item}
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
               onCheckedChange={() => {
                 toggleVersions(item);
               }}
               checked={versions.includes(item)}
-            />
+            >
+              {item.charAt(0).toUpperCase() + item.slice(1)}
+            </CustomCheckbox>
           ))}
         </div>
       </div>

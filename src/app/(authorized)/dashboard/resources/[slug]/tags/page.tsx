@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import ResourceUpdateLinksForm from '@/features/resources/components/forms/update-resource-links.form';
+import ResourceUpdateTagsForm_Plugin from '@/features/resources/components/forms/update-resource-tags-plugin.form';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { projectGetIdBySlug } from '@/features/resources/queries/resource-get-id-by-slug.get';
 
@@ -23,11 +23,12 @@ export default async function Page({ params }: PageProps) {
       <CardHeader>
         <CardTitle>Tags</CardTitle>
         <CardDescription>
-          Provide information for others to seak help or provide you some coffee
+          Select the most accurage tags to help others find your plugin more
+          easily. Apply all relateable tags that apply.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ResourceUpdateLinksForm {...resource!} />
+        <ResourceUpdateTagsForm_Plugin {...resource!} />
       </CardContent>
     </Card>
   );

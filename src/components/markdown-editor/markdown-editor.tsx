@@ -49,7 +49,7 @@ export default function MarkdownEditor({
         }}
         extraCommands={[codeLive, codeEdit]}
         previewOptions={{
-          rehypePlugins: [[rehypeRaw, rehypeSanitize]],
+          rehypePlugins: [[rehypeSanitize, rehypeRaw]],
           style: { background: 'none' },
           components: {
             a: ({ children, ...props }) => {

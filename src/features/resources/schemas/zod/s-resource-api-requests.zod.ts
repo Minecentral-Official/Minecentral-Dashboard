@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
 import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
 import { C_ResourceType } from '@/lib/configs/c-resource-type.config';
 
 export const S_ResourceFilterRequestSchema = z.object({
   query: z.string().optional(),
   page: z.number(),
   limit: z.number(),
-  categories: z.array(z.enum(C_CategoriesPlugin)).optional(),
+  categories: z.array(z.enum(C_PluginCategories)).optional(),
   versions: z.array(z.enum(C_GameVersions)).optional(),
   type: z.enum(C_ResourceType),
 });

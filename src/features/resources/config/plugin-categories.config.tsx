@@ -1,4 +1,4 @@
-export const C_CategoriesPlugin = [
+export const C_PluginCategories = [
   'chat',
   'economy',
   'cosmetic',
@@ -8,4 +8,15 @@ export const C_CategoriesPlugin = [
   'admin',
   'proxy',
   'misc',
+  'adventure',
+  'food',
+  'magic',
+  'mobs',
+  'minigame',
+  'transport',
+  'equipment',
+  'cursed',
+  'library',
+  'storage',
+  'optimization',
 ] as const;

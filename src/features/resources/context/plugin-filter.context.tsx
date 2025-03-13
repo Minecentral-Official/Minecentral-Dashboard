@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
 import {
   ResourceFilterProvider,
   useResourceFilterContext,
@@ -67,7 +67,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
   const categories = searchParams
     .getAll('category')
     .filter((category): category is T_PluginCategory =>
-      C_CategoriesPlugin.includes(category as T_PluginCategory),
+      C_PluginCategories.includes(category as T_PluginCategory),
     );
   const versions = searchParams
     .getAll('v')
@@ -109,7 +109,7 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
     const currentCategories = searchParams
       .getAll('category')
       .filter((category): category is T_PluginCategory =>
-        C_CategoriesPlugin.includes(category as T_PluginCategory),
+        C_PluginCategories.includes(category as T_PluginCategory),
       );
 
     const newCategories =

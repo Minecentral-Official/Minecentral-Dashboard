@@ -9,10 +9,8 @@ import { cn } from '@/lib/utils';
 
 const CustomCheckbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
-    label: string;
-  }
->(({ className, label, checked, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+>(({ className, children, checked, ...props }, ref) => {
   // const [checked, setChecked] = React.useState(false);
 
   const handleCheck = (checked: boolean) => {
@@ -51,7 +49,7 @@ const CustomCheckbox = React.forwardRef<
             onMouseEnter={() => setIsHoveringButton(true)}
             onMouseLeave={() => setIsHoveringButton(false)}
           >
-            {label}
+            <div className='flex flex-row items-center'>{children}</div>
             <CheckIcon
               className={`h-4 w-4 transition-opacity duration-200 ease-in-out ${isHoveringButton || checked ? 'opacity-100' : 'opacity-0'}`}
             />

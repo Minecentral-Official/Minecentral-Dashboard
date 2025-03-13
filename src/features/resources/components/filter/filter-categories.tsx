@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
+import { pluginGetCategoryIcon } from '@/features/resources/util/plugin-category-icon.get';
+import { pluginGetCategoryText } from '@/features/resources/util/plugin-category-text.get';
 import { cn } from '@/lib/utils';
 
 export default function FilterCategories() {
@@ -32,16 +34,21 @@ export default function FilterCategories() {
         }`}
       >
         <div className='w-full space-y-1 px-4'>
-          {C_CategoriesPlugin.map((item) => (
-            <CustomCheckbox
-              key={item}
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
-              onCheckedChange={() => {
-                toggleCategory(item);
-              }}
-              checked={categories.includes(item)}
-            />
-          ))}
+          {C_PluginCategories.map((category) => {
+            const Icon = pluginGetCategoryIcon(category);
+            return (
+              <CustomCheckbox
+                key={category}
+                onCheckedChange={() => {
+                  toggleCategory(category);
+                }}
+                checked={categories.includes(category)}
+              >
+                <Icon className='mr-1 h-4 w-4' />
+                {pluginGetCategoryText(category)}
+              </CustomCheckbox>
+            );
+          })}
         </div>
       </div>
     </section>

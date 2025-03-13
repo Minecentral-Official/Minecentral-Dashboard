@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { C_CategoriesPlugin } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
 import resourcesListAllFiltered from '@/features/resources/queries/resource-list-all-filter.get';
 import { S_ResourceFilterRequestSchema } from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     categories: searchParams
       .getAll('category')
       .filter((category): category is T_PluginCategory =>
-        C_CategoriesPlugin.includes(category as T_PluginCategory),
+        C_PluginCategories.includes(category as T_PluginCategory),
       ),
     page: Number.parseInt(searchParams.get('p') || '1', 10),
     limit: Number.parseInt(searchParams.get('limit') || '16', 10),
