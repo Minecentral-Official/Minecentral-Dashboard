@@ -2,7 +2,7 @@ import { UploadThingError } from 'uploadthing/server';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
-import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
+import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
 
@@ -13,7 +13,7 @@ export const fileRouterIcon = uploadBuilder({
   'image/webp': { maxFileSize: '256KB' },
 })
   //Input takes in schema type data, parses it, will not continue if there is an error here
-  .input(S_ProjectUploadOnResource)
+  .input(S_ProjectUploadIcon)
   //Middleware to provide context to the upload, such as the user who is attempting to upload to this route
   .middleware(async ({ input }) => {
     const { user } = await validateSession();

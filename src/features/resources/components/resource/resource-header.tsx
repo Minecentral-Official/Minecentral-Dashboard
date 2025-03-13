@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import ResourceStats from '@/features/resources/components/resource/resource-stats';
-import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceHeader({
   title,

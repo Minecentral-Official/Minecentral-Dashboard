@@ -2,7 +2,7 @@ import { DownloadIcon, HeartIcon, TagsIcon } from 'lucide-react';
 
 import { Separator } from '@/components/ui/separator';
 import ResourceCategoryBadges from '@/features/resources/components/resource/resource-category-badges';
-import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
 import compactNumber from '@/lib/utils/compact-number';
 
 export default function ResourceStats({

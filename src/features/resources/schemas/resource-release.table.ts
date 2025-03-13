@@ -7,10 +7,11 @@ import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceTableReleases', {
   id: text().unique().primaryKey().notNull(),
-  // id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+  //ID of the releaseTable this release was uploaded to
   pluginId: text()
     .references(() => resourceTable.id)
     .notNull(),
+  //Data
   title: text().notNull(),
   description: text(),
   compatibleVersions: text('compatibleVersions', {

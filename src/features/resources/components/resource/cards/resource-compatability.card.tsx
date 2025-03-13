@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
 import pluginGroupVersions from '@/features/resources/util/version-group.plugin';
 
 export default function ResourceCardCompatability({

@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
-import { S_ProjectUploadOnResource } from '@/features/resources/schemas/zod/s-project-upload-on-resource.zod';
+import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
 import { ResourceFileRouter } from '@/features/resources/uploadthing/file-routes';
 
 //This hook allows the client to upload files and use the file router needed to upload a file
@@ -42,7 +42,7 @@ export function useResourceUpload({
   //Needed to satisfy the return type of this hook, should be improved!
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const acceptableSchemas = z.union([
-    S_ProjectUploadOnResource,
+    S_ProjectUploadIcon,
     S_ProjectCreateVersion_Plugin,
   ]);
 

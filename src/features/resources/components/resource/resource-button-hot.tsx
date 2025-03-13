@@ -16,7 +16,7 @@ import {
 import ResourceButtonSettings from '@/features/resources/components/resource/resource-button-settings';
 import ResourceToggleLikeButton from '@/features/resources/components/resource/resource-toggle-like-button';
 import DownloadButton from '@/features/resources/components/ui/download-button';
-import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource-with-releases.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceButtonHot({
   release,
