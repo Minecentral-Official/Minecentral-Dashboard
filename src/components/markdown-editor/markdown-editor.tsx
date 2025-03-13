@@ -49,11 +49,11 @@ export default function MarkdownEditor({
         }}
         extraCommands={[codeLive, codeEdit]}
         previewOptions={{
-          rehypePlugins: [[rehypeSanitize, rehypeRaw]],
+          rehypePlugins: [rehypeSanitize, rehypeRaw],
           style: { background: 'none' },
           components: {
             a: ({ children, ...props }) => {
-              return validateSurroundingText(children, true) ?
+              return validateSurroundingText(children, props.href, true) ?
                   <iframe src={props.href} />
                 : <a {...props}>{children}</a>;
             },
@@ -86,11 +86,13 @@ export default function MarkdownEditor({
 */
 function validateSurroundingText(
   children: React.ReactNode,
+  href: string | undefined,
   checkYouTube?: boolean,
 ) {
-  const text = React.Children.toArray(children)
-    .map((child) => (typeof child === 'string' ? child : ''))
-    .join('');
+  if (href === undefined) return false;
+  // const text = React.Children.toArray(children)
+  //   .map((child) => (typeof child === 'string' ? child : ''))
+  //   .join('');
 
   // Regex to check for [SOMETEXT] (<a>...</a>)
   let regex = /\[\S+?\]\(\s*<a[^>]*>(.*?)<\/a>\s*\)/;
@@ -99,5 +101,5 @@ function validateSurroundingText(
     regex = /(https?:\/\/(?:www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]+)/;
   }
 
-  return regex.test(text);
+  return regex.test(href);
 }
