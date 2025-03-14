@@ -54,9 +54,17 @@ export default function MarkdownEditor({
           components: {
             a: ({ children, ...props }) => {
               return validateSurroundingText(children, props.href, true) ?
-                  <iframe src={props.href} />
+                  <iframe
+                    src={props.href}
+                    className='mx-auto aspect-video w-auto min-w-[400px]'
+                  />
                 : <a {...props}>{children}</a>;
             },
+
+            img: ({ ...props }) => (
+              // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+              <img {...props} style={{ background: 'none' }} />
+            ),
           },
         }}
       />
@@ -75,16 +83,7 @@ export default function MarkdownEditor({
   );
 }
 
-/**
- * 
- * if (
-                ['youtube', 'embed'].every((item) => props.href?.includes(item))
-              ) {
-                return <iframe src={props.href} />;
-              } else return <a {...props} />;
-
-*/
-function validateSurroundingText(
+export function validateSurroundingText(
   children: React.ReactNode,
   href: string | undefined,
   checkYouTube?: boolean,
