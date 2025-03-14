@@ -39,10 +39,10 @@ export default function DownloadButton({
   };
 
   return (
-    <Button disabled={isDownloading} asChild className='min-w-32'>
+    <Button disabled={isDownloading} asChild className='w-24 h-24'>
       <Link href={downloadUrl} onClick={handleDownload}>
-        <DownloadIcon className='h-5 w-5' />
-        {isDownloading ? 'Downloading...' : 'Download'}
+        <DownloadIcon className='!h-6 !w-6' />
+        {/* {isDownloading ? 'Downloading...' : 'Download'} */}
       </Link>
     </Button>
   );

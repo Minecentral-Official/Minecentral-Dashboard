@@ -18,16 +18,16 @@ export default function ResourceStats({
         <DownloadIcon className='h-5 w-5' />
         <span className='text-bold'>{compactNumber(downloads)}</span>
       </div>
-      <Separator orientation='vertical' />
+
       <div className='flex flex-row items-center gap-2'>
         <HeartIcon className='h-5 w-5' />
         <span className='text-bold'>{compactNumber(likeCount)}</span>
       </div>
-      <Separator orientation='vertical' />
-      <div className='flex flex-row items-center gap-2'>
-        <TagsIcon className='h-5 w-5' />
-        <ResourceCategoryBadges maxBadges={3} categories={categories} />
-      </div>
+
+
+
+
+
     </div>
   );
 }

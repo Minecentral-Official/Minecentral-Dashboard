@@ -29,27 +29,23 @@ export default async function layout({
   if (!userResourceData) return <>Unable to find resource</>;
   return (
     <PluginFilterProvider>
-      <SidebarWrapper
-        // Undo sticky sidebar for this page
-
-        sidebar={
-          <div className='flex h-full flex-col justify-start gap-4 pt-2'>
-            <ResourceCardCompatability {...userResourceData} />
-            <Separator />
-            <ResourceCardLinks {...userResourceData} />
-            <Separator />
-            <ResourceCardCreators {...userResourceData} />
-          </div>
-        }
-      >
-        <div className='flex w-full flex-col items-start justify-between gap-4 md:flex-row md:items-center'>
-          <ResourceHeader {...userResourceData} />
-          <div className='flex flex-row gap-2'>
-            <ResourceButtonHot {...userResourceData} />
-          </div>
+      <div className='grid grid-cols-3 gap-4'>
+        <div className='col-span-2'>
+          {children}
         </div>
-        {children}
-      </SidebarWrapper>
+        <div className='flex flex-col gap-4'>
+          <ResourceButtonHot {...userResourceData} />
+          <ResourceHeader {...userResourceData} />
+        </div>
+      </div>
+      <ResourceCardCompatability {...userResourceData} />
+      <ResourceCardLinks {...userResourceData} />
+      <ResourceCardCreators {...userResourceData} />
+
+
+
+
+
     </PluginFilterProvider>
   );
 }

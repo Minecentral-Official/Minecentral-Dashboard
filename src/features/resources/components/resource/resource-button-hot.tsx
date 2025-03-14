@@ -27,13 +27,10 @@ export default function ResourceButtonHot({
   liked: boolean;
 }) {
   return (
-    <div className='flex flex-row-reverse flex-wrap items-end gap-2 md:flex-col'>
-      <DownloadButton downloadUrl={`/api/download?rId=${release?.id}`} />
-      <div className='flex flex-row gap-2'>
+    <div className='flex'>
+      <div className='flex flex-1 justify-center items-center gap-2'>
         <ResourceToggleLikeButton liked={liked} resourceId={id} />
-
         <ResourceButtonSettings slug={slug} />
-
         <TooltipProvider>
           <Popover>
             <Tooltip>
@@ -52,19 +49,19 @@ export default function ResourceButtonHot({
               </TooltipContent>
             </Tooltip>
             <PopoverContent className='w-fit p-2'>
-              <div className='grid gap-1'>
-                <Button className='m-0 p-2' variant={'ghost'}>
-                  <ClipboardCopyIcon /> Copy Id
-                </Button>
-                <Separator />
-                <Button className='m-0 p-2 text-red-500' variant={'ghost'}>
-                  <FlagIcon /> Report
-                </Button>
-              </div>
+
+              <Button className='m-0 p-2' variant={'ghost'}>
+                <ClipboardCopyIcon /> Copy Id
+              </Button>
+              <Separator />
+              <Button className='m-0 p-2 text-red-500' variant={'ghost'}>
+                <FlagIcon /> Report
+              </Button>
             </PopoverContent>
           </Popover>
         </TooltipProvider>
       </div>
+      <DownloadButton downloadUrl={`/api/download?rId=${release?.id}`} />
     </div>
   );
 }

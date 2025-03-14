@@ -9,7 +9,7 @@ export default function ResourceButtonSettings({
 }: Pick<T_DTOResource, 'slug'>) {
   return (
     <Link href={`/dashboard/resources/${slug}`}>
-      <ButtonTooltip tooltip={'Settings'} Icon={SettingsIcon} />
+      <ButtonTooltip tooltip='Settings' Icon={SettingsIcon} variant='ghost' />
     </Link>
   );
 }
