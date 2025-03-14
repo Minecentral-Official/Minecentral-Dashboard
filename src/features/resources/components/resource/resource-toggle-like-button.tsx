@@ -6,6 +6,7 @@ import { LoaderCircleIcon, ThumbsUpIcon } from 'lucide-react';
 
 import ButtonTooltip from '@/components/ui/tooltip-button';
 import resourceToggleLikeAction from '@/features/resources/actions/toggle-like-resource.action';
+import { cn } from '@/lib/utils';
 
 export default function ResourceToggleLikeButton({
   liked,
@@ -25,11 +26,9 @@ export default function ResourceToggleLikeButton({
   return (
     <ButtonTooltip
       tooltip={liked ? 'Unfollow' : 'Follow'}
+      variant={liked ? 'secondary' : 'ghost'}
       className={
-        followLoading ? 'animate-spin'
-        : liked ?
-          'text-green-300 hover:text-red-400'
-        : 'hover:text-green-300'
+        cn(followLoading ? 'animate-spin' : undefined, liked ? 'text-primary hover:text-destructive' : undefined)
       }
       Icon={followLoading ? LoaderCircleIcon : ThumbsUpIcon}
       onClick={handleClick}
