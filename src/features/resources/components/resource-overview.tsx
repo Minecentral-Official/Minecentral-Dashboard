@@ -1,12 +1,15 @@
 'use client';
 
+import { DownloadIcon, LayoutListIcon, ThumbsUpIcon } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import compactNumber from '@/lib/utils/compact-number';
 
 export default function ResourceOverview({
   plugins,
 }: {
-  plugins: T_DTOResource_WithReleases[];
+  plugins: T_DTOResource[];
 }) {
   const stats = {
     totalPlugins: plugins.length,
@@ -29,22 +32,27 @@ export default function ResourceOverview({
             <dt className='text-sm font-medium text-muted-foreground'>
               Total Resources
             </dt>
-            <dd className='text-2xl font-semibold'>{stats.totalPlugins}</dd>
+            <dd className='flex flex-row items-center justify-center text-2xl font-semibold'>
+              <LayoutListIcon className='mr-1 h-5 w-5' />
+              {stats.totalPlugins}
+            </dd>
           </div>
           <div>
             <dt className='text-sm font-medium text-muted-foreground'>
               Total Downloads
             </dt>
-            <dd className='text-2xl font-semibold'>
-              {stats.totalDownloads.toLocaleString()}
+            <dd className='flex flex-row items-center justify-center text-2xl font-semibold'>
+              <DownloadIcon className='mr-1 h-5 w-5' />
+              {compactNumber(stats.totalDownloads.toLocaleString())}
             </dd>
           </div>
           <div>
             <dt className='text-sm font-medium text-muted-foreground'>
               Total Likes
             </dt>
-            <dd className='text-2xl font-semibold'>
-              {stats.totalLikes.toLocaleString()}
+            <dd className='flex flex-row items-center justify-center text-2xl font-semibold'>
+              <ThumbsUpIcon className='mr-1 h-5 w-5' />
+              {compactNumber(stats.totalLikes.toLocaleString())}
             </dd>
           </div>
         </dl>
