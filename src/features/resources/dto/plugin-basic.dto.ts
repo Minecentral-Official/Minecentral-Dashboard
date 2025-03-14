@@ -23,6 +23,8 @@ export default function DTOResource({
   createdAt,
   user,
   iconUrl,
+  downloads,
+  likes,
   type,
 }: T_ResourceDBData) {
   return {
@@ -42,6 +44,8 @@ export default function DTOResource({
     updatedAt,
     createdAt,
     iconUrl,
+    downloads,
+    likes,
     type: ResourceTypeSchema.parse(type),
     author: {
       image: user.image,

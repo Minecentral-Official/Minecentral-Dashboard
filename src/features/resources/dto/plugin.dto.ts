@@ -8,7 +8,6 @@ export default function DTOResource_WithReleases({
   return {
     ...DTOResource(rest),
     releases,
-    downloads: releases.reduce((a, b) => a + (b.downloads || 0), 0),
     release: {
       ...releases[0],
     },

@@ -3,4 +3,6 @@ import { resourceReleaseTable } from '@/lib/db/schema';
 
 export type T_ResourceDBData_WithReleases = T_ResourceDBData & {
   releases: (typeof resourceReleaseTable.$inferSelect)[];
+  likes: number;
+  downloads: number;
 };

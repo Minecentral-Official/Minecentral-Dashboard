@@ -1,6 +1,15 @@
 'use server';
 
-import { and, arrayContains, desc, eq, ilike, inArray, or } from 'drizzle-orm';
+import {
+  and,
+  arrayContains,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  or,
+  sql,
+} from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
 import { T_ResourceFilterRequest } from '@/features/resources/types/t-resource-api-request.type';
@@ -8,6 +17,7 @@ import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-r
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {
+  likedResourceTable,
   resourceReleaseTable,
   resourceTable,
   userTable,
@@ -105,6 +115,16 @@ export default async function resourcesListAllFiltered({
       orderBy: desc(resourceTable.updatedAt),
       limit,
       offset: Math.max(0, page - 1) * limit,
+      extras: {
+        likes:
+          sql<number>`(SELECT count(*) from ${likedResourceTable} WHERE "resource_id" = ${resourceTable.id})`.as(
+            'likes',
+          ),
+        downloads:
+          sql<number>`(SELECT count(*) FROM ${resourceReleaseTable} WHERE "pluginId" = ${resourceTable.id})`.as(
+            'downloads',
+          ),
+      },
     }),
     // For total count, we need to consider resources that have at least one matching release
     db

@@ -1,17 +1,20 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
+import { T_DTOResource_WithReleases } from '@/features/resources/types/t-dto-resource.type';
 
 export default function ResourceOverview({
   plugins,
 }: {
-  plugins: T_DTOResource[];
+  plugins: T_DTOResource_WithReleases[];
 }) {
   const stats = {
     totalPlugins: plugins.length,
-    totalDownloads: plugins.reduce((acc) => {
-      return acc + 0;
+    totalDownloads: plugins.reduce((acc, resource) => {
+      return acc + resource.downloads;
+    }, 0),
+    totalLikes: plugins.reduce((acc, resource) => {
+      return acc + resource.likes;
     }, 0),
   };
 
@@ -36,14 +39,14 @@ export default function ResourceOverview({
               {stats.totalDownloads.toLocaleString()}
             </dd>
           </div>
-          {/* <div>
+          <div>
             <dt className='text-sm font-medium text-muted-foreground'>
-              Average Rating
+              Total Likes
             </dt>
             <dd className='text-2xl font-semibold'>
-              {stats.averageRating.toFixed(1)}
+              {stats.totalLikes.toLocaleString()}
             </dd>
-          </div> */}
+          </div>
         </dl>
       </CardContent>
     </Card>
