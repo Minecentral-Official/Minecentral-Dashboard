@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { C_ResourceSort } from '@/features/resources/config/resource-sort-by.config';
+import { C_ResourceSort } from '@/features/resources/config/c-resource-sort-by.config';
 
 export const S_ResourceListFilter = z.object({
   limit: z

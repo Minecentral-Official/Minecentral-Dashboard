@@ -16,12 +16,12 @@ import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
+import { useUploadResource } from '@/features/resources/uploadthing/resource-upload-hook.resource';
 import { analyzeMinecraftFile } from '@/features/resources/util/analyze-file';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 
 const supportVersions = C_GameVersions.map((type) => ({
   value: type,
@@ -46,7 +46,7 @@ export default function ResourceCreateVersionForm({
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState<boolean>(false);
   const route = useRouter();
-  const { uploadFile, isUploading } = useResourceUpload({
+  const { uploadFile, isUploading } = useUploadResource({
     //Message when upload fails
     onUploadError: () => {
       toast.error('Error while uploading file!', { id: 'update-resource' });

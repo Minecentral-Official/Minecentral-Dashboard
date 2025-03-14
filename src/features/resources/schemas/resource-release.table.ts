@@ -1,8 +1,8 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 import { resourceTable } from '@/lib/db/schema';
 
 export const resourceReleaseTable = pgTable('resourceTableReleases', {

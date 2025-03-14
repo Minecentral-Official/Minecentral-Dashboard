@@ -22,7 +22,7 @@ import {
   ZapIcon,
 } from 'lucide-react';
 
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
 
 export function pluginGetCategoryIcon(
   category: (typeof C_PluginCategories)[number],

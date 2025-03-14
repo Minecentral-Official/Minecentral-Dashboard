@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 import { cn } from '@/lib/utils';
 
 export default function FilterVersions() {

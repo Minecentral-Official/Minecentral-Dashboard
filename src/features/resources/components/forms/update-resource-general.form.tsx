@@ -16,7 +16,7 @@ import projectUpdateGeneralAction from '@/features/resources/actions/update-reso
 import { ResourceImage } from '@/features/resources/components/ui/resource-image';
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { useResourceUpload } from '@/features/resources/uploadthing/resource-upload-hook';
+import { useUploadResource } from '@/features/resources/uploadthing/resource-upload-hook.resource';
 import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
 export default function ResourceUpdateGeneralForm({
@@ -35,7 +35,7 @@ export default function ResourceUpdateGeneralForm({
     undefined,
   );
 
-  const { uploadFile } = useResourceUpload({ router: 'fileRouterIcon' });
+  const { uploadFile } = useUploadResource({ router: 'fileRouterIcon' });
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();

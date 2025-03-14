@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 import { C_ResourceType } from '@/lib/configs/c-resource-type.config';
 
 export const S_ResourceFilterRequestSchema = z.object({

@@ -7,7 +7,7 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading icons
-export const fileRouterIcon = uploadBuilder({
+export const fileRouterIcon_Resource = uploadBuilder({
   'image/jpeg': { maxFileSize: '256KB' },
   'image/png': { maxFileSize: '256KB' },
   'image/webp': { maxFileSize: '256KB' },

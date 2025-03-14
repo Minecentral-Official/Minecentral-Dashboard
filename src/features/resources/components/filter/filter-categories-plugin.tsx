@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 import { pluginGetCategoryIcon } from '@/features/resources/util/plugin-category-icon.get';
 import { pluginGetCategoryText } from '@/features/resources/util/plugin-category-text.get';

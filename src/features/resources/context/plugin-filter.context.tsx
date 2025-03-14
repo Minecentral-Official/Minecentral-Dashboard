@@ -5,22 +5,22 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 import {
   ResourceFilterProvider,
   useResourceFilterContext,
 } from '@/features/resources/context/resource-filter.context';
 import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { T_GameVersion } from '@/features/resources/types/t-game-version.type';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 import { T_PluginLoader } from '@/features/resources/types/t-plugin-loader.type';
 import {
   SearchParamsConsume,
   useUpdateSearchParams,
 } from '@/hooks/use-update-search-params';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
+import { T_GameVersion } from '@/lib/types/t-game-version.type';
 
 import type { ReactNode } from 'react';
 

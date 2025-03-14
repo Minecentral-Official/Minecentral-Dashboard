@@ -2,11 +2,10 @@ import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
-import { resourceReleaseTable } from '@/features/resources/schemas/resource-release.table';
-import { C_ResourceType } from '@/lib/configs/c-resource-type.config';
-import { likedResourceTable, userTable } from '@/lib/db/schema';
+import { userTable } from '@/lib/db/schema';
+import { serverVotesTable } from './votes.table';
 
-export const resourceTable = pgTable('resourceTable', {
+export const serverTable = pgTable('serverTable', {
   id: text().primaryKey(),
   userId: text()
     .notNull()
@@ -15,36 +14,22 @@ export const resourceTable = pgTable('resourceTable', {
   title: text().notNull(),
   subtitle: text().notNull(),
   slug: text().notNull(),
-  type: text('type', {
-    enum: C_ResourceType,
-  }).notNull(),
   //Required to publish
   description: text(),
   categories: text('categories', { enum: C_PluginCategories }).array(),
   iconUrl: text(),
   languages: text().array(),
-  status: text('status', {
-    enum: ['draft', 'pending', 'rejected', 'accepted'],
-  })
-    .default('draft')
-    .notNull(),
-
   //Optional
-  linkIssues: text(),
-  linkSource: text(),
-  linkSupport: text(),
   linkDiscord: text(),
-  linkDonation: text(),
   //Stats
   updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 
-export const resourceRelations = relations(resourceTable, ({ one, many }) => ({
+export const serverRelations = relations(serverTable, ({ one, many }) => ({
   user: one(userTable, {
-    fields: [resourceTable.userId],
+    fields: [serverTable.userId],
     references: [userTable.id],
   }),
-  releases: many(resourceReleaseTable),
-  likes: many(likedResourceTable),
+  votes: many(serverVotesTable),
 }));

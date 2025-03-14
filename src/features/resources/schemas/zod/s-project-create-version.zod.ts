@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 
 export const S_ProjectCreateVersion_Plugin = z.object({
   id: z.string(),

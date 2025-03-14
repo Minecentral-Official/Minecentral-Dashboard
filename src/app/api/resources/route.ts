@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 import resourcesListAllFiltered from '@/features/resources/queries/resource-list-all-filter.get';
 import { S_ResourceFilterRequestSchema } from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
-import { T_GameVersion } from '@/features/resources/types/t-game-version.type';
 import { T_PluginCategory } from '@/features/resources/types/t-plugin-category.type';
 import { T_PluginLoader } from '@/features/resources/types/t-plugin-loader.type';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
+import { T_GameVersion } from '@/lib/types/t-game-version.type';
 
 //The fetch clients use to query search results
 export async function GET(request: NextRequest) {

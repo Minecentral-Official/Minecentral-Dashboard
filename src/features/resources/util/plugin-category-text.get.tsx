@@ -1,4 +1,4 @@
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
 
 export function pluginGetCategoryText(
   category: (typeof C_PluginCategories)[number],

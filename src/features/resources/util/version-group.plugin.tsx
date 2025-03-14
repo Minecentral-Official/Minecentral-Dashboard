@@ -1,4 +1,4 @@
-import { C_GameVersions } from '@/features/resources/config/c-game-versions.config';
+import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 
 export default function pluginGroupVersions(selected: string[]): string[] {
   const versionGroups: Record<string, Set<string>> = {};

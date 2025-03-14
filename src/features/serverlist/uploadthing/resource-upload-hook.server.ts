@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
-import { ResourceFileRouter } from '@/features/resources/uploadthing/file-routes';
+import { ResourceFileRouter } from '@/features/resources/uploadthing/file-routes.resource';
 
 //This hook allows the client to upload files and use the file router needed to upload a file
 //With errors and complete events
@@ -27,7 +27,7 @@ interface UploadedFile {
   type: string; // MIME type
 }
 
-export function useResourceUpload({
+export function useUploadServer({
   onUploadComplete,
   onUploadError,
   router,

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomCheckbox } from '@/components/ui/custom/custom-checkbox';
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 import { usePluginFilterContext } from '@/features/resources/context/plugin-filter.context';
 import { pluginGetLoaderText } from '@/features/resources/util/plugin-loader-text.get';
 import { cn } from '@/lib/utils';

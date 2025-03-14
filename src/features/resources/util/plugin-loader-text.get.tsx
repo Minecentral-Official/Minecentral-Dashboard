@@ -1,4 +1,4 @@
-import { C_PluginLoaders } from '@/features/resources/config/c-loaders.plugin';
+import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 
 export function pluginGetLoaderText(
   loader: (typeof C_PluginLoaders)[number],

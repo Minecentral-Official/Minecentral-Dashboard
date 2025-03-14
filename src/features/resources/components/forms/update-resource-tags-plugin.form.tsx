@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import projectUpdateTagsAction_Plugin from '@/features/resources/actions/update-resource-tags-plugin.action';
-import { C_PluginCategories } from '@/features/resources/config/plugin-categories.config';
+import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
 import { S_ProjectUpdateTags_Plugin } from '@/features/resources/schemas/zod/s-project-update-tags-plugin.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
 import { pluginGetCategoryIcon } from '@/features/resources/util/plugin-category-icon.get';
