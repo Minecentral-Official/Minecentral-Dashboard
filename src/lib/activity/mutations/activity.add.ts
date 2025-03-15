@@ -15,5 +15,6 @@ export enum ACTIVITY {
   NEW_TICKET = 'Created support ticket - #%s',
   RESOURCE_NEW = 'Posted new resource - %s',
   RESOURCE_DELETE = 'Deleted resource - %s',
+  SERVER_NEW = 'Created new Realm - %s',
   EDIT_RESOURCE = 'Editted resource %s - %s',
 }

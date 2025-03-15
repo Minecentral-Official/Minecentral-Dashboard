@@ -14,7 +14,7 @@ export const resourceTable = pgTable('resourceTable', {
   //Required to start Project
   title: text().notNull(),
   subtitle: text().notNull(),
-  slug: text().notNull(),
+  slug: text().notNull().unique(),
   type: text('type', {
     enum: C_ResourceType,
   }).notNull(),

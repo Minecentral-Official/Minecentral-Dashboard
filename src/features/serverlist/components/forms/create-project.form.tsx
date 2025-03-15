@@ -8,31 +8,23 @@ import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
-import { SelectConform } from '@/components/conform/select.conform';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import resourceCreateAction from '@/features/resources/actions/create-resource.action';
-import { S_ProjectCreate } from '@/features/resources/schemas/zod/s-project-create.zod';
-import { C_ResourceType } from '@/lib/configs/c-resource-type.config';
+import serverCreateAction from '@/features/serverlist/actions/create-server.action';
+import { S_ServerCreate } from '@/features/serverlist/schemas/zod/s-server-create.zod';
 
-const typeSelectData = C_ResourceType.map((category) => ({
-  value: category,
-  name: category
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' '),
-}));
-
-export default function ProjectCreateForm() {
-  const [actionState, action] = useActionState(resourceCreateAction, undefined);
+export default function ServerCreateForm() {
+  const [actionState, action] = useActionState(serverCreateAction, undefined);
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: S_ProjectCreate,
+        schema: S_ServerCreate,
       });
-      if (submission.status === 'success') {
-        toast.loading('Creating project...', { id: 'create-resource' });
+      if (submission.status !== 'success') {
+        toast.error('Form data invalid', { id: 'create-server' });
+      } else {
+        toast.loading('Creating project...', { id: 'create-server' });
         //Clear Editor Cache
         // window?.localStorage.removeItem('editorContent');
       }
@@ -44,10 +36,10 @@ export default function ProjectCreateForm() {
   useEffect(() => {
     if (actionState?.success) {
       toast.success(actionState.message, {
-        id: 'create-resource',
+        id: 'create-server',
       });
     } else if (actionState?.success === false) {
-      toast.error(actionState?.message, { id: 'create-resource' });
+      toast.error(actionState?.message, { id: 'create-server' });
     }
   }, [actionState]);
 
@@ -60,7 +52,7 @@ export default function ProjectCreateForm() {
       noValidate
     >
       <Field>
-        <Label htmlFor={fields.title.id}>Project Name</Label>
+        <Label htmlFor={fields.title.id}>Server Name</Label>
         <InputConform meta={fields.title} type='text' />
         {fields.title.errors && <FieldError>{fields.title.errors}</FieldError>}
       </Field>
@@ -70,25 +62,15 @@ export default function ProjectCreateForm() {
         <InputConform meta={fields.slug} type='text' />
         {fields.slug.errors && <FieldError>{fields.slug.errors}</FieldError>}
         <p className=''>
-          <span className='text-accent-foreground/55'>{`https://minecentral.net/resource/`}</span>
+          <span className='text-accent-foreground/55'>{`https://minecentral.net/serverlist/`}</span>
           {fields.slug.value}
         </p>
       </Field>
 
       <Field>
-        <Label htmlFor={fields.type.id}>Resource Type</Label>
-        <SelectConform
-          placeholder='Select a type...'
-          meta={fields.type}
-          items={typeSelectData}
-        />
-        {fields.type.errors && <FieldError>{fields.type.errors}</FieldError>}
-      </Field>
-
-      <Field>
         <Label htmlFor={fields.subtitle.id}>Summary</Label>
         <p className='text-accent-foreground'>
-          Short sentence describing your project.
+          Short sentence describing your server.
         </p>
         <InputConform meta={fields.subtitle} type='text' />
 
@@ -97,7 +79,7 @@ export default function ProjectCreateForm() {
         )}
       </Field>
 
-      <Button>Create Project</Button>
+      <Button>Create Realm</Button>
     </form>
   );
 }

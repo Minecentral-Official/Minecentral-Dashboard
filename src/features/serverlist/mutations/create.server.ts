@@ -1,8 +1,8 @@
 'use server';
 
+import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { db } from '@/lib/db';
 import createUUID from '@/lib/utils/create-uuid';
-import { serverTable } from '../schemas/server.table';
 
 export default async function serverCreate({
   title,
@@ -25,7 +25,6 @@ export default async function serverCreate({
         userId,
       })
       .returning();
-
 
     return newServer[0];
   });

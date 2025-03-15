@@ -19,6 +19,15 @@ export async function GET(request: NextRequest) {
     }
     //Tick download counter by one
     await resourceDownloadTick(release.id);
+    const clientIp = (request.headers.get('x-forwarded-for') || '')
+      .split(',')[0]
+      .trim();
+    console.log(
+      'IP Address',
+      `'${clientIp}'`,
+      'has downloaded the plugin',
+      `'${release.plugin.title}'`,
+    );
 
     // Redirect to the actual file URL
     return NextResponse.redirect(release.fileUrl);

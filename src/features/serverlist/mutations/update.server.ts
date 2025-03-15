@@ -1,8 +1,10 @@
+'use server';
+
 import { eq } from 'drizzle-orm';
 import { revalidateTag } from 'next/cache';
 
+import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { db } from '@/lib/db';
-import { serverTable } from '../schemas/server.table';
 
 export default async function serverUpdate(
   serverId: string,

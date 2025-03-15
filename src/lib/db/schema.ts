@@ -16,6 +16,10 @@ export * from '@/features/resources/schemas/liked-resources.table';
 export * from '@/features/resources/schemas/resource-release.table';
 export * from '@/features/resources/schemas/resource.table';
 
+// Servers
+export * from '@/features/serverlist/schemas/server.table';
+export * from '@/features/serverlist/schemas/votes.table';
+
 // Customers
 export * from '@/lib/stripe/schemas/customer.table';
 

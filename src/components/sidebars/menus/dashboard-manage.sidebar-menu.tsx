@@ -1,7 +1,9 @@
 import {
+  EarthIcon,
   LayoutListIcon,
   ListIcon,
   ServerIcon,
+  StarIcon,
   ThumbsUpIcon,
 } from 'lucide-react';
 
@@ -15,9 +17,10 @@ export default function SidebarDashboardManage() {
       <SidebarMenu>
         <p className='text-md font-semibold'>Manage</p>
         <SidebarDashboardResouces />
+        <SidebarDashboardServers />
         <SidebarLink
           Icon={ServerIcon}
-          name='My Servers'
+          name='Hosting'
           url='/dashboard/hosting'
         />
       </SidebarMenu>
@@ -29,9 +32,14 @@ function SidebarDashboardResouces() {
   return (
     <CollapsibleSidebarWrapper
       urlSuffix='resources'
-      title='Resouces'
+      title='Resources'
       Icon={LayoutListIcon}
       links={[
+        {
+          name: 'My Resources',
+          url: '/dashboard/resources',
+          icon: LayoutListIcon,
+        },
         {
           name: 'Liked',
           url: '/dashboard/resources/liked',
@@ -40,6 +48,33 @@ function SidebarDashboardResouces() {
         {
           name: 'Collections',
           url: '/dashboard/resources/collections',
+          icon: ListIcon,
+        },
+      ]}
+    />
+  );
+}
+
+function SidebarDashboardServers() {
+  return (
+    <CollapsibleSidebarWrapper
+      urlSuffix='servers'
+      title='Realms'
+      Icon={EarthIcon}
+      links={[
+        {
+          name: 'My Realms',
+          url: '/dashboard/servers',
+          icon: EarthIcon,
+        },
+        {
+          name: 'Saved',
+          url: '/dashboard/servers/saved',
+          icon: StarIcon,
+        },
+        {
+          name: 'My Votes',
+          url: '/dashboard/servers/votes',
           icon: ListIcon,
         },
       ]}

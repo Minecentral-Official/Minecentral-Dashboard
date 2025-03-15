@@ -1,9 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { C_PluginCategories } from '@/features/resources/config/c-plugin-categories.config';
+import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
+import { serverVotesTable } from '@/features/serverlist/schemas/votes.table';
 import { userTable } from '@/lib/db/schema';
-import { serverVotesTable } from './votes.table';
 
 export const serverTable = pgTable('serverTable', {
   id: text().primaryKey(),
@@ -16,7 +16,7 @@ export const serverTable = pgTable('serverTable', {
   slug: text().notNull(),
   //Required to publish
   description: text(),
-  categories: text('categories', { enum: C_PluginCategories }).array(),
+  categories: text('categories', { enum: C_ServerCategories }).array(),
   iconUrl: text(),
   languages: text().array(),
   //Optional

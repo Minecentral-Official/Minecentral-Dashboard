@@ -1,13 +1,17 @@
 'use server';
 
-import { desc } from 'drizzle-orm';
+import { desc, sql } from 'drizzle-orm';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
 import { T_ResourceSimpleRequest } from '@/features/resources/types/t-resource-api-request.type';
 import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-response.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
-import { resourceTable } from '@/lib/db/schema';
+import {
+  likedResourceTable,
+  resourceReleaseTable,
+  resourceTable,
+} from '@/lib/db/schema';
 
 export default async function resourcesListAll({
   limit,
@@ -29,6 +33,16 @@ export default async function resourcesListAll({
       orderBy: desc(resourceTable.updatedAt),
       limit,
       offset: Math.max(0, page - 1) * limit,
+      extras: {
+        likes:
+          sql<number>`(SELECT count(*) from ${likedResourceTable} WHERE "resource_id" = ${resourceTable.id})`.as(
+            'likes',
+          ),
+        downloads:
+          sql<number>`(SELECT count(*) FROM ${resourceReleaseTable} WHERE "pluginId" = ${resourceTable.id})`.as(
+            'downloads',
+          ),
+      },
     }),
     //Total Count
     db.query.resourceTable.findMany(),

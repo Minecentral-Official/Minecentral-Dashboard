@@ -1,3 +1,5 @@
+'use server';
+
 import { eq } from 'drizzle-orm';
 
 import { resourceTable } from '@/features/resources/schemas/resource.table';

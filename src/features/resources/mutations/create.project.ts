@@ -28,18 +28,6 @@ export default async function projectCreate({
       })
       .returning();
 
-    // await tx
-    //   .insert(resourceReleaseTable)
-    //   .values({
-    //     title: 'First Release',
-    //     description: '',
-    //     fileUrl,
-    //     version: releaseVersion,
-    //     pluginId: newPlugin[0].id,
-    //     downloadId: crypto.randomBytes(16).toString('hex'),
-    //   })
-    //   .returning();
-
     return newPlugin[0];
   });
 

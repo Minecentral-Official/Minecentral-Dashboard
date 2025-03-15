@@ -1,7 +1,5 @@
 import { PropsWithChildren } from 'react';
 
-import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
-import { Separator } from '@/components/ui/separator';
 import ResourceCardCompatability from '@/features/resources/components/resource/cards/resource-compatability.card';
 import ResourceCardCreators from '@/features/resources/components/resource/cards/resource-creators.card';
 import ResourceCardLinks from '@/features/resources/components/resource/cards/resource-links.card';
@@ -30,9 +28,7 @@ export default async function layout({
   return (
     <PluginFilterProvider>
       <div className='grid grid-cols-3 gap-4'>
-        <div className='col-span-2'>
-          {children}
-        </div>
+        <div className='col-span-2'>{children}</div>
         <div className='flex flex-col gap-4'>
           <ResourceButtonHot {...userResourceData} />
           <ResourceHeader {...userResourceData} />
@@ -41,11 +37,6 @@ export default async function layout({
       <ResourceCardCompatability {...userResourceData} />
       <ResourceCardLinks {...userResourceData} />
       <ResourceCardCreators {...userResourceData} />
-
-
-
-
-
     </PluginFilterProvider>
   );
 }

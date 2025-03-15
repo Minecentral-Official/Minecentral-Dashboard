@@ -1,10 +1,12 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
 
+import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { resourceTable, userTable } from '@/lib/db/schema';
-import { serverTable } from './server.table';
 
-export const serverVotesTable = pgTable('serverVotes', {
+export const serverVotesTable = pgTable(
+  'serverVotes',
+  {
     userId: text('user_id')
       .notNull()
       .references(() => userTable.id, { onDelete: 'cascade' }),
@@ -18,16 +20,13 @@ export const serverVotesTable = pgTable('serverVotes', {
   }),
 );
 
-export const votesServerRelations = relations(
-  serverVotesTable,
-  ({ one }) => ({
-    server: one(serverTable, {
-      fields: [serverVotesTable.serverId],
-      references: [serverTable.id],
-    }),
-    user: one(userTable, {
-      fields: [serverVotesTable.userId],
-      references: [userTable.id],
-    }),
+export const votesServerRelations = relations(serverVotesTable, ({ one }) => ({
+  server: one(serverTable, {
+    fields: [serverVotesTable.serverId],
+    references: [serverTable.id],
   }),
-);
+  user: one(userTable, {
+    fields: [serverVotesTable.userId],
+    references: [userTable.id],
+  }),
+}));

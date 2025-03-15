@@ -1,9 +1,9 @@
 import { createInsertSchema } from 'drizzle-zod';
 
+import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { isSlug } from '@/lib/utils/slugify';
-import { serverTable } from '../server.table';
 
-export const S_ProjectCreate = createInsertSchema(serverTable, {
+export const S_ServerCreate = createInsertSchema(serverTable, {
   title: (schema) =>
     schema
       .min(5, 'Title must be at least 5 characters')
