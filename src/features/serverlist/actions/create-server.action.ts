@@ -26,8 +26,6 @@ export default async function serverCreateAction(
     console.log(formParsed.error);
     return { success: false, message: 'Invalid form data!' };
   }
-  //DeConstruct fields
-  const { title, subtitle, slug } = formParsed.value;
 
   //Check if one already exists
   const currentUsersServer = await serverGetByUserId(user.id);
@@ -35,9 +33,7 @@ export default async function serverCreateAction(
     return { success: false, message: 'You already own a Realm!' };
 
   const newServer = await serverCreate({
-    title,
-    subtitle,
-    slug,
+    ...formParsed.value,
     userId: user.id,
   });
 

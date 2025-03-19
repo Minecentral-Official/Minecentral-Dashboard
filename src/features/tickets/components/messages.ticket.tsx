@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTicketContext } from '@/features/tickets/context/ticket.context';
 import WrapperAvatar from '@/lib/auth/components/avatar/wrapper.avatar';
+import { formatDate } from '@/lib/utils/format-date';
 
 export default function TicketMessages() {
   const {
@@ -31,7 +32,7 @@ export default function TicketMessages() {
                   </span>
                 </h4>
                 <span className='text-xs text-gray-500'>
-                  {new Date(createdAt).toLocaleString()}
+                  {formatDate(createdAt)}
                 </span>
               </div>
               <p className='text-sm text-gray-700'>

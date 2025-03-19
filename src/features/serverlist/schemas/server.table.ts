@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
 import { serverVotesTable } from '@/features/serverlist/schemas/votes.table';
@@ -12,7 +12,8 @@ export const serverTable = pgTable('serverTable', {
     .references(() => userTable.id),
   //Required to start Project
   title: text().notNull(),
-  subtitle: text().notNull(),
+  ip: text().notNull(),
+  port: integer(),
   slug: text().notNull(),
   //Required to publish
   description: text(),

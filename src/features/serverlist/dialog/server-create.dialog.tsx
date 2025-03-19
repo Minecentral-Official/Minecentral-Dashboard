@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import ServerCreateForm from '@/features/serverlist/components/forms/create-project.form';
+import ServerCreateForm from '@/features/serverlist/components/forms/create-server.form';
 
 export function ServerCreateDialog({
   children,

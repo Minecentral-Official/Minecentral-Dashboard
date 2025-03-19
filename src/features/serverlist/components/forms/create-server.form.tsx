@@ -2,13 +2,14 @@
 
 import { useActionState, useEffect } from 'react';
 
-import { useForm } from '@conform-to/react';
+import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import serverCreateAction from '@/features/serverlist/actions/create-server.action';
 import { S_ServerCreate } from '@/features/serverlist/schemas/zod/s-server-create.zod';
@@ -31,6 +32,8 @@ export default function ServerCreateForm() {
       return submission;
     },
   });
+
+  const portHandler = useInputControl(fields.port);
 
   // Show toast when state changes
   useEffect(() => {
@@ -68,15 +71,21 @@ export default function ServerCreateForm() {
       </Field>
 
       <Field>
-        <Label htmlFor={fields.subtitle.id}>Summary</Label>
+        <Label htmlFor={fields.ip.id}>Summary</Label>
         <p className='text-accent-foreground'>
           Short sentence describing your server.
         </p>
-        <InputConform meta={fields.subtitle} type='text' />
+        <InputConform meta={fields.ip} type='text' placeholder='192.168.0.1' />
+        <Input
+          type='number'
+          placeholder='25565'
+          min={0}
+          max={65535}
+          onChange={(e) => portHandler.change(e.currentTarget.value)}
+        />
 
-        {fields.subtitle.errors && (
-          <FieldError>{fields.subtitle.errors}</FieldError>
-        )}
+        {fields.ip.errors && <FieldError>{fields.ip.errors}</FieldError>}
+        {fields.port.errors && <FieldError>{fields.port.errors}</FieldError>}
       </Field>
 
       <Button>Create Realm</Button>

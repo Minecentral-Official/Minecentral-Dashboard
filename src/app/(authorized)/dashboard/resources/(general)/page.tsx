@@ -25,7 +25,6 @@ export default async function Page() {
         <TableProjectsUser plugins={projects} />
       </div>
       <div>
-        <h2 className='mb-4 text-2xl font-semibold'>Resource Overview</h2>
         <ResourceOverview plugins={projects} />
       </div>
     </div>

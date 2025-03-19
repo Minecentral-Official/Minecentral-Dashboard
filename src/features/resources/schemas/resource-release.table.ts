@@ -5,8 +5,8 @@ import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.pl
 import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 import { resourceTable } from '@/lib/db/schema';
 
-export const resourceReleaseTable = pgTable('resourceTableRelease', {
-  id: text().unique().primaryKey().notNull(),
+export const resourceReleaseTable = pgTable('resourceTableReleases', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 10000 }),
   //ID of the releaseTable this release was uploaded to
   pluginId: text()
     .references(() => resourceTable.id)

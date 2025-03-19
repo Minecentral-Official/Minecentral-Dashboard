@@ -6,12 +6,13 @@ import createUUID from '@/lib/utils/create-uuid';
 
 export default async function serverCreate({
   title,
-  subtitle,
   slug,
   userId,
+  ip,
+  port,
 }: Pick<
   typeof serverTable.$inferInsert,
-  'title' | 'subtitle' | 'slug' | 'userId'
+  'title' | 'slug' | 'userId' | 'ip' | 'port'
 >) {
   const newServer = await db.transaction(async (tx) => {
     //Insert new plugin info
@@ -20,9 +21,10 @@ export default async function serverCreate({
       .values({
         id: createUUID(),
         title,
-        subtitle,
         slug,
         userId,
+        ip,
+        port,
       })
       .returning();
 

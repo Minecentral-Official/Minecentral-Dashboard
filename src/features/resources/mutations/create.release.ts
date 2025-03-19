@@ -28,7 +28,6 @@ export default async function projectCreateRelease({
     const newRelease = await tx
       .insert(resourceReleaseTable)
       .values({
-        id: crypto.randomUUID(),
         pluginId,
         title,
         compatibleVersions,
