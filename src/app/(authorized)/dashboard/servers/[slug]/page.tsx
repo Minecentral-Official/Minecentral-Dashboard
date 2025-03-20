@@ -5,10 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ProjectDeleteDialog } from '@/features/resources/components/dialog/project-delete.dialog';
-import ResourceUpdateGeneralForm from '@/features/resources/components/forms/update-resource-general.form';
-import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
-import { projectGetIdBySlug } from '@/features/resources/queries/resource-get-id-by-slug.get';
+import ServerUpdateGeneralForm from '@/features/serverlist/components/forms/update-server.form';
+import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
+import { serverGetIdBySlug } from '@/features/serverlist/queries/server-get-id-by-slug.get';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -18,37 +17,33 @@ type PageProps = {
 export default async function EditResourcePage({ params }: PageProps) {
   const { slug } = await params;
 
-  const resource = await projectGetById_WithUser(
-    (await projectGetIdBySlug(slug))!,
-  );
+  const server = await serverGetById((await serverGetIdBySlug(slug))!);
 
-  if (!resource) return <>Cant find it...</>;
+  if (!server) return <>Cant find it...</>;
 
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Resource Information</CardTitle>
-          <CardDescription>
-            Edit your resource information here.
-          </CardDescription>
+          <CardTitle>Realm Information</CardTitle>
+          <CardDescription>Edit your realm information here.</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResourceUpdateGeneralForm {...resource} />
+          <ServerUpdateGeneralForm {...server} />
         </CardContent>
       </Card>
       <Card>
         <CardHeader>
           <CardTitle>
-            <p>Delete Resource</p>
+            <p>Delete Realm</p>
           </CardTitle>
         </CardHeader>
         <CardContent className='flex flex-col gap-2'>
           <p>
-            Removes your project forever. This action cannot be undone, please
-            be careful!
+            Removes your realm/server forever. This action cannot be undone,
+            please be careful!
           </p>
-          <ProjectDeleteDialog {...resource} />
+          {/* <ProjectDeleteDialog {...server} /> */}
         </CardContent>
       </Card>
     </>

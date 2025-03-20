@@ -13,8 +13,8 @@ export default async function Page() {
   const { user } = await validateSession();
   const server = await serverGetByUserId(user.id);
   return (
-    <div className='flex flex-col gap-6 md:grid md:grid-cols-3'>
-      <div className='md:col-span-2'>
+    <div className='flex flex-col gap-6 lg:grid lg:grid-cols-3'>
+      <div className='lg:col-span-2'>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-2xl font-semibold'>My Realm</h2>
         </div>
@@ -37,7 +37,7 @@ export default async function Page() {
 
 function ServerData(server: T_DTOServer) {
   return (
-    <div className='flex flex-row gap-4'>
+    <div className='flex flex-col gap-4'>
       <ServerInfo {...server} />
       <Button className='w-full' asChild>
         <Link href={`/dashboard/servers/${server.slug}`}>

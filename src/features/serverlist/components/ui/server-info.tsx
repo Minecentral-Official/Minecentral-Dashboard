@@ -47,7 +47,7 @@ export function ServerInfo({
   // }
 
   return (
-    <Card className='w-full max-w-md overflow-hidden'>
+    <Card className='mx-auto w-full max-w-md overflow-hidden'>
       {/* Server Banner */}
 
       <Link href={`/serverlist/${slug}`}>
