@@ -4,7 +4,8 @@ import { useActionState, useEffect, useState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { TrashIcon } from 'lucide-react';
+import { generateReactHelpers } from '@uploadthing/react';
+import { SaveIcon, TrashIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -12,35 +13,42 @@ import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
-import projectUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
-import { useUploadResource } from '@/features/resources/uploadthing/resource-upload-hook.resource';
+import serverUpdateGeneralAction from '@/features/serverlist/actions/update-server-general.action';
 import { ServerImage } from '@/features/serverlist/components/ui/server-image';
 import { S_ServerUpdateGeneral } from '@/features/serverlist/schemas/zod/s-server-update-general.zod';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
+import { T_ServerListFileRouter } from '@/features/serverlist/uploadthing/file-routes.serverlist';
 
 export default function ServerUpdateGeneralForm({
-  id: resourceId,
-  iconUrl: oldIconUrl,
+  id: serverId,
+  iconUrl: oldBannerUrl,
   slug,
   title,
 }: Pick<T_DTOServer, 'id' | 'iconUrl' | 'slug' | 'title'>) {
   const [actionState, action] = useActionState(
-    projectUpdateGeneralAction,
+    serverUpdateGeneralAction,
     undefined,
   );
 
-  const { uploadFile } = useUploadResource({ router: 'fileRouterIcon' });
-  const [deleteIcon, setDeleteIcon] = useState(false);
-  const [iconUrl, setIconUrl] = useState(oldIconUrl);
-  const [iconFile, setIconFile] = useState<File>();
+  const { uploadFiles, useUploadThing } =
+    generateReactHelpers<T_ServerListFileRouter>();
+  useUploadThing('serverlist_banner', {
+    onUploadError: (e) => {
+      toast.error(e.message, { id: 'update-realm' });
+    },
+  });
+  const [deleteBanner, setDeleteBanner] = useState(false);
+  const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
+  const [bannerFile, setBannerFile] = useState<File>();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUploadBanner = async () => {
     //Upload icon if different
-    if (iconUrl !== oldIconUrl && iconFile) {
-      await uploadFile(iconFile, { id: resourceId });
+    if (bannerUrl !== oldBannerUrl && bannerFile) {
+      await uploadFiles('serverlist_banner', {
+        files: [bannerFile],
+        input: { id: serverId },
+      });
     }
-    //Submit form, but cancel if no changes applied
-    form.onSubmit(e);
   };
 
   // Show toast when state changes
@@ -55,13 +63,13 @@ export default function ServerUpdateGeneralForm({
   }, [actionState]);
 
   const handleImageChange = (url: string, file: File) => {
-    setIconFile(file);
-    setIconUrl(url);
-    setDeleteIcon(false);
+    setBannerFile(file);
+    setBannerUrl(url);
+    setDeleteBanner(false);
   };
 
   const defaultValue = {
-    id: resourceId,
+    id: serverId,
     slug,
     title,
     deletingIcon: false,
@@ -89,33 +97,46 @@ export default function ServerUpdateGeneralForm({
   return (
     <form
       id={form.id}
-      onSubmit={handleSubmit}
       className='flex w-full flex-col gap-6'
       action={action}
       noValidate
     >
-      <input type='hidden' name={fields.id.name} value={resourceId} />
+      <input type='hidden' name={fields.id.name} value={serverId} />
       <input
         type='hidden'
         name={fields.deletingIcon.name}
-        value={deleteIcon ? 'true' : 'false'}
+        value={deleteBanner ? 'true' : 'false'}
       />
 
       <Field>
         <Label>Banner</Label>
         <div className='flex flex-col items-center gap-2'>
-          <ServerImage url={iconUrl} />
+          <ServerImage url={bannerUrl} />
           <div className='flex flex-row gap-2'>
             <FileUploadButton onFileSelect={handleImageChange} />
             <Button
-              disabled={deleteIcon}
+              variant='destructive'
+              disabled={
+                (bannerUrl !== oldBannerUrl && deleteBanner) ||
+                (bannerUrl === null && !deleteBanner)
+              }
               onClick={(e) => {
-                setDeleteIcon(true);
-                setIconUrl(null);
+                setDeleteBanner(true);
+                setBannerUrl(null);
                 e.preventDefault();
               }}
             >
-              <TrashIcon className='mr-1 h-4 w-4' /> Delete Banner
+              <TrashIcon className='mr-1 h-4 w-4' /> Remove Banner
+            </Button>
+            <Button
+              variant='outline'
+              disabled={bannerUrl === oldBannerUrl}
+              onClick={(e) => {
+                e.preventDefault();
+                handleUploadBanner();
+              }}
+            >
+              <SaveIcon className='h-4 w-4' /> Save Banner
             </Button>
           </div>
         </div>
@@ -140,7 +161,7 @@ export default function ServerUpdateGeneralForm({
       <Button
         disabled={
           JSON.stringify(form.value) === JSON.stringify(form.initialValue) &&
-          iconUrl === oldIconUrl
+          bannerUrl === oldBannerUrl
         }
       >
         Save Changes

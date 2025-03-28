@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState } from 'react';
 
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import { generateReactHelpers } from '@uploadthing/react';
 import { TrashIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -16,7 +17,7 @@ import projectUpdateGeneralAction from '@/features/resources/actions/update-reso
 import { ResourceImage } from '@/features/resources/components/ui/resource-image';
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { useUploadResource } from '@/features/resources/uploadthing/resource-upload-hook.resource';
+import { T_ResourceFileRouter } from '@/features/resources/uploadthing/file-routes.resource';
 import { getResourceUrl } from '@/features/resources/util/get-resource-url';
 
 export default function ResourceUpdateGeneralForm({
@@ -35,7 +36,7 @@ export default function ResourceUpdateGeneralForm({
     undefined,
   );
 
-  const { uploadFile } = useUploadResource({ router: 'fileRouterIcon' });
+  const { uploadFiles } = generateReactHelpers<T_ResourceFileRouter>();
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();
@@ -43,7 +44,10 @@ export default function ResourceUpdateGeneralForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     //Upload icon if different
     if (iconUrl !== oldIconUrl && iconFile) {
-      await uploadFile(iconFile, { id: resourceId });
+      await uploadFiles('resource_icon', {
+        files: [iconFile],
+        input: { id: resourceId },
+      });
     }
     //Submit form, but cancel if no changes applied
     form.onSubmit(e);

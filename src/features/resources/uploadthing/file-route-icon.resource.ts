@@ -4,13 +4,13 @@ import projectUpdate from '@/features/resources/mutations/update.project';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
+import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading icons
-export const fileRouterIcon_Resource = uploadBuilder({
-  'image/jpeg': { maxFileSize: '256KB' },
-  'image/png': { maxFileSize: '256KB' },
-  'image/webp': { maxFileSize: '256KB' },
+export const resource_fileRoute_icon = UploadBuilder({
+  'image/jpeg': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
+  'image/png': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
+  'image/webp': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
 })
   //Input takes in schema type data, parses it, will not continue if there is an error here
   .input(S_ProjectUploadIcon)

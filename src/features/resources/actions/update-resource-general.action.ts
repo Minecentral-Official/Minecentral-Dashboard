@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
 import { projectGetById } from '@/features/resources/queries/project-by-id.get';
-import projectSlugAvailable from '@/features/resources/queries/slug-available.boolean';
+import projectSlugAvailable from '@/features/resources/queries/resource-slug-available.boolean';
 import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
 import parseFormWithSchema from '@/lib/utils/parse-form-with-schema.util';

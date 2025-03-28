@@ -4,12 +4,16 @@ import projectCreateRelease from '@/features/resources/mutations/create.release'
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { uploadBuilder } from '@/lib/uploadthing/upload-builder';
+import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading resources
-export const fileRouterResource = uploadBuilder({
-  'application/java-archive': { maxFileSize: '16MB', maxFileCount: 1 },
-  'application/zip': { maxFileSize: '16MB', maxFileCount: 1 },
+export const resource_fileRoute_resource = UploadBuilder({
+  'application/java-archive': {
+    maxFileSize: '16MB',
+    maxFileCount: 1,
+    minFileCount: 1,
+  },
+  'application/zip': { maxFileSize: '16MB', maxFileCount: 1, minFileCount: 1 },
 })
   //Input required schema data for this route
   .input(S_ProjectCreateVersion_Plugin)

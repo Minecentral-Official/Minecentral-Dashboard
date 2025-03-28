@@ -1,7 +1,7 @@
 import { createUploadthing } from 'uploadthing/next';
 import { z } from 'zod';
 
-export const uploadBuilder = createUploadthing({
+export const UploadBuilder = createUploadthing({
   errorFormatter: (err) => {
     return {
       message: err.message,

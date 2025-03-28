@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import { generateReactHelpers } from '@uploadthing/react';
 import { HashIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -19,7 +20,7 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { C_PluginLoaders } from '@/features/resources/config/c-plugin-loaders.plugin';
 import { S_ProjectCreateVersion_Plugin } from '@/features/resources/schemas/zod/s-project-create-version.zod';
 import { T_DTOResource } from '@/features/resources/types/t-dto-resource.type';
-import { useUploadResource } from '@/features/resources/uploadthing/resource-upload-hook.resource';
+import { T_ResourceFileRouter } from '@/features/resources/uploadthing/file-routes.resource';
 import { analyzeMinecraftFile } from '@/features/resources/util/analyze-file';
 import { C_GameVersions } from '@/lib/configs/c-game-versions.config';
 
@@ -45,20 +46,21 @@ export default function ResourceCreateVersionForm({
 }: Pick<T_DTOResource, 'id' | 'slug'>) {
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState<boolean>(false);
+  const { uploadFiles, useUploadThing } =
+    generateReactHelpers<T_ResourceFileRouter>();
   const route = useRouter();
-  const { uploadFile, isUploading } = useUploadResource({
-    //Message when upload fails
+
+  const { isUploading } = useUploadThing('resource_resource', {
     onUploadError: () => {
       toast.error('Error while uploading file!', { id: 'update-resource' });
     },
     //Message when upload is successful
-    onUploadComplete: () => {
+    onClientUploadComplete: () => {
       toast.success('New resource version uploaded!', {
         id: 'update-resource',
       });
       route.push(`/dashboard/resources/${slug}/versions`);
     },
-    router: 'fileRouterResource',
   });
 
   const [form, fields] = useForm({
@@ -109,7 +111,11 @@ export default function ResourceCreateVersionForm({
     const submission = parseWithZod(formData, {
       schema: S_ProjectCreateVersion_Plugin,
     });
-    if (submission.status === 'success') uploadFile(file!, submission.value);
+    if (submission.status === 'success')
+      uploadFiles('resource_resource', {
+        files: [file!],
+        input: submission.value,
+      });
   }
 
   return (
