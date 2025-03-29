@@ -12,7 +12,7 @@ export async function serverGetByUserId(
     where: eq(serverTable.userId, userId),
   });
 
-  if (serverId === undefined) return undefined;
+  if (!serverId) return undefined;
   const server = await serverGetById(serverId.id);
 
   if (!server) return undefined;

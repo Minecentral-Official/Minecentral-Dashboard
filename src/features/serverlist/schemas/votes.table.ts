@@ -5,15 +5,15 @@ import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { resourceTable, userTable } from '@/lib/db/schema';
 
 export const serverVotesTable = pgTable(
-  'serverVotes',
+  'serverVote',
   {
-    userId: text('user_id')
+    userId: text()
       .notNull()
       .references(() => userTable.id, { onDelete: 'cascade' }),
-    serverId: text('server_id')
+    serverId: text()
       .notNull()
       .references(() => resourceTable.id, { onDelete: 'cascade' }),
-    createdAt: timestamp('created_at').defaultNow(),
+    voteTime: timestamp().notNull().defaultNow(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.serverId] }),

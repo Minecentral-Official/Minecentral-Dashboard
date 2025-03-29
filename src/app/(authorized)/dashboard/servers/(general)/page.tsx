@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import ServerOverview from '@/features/serverlist/components/ui/realm-overview';
-import { ServerInfo } from '@/features/serverlist/components/ui/server-info';
+import { ServerCard } from '@/features/serverlist/components/ui/server-card';
 import { ServerCreateDialog } from '@/features/serverlist/dialog/server-create.dialog';
 import { serverGetByUserId } from '@/features/serverlist/queries/server-by-user-id.get';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
@@ -38,7 +38,7 @@ export default async function Page() {
 function ServerData(server: T_DTOServer) {
   return (
     <div className='flex flex-col gap-4'>
-      <ServerInfo {...server} />
+      <ServerCard {...server} />
       <Button className='w-full' asChild>
         <Link href={`/dashboard/servers/${server.slug}`}>
           <SettingsIcon className='h-4 w-4' />

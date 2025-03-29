@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { redirect } from 'next/navigation';
 
+import ServerEditTopbarTabs from '@/features/serverlist/components/ui/topbar-tabs.server-edit';
 import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
 import { serverGetIdBySlug } from '@/features/serverlist/queries/server-get-id-by-slug.get';
 
@@ -19,5 +20,12 @@ export default async function Layout({
 
   if (!server) redirect('/dashboard/servers');
 
-  return <div className='flex w-full flex-col gap-2'>{children}</div>;
+  return (
+    <div className='flex w-full flex-col gap-2'>
+      <div>
+        <ServerEditTopbarTabs {...server} />
+      </div>
+      {children}
+    </div>
+  );
 }

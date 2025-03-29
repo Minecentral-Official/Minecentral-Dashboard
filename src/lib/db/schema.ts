@@ -19,6 +19,7 @@ export * from '@/features/resources/schemas/resource.table';
 // Servers
 export * from '@/features/serverlist/schemas/server.table';
 export * from '@/features/serverlist/schemas/votes.table';
+export * from '@/features/serverlist/schemas/votifier-data.table';
 
 // Customers
 export * from '@/lib/stripe/schemas/customer.table';

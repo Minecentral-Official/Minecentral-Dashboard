@@ -32,8 +32,8 @@ export default async function serverUpdateGeneralAction(
       return { success: false, message: `Slug ${slug} is already taken!` };
     } else {
       //Re validate the cache for old and new resource slugs
-      if (server) revalidateTag(`resource-slug-${server.slug}`);
-      revalidateTag(`resource-slug-${slug}`);
+      if (server) revalidateTag(`server-slug-${server.slug}`);
+      revalidateTag(`server-slug-${slug}`);
       redirectTo = slug;
     }
   }
@@ -53,7 +53,7 @@ export default async function serverUpdateGeneralAction(
     };
   } else {
     redirect(
-      `/dashboard/servers/${updatedServer.slug}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=update-server`,
+      `/dashboard/servers/${updatedServer.slug}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=update-realm`,
     );
   }
 }

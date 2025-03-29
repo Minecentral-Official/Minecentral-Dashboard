@@ -3,14 +3,14 @@
 import { TimerIcon, VoteIcon } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { T_ServerDBData } from '@/features/serverlist/types/t-server-datebase.type';
+import { T_ServerDBData_Base } from '@/features/serverlist/types/t-server-db.type';
 import compactNumber from '@/lib/utils/compact-number';
 import { formatDate } from '@/lib/utils/format-date';
 
 export default function ServerOverview({
   votes,
   updatedAt,
-}: Pick<T_ServerDBData, 'votes' | 'updatedAt'>) {
+}: Pick<T_ServerDBData_Base, 'votes' | 'updatedAt'>) {
   return (
     <Card>
       <CardHeader>

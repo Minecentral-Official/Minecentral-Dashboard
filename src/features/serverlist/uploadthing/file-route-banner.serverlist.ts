@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import { UploadThingError } from 'uploadthing/server';
 
 import serverUpdate from '@/features/serverlist/mutations/update.server';
@@ -40,6 +39,5 @@ export const serverlist_fileRoute_Banner = UploadBuilder({
   //Return back the uploaded files data along with the context from the middleware (response from uploadthing.com)
   .onUploadComplete(async ({ file, metadata }) => {
     await serverUpdate(metadata.id, { iconUrl: file.ufsUrl });
-    revalidateTag(`server-id-${metadata.id}`);
     return { data: { url: file.ufsUrl, ...metadata } };
   });

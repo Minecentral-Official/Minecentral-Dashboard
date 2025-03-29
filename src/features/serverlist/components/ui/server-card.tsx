@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import { Check, Copy, Users } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -15,9 +14,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { ServerImage } from '@/features/serverlist/components/ui/server-image';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
 
-export function ServerInfo({
+export function ServerCard({
   title,
   slug,
   iconUrl,
@@ -52,13 +52,7 @@ export function ServerInfo({
 
       <Link href={`/serverlist/${slug}`}>
         <div className='relative h-[60px] w-full overflow-hidden'>
-          <Image
-            src={iconUrl || '/placeholder.png'}
-            alt={`${title} banner`}
-            className='h-full w-full object-cover'
-            width={468}
-            height={60}
-          />
+          <ServerImage title={title} url={iconUrl || '/placeholder.png'} />
 
           {/* Player Count Badge */}
           <Badge

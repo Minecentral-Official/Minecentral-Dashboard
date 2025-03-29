@@ -1,4 +1,4 @@
-import { T_ServerDBData } from '@/features/serverlist/types/t-server-datebase.type';
+import { T_ServerDBData_Base } from '@/features/serverlist/types/t-server-db.type';
 
 export default function DTOServer({
   id,
@@ -14,8 +14,7 @@ export default function DTOServer({
   createdAt,
   user,
   iconUrl,
-  votes,
-}: T_ServerDBData) {
+}: T_ServerDBData_Base) {
   return {
     id,
     title,
@@ -29,7 +28,6 @@ export default function DTOServer({
     updatedAt,
     createdAt,
     iconUrl,
-    votes,
     author: {
       image: user.image,
       name: user.name,
