@@ -7,11 +7,14 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading icons
-export const resource_fileRoute_icon = UploadBuilder({
-  'image/jpeg': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
-  'image/png': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
-  'image/webp': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
-})
+export const resource_fileRoute_icon = UploadBuilder(
+  {
+    'image/jpeg': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
+    'image/png': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
+    'image/webp': { maxFileSize: '256KB', maxFileCount: 1, minFileCount: 1 },
+  },
+  { awaitServerData: true },
+)
   //Input takes in schema type data, parses it, will not continue if there is an error here
   .input(S_ProjectUploadIcon)
   //Middleware to provide context to the upload, such as the user who is attempting to upload to this route

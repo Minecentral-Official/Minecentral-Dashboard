@@ -2,16 +2,18 @@
 
 import { useActionState, useEffect } from 'react';
 
-import { useForm } from '@conform-to/react';
+import { useForm, useInputControl } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
+import { TextareaConform } from '@/components/conform/textarea.conform';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import serverUpdateGeneralAction from '@/features/serverlist/actions/update-server-general.action';
-import { S_ServerUpdateGeneral } from '@/features/serverlist/schemas/zod/s-server-update-general.zod';
+import { S_ServerUpdateVotifier } from '@/features/serverlist/schemas/zod/s-server-update-votifier.zod';
 import { T_DTOServer_Votifier } from '@/features/serverlist/types/t-dto-server-with-votifier.type';
 
 export default function ServerUpdateVotifierForm({
@@ -39,16 +41,17 @@ export default function ServerUpdateVotifierForm({
 
   const defaultValue = {
     id: serverId,
-    slug,
-    title,
-    deletingIcon: false,
+    ip: data?.ip || '',
+    port: data?.port || '',
+    publicKey: data?.publicKey || '',
+    enabled: data?.enabled || false,
   };
 
   const [form, fields] = useForm({
     lastResult: undefined,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
-        schema: S_ServerUpdateGeneral,
+        schema: S_ServerUpdateVotifier,
       });
       if (submission.status !== 'success') {
         toast.error('Form data invalid, please fix any errors', {
@@ -63,6 +66,8 @@ export default function ServerUpdateVotifierForm({
     defaultValue,
   });
 
+  const portHandler = useInputControl(fields.port);
+
   return (
     <form
       id={form.id}
@@ -74,19 +79,29 @@ export default function ServerUpdateVotifierForm({
       <input type='hidden' name={fields.id.name} value={serverId} />
 
       <Field>
-        <Label htmlFor={fields.title.id}>Title</Label>
-        <InputConform meta={fields.title} type='text' />
-        {fields.title.errors && <FieldError>{fields.title.errors}</FieldError>}
+        <Label htmlFor={fields.ip.id}>IP Address</Label>
+        <InputConform meta={fields.ip} type='text' placeholder='192.168.0.1' />
+        {fields.ip.errors && <FieldError>{fields.ip.errors}</FieldError>}
       </Field>
 
       <Field>
-        <Label htmlFor={fields.slug.id}>URL Slug</Label>
-        <InputConform meta={fields.slug} type='text' />
-        {fields.slug.errors && <FieldError>{fields.slug.errors}</FieldError>}
-        <p className='text-sm text-accent-foreground'>
-          <span className='text-accent-foreground/75'>{`https://minecentral.net/serverlist/`}</span>
-          {fields.slug.value}
-        </p>
+        <Label htmlFor={fields.port.id}>Port</Label>
+        <Input
+          type='number'
+          placeholder='8080'
+          min={0}
+          max={65535}
+          onChange={(e) => portHandler.change(e.currentTarget.value)}
+        />
+        {fields.port.errors && <FieldError>{fields.port.errors}</FieldError>}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.publicKey.id}>Public Votifier Key</Label>
+        <TextareaConform meta={fields.publicKey} rows={10} />
+        {fields.publicKey.errors && (
+          <FieldError>{fields.publicKey.errors}</FieldError>
+        )}
       </Field>
 
       <Button

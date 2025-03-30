@@ -7,14 +7,21 @@ import validateSession from '@/lib/auth/helpers/validate-session';
 import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
 
 //This is a UploadThing route for uploading resources
-export const resource_fileRoute_resource = UploadBuilder({
-  'application/java-archive': {
-    maxFileSize: '16MB',
-    maxFileCount: 1,
-    minFileCount: 1,
+export const resource_fileRoute_resource = UploadBuilder(
+  {
+    'application/java-archive': {
+      maxFileSize: '16MB',
+      maxFileCount: 1,
+      minFileCount: 1,
+    },
+    'application/zip': {
+      maxFileSize: '16MB',
+      maxFileCount: 1,
+      minFileCount: 1,
+    },
   },
-  'application/zip': { maxFileSize: '16MB', maxFileCount: 1, minFileCount: 1 },
-})
+  { awaitServerData: true },
+)
   //Input required schema data for this route
   .input(S_ProjectCreateVersion_Plugin)
   //Provides context such as the user who attempts to upload to this route
@@ -32,7 +39,7 @@ export const resource_fileRoute_resource = UploadBuilder({
     //   throw new Error('Unknown file type');
     // }
 
-    // console.log(`Uploaded ${file.name}, detected as ${resourceType}`);
+    console.log(`Uploaded a resource file for the resource ${metadata.title}`);
     const release = await projectCreateRelease({
       pluginId: metadata.id,
       fileUrl: file.ufsUrl,

@@ -48,7 +48,7 @@ export function baseNavigationConfig() {
     },
     {
       title: 'Server List',
-      href: '/servers',
+      href: '/serverlist',
       Icon: ServerIcon,
     },
   ] satisfies NavigationConfig;

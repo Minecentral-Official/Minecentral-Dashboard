@@ -2,7 +2,8 @@ export default function compactNumber(input: number | string): string {
   let num = typeof input === 'number' ? input : Number(input);
 
   if (isNaN(num)) {
-    throw new TypeError(`Invalid number: ${input}`);
+    // throw new TypeError(`Invalid number: ${input}`);
+    return 'N/A';
   }
 
   const suffixes = ['', 'K', 'M', 'B', 'T'];

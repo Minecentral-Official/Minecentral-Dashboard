@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import ResourceCreateVersionForm from '@/features/resources/components/forms/version/resource-add-version-plugin.form';
+import ResourceCreateVersionForm from '@/features/resources/components/forms/resource-add-version-plugin.form';
 import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
 import { projectGetIdBySlug } from '@/features/resources/queries/resource-get-id-by-slug.get';
 
