@@ -6,6 +6,7 @@ import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { generateReactHelpers } from '@uploadthing/react';
 import { LoaderPinwheelIcon, SaveIcon, TrashIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -41,6 +42,7 @@ export default function ResourceUpdateGeneralForm({
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();
+  const router = useRouter();
 
   const { startUpload, isUploading } = useUploadThing('resource_icon', {
     onUploadError: () => {
@@ -53,6 +55,8 @@ export default function ResourceUpdateGeneralForm({
       toast.success('Resource icon updated!', {
         id: 'update-resource',
       });
+
+      router.refresh();
     },
   });
 
@@ -65,23 +69,16 @@ export default function ResourceUpdateGeneralForm({
           id: 'update-resource',
         });
       } else {
-        toast.success(result.message, {
-          id: 'update-resource',
-        });
+        // toast.success(result.message, {
+        //   id: 'update-resource',
+        // });
+        router.refresh();
       }
     } else if (iconUrl !== oldIconUrl && iconFile) {
-      const uploadData = await startUpload([iconFile], { id: resourceId });
-      setIconFile(undefined);
-      if (uploadData && uploadData.length > 0) {
-        toast.success('Icon upload successful!', {
-          id: 'update-resource',
-        });
-      } else {
-        toast.error('Error while uploading!', {
-          id: 'update-resource',
-        });
-      }
+      await startUpload([iconFile], { id: resourceId });
     }
+    setDeleteIcon(false);
+    setIconFile(undefined);
   };
 
   // Show toast when state changes
@@ -90,10 +87,11 @@ export default function ResourceUpdateGeneralForm({
       toast.success(actionState.message, {
         id: 'update-resource',
       });
+      router.refresh();
     } else if (actionState?.success === false) {
       toast.error(actionState?.message, { id: 'update-resource' });
     }
-  }, [actionState]);
+  }, [actionState, router]);
 
   const handleImageChange = (url: string, file: File) => {
     setIconFile(file);
@@ -145,9 +143,9 @@ export default function ResourceUpdateGeneralForm({
 
       <Field>
         <Label>Icon</Label>
-        <div className='flex flex-row items-center gap-2'>
-          <ResourceImage title={title} url={iconUrl} />
-          <div className='flex flex-col gap-2'>
+        <div className='mx-auto flex flex-col items-center gap-2'>
+          <ResourceImage url={iconUrl} />
+          <div className='flex flex-col gap-2 md:flex-row'>
             <FileUploadButton onFileSelect={handleImageChange} />
             <Button
               variant='destructive'

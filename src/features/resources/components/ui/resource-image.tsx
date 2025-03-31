@@ -7,11 +7,9 @@ import Image from 'next/image';
 
 export function ResourceImage({
   url,
-  title,
   size = 100,
 }: {
   url: string | undefined | null;
-  title: string;
   size?: number;
 }) {
   const [isLoading, setIsLoading] = useState(true);

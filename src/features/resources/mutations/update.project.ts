@@ -19,5 +19,6 @@ export default async function projectUpdate(
   )[0];
 
   revalidateTag(`resource-id-${resourceId}`);
+  console.log('Revalidated cache for resource: ' + resourceId);
   return updated;
 }

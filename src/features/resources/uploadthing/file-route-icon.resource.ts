@@ -27,5 +27,5 @@ export const resource_fileRoute_icon = UploadBuilder(
   //Return back the uploaded files data along with the context from the middleware (response from uploadthing.com)
   .onUploadComplete(async ({ file, metadata }) => {
     await projectUpdate(metadata.id, { iconUrl: file.ufsUrl });
-    return { data: { url: file.ufsUrl, ...metadata } };
+    return { url: file.ufsUrl };
   });
