@@ -37,9 +37,15 @@ export default function ServerUpdateGeneralForm({
     undefined,
   );
 
-  const { uploadFiles, useUploadThing } =
-    generateReactHelpers<T_ServerListFileRouter>();
-  const { isUploading } = useUploadThing('serverlist_banner');
+  const { useUploadThing } = generateReactHelpers<T_ServerListFileRouter>();
+  const { startUpload, isUploading } = useUploadThing('serverlist_banner', {
+    onUploadError: () => {
+      toast.error('Error while uploading! Max file size 256KB', {
+        id: 'update-realm',
+      });
+    },
+    onClientUploadComplete: () => {},
+  });
   const [deleteBanner, setDeleteBanner] = useState(false);
   const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
   const [bannerFile, setBannerFile] = useState<File>();
@@ -58,18 +64,14 @@ export default function ServerUpdateGeneralForm({
         });
       }
     } else if (bannerUrl !== oldBannerUrl && bannerFile) {
-      try {
-        const uploadData = await uploadFiles('serverlist_banner', {
-          files: [bannerFile],
-          input: { id: serverId },
+      const uploadData = await startUpload([bannerFile], { id: serverId });
+      setBannerFile(undefined);
+      if (uploadData && uploadData.length > 0) {
+        toast.success('Banner upload successful!', {
+          id: 'update-realm',
         });
-        setBannerFile(undefined);
-        if (uploadData.length > 0)
-          toast.success('Banner upload successful!', {
-            id: 'update-realm',
-          });
-      } catch {
-        toast.error('Error while uploading! Max file size 256KB', {
+      } else {
+        toast.error('Error while uploading!', {
           id: 'update-realm',
         });
       }

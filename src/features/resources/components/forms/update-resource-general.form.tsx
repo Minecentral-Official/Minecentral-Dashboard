@@ -5,7 +5,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { generateReactHelpers } from '@uploadthing/react';
-import { TrashIcon } from 'lucide-react';
+import { LoaderPinwheelIcon, SaveIcon, TrashIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -13,6 +13,7 @@ import { InputConform } from '@/components/conform/input.conform';
 import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Label } from '@/components/ui/label';
+import resourceDeleteIconAction from '@/features/resources/actions/delete-resource-icon.action';
 import projectUpdateGeneralAction from '@/features/resources/actions/update-resource-general.action';
 import { ResourceImage } from '@/features/resources/components/ui/resource-image';
 import { S_ProjectUpdateGeneral } from '@/features/resources/schemas/zod/s-project-update-general.zod';
@@ -36,21 +37,51 @@ export default function ResourceUpdateGeneralForm({
     undefined,
   );
 
-  const { uploadFiles } = generateReactHelpers<T_ResourceFileRouter>();
+  const { useUploadThing } = generateReactHelpers<T_ResourceFileRouter>();
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [iconUrl, setIconUrl] = useState(oldIconUrl);
   const [iconFile, setIconFile] = useState<File>();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //Upload icon if different
-    if (iconUrl !== oldIconUrl && iconFile) {
-      await uploadFiles('resource_icon', {
-        files: [iconFile],
-        input: { id: resourceId },
+  const { startUpload, isUploading } = useUploadThing('resource_icon', {
+    onUploadError: () => {
+      toast.error('Error while uploading! Max file size is 256KB', {
+        id: 'update-resource',
       });
+    },
+    //Message when upload is successful
+    onClientUploadComplete: () => {
+      toast.success('Resource icon updated!', {
+        id: 'update-resource',
+      });
+    },
+  });
+
+  const handleUploadIcon = async () => {
+    //Upload icon if different
+    if (deleteIcon) {
+      const result = await resourceDeleteIconAction(resourceId);
+      if (!result.success) {
+        toast.error(result.message, {
+          id: 'update-resource',
+        });
+      } else {
+        toast.success(result.message, {
+          id: 'update-resource',
+        });
+      }
+    } else if (iconUrl !== oldIconUrl && iconFile) {
+      const uploadData = await startUpload([iconFile], { id: resourceId });
+      setIconFile(undefined);
+      if (uploadData && uploadData.length > 0) {
+        toast.success('Icon upload successful!', {
+          id: 'update-resource',
+        });
+      } else {
+        toast.error('Error while uploading!', {
+          id: 'update-resource',
+        });
+      }
     }
-    //Submit form, but cancel if no changes applied
-    form.onSubmit(e);
   };
 
   // Show toast when state changes
@@ -100,7 +131,7 @@ export default function ResourceUpdateGeneralForm({
   return (
     <form
       id={form.id}
-      onSubmit={handleSubmit}
+      onSubmit={form.onSubmit}
       className='flex w-full flex-col gap-6'
       action={action}
       noValidate
@@ -115,11 +146,15 @@ export default function ResourceUpdateGeneralForm({
       <Field>
         <Label>Icon</Label>
         <div className='flex flex-row items-center gap-2'>
-          <ResourceImage url={iconUrl || '/placeholder.png'} />
+          <ResourceImage title={title} url={iconUrl} />
           <div className='flex flex-col gap-2'>
             <FileUploadButton onFileSelect={handleImageChange} />
             <Button
-              disabled={deleteIcon}
+              variant='destructive'
+              disabled={
+                (iconUrl !== oldIconUrl && deleteIcon) ||
+                (iconUrl === null && !deleteIcon)
+              }
               onClick={(e) => {
                 setDeleteIcon(true);
                 setIconUrl(null);
@@ -127,6 +162,25 @@ export default function ResourceUpdateGeneralForm({
               }}
             >
               <TrashIcon className='mr-1 h-4 w-4' /> Delete Icon
+            </Button>
+            <Button
+              variant='outline'
+              disabled={iconUrl === oldIconUrl || isUploading}
+              onClick={(e) => {
+                e.preventDefault();
+                handleUploadIcon();
+              }}
+            >
+              {!isUploading ?
+                <>
+                  <SaveIcon className='mr-1 h-4 w-4' />
+                  Save Icon
+                </>
+              : <>
+                  <LoaderPinwheelIcon className='mr-1 h-4 w-4 animate-spin' />
+                  Saving
+                </>
+              }
             </Button>
           </div>
           {/* <Input
@@ -166,8 +220,7 @@ export default function ResourceUpdateGeneralForm({
 
       <Button
         disabled={
-          JSON.stringify(form.value) === JSON.stringify(form.initialValue) &&
-          iconUrl === oldIconUrl
+          JSON.stringify(form.value) === JSON.stringify(form.initialValue)
         }
       >
         Save Changes

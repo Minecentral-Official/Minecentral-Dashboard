@@ -46,11 +46,10 @@ export default function ResourceCreateVersionForm({
 }: Pick<T_DTOResource, 'id' | 'slug'>) {
   const [file, setFile] = useState<File>();
   const [fileError, setFileError] = useState<boolean>(false);
-  const { uploadFiles, useUploadThing } =
-    generateReactHelpers<T_ResourceFileRouter>();
+  const { useUploadThing } = generateReactHelpers<T_ResourceFileRouter>();
   const route = useRouter();
 
-  const { isUploading } = useUploadThing('resource_resource', {
+  const { startUpload, isUploading } = useUploadThing('resource_resource', {
     onUploadError: () => {
       toast.error('Error while uploading file!', { id: 'update-resource' });
     },
@@ -111,11 +110,7 @@ export default function ResourceCreateVersionForm({
     const submission = parseWithZod(formData, {
       schema: S_ProjectCreateVersion_Plugin,
     });
-    if (submission.status === 'success')
-      uploadFiles('resource_resource', {
-        files: [file!],
-        input: submission.value,
-      });
+    if (submission.status === 'success') startUpload([file!], submission.value);
   }
 
   return (

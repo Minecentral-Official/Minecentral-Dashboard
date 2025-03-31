@@ -1,19 +1,39 @@
+'use client';
+
+import { useState } from 'react';
+
+import { LoaderPinwheelIcon } from 'lucide-react';
 import Image from 'next/image';
 
 export function ResourceImage({
   url,
+  title,
   size = 100,
 }: {
-  url: string;
+  url: string | undefined | null;
+  title: string;
   size?: number;
 }) {
+  const [isLoading, setIsLoading] = useState(true);
   return (
-    <Image
-      width={size}
-      height={size}
-      alt='Resource Icon'
-      src={url || '/placeholder.png'}
-      className={`h-[${size}px] w-[${size}px] rounded-md bg-gray-500 object-cover`}
-    />
+    <>
+      <div
+        className={`relative max-h-[${size}px] max-w-[${size}px] aspect-square overflow-hidden`}
+      >
+        {isLoading && (
+          <div className='absolute left-1/2 top-1/2 max-h-full max-w-full -translate-x-2 -translate-y-2'>
+            <LoaderPinwheelIcon className='h-4 w-4 animate-spin' />
+          </div>
+        )}
+        <Image
+          width={size}
+          height={size}
+          alt='Resource Icon'
+          src={url || '/missing_texture.webp'}
+          onLoad={() => setIsLoading(false)}
+          className='max-w-full rounded-md bg-gray-500'
+        />
+      </div>
+    </>
   );
 }
