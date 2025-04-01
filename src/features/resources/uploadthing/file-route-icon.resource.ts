@@ -1,7 +1,7 @@
 import { UploadThingError } from 'uploadthing/server';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
-import { projectGetById_WithUser } from '@/features/resources/queries/project-by-id-with-user.get';
+import { projectGetById } from '@/features/resources/queries/project-by-id.get';
 import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
 import validateSession from '@/lib/auth/helpers/validate-session';
 import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
@@ -20,7 +20,7 @@ export const resource_fileRoute_icon = UploadBuilder(
   //Middleware to provide context to the upload, such as the user who is attempting to upload to this route
   .middleware(async ({ input }) => {
     const { user } = await validateSession();
-    if ((await projectGetById_WithUser(input.id))?.author.id !== user.id)
+    if ((await projectGetById(input.id))?.author.id !== user.id)
       throw new UploadThingError('You are not the author!');
     return { userId: user.id, ...input };
   })

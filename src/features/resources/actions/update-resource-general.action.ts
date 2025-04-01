@@ -21,13 +21,13 @@ export default async function projectUpdateGeneralAction(
 
   if (parsedForm.status !== 'success') {
     console.log(parsedForm.error);
-    return { success: false, message: 'Invalid form data!' };
+    return parsedForm.reply();
   }
 
   const { id: resourceId, slug } = parsedForm.value;
 
   if (!(await projectCanEdit(resourceId))) {
-    return { success: false, message: 'No Permission' };
+    return parsedForm.reply({ formErrors: ['No Permission'] });
   }
 
   const resource = await projectGetById(resourceId);
@@ -37,7 +37,9 @@ export default async function projectUpdateGeneralAction(
   if (resource && resource.slug !== slug) {
     if (!(await projectSlugAvailable(slug))) {
       console.log('Cant set slug to same as another project!');
-      return { success: false, message: `Slug ${slug} is already taken!` };
+      return parsedForm.reply({
+        formErrors: [`Slug ${slug} is already taken!`],
+      });
     } else {
       //Re validate the cache for old and new resource slugs
       if (resource) revalidateTag(`resource-slug-${resource.slug}`);
@@ -53,14 +55,17 @@ export default async function projectUpdateGeneralAction(
     iconUrl: deletingIcon ? null : undefined,
   });
 
-  revalidateTag(`resource-id-${updatedResource.id}`);
+  // revalidateTag(`resource-id-${updatedResource.id}`);
   //Redirect to is optional due to SLUG might not update every time we update the project
   // Redirect ONLY if slug changes, if slug doesnt change and we redirect, the client doesn't refresh search params
   if (!redirectTo) {
-    return {
-      success: true,
-      message: 'Project updated successfully!',
-    };
+    redirect(
+      `/dashboard/resources/${updatedResource.slug}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=update-resource`,
+    );
+    // return {
+    //   success: true,
+    //   message: 'Project updated successfully!',
+    // };
   } else {
     redirect(
       `/dashboard/resources/${updatedResource.slug}?toast-success=true&toast-message=Project%20updated%20successfully&toast-id=update-resource`,

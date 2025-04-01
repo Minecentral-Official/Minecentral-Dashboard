@@ -29,7 +29,7 @@ export function ResourceImage({
           alt='Resource Icon'
           src={url || '/missing_texture.webp'}
           onLoad={() => setIsLoading(false)}
-          className='max-w-full rounded-md bg-gray-500'
+          className='aspect-square rounded-md bg-gray-500 object-cover'
         />
       </div>
     </>

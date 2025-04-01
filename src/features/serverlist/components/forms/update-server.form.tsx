@@ -44,7 +44,11 @@ export default function ServerUpdateGeneralForm({
         id: 'update-realm',
       });
     },
-    onClientUploadComplete: () => {},
+    onClientUploadComplete: () => {
+      toast.success('Banner upload successful!', {
+        id: 'update-realm',
+      });
+    },
   });
   const [deleteBanner, setDeleteBanner] = useState(false);
   const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
@@ -64,18 +68,10 @@ export default function ServerUpdateGeneralForm({
         });
       }
     } else if (bannerUrl !== oldBannerUrl && bannerFile) {
-      const uploadData = await startUpload([bannerFile], { id: serverId });
-      setBannerFile(undefined);
-      if (uploadData && uploadData.length > 0) {
-        toast.success('Banner upload successful!', {
-          id: 'update-realm',
-        });
-      } else {
-        toast.error('Error while uploading!', {
-          id: 'update-realm',
-        });
-      }
+      await startUpload([bannerFile], { id: serverId });
     }
+    setBannerFile(undefined);
+    setDeleteBanner(false);
   };
 
   // Show toast when state changes

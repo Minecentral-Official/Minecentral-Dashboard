@@ -55,7 +55,6 @@ export default function ResourceUpdateGeneralForm({
       toast.success('Resource icon updated!', {
         id: 'update-resource',
       });
-
       router.refresh();
     },
   });
@@ -83,13 +82,12 @@ export default function ResourceUpdateGeneralForm({
 
   // Show toast when state changes
   useEffect(() => {
-    if (actionState?.success) {
-      toast.success(actionState.message, {
+    if (actionState?.status === 'success') {
+      toast.success('Resource updated!', {
         id: 'update-resource',
       });
-      router.refresh();
-    } else if (actionState?.success === false) {
-      toast.error(actionState?.message, { id: 'update-resource' });
+    } else if (actionState?.error) {
+      toast.error(actionState.error[0], { id: 'update-resource' });
     }
   }, [actionState, router]);
 
@@ -108,7 +106,7 @@ export default function ResourceUpdateGeneralForm({
   };
 
   const [form, fields] = useForm({
-    lastResult: undefined,
+    lastResult: actionState,
     onValidate({ formData }) {
       const submission = parseWithZod(formData, {
         schema: S_ProjectUpdateGeneral,
