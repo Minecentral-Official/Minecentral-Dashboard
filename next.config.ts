@@ -14,7 +14,8 @@ jiti.esmResolve('./src/lib/env/client.env.ts');
 const nextConfig: NextConfig = removeImports({
   /* config options here */
   experimental: {
-    dynamicIO: true,
+    useCache: true,
+    dynamicIO: false,
     serverActions: {
       bodySizeLimit: '10mb',
     },
