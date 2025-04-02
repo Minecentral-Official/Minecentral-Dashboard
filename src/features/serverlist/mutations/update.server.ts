@@ -1,9 +1,9 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 
 import { serverTable } from '@/features/serverlist/schemas/server.table';
+import { revalidateTagInternal } from '@/lib/cache/revalidate-tag';
 import { db } from '@/lib/db';
 
 export default async function serverUpdate(
@@ -17,7 +17,7 @@ export default async function serverUpdate(
       .where(eq(serverTable.id, serverId))
       .returning()
   )[0];
-
-  revalidateTag(`server-id-${serverId}`);
+  await revalidateTagInternal(`server-id-${serverId}`);
+  // revalidateTag(`server-id-${serverId}`);
   return updated;
 }

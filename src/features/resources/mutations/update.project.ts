@@ -1,9 +1,9 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 
 import { resourceTable } from '@/features/resources/schemas/resource.table';
+import { revalidateTagInternal } from '@/lib/cache/revalidate-tag';
 import { db } from '@/lib/db';
 
 export default async function projectUpdate(
@@ -18,7 +18,7 @@ export default async function projectUpdate(
       .returning()
   )[0];
 
-  revalidateTag(`resource-id-${resourceId}`);
-  console.log('Revalidated cache for resource: ' + resourceId);
+  await revalidateTagInternal(`resource-id-${resourceId}`);
+  //revalidateTag(`resource-id-${resourceId}`);
   return updated;
 }

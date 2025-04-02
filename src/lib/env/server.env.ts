@@ -19,6 +19,7 @@ export const serverEnv = createEnv({
     FRONTEND_URL: z.string().url(),
     GITHUB_ACCESS_TOKEN: z.string(),
     UPLOADTHING_TOKEN: z.string(),
+    REVALIDATION_SECRET: z.string(),
   },
   // eslint-disable-next-line n/no-process-env
   experimental__runtimeEnv: process.env,

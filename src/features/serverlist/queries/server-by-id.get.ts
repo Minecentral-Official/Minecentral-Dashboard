@@ -2,15 +2,16 @@ import { eq, sql } from 'drizzle-orm';
 
 import DTOServer from '@/features/serverlist/dto/server-base.dto';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { serverTable, serverVotesTable } from '@/lib/db/schema';
 
 export async function serverGetById(
   serverId: string,
 ): Promise<T_DTOServer | undefined> {
-  // 'use cache';
-  // cacheLife('hours');
-  // cacheTag(`server-id-${serverId}`);
+  'use cache';
+  cacheLife('hours');
+  cacheTag(`server-id-${serverId}`);
 
   const server = await db.query.serverTable.findFirst({
     where: eq(serverTable.id, serverId),

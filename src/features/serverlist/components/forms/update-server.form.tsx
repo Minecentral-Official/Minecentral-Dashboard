@@ -5,7 +5,12 @@ import { useActionState, useEffect, useState } from 'react';
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { generateReactHelpers } from '@uploadthing/react';
-import { InfoIcon, SaveIcon, TrashIcon } from 'lucide-react';
+import {
+  InfoIcon,
+  LoaderPinwheelIcon,
+  SaveIcon,
+  TrashIcon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -38,25 +43,38 @@ export default function ServerUpdateGeneralForm({
   );
 
   const { useUploadThing } = generateReactHelpers<T_ServerListFileRouter>();
-  const { startUpload, isUploading } = useUploadThing('serverlist_banner', {
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [deleteBanner, setDeleteBanner] = useState(false);
+  const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
+  const [bannerUrlChanged, setBannerUrlChanged] = useState(false);
+  const [bannerFile, setBannerFile] = useState<File>();
+
+  const { startUpload } = useUploadThing('serverlist_banner', {
     onUploadError: () => {
       toast.error('Error while uploading! Max file size 256KB', {
         id: 'update-realm',
       });
+      setIsUploading(false);
     },
     onClientUploadComplete: () => {
       toast.success('Banner upload successful!', {
         id: 'update-realm',
       });
+
+      setBannerFile(undefined);
+      setBannerUrlChanged(false);
+      setIsUploading(false);
+    },
+    onUploadBegin: () => {
+      setIsUploading(true);
     },
   });
-  const [deleteBanner, setDeleteBanner] = useState(false);
-  const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
-  const [bannerFile, setBannerFile] = useState<File>();
 
   const handleSaveBanner = async () => {
     //Upload icon if different
     if (deleteBanner) {
+      setIsUploading(true);
       const result = await serverDeleteBannerAction(serverId);
       if (!result.success) {
         toast.error(result.message, {
@@ -66,12 +84,14 @@ export default function ServerUpdateGeneralForm({
         toast.success(result.message, {
           id: 'update-realm',
         });
+        //Banner Deleted successfully
+        setDeleteBanner(false);
+        setBannerUrlChanged(false);
       }
-    } else if (bannerUrl !== oldBannerUrl && bannerFile) {
+      setIsUploading(false);
+    } else if (bannerFile) {
       await startUpload([bannerFile], { id: serverId });
     }
-    setBannerFile(undefined);
-    setDeleteBanner(false);
   };
 
   // Show toast when state changes
@@ -89,6 +109,7 @@ export default function ServerUpdateGeneralForm({
     setBannerFile(file);
     setBannerUrl(url);
     setDeleteBanner(false);
+    setBannerUrlChanged(true);
   };
 
   const defaultValue = {
@@ -147,12 +168,13 @@ export default function ServerUpdateGeneralForm({
               <Button
                 variant='destructive'
                 disabled={
-                  (bannerUrl !== oldBannerUrl && deleteBanner) ||
+                  (bannerUrlChanged && deleteBanner) ||
                   (bannerUrl === null && !deleteBanner)
                 }
                 onClick={(e) => {
                   setDeleteBanner(true);
                   setBannerUrl(null);
+                  setBannerUrlChanged(true);
                   e.preventDefault();
                 }}
               >
@@ -161,13 +183,22 @@ export default function ServerUpdateGeneralForm({
             </div>
             <Button
               variant='outline'
-              disabled={!(bannerUrl !== oldBannerUrl || isUploading)}
+              disabled={!bannerUrlChanged || isUploading}
               onClick={(e) => {
                 e.preventDefault();
                 handleSaveBanner();
               }}
             >
-              <SaveIcon className='mr-1 h-4 w-4' /> Save Banner
+              {!isUploading ?
+                <>
+                  <SaveIcon className='mr-1 h-4 w-4' />
+                  Save Banner
+                </>
+              : <>
+                  <LoaderPinwheelIcon className='mr-1 h-4 w-4 animate-spin' />
+                  Saving
+                </>
+              }
             </Button>
           </div>
         </div>
