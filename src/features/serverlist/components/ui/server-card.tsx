@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 
-import { Check, Copy, Users } from 'lucide-react';
+import { Check, Copy, UsersIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import {
   Tooltip,
   TooltipContent,
@@ -49,26 +49,24 @@ export function ServerCard({
   return (
     <Card className='mx-auto w-full max-w-md overflow-hidden'>
       {/* Server Banner */}
-
+      <CardTitle></CardTitle>
       <Link href={`/serverlist/${slug}`}>
-        <div className='relative h-[60px] w-full overflow-hidden'>
-          <ServerImage title={title} url={iconUrl || '/placeholder.png'} />
+        <ServerImage title={title} url={iconUrl || '/placeholder.png'} />
+      </Link>
 
-          {/* Player Count Badge */}
+      <CardContent className='p-4'>
+        <div className='flex flex-row'>
+          <h3 className='mb-2 mr-auto text-xl font-bold'>{title}</h3>
           <Badge
-            variant={'default'}
-            className='absolute right-2 top-2 flex items-center gap-1 py-1'
+            variant='secondary'
+            className='my-auto flex items-center gap-1 py-1'
           >
-            <Users size={14} />
+            <UsersIcon size={14} />
             <span>
               {0}/{0}
             </span>
           </Badge>
         </div>
-      </Link>
-
-      <CardContent className='p-4'>
-        <h3 className='mb-2 text-xl font-bold'>{title}</h3>
 
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>

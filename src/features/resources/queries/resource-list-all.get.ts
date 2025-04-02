@@ -1,10 +1,11 @@
 'use server';
 
 import { desc, sql } from 'drizzle-orm';
+import { z } from 'zod';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { T_ResourceSimpleRequest } from '@/features/resources/types/t-resource-api-request.type';
-import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-response.type';
+import { S_ResourceSimpleRequestSchema } from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
+import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {
@@ -16,7 +17,9 @@ import {
 export default async function resourcesListAll({
   limit,
   page,
-}: T_ResourceSimpleRequest): Promise<T_ResourcesResponse> {
+}: z.infer<typeof S_ResourceSimpleRequestSchema>): Promise<
+  z.infer<typeof S_ResourceResponse>
+> {
   'use cache';
   cacheLife('minutes');
   cacheTag(`resources-all-${limit}-${page}`);

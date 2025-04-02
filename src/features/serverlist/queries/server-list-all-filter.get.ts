@@ -10,11 +10,10 @@ import {
   or,
   sql,
 } from 'drizzle-orm';
-import { z } from 'zod';
 
 import DTOResource from '@/features/resources/dto/plugin-basic.dto';
-import { S_ResourceFilterRequestSchema } from '@/features/resources/schemas/zod/s-resource-api-requests.zod';
-import { S_ResourceResponse } from '@/features/resources/schemas/zod/s-resource-api-responses.zod';
+import { T_ResourceFilterRequest } from '@/features/resources/types/t-resource-api-request.type';
+import { T_ResourcesResponse } from '@/features/resources/types/t-resource-api-response.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import {
@@ -24,7 +23,7 @@ import {
   userTable,
 } from '@/lib/db/schema';
 
-export default async function resourcesListAllFiltered({
+export default async function serverlistListAllFiltered({
   query,
   limit,
   page,
@@ -32,9 +31,7 @@ export default async function resourcesListAllFiltered({
   versions,
   type,
   loaders,
-}: z.infer<typeof S_ResourceFilterRequestSchema>): Promise<
-  z.infer<typeof S_ResourceResponse>
-> {
+}: T_ResourceFilterRequest): Promise<T_ResourcesResponse> {
   'use cache';
   cacheLife('minutes');
   cacheTag(

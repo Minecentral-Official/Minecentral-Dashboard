@@ -9,19 +9,25 @@ import { UploadBuilder } from '@/lib/uploadthing/upload-builder';
 //This is a UploadThing route for uploading icons
 export const serverlist_fileRoute_Banner = UploadBuilder({
   'image/jpeg': {
-    maxFileSize: '256KB',
+    maxFileSize: '1MB',
     maxFileCount: 1,
     minFileCount: 1,
     additionalProperties: { height: 60, width: 468 },
   },
   'image/png': {
-    maxFileSize: '256KB',
+    maxFileSize: '1MB',
     maxFileCount: 1,
     minFileCount: 1,
     additionalProperties: { height: 60, width: 468 },
   },
   'image/webp': {
-    maxFileSize: '256KB',
+    maxFileSize: '1MB',
+    maxFileCount: 1,
+    minFileCount: 1,
+    additionalProperties: { height: 60, width: 468 },
+  },
+  'image/gif': {
+    maxFileSize: '1MB',
     maxFileCount: 1,
     minFileCount: 1,
     additionalProperties: { height: 60, width: 468 },
