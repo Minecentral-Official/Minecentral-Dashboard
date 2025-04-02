@@ -1,14 +1,14 @@
 import { eq, sql } from 'drizzle-orm';
 
-import DTOServer from '@/features/serverlist/dto/server-base.dto';
-import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
+import DTOServer_WithVotes from '@/features/serverlist/dto/server-with-votes.dto';
+import { T_DTOServer_Votes } from '@/features/serverlist/types/t-dto-server.type';
 import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { serverTable, serverVotesTable } from '@/lib/db/schema';
 
 export async function serverGetById(
   serverId: string,
-): Promise<T_DTOServer | undefined> {
+): Promise<T_DTOServer_Votes | undefined> {
   'use cache';
   cacheLife('hours');
   cacheTag(`server-id-${serverId}`);
@@ -28,5 +28,5 @@ export async function serverGetById(
   });
 
   if (!server) return undefined;
-  return DTOServer(server);
+  return DTOServer_WithVotes(server);
 }

@@ -41,14 +41,14 @@ export async function serverlist_sendVotifierVote(
 
       // Create a socket connection to the server
       const client = new net.Socket();
-      let responseData = '';
+      // let responseData = '';
 
       // Set a timeout for the connection
       client.setTimeout(10000); // 10 seconds
 
-      client.on('data', (data) => {
-        responseData += data.toString();
-      });
+      // client.on('data', (data) => {
+      //   responseData += data.toString();
+      // });
 
       client.on('close', () => {
         resolve({

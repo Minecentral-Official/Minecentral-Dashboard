@@ -1,13 +1,13 @@
 import { eq } from 'drizzle-orm';
 
 import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
-import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
+import { T_DTOServer_Votes } from '@/features/serverlist/types/t-dto-server.type';
 import { db } from '@/lib/db';
 import { serverTable } from '@/lib/db/schema';
 
 export async function serverGetByUserId(
   userId: string,
-): Promise<T_DTOServer | undefined> {
+): Promise<T_DTOServer_Votes | undefined> {
   const serverId = await db.query.serverTable.findFirst({
     where: eq(serverTable.userId, userId),
   });

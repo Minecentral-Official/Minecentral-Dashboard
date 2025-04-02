@@ -5,7 +5,7 @@ export default async function HostStripeListPaymentMethods() {
 
   return (
     <div className='flex flex-col'>
-      {methods!.data.map((method) => (
+      {methods?.data.map((method) => (
         <div className='flex items-center space-x-4' key={method.id}>
           <div className='flex h-6 w-10 items-center justify-center rounded bg-gray-200'>
             {method.card?.brand}

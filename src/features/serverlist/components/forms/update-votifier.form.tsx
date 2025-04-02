@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import serverUpdateGeneralAction from '@/features/serverlist/actions/update-server-general.action';
 import { S_ServerUpdateVotifier } from '@/features/serverlist/schemas/zod/s-server-update-votifier.zod';
-import { T_DTOServer_Votifier } from '@/features/serverlist/types/t-dto-server-with-votifier.type';
+import { T_DTOServer_Votifier } from '@/features/serverlist/types/t-dto-server.type';
 
 export default function ServerUpdateVotifierForm({
   serverId,

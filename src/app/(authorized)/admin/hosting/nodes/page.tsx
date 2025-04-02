@@ -11,7 +11,7 @@ export default async function Page() {
       <h1 className='text-3xl font-bold'>Nodes</h1>
 
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-        {nodes.map((node) => (
+        {nodes?.map((node) => (
           <PteroNodeCard key={node.id}>
             <PteroNodeCardHeader>
               <PteroNodeCardTitle nodeId={node.id} />
