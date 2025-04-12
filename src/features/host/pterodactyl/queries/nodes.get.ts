@@ -5,7 +5,11 @@ import { cacheLife } from '@/lib/cache/cache-exports';
 export async function pterodactylGetNodes() {
   'use cache';
   cacheLife('hours');
-  const nodes = await pteroServer.getNodes();
+  try {
+    const nodes = await pteroServer.getNodes();
 
-  return nodes.map((node) => pteroNodeDTO(node));
+    return nodes.map((node) => pteroNodeDTO(node));
+  } catch {
+    return null;
+  }
 }

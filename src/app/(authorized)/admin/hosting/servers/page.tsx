@@ -7,6 +7,7 @@ import { hostADMINGetAllServers } from '@/features/host/queries/admin-list-serve
 
 export default async function AdminHostPage() {
   const servers = await hostADMINGetAllServers();
+  if (!servers) return <>Error</>;
   return (
     <div className='grid grid-cols-3 gap-2'>
       {servers.map((server) => (
