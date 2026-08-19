@@ -42,11 +42,6 @@ export function baseNavigationConfig() {
       // ],
     },
     {
-      title: 'Hosting',
-      href: '/hosting',
-      Icon: ServerIcon,
-    },
-    {
       title: 'Server List',
       href: '/serverlist',
       Icon: ServerIcon,

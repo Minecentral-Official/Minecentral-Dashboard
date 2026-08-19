@@ -16,7 +16,7 @@ export default function ServiceSelectionSection() {
           Explore our services
         </h1>
         <p className='max-w-xl text-lg text-muted-foreground'>
-          Discover the best hosting, resources, and tools for your Minecraft
+          Discover community-made resources and servers for your Minecraft
           experience.
         </p>
         <div className='mt-6 grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -34,12 +34,6 @@ export default function ServiceSelectionSection() {
 
 const services = [
   {
-    title: 'Server Hosting',
-    description: 'Rent a Minecraft server and play together',
-    href: '/hosting',
-    enabled: true,
-  },
-  {
     title: 'Resources',
     description:
       'Find fun community made plugins, texture-packs, mod-packs and more!',
@@ -49,8 +43,8 @@ const services = [
   {
     title: 'Server List',
     description: 'A place to boast about your Minecraft server!',
-    href: '/server-list',
-    enabled: false,
+    href: '/serverlist',
+    enabled: true,
   },
   {
     title: 'Docs',

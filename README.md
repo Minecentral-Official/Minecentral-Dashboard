@@ -1,14 +1,8 @@
 # Minecentral
 
-**Minecentral** is an all-in-one platform for Minecraft enthusiasts, offering services to enhance server hosting, plugin management, and server sharing. It’s designed to empower players and communities with reliable tools to elevate their Minecraft experience.
+**Minecentral** is an all-in-one platform for Minecraft enthusiasts, offering tools for plugin management and server sharing. It’s designed to empower players and communities with reliable tools to elevate their Minecraft experience.
 
 ## Features
-
-### 🖥️ **Minecentral Hosting**
-
-- Performance-optimized Minecraft server hosting with cutting-edge processors.
-- Server splitting capabilities to run multiple worlds on a single plan.
-- First-class support system for quick assistance.
 
 ### 🔌 **Plugin Manager** _(In Development)_
 

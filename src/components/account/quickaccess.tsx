@@ -1,4 +1,4 @@
-import { List, PlugIcon as Plugin, Server, Settings } from 'lucide-react';
+import { List, PlugIcon as Plugin, Settings } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,6 @@ export default async function AccountQuickaccess() {
 
   const quickLinks = [
     { icon: Plugin, label: 'My Resources', href: 'dashboard/resources' },
-    { icon: Server, label: 'My Servers', href: 'dashboard/hosting' },
     { icon: List, label: 'My Worlds', href: 'dashboard/servers' },
     { icon: Settings, label: 'Account Settings', href: 'dashboard/account' },
   ];

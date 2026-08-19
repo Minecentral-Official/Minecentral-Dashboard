@@ -11,7 +11,7 @@ GENERAL
 
 <!-- - Header logo move it to the center on mobile and left on desktop -->
 
-<!-- - Make the buttons Resources, Hosting and server list centered on the page on desktop -->
+<!-- - Make the buttons Resources and server list centered on the page on desktop -->
 
 - On mobile, ditch the navbar and logo, make the navbar be a sticky bar at the bottom (so people using phones can tap easier).
   NOT LOGGED IN:
@@ -25,8 +25,6 @@ GENERAL
   - Profile Avatar button: When clicked opens another drawer thing with the same options in the AuthNav component
 
 <!-- HOSTING
-- Make the `try it` button on the /hosting/pricing actually navigate to /dashboard/hosting/add. Maybe even select the correct package so people dont have to click twice?
-- Make the /dashboard/hosting/add look WAY better -->
 
 RESOUCES
 <!-- - Make the arrows chevrons in the /plugins page rotate/animate 180 when toggling the Categories and Versions filters -->

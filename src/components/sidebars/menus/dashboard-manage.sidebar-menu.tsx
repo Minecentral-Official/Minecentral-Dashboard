@@ -2,13 +2,11 @@ import {
   EarthIcon,
   LayoutListIcon,
   ListIcon,
-  ServerIcon,
   StarIcon,
   ThumbsUpIcon,
 } from 'lucide-react';
 
 import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collapsible-sidebar.wrapper';
-import SidebarLink from '@/components/sidebars/link.sidebar';
 import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
 
 export default function SidebarDashboardManage() {
@@ -18,11 +16,6 @@ export default function SidebarDashboardManage() {
         <p className='text-md font-semibold'>Manage</p>
         <SidebarDashboardResouces />
         <SidebarDashboardServers />
-        <SidebarLink
-          Icon={ServerIcon}
-          name='Hosting'
-          url='/dashboard/hosting'
-        />
       </SidebarMenu>
     </SidebarGroup>
   );

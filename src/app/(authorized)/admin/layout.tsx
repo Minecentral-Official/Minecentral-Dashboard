@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import AdminToggleButton from '@/components/buttons/admin.toggle';
-import { SidebarAdminHosting } from '@/components/sidebars/menus/admin-hosting.sidebar-menu copy';
 import { SidebarAdminResources } from '@/components/sidebars/menus/admin-resources.sidebar-menu';
 import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
 import validateRole from '@/lib/auth/helpers/validate-role';
@@ -24,7 +23,6 @@ export default async function AdminGuard({ children }: PropsWithChildren) {
           <div>
             <p className='font-semiborder-l-purple-800 pl-2 text-xl'>Admin</p>
             <SidebarAdminResources />
-            <SidebarAdminHosting />
           </div>
           <AdminToggleButton isOnAdmin={true} />
         </div>
