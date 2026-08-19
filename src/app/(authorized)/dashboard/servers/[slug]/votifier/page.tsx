@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import ServerUpdateVotifierForm from '@/features/serverlist/components/forms/update-votifier.form';
+import { serverGetBySlug } from '@/features/serverlist/queries/server-by-slug.get';
 import { serverGetIdBySlug } from '@/features/serverlist/queries/server-get-id-by-slug.get';
 import { serverGetVotifierByServerId } from '@/features/serverlist/queries/votifier-by-server-id';
 
@@ -18,6 +19,7 @@ export default async function VotifierPage({ params }: PageProps) {
   const { slug } = await params;
 
   const serverId = (await serverGetIdBySlug(slug))!;
+  const server = await serverGetBySlug(slug);
   //   const server = await serverGetById(serverId)
   const votifier = await serverGetVotifierByServerId(serverId);
 
@@ -29,7 +31,11 @@ export default async function VotifierPage({ params }: PageProps) {
           <CardDescription>Edit your realm information here.</CardDescription>
         </CardHeader>
         <CardContent>
-          <ServerUpdateVotifierForm serverId={serverId} data={votifier} />
+          <ServerUpdateVotifierForm
+            serverId={serverId}
+            data={votifier}
+            voteCooldownHours={server?.voteCooldownHours ?? 24}
+          />
         </CardContent>
       </Card>
     </>

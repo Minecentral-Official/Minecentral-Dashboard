@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 
-import { Check, Copy, UsersIcon } from 'lucide-react';
+import { Check, Copy, ExternalLinkIcon, VoteIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Tooltip,
   TooltipContent,
@@ -15,24 +15,40 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ServerImage } from '@/features/serverlist/components/ui/server-image';
+import { ServerVoteButton } from '@/features/serverlist/components/ui/server-vote-button';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
+import compactNumber from '@/lib/utils/compact-number';
 
 export function ServerCard({
+  id,
   title,
   slug,
   iconUrl,
   ip,
   port,
-}: Pick<T_DTOServer, 'title' | 'slug' | 'ip' | 'port' | 'iconUrl'>) {
+  description,
+  categories,
+  platforms,
+  votes,
+  votifier,
+  showVote = true,
+}: Pick<
+  T_DTOServer,
+  | 'id'
+  | 'title'
+  | 'slug'
+  | 'ip'
+  | 'port'
+  | 'iconUrl'
+  | 'description'
+  | 'categories'
+  | 'platforms'
+> & {
+  votes?: number;
+  votifier?: { enabled: boolean };
+  showVote?: boolean;
+}) {
   const [copied, setCopied] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false)
-  // const [serverData, setServerData] = useState({
-  //   title,
-  //   bannerUrl,
-  //   maxPlayers,
-  //   ip,
-  //   port,
-  // })
 
   const copyServerAddress = () => {
     navigator.clipboard.writeText(`${ip}:${port}`);
@@ -40,153 +56,80 @@ export function ServerCard({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // const handleSaveChanges = () => {
-  //   // Here you would typically save changes to your backend
-  //   console.log("Saving changes:", serverData)
-  //   setIsEditing(false)
-  // }
-
   return (
-    <Card className='mx-auto w-full max-w-md overflow-hidden'>
-      {/* Server Banner */}
-      <CardTitle></CardTitle>
-      <Link href={`/serverlist/${slug}`}>
-        <ServerImage title={title} url={iconUrl || '/placeholder.png'} />
-      </Link>
-
-      <CardContent className='p-4'>
-        <div className='flex flex-row'>
-          <h3 className='mb-2 mr-auto text-xl font-bold'>{title}</h3>
-          <Badge
-            variant='secondary'
-            className='my-auto flex items-center gap-1 py-1'
-          >
-            <UsersIcon size={14} />
-            <span>
-              {0}/{0}
-            </span>
-          </Badge>
-        </div>
-
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-2'>
-            <span className='text-sm font-medium text-accent-foreground/60'>
+    <Card className='w-full overflow-hidden rounded-md'>
+      <CardContent className='grid gap-4 p-4 md:grid-cols-[220px_1fr_auto] md:items-center'>
+        <Link href={`/serverlist/${slug}`} className='block'>
+          <ServerImage title={title} url={iconUrl || '/placeholder.png'} />
+        </Link>
+        <div className='min-w-0 space-y-2'>
+          <div className='flex flex-wrap items-center gap-2'>
+            <Link
+              href={`/serverlist/${slug}`}
+              className='text-lg font-semibold hover:text-primary'
+            >
+              {title}
+            </Link>
+            <Badge variant='secondary'>
+              <VoteIcon className='mr-1 h-3 w-3' />
+              {compactNumber(votes ?? 0)}
+            </Badge>
+          </div>
+          {description && (
+            <p className='line-clamp-2 text-sm text-muted-foreground'>
+              {description}
+            </p>
+          )}
+          <div className='flex flex-wrap gap-1'>
+            {[...(categories ?? []), ...(platforms ?? [])]
+              .slice(0, 8)
+              .map((tag) => (
+                <Badge key={tag} variant='outline' className='capitalize'>
+                  {tag}
+                </Badge>
+              ))}
+          </div>
+          <div className='flex items-center gap-2 text-sm font-medium text-accent-foreground/70'>
+            <span className='truncate'>
               {ip}
               {port && <>{`:${port}`}</>}
             </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    className='h-8 px-2'
+                    onClick={copyServerAddress}
+                  >
+                    {copied ?
+                      <Check size={16} />
+                    : <Copy size={16} />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{copied ? 'Copied!' : 'Copy IP address'}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  className='h-8 px-2'
-                  onClick={copyServerAddress}
-                >
-                  {copied ?
-                    <Check size={16} />
-                  : <Copy size={16} />}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{copied ? 'Copied!' : 'Copy IP address'}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        </div>
+        <div className='flex flex-row gap-2 md:flex-col'>
+          {showVote && (
+            <ServerVoteButton
+              serverId={id}
+              requiresUsername={votifier?.enabled === true}
+            />
+          )}
+          <Button variant='outline' size='sm' asChild>
+            <Link href={`/serverlist/${slug}`}>
+              <ExternalLinkIcon className='h-4 w-4' />
+              Details
+            </Link>
+          </Button>
         </div>
       </CardContent>
-
-      {/* {isAdmin && (
-        <CardFooter className='border-t border-gray-200 bg-gray-50 p-2'>
-          <Dialog open={isEditing} onOpenChange={setIsEditing}>
-            <DialogTrigger asChild>
-              <Button
-                variant='outline'
-                size='sm'
-                className='ml-auto flex items-center gap-1 border-gray-300'
-              >
-                <Edit size={14} />
-                <span>Edit Server</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className='sm:max-w-md'>
-              <DialogHeader>
-                <DialogTitle>Edit Server</DialogTitle>
-              </DialogHeader>
-              <div className='grid gap-4 py-4'>
-                <div className='grid gap-2'>
-                  <Label htmlFor='title'>Server Name</Label>
-                  <Input
-                    id='title'
-                    value={serverData.title}
-                    onChange={(e) =>
-                      setServerData({ ...serverData, title: e.target.value })
-                    }
-                  />
-                </div>
-                <div className='grid gap-2'>
-                  <Label htmlFor='banner'>Banner URL</Label>
-                  <Input
-                    id='banner'
-                    value={serverData.bannerUrl}
-                    onChange={(e) =>
-                      setServerData({
-                        ...serverData,
-                        bannerUrl: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className='grid grid-cols-2 gap-4'>
-                  <div className='grid gap-2'>
-                    <Label htmlFor='ip'>IP Address</Label>
-                    <Input
-                      id='ip'
-                      value={serverData.ip}
-                      onChange={(e) =>
-                        setServerData({ ...serverData, ip: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className='grid gap-2'>
-                    <Label htmlFor='port'>Port</Label>
-                    <Input
-                      id='port'
-                      type='number'
-                      value={serverData.port}
-                      onChange={(e) =>
-                        setServerData({
-                          ...serverData,
-                          port: Number.parseInt(e.target.value),
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className='grid gap-2'>
-                  <Label htmlFor='maxPlayers'>Max Players</Label>
-                  <Input
-                    id='maxPlayers'
-                    type='number'
-                    value={serverData.maxPlayers}
-                    onChange={(e) =>
-                      setServerData({
-                        ...serverData,
-                        maxPlayers: Number.parseInt(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className='flex justify-end'>
-                <Button onClick={handleSaveChanges}>Save Changes</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </CardFooter>
-      )} */}
     </Card>
   );
 }

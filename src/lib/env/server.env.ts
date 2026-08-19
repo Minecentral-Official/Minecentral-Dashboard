@@ -16,6 +16,7 @@ export const serverEnv = createEnv({
     HOST_PTERO_API_KEY: z.string(),
     HOST_PTERO_API_URL: z.string().url(),
     HOST_PTERO_SERVER_CREATE: z.string().transform((value) => value === 'true'),
+    SERVERLIST_MAX_SERVERS_PER_USER: z.coerce.number().int().positive().default(5),
     FRONTEND_URL: z.string().url(),
     GITHUB_ACCESS_TOKEN: z.string(),
     UPLOADTHING_TOKEN: z.string(),

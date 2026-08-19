@@ -13,11 +13,12 @@ export default async function serverUpdate(
   const updated = (
     await db
       .update(serverTable)
-      .set(values)
+      .set({ ...values, updatedAt: new Date() })
       .where(eq(serverTable.id, serverId))
       .returning()
   )[0];
   await revalidateTagInternal(`server-id-${serverId}`);
+  await revalidateTagInternal('server-list');
   // revalidateTag(`server-id-${serverId}`);
   return updated;
 }

@@ -4,13 +4,16 @@ import { parseWithZod } from '@conform-to/zod';
 import { redirect } from 'next/navigation';
 
 import serverCreate from '@/features/serverlist/mutations/create.server';
-import { serverGetByUserId } from '@/features/serverlist/queries/server-by-user-id.get';
+import serverAddressAvailable from '@/features/serverlist/queries/server-address-available.boolean';
+import { serverCountByUserId } from '@/features/serverlist/queries/server-count-by-user-id.get';
+import serverSlugAvailable from '@/features/serverlist/queries/server-slug-available.boolean';
 import { S_ServerCreate } from '@/features/serverlist/schemas/zod/s-server-create.zod';
 import {
   ACTIVITY,
   activityAddAction,
 } from '@/lib/activity/mutations/activity.add';
 import validateSession from '@/lib/auth/helpers/validate-session';
+import { serverEnv } from '@/lib/env/server.env';
 
 export default async function serverCreateAction(
   // prevState: unknown
@@ -27,10 +30,23 @@ export default async function serverCreateAction(
     return { success: false, message: 'Invalid form data!' };
   }
 
-  //Check if one already exists
-  const currentUsersServer = await serverGetByUserId(user.id);
-  if (currentUsersServer !== undefined)
-    return { success: false, message: 'You already own a Realm!' };
+  const userServerCount = await serverCountByUserId(user.id);
+  if (userServerCount >= serverEnv.SERVERLIST_MAX_SERVERS_PER_USER)
+    return {
+      success: false,
+      message: `You can create up to ${serverEnv.SERVERLIST_MAX_SERVERS_PER_USER} server listings.`,
+    };
+
+  if (!(await serverSlugAvailable(formParsed.value.slug)))
+    return { success: false, message: 'That URL is taken.' };
+
+  if (
+    !(await serverAddressAvailable(formParsed.value.ip, formParsed.value.port))
+  )
+    return {
+      success: false,
+      message: 'That server address is already listed.',
+    };
 
   const newServer = await serverCreate({
     ...formParsed.value,
@@ -40,6 +56,6 @@ export default async function serverCreateAction(
   await activityAddAction(user.id, ACTIVITY.SERVER_NEW, `${newServer.id}`);
 
   redirect(
-    `/dashboard/servers/${newServer.slug}?toast-success=true&toast-message=Server%20successfully%20created&toast-id=create-server`,
+    `/dashboard/servers/${newServer.slug}?toast-success=true&toast-message=Server%20listing%20created&toast-id=create-server`,
   );
 }

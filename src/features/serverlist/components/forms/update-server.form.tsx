@@ -15,8 +15,11 @@ import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
+import { TextareaConform } from '@/components/conform/textarea.conform';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Tooltip,
@@ -27,6 +30,8 @@ import {
 import serverDeleteBannerAction from '@/features/serverlist/actions/delete-server-banner.action';
 import serverUpdateGeneralAction from '@/features/serverlist/actions/update-server-general.action';
 import { ServerImage } from '@/features/serverlist/components/ui/server-image';
+import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
+import { C_ServerLoaders } from '@/features/serverlist/config/c-server-loaders.config';
 import { S_ServerUpdateGeneral } from '@/features/serverlist/schemas/zod/s-server-update-general.zod';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
 import { T_ServerListFileRouter } from '@/features/serverlist/uploadthing/file-routes.serverlist';
@@ -36,7 +41,25 @@ export default function ServerUpdateGeneralForm({
   iconUrl: oldBannerUrl,
   slug,
   title,
-}: Pick<T_DTOServer, 'id' | 'iconUrl' | 'slug' | 'title'>) {
+  ip,
+  port,
+  description,
+  categories,
+  platforms,
+  linkDiscord,
+}: Pick<
+  T_DTOServer,
+  | 'id'
+  | 'iconUrl'
+  | 'slug'
+  | 'title'
+  | 'ip'
+  | 'port'
+  | 'description'
+  | 'categories'
+  | 'platforms'
+  | 'linkDiscord'
+>) {
   const [actionState, action] = useActionState(
     serverUpdateGeneralAction,
     undefined,
@@ -116,6 +139,12 @@ export default function ServerUpdateGeneralForm({
     id: serverId,
     slug,
     title,
+    ip,
+    port,
+    description: description || '',
+    categories: categories || [],
+    platforms: platforms || [],
+    linkDiscord: linkDiscord || '',
     deletingIcon: false,
   };
 
@@ -218,6 +247,78 @@ export default function ServerUpdateGeneralForm({
           <span className='text-accent-foreground/75'>{`https://minecentral.net/serverlist/`}</span>
           {fields.slug.value}
         </p>
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.ip.id}>Server Address</Label>
+        <InputConform meta={fields.ip} type='text' />
+        {fields.ip.errors && <FieldError>{fields.ip.errors}</FieldError>}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.port.id}>Port</Label>
+        <Input
+          name={fields.port.name}
+          type='number'
+          min={1}
+          max={65535}
+          defaultValue={port}
+        />
+        {fields.port.errors && <FieldError>{fields.port.errors}</FieldError>}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.description.id}>Short Description</Label>
+        <TextareaConform meta={fields.description} rows={4} />
+        {fields.description.errors && (
+          <FieldError>{fields.description.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label>Categories</Label>
+        <div className='grid grid-cols-2 gap-2 md:grid-cols-3'>
+          {C_ServerCategories.map((category) => (
+            <label key={category} className='flex items-center gap-2 text-sm'>
+              <Checkbox
+                name={fields.categories.name}
+                value={category}
+                defaultChecked={categories?.includes(category)}
+              />
+              {category}
+            </label>
+          ))}
+        </div>
+        {fields.categories.errors && (
+          <FieldError>{fields.categories.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label>Platforms</Label>
+        <div className='grid grid-cols-2 gap-2 md:grid-cols-3'>
+          {C_ServerLoaders.map((platform) => (
+            <label key={platform} className='flex items-center gap-2 text-sm'>
+              <Checkbox
+                name={fields.platforms.name}
+                value={platform}
+                defaultChecked={platforms?.includes(platform)}
+              />
+              {platform}
+            </label>
+          ))}
+        </div>
+        {fields.platforms.errors && (
+          <FieldError>{fields.platforms.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.linkDiscord.id}>Discord URL</Label>
+        <InputConform meta={fields.linkDiscord} type='url' />
+        {fields.linkDiscord.errors && (
+          <FieldError>{fields.linkDiscord.errors}</FieldError>
+        )}
       </Field>
 
       <Button

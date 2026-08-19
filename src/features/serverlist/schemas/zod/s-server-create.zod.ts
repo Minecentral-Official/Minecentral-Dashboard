@@ -18,6 +18,6 @@ export const S_ServerCreate = z.object({
       message:
         'Invalid slug format. Slug must contain only lowercase letters, numbers, and hyphens.',
     }),
-  port: z.number().max(65535, 'Max of 5 numbers'),
-  ip: z.string(),
+  port: z.number().int().min(1).max(65535, 'Max of 5 numbers'),
+  ip: z.string().min(1, 'Server address is required'),
 });

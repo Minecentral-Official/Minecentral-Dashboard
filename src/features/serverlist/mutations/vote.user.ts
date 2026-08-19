@@ -1,29 +1,18 @@
 'use server';
 
-import { sql } from 'drizzle-orm';
 import { revalidateTag } from 'next/cache';
 
 import { db } from '@/lib/db';
 import { serverVotesTable } from '@/lib/db/schema';
 
 export default async function serverSaveUserVote(
-  serverId: string,
-  userId: string,
+  values: typeof serverVotesTable.$inferInsert,
 ) {
   const updated = (
-    await db
-      .insert(serverVotesTable)
-      .values({
-        serverId,
-        userId,
-      })
-      .onConflictDoUpdate({
-        target: serverVotesTable.serverId,
-        set: { voteTime: sql`(CURRENT_TIMESTAMP)` },
-      })
-      .returning()
+    await db.insert(serverVotesTable).values(values).returning()
   )[0];
 
-  revalidateTag(`server-id-${serverId}`);
+  revalidateTag('server-list');
+  revalidateTag(`server-id-${values.serverId}`);
   return updated;
 }

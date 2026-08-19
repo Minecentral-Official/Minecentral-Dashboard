@@ -28,10 +28,10 @@ export function ServerCreateDialog({
       </DialogTrigger>
       <DialogContent className='max-w-screen-sm'>
         <DialogHeader>
-          <DialogTitle>Create my Realm</DialogTitle>
+          <DialogTitle>Create server listing</DialogTitle>
           <DialogDescription className='flex flex-row items-center'>
             <AlertTriangleIcon className='mr-1 h-4 w-4' />
-            This will be your one and only realm you can create, use it wisely!
+            Start with the basics, then finish the checklist before publishing.
           </DialogDescription>
         </DialogHeader>
         <Separator />

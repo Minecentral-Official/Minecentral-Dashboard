@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, integer, pgTable, text } from 'drizzle-orm/pg-core';
 
-import { serverTable } from '@/lib/db/schema';
+import { serverTable } from '@/features/serverlist/schemas/server.table';
 
 export const serverVotifierTable = pgTable('serverVotifierTable', {
   serverId: text()
@@ -12,7 +12,7 @@ export const serverVotifierTable = pgTable('serverVotifierTable', {
   ip: text().notNull(),
   port: integer(),
   publicKey: text(),
-  enabled: boolean(),
+  enabled: boolean().notNull().default(false),
 });
 
 export const serverVotifierRelations = relations(

@@ -6,6 +6,8 @@ export default function DTOServer({
   ip,
   port,
   categories,
+  platforms,
+  status,
   description,
   languages,
   linkDiscord,
@@ -14,6 +16,7 @@ export default function DTOServer({
   createdAt,
   user,
   iconUrl,
+  voteCooldownHours,
 }: T_ServerDBData_Base) {
   return {
     id,
@@ -21,6 +24,8 @@ export default function DTOServer({
     ip,
     port,
     categories,
+    platforms,
+    status,
     description,
     languages,
     linkDiscord,
@@ -28,6 +33,7 @@ export default function DTOServer({
     updatedAt,
     createdAt,
     iconUrl,
+    voteCooldownHours,
     author: {
       image: user.image,
       name: user.name,

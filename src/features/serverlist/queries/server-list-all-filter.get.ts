@@ -1,156 +1,114 @@
-// 'use server';
+'use server';
 
-// import {
-//   and,
-//   arrayContains,
-//   desc,
-//   eq,
-//   ilike,
-//   inArray,
-//   or,
-//   sql,
-// } from 'drizzle-orm';
+import {
+  and,
+  arrayOverlaps,
+  count,
+  desc,
+  eq,
+  ilike,
+  or,
+  sql,
+} from 'drizzle-orm';
 
-// import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
-// import { db } from '@/lib/db';
-// import {
-//   likedResourceTable,
-//   resourceReleaseTable,
-//   resourceTable,
-//   userTable,
-// } from '@/lib/db/schema';
+import DTOServer_WithVotifier from '@/features/serverlist/dto/server-with-votifier.dto';
+import { T_DTOServer_Votes } from '@/features/serverlist/types/t-dto-server.type';
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
+import { db } from '@/lib/db';
+import { serverTable, serverVotesTable } from '@/lib/db/schema';
 
-// export default async function serverlistListAllFiltered({
-//   query,
-//   limit,
-//   page,
-//   categories,
-//   versions,
-//   type,
-//   loaders,
-// }: T_ResourceFilterRequest): Promise<T_ResourcesResponse> {
-//   'use cache';
-//   cacheLife('minutes');
-//   cacheTag(
-//     `filter-${query}-${limit}-${page}-${categories?.toString()}-${versions?.toString()}`,
-//   );
-//   // Base conditions for the resource table
-//   const resourceConditions = [
-//     eq(resourceTable.status, 'accepted'),
-//     eq(resourceTable.type, type),
-//   ];
+import type { T_ServerListFilter } from '@/features/serverlist/schemas/zod/s-server-list-filter.zod';
+import type { T_ServerCategory } from '@/features/serverlist/types/t-server-categories.type';
+import type { T_ServerLoader } from '@/features/serverlist/types/t-server-loaders.type';
 
-//   // Text search conditions
-//   const textConditions = [];
+export type T_ServerListResponse = {
+  servers: (T_DTOServer_Votes & {
+    votifier?: { enabled: boolean; serverId: string };
+  })[];
+  totalCount: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+};
 
-//   // Query based Filters
-//   if (query) {
-//     // Search Filter on Title, Description or SubTitle
-//     textConditions.push(
-//       or(
-//         ilike(resourceTable.title, `%${query}%`),
-//         ilike(resourceTable.description, `%${query}%`),
-//         ilike(resourceTable.subtitle, `%${query}%`),
-//       ),
-//     );
+export default async function serverListAllFiltered({
+  query,
+  categories,
+  platforms,
+  sort,
+  page,
+  limit,
+}: T_ServerListFilter): Promise<T_ServerListResponse> {
+  'use cache';
+  cacheLife('minutes');
+  cacheTag('server-list');
+  cacheTag(
+    `server-list-${query ?? ''}-${categories?.join(',') ?? ''}-${platforms?.join(',') ?? ''}-${sort}-${page}-${limit}`,
+  );
 
-//     // Author Filter
-//     let authorIds: string[] = [];
-//     // Find user ID(s) that match the given name
-//     const matchedUsers = await db
-//       .select({ id: userTable.id })
-//       .from(userTable)
-//       .where(ilike(userTable.name, `%${query}%`));
-//     authorIds = matchedUsers.map((user) => user.id.toString());
-//     // Add condition to check if author matches either a name or an ID
-//     textConditions.push(inArray(resourceTable.userId, [...authorIds]));
-//   }
+  const conditions = [
+    eq(serverTable.status, 'published'),
+    sql`${serverTable.description} IS NOT NULL AND length(trim(${serverTable.description})) > 0`,
+    sql`${serverTable.iconUrl} IS NOT NULL`,
+    sql`coalesce(array_length(${serverTable.categories}, 1), 0) > 0`,
+    sql`coalesce(array_length(${serverTable.platforms}, 1), 0) > 0`,
+  ];
 
-//   // Category Filter
-//   if (categories && categories.length > 0)
-//     resourceConditions.push(
-//       arrayContains(resourceTable.categories, categories),
-//     );
+  if (query) {
+    conditions.push(
+      or(
+        ilike(serverTable.title, `%${query}%`),
+        ilike(serverTable.description, `%${query}%`),
+        ilike(serverTable.ip, `%${query}%`),
+      )!,
+    );
+  }
 
-//   // Combine resource conditions with text conditions
-//   const resourceWhereClause =
-//     textConditions.length > 0 ?
-//       and(or(...textConditions), and(...resourceConditions))
-//     : and(...resourceConditions);
+  if (categories && categories.length > 0) {
+    conditions.push(
+      arrayOverlaps(serverTable.categories, categories as T_ServerCategory[]),
+    );
+  }
 
-//   // Release conditions for filtering by version and loaders
-//   const releaseConditions = [];
+  if (platforms && platforms.length > 0) {
+    conditions.push(
+      arrayOverlaps(serverTable.platforms, platforms as T_ServerLoader[]),
+    );
+  }
 
-//   // Versions Filter
-//   if (versions && versions.length > 0) {
-//     releaseConditions.push(
-//       arrayContains(resourceReleaseTable.compatibleVersions, versions),
-//     );
-//   }
+  const where = and(...conditions);
+  const votesSql =
+    sql<number>`(SELECT count(*) from ${serverVotesTable} WHERE "serverId" = ${serverTable.id})`;
 
-//   // Loaders Filter
-//   if (loaders && loaders.length > 0) {
-//     releaseConditions.push(
-//       arrayContains(resourceReleaseTable.loaders, loaders),
-//     );
-//   }
-//   // Query/Filter
-//   const [resources, total] = await Promise.all([
-//     db.query.resourceTable.findMany({
-//       with: {
-//         user: true,
-//         releases: {
-//           where:
-//             releaseConditions.length > 0 ?
-//               and(...releaseConditions)
-//             : undefined,
-//           orderBy: (releases, { desc }) => [desc(releases.createdAt)],
-//           limit: 1,
-//         },
-//       },
-//       where: resourceWhereClause,
-//       orderBy: desc(resourceTable.updatedAt),
-//       limit,
-//       offset: Math.max(0, page - 1) * limit,
-//       extras: {
-//         likes:
-//           sql<number>`(SELECT count(*) from ${likedResourceTable} WHERE "resource_id" = ${resourceTable.id})`.as(
-//             'likes',
-//           ),
-//         downloads:
-//           sql<number>`(SELECT count(*) FROM ${resourceReleaseTable} WHERE "pluginId" = ${resourceTable.id})`.as(
-//             'downloads',
-//           ),
-//       },
-//     }),
-//     // For total count, we need to consider resources that have at least one matching release
-//     db
-//       .select({ id: resourceTable.id })
-//       .from(resourceTable)
-//       .leftJoin(
-//         resourceReleaseTable,
-//         eq(resourceTable.id, resourceReleaseTable.pluginId),
-//       )
-//       .where(
-//         and(
-//           resourceWhereClause,
-//           releaseConditions.length > 0 ? and(...releaseConditions) : undefined,
-//         ),
-//       )
-//       .groupBy(resourceTable.id),
-//   ]);
+  const orderBy =
+    sort === 'top' ? [desc(votesSql), desc(serverTable.updatedAt)]
+    : sort === 'newest' ? [desc(serverTable.createdAt)]
+    : [desc(serverTable.updatedAt)];
 
-//   // Filter out resources that don't have any releases matching the criteria
-//   const filteredResources = resources.filter(
-//     (resource) => resource.releases && resource.releases.length > 0,
-//   );
+  const [servers, total] = await Promise.all([
+    db.query.serverTable.findMany({
+      where,
+      with: {
+        user: true,
+        votifier: true,
+      },
+      extras: {
+        votes: votesSql.as('votes'),
+      },
+      orderBy,
+      limit,
+      offset: Math.max(0, page - 1) * limit,
+    }),
+    db.select({ count: count() }).from(serverTable).where(where),
+  ]);
 
-//   const totalCount = total.length;
-//   const totalPages = Math.ceil(totalCount / limit);
+  const totalCount = total[0]?.count ?? 0;
 
-//   const result = {
-//     resources: filteredResources.map((resource) => DTOResource(resource)),
-//     totalPages,
-//   };
-//   return result;
-// }
+  return {
+    servers: servers.map(DTOServer_WithVotifier),
+    totalCount,
+    totalPages: Math.ceil(totalCount / limit),
+    page,
+    limit,
+  };
+}

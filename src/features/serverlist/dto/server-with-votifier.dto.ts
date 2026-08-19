@@ -14,6 +14,7 @@ export default function DTOServer_WithVotifier({
       votifier ?
         {
           enabled: votifier.enabled,
+          serverId: votifier.serverId,
         }
       : undefined,
   };

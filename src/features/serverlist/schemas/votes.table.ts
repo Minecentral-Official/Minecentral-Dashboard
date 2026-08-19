@@ -1,23 +1,39 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { serverTable } from '@/features/serverlist/schemas/server.table';
-import { resourceTable, userTable } from '@/lib/db/schema';
+import { userTable } from '@/lib/db/schema';
+import createUUID from '@/lib/utils/create-uuid';
+
+export const C_ServerVoteDeliveryStatus = [
+  'not_configured',
+  'sent',
+  'failed',
+] as const;
 
 export const serverVotesTable = pgTable(
   'serverVote',
   {
-    userId: text()
-      .notNull()
-      .references(() => userTable.id, { onDelete: 'cascade' }),
+    id: text()
+      .primaryKey()
+      .$defaultFn(() => createUUID()),
     serverId: text()
       .notNull()
-      .references(() => resourceTable.id, { onDelete: 'cascade' }),
-    voteTime: timestamp().notNull().defaultNow(),
+      .references(() => serverTable.id, { onDelete: 'cascade' }),
+    anonymousVoterId: text().notNull(),
+    ipHash: text(),
+    userAgentHash: text(),
+    userId: text().references(() => userTable.id, { onDelete: 'set null' }),
+    minecraftUsername: text(),
+    votifierEnabledAtVote: boolean().notNull().default(false),
+    votifierDeliveryStatus: text('votifierDeliveryStatus', {
+      enum: C_ServerVoteDeliveryStatus,
+    })
+      .notNull()
+      .default('not_configured'),
+    votifierDeliveryError: text(),
+    voteTime: timestamp({ withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.serverId] }),
-  }),
 );
 
 export const votesServerRelations = relations(serverVotesTable, ({ one }) => ({

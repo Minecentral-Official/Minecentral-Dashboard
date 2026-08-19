@@ -1,84 +1,142 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import crypto from 'crypto';
+
+import { and, desc, eq, gte, or } from 'drizzle-orm';
+import { cookies, headers } from 'next/headers';
 
 import serverSaveUserVote from '@/features/serverlist/mutations/vote.user';
-import { serverUserHasVoted } from '@/features/serverlist/queries/user-has-voted.boolean';
+import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
 import { serverGetVotifierByServerId } from '@/features/serverlist/queries/votifier-by-server-id';
 import { serverlist_sendVotifierVote } from '@/features/serverlist/votifier/send-vote';
-import validateSession from '@/lib/auth/helpers/validate-session';
+import getSession from '@/lib/auth/helpers/get-session';
+import { db } from '@/lib/db';
+import { serverVotesTable } from '@/lib/db/schema';
+
+const VOTER_COOKIE = 'minecentral_server_voter';
+
+function hashValue(value: string) {
+  return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function validMinecraftUsername(username: string) {
+  return /^[A-Za-z0-9_]{3,16}$/.test(username);
+}
 
 export default async function serverVoteForServer(
   serverId: string,
-  mc_username: string,
+  mcUsername?: string,
 ) {
-  //Validate user
-  const { user } = await validateSession();
-  if (!user)
-    return { success: false, message: 'Please sign-in to register your vote!' };
-  // Validate username
-  if (!mc_username || mc_username.trim().length < 3) {
-    return {
-      success: false,
-      message:
-        'Please enter a valid Minecraft username (at least 3 characters)',
-    };
-  }
+  const server = await serverGetById(serverId);
+  if (!server || server.status !== 'published')
+    return { success: false, message: 'Server listing not found.' };
 
-  // Check if the user has voted recently
-  const hasVoted = await serverUserHasVoted(serverId, user.id);
-
-  if (hasVoted) {
-    return {
-      success: false,
-      message: 'You can only vote once every 24 hours for each server.',
-    };
-  }
-
-  // Get server details to check for Votifier
   const votifier = await serverGetVotifierByServerId(serverId);
-  if (!votifier || !votifier.enabled) {
+  const rewardDeliveryEnabled = votifier?.enabled === true;
+  const minecraftUsername = mcUsername?.trim();
+
+  if (rewardDeliveryEnabled) {
+    if (!minecraftUsername)
+      return { success: false, message: 'Minecraft username is required.' };
+    if (!validMinecraftUsername(minecraftUsername))
+      return { success: false, message: 'Enter a valid Minecraft username.' };
+  }
+
+  const cookieStore = await cookies();
+  let anonymousVoterId = cookieStore.get(VOTER_COOKIE)?.value;
+  if (!anonymousVoterId) {
+    anonymousVoterId = crypto.randomUUID();
+    cookieStore.set(VOTER_COOKIE, anonymousVoterId, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 365,
+      path: '/',
+    });
+  }
+
+  const headerStore = await headers();
+  const ip =
+    headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    headerStore.get('x-real-ip') ||
+    'unknown';
+  const userAgent = headerStore.get('user-agent') || 'unknown';
+  const ipHash = hashValue(ip);
+  const userAgentHash = hashValue(userAgent);
+  const session = await getSession();
+
+  const cooldownHours = server.voteCooldownHours || 24;
+  const cooldownStart = new Date(Date.now() - cooldownHours * 60 * 60 * 1000);
+  const latestVote = await db.query.serverVotesTable.findFirst({
+    where: and(
+      eq(serverVotesTable.serverId, serverId),
+      gte(serverVotesTable.voteTime, cooldownStart),
+      or(
+        eq(serverVotesTable.anonymousVoterId, anonymousVoterId),
+        and(
+          eq(serverVotesTable.ipHash, ipHash),
+          eq(serverVotesTable.userAgentHash, userAgentHash),
+        ),
+      ),
+    ),
+    orderBy: desc(serverVotesTable.voteTime),
+  });
+
+  if (latestVote) {
+    const nextAllowedAt = new Date(
+      latestVote.voteTime.getTime() + cooldownHours * 60 * 60 * 1000,
+    );
     return {
       success: false,
-      message: 'Server does not have votifier enabled!',
+      message: `You can vote again at ${nextAllowedAt.toLocaleString()}.`,
+      nextAllowedAt,
     };
   }
 
-  // Save the vote in our database
-  await serverSaveUserVote(serverId, user.id);
-  // await saveVote(serverId, currentUserId!, username);
+  const vote = await serverSaveUserVote({
+    serverId,
+    anonymousVoterId,
+    ipHash,
+    userAgentHash,
+    userId: session?.user.id,
+    minecraftUsername: rewardDeliveryEnabled ? minecraftUsername : undefined,
+    votifierEnabledAtVote: rewardDeliveryEnabled,
+    votifierDeliveryStatus:
+      rewardDeliveryEnabled ? 'failed' : 'not_configured',
+  });
 
-  // If the server has Votifier enabled, send the vote to the Minecraft server
-
-  try {
-    const votifierResult = await serverlist_sendVotifierVote(
+  if (
+    rewardDeliveryEnabled &&
+    votifier?.ip &&
+    votifier.port &&
+    votifier.publicKey &&
+    minecraftUsername
+  ) {
+    const result = await serverlist_sendVotifierVote(
       {
         ip: votifier.ip,
-        port: votifier.port!,
-        publicKey: votifier.publicKey!,
+        port: votifier.port,
+        publicKey: votifier.publicKey,
       },
       {
         serviceName: 'Minecentral',
-        username: mc_username,
-        address: 'minecentral.net', // IP address of voter (optional, can be your website's IP)
+        username: minecraftUsername,
+        address: ip,
         timestamp: Math.floor(Date.now() / 1000),
       },
     );
 
-    if (!votifierResult.success) {
-      console.error('Votifier error:', votifierResult.message);
-      // We still count the vote on our site even if Votifier fails
-    }
-  } catch (error) {
-    console.error('Error sending Votifier vote:', error);
-    // We still count the vote on our site even if Votifier fails
+    await db
+      .update(serverVotesTable)
+      .set({
+        votifierDeliveryStatus: result.success ? 'sent' : 'failed',
+        votifierDeliveryError: result.success ? null : result.message,
+      })
+      .where(eq(serverVotesTable.id, vote.id));
   }
-
-  // Revalidate the page to show updated vote count
-  revalidateTag(`server-id-${serverId}`);
 
   return {
     success: true,
-    message: 'Vote successful!',
+    message: 'Vote counted.',
   };
 }

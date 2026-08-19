@@ -71,16 +71,18 @@ export default function ServerCreateForm() {
       </Field>
 
       <Field>
-        <Label htmlFor={fields.ip.id}>Summary</Label>
+        <Label htmlFor={fields.ip.id}>Server Address</Label>
         <p className='text-accent-foreground'>
-          Short sentence describing your server.
+          The IP or hostname players use to connect.
         </p>
         <InputConform meta={fields.ip} type='text' placeholder='192.168.0.1' />
         <Input
+          name={fields.port.name}
           type='number'
           placeholder='25565'
           min={0}
           max={65535}
+          defaultValue={fields.port.initialValue}
           onChange={(e) => portHandler.change(e.currentTarget.value)}
         />
 
@@ -88,7 +90,7 @@ export default function ServerCreateForm() {
         {fields.port.errors && <FieldError>{fields.port.errors}</FieldError>}
       </Field>
 
-      <Button>Create Realm</Button>
+      <Button>Create listing</Button>
     </form>
   );
 }
