@@ -2,18 +2,6 @@
   "cSpell.words": ["Minecentral", "Ryzen", "Shockbyte"],
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "folder-path-color.folders": [
-    {
-      "path": "src/app/(authorized)/dashboard/host",
-      "symbol": "H",
-      "tooltip": "Host files",
-      "color": "custom1"
-    },
-    {
-      "path": "src/features/host",
-      "symbol": "H",
-      "tooltip": "Host files",
-      "color": "custom1"
-    },
     { "path": "packages/common", "symbol": "T", "tooltip": "Common" }
   ],
   "workbench.colorCustomizations": {
