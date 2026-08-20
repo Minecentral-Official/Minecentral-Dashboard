@@ -47,7 +47,7 @@ export default async function serverUpdateGeneralAction(
     }
   }
 
-  const { deletingIcon, ...data } = parsedForm.value;
+  const { deletingIcon, id: _serverIdField, ...data } = parsedForm.value;
 
   if (!(await serverAddressAvailable(data.ip, data.port, serverId)))
     return {
@@ -67,7 +67,14 @@ export default async function serverUpdateGeneralAction(
   };
 
   const updatedServer = await serverUpdate(serverId, {
-    ...data,
+    title: data.title,
+    slug: data.slug,
+    ip: data.ip,
+    port: data.port,
+    description: data.description || null,
+    categories: data.categories ?? [],
+    platforms: data.platforms ?? [],
+    linkDiscord: data.linkDiscord || null,
     iconUrl: deletingIcon ? null : undefined,
     status:
       server?.status === 'published' && !serverIsPublicReady(nextData) ?

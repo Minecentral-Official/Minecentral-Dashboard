@@ -16,7 +16,6 @@ import { toast } from 'sonner';
 import { Field, FieldError } from '@/components/conform/field.conform';
 import { InputConform } from '@/components/conform/input.conform';
 import { TextareaConform } from '@/components/conform/textarea.conform';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import FileUploadButton from '@/components/ui/custom/file-upload-button';
 import { Input } from '@/components/ui/input';
@@ -280,7 +279,9 @@ export default function ServerUpdateGeneralForm({
         <div className='grid grid-cols-2 gap-2 md:grid-cols-3'>
           {C_ServerCategories.map((category) => (
             <label key={category} className='flex items-center gap-2 text-sm'>
-              <Checkbox
+              <input
+                className='h-4 w-4 accent-primary'
+                type='checkbox'
                 name={fields.categories.name}
                 value={category}
                 defaultChecked={categories?.includes(category)}
@@ -299,7 +300,9 @@ export default function ServerUpdateGeneralForm({
         <div className='grid grid-cols-2 gap-2 md:grid-cols-3'>
           {C_ServerLoaders.map((platform) => (
             <label key={platform} className='flex items-center gap-2 text-sm'>
-              <Checkbox
+              <input
+                className='h-4 w-4 accent-primary'
+                type='checkbox'
                 name={fields.platforms.name}
                 value={platform}
                 defaultChecked={platforms?.includes(platform)}
