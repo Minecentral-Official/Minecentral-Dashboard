@@ -12,6 +12,7 @@ import { serverlist_sendVotifierVote } from '@/features/serverlist/votifier/send
 import getSession from '@/lib/auth/helpers/get-session';
 import { db } from '@/lib/db';
 import { serverVotesTable } from '@/lib/db/schema';
+import { serverEnv } from '@/lib/env/server.env';
 
 const VOTER_COOKIE = 'minecentral_server_voter';
 
@@ -49,7 +50,7 @@ export default async function serverVoteForServer(
     cookieStore.set(VOTER_COOKIE, anonymousVoterId, {
       httpOnly: true,
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      secure: serverEnv.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 365,
       path: '/',
     });
