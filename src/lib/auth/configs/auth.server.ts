@@ -32,6 +32,6 @@ export const auth = betterAuth({
       clientSecret: serverEnv.GITHUB_CLIENT_SECRET,
     },
   },
-  trustedOrigins: ['https://minecentral.net'],
+  trustedOrigins: ['https://minecentral.net', 'https://www.minecentral.net'],
   plugins: [admin()],
 });
