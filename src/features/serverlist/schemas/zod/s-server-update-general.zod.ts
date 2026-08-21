@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
+import { C_ServerAccessTypes } from '@/features/serverlist/config/c-server-access-type.config';
 import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
+import { C_ServerEditions } from '@/features/serverlist/config/c-server-editions.config';
 import { C_ServerLoaders } from '@/features/serverlist/config/c-server-loaders.config';
 import { isSlug } from '@/lib/utils/slugify';
 
@@ -10,6 +12,18 @@ const optionalUrl = z
   .or(z.literal(''))
   .optional()
   .transform((val) => (val ? val : undefined));
+
+const commaSeparatedList = z
+  .string()
+  .optional()
+  .transform((value) =>
+    value ?
+      value
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : undefined,
+  );
 
 export const S_ServerUpdateGeneral = z.object({
   id: z.string(),
@@ -36,6 +50,23 @@ export const S_ServerUpdateGeneral = z.object({
     .optional(),
   categories: z.array(z.enum(C_ServerCategories)).optional(),
   platforms: z.array(z.enum(C_ServerLoaders)).optional(),
+  versions: commaSeparatedList,
+  editions: z.array(z.enum(C_ServerEditions)).optional(),
+  region: z
+    .string()
+    .max(80, 'Keep the region under 80 characters')
+    .or(z.literal(''))
+    .optional()
+    .transform((val) => (val ? val : undefined)),
+  accessType: z
+    .enum(C_ServerAccessTypes)
+    .or(z.literal(''))
+    .optional()
+    .transform((val) => (val ? val : undefined)),
   linkDiscord: optionalUrl,
+  websiteUrl: optionalUrl,
+  storeUrl: optionalUrl,
+  mapUrl: optionalUrl,
+  modpackUrl: optionalUrl,
   deletingIcon: z.string().transform((val) => val === 'true'),
 });

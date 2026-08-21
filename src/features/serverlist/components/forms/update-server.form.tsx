@@ -30,7 +30,9 @@ import {
 import serverDeleteBannerAction from '@/features/serverlist/actions/delete-server-banner.action';
 import serverUpdateGeneralAction from '@/features/serverlist/actions/update-server-general.action';
 import { ServerImage } from '@/features/serverlist/components/ui/server-image';
+import { C_ServerAccessTypes } from '@/features/serverlist/config/c-server-access-type.config';
 import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
+import { C_ServerEditions } from '@/features/serverlist/config/c-server-editions.config';
 import { C_ServerLoaders } from '@/features/serverlist/config/c-server-loaders.config';
 import { S_ServerUpdateGeneral } from '@/features/serverlist/schemas/zod/s-server-update-general.zod';
 import { T_DTOServer } from '@/features/serverlist/types/t-dto-server.type';
@@ -47,6 +49,14 @@ export default function ServerUpdateGeneralForm({
   categories,
   platforms,
   linkDiscord,
+  versions,
+  editions,
+  region,
+  accessType,
+  websiteUrl,
+  storeUrl,
+  mapUrl,
+  modpackUrl,
 }: Pick<
   T_DTOServer,
   | 'id'
@@ -59,6 +69,14 @@ export default function ServerUpdateGeneralForm({
   | 'categories'
   | 'platforms'
   | 'linkDiscord'
+  | 'versions'
+  | 'editions'
+  | 'region'
+  | 'accessType'
+  | 'websiteUrl'
+  | 'storeUrl'
+  | 'mapUrl'
+  | 'modpackUrl'
 >) {
   const [actionState, action] = useActionState(
     serverUpdateGeneralAction,
@@ -149,6 +167,14 @@ export default function ServerUpdateGeneralForm({
     categories: categories || [],
     platforms: platforms || [],
     linkDiscord: linkDiscord || '',
+    versions: versions?.join(', ') || '',
+    editions: editions || [],
+    region: region || '',
+    accessType: accessType || '',
+    websiteUrl: websiteUrl || '',
+    storeUrl: storeUrl || '',
+    mapUrl: mapUrl || '',
+    modpackUrl: modpackUrl || '',
     deletingIcon: false,
   };
 
@@ -322,10 +348,111 @@ export default function ServerUpdateGeneralForm({
       </Field>
 
       <Field>
+        <Label htmlFor={fields.versions.id}>Supported Versions</Label>
+        <InputConform
+          meta={fields.versions}
+          type='text'
+          placeholder='1.20.4, 1.21, 1.21.1'
+        />
+        {fields.versions.errors && (
+          <FieldError>{fields.versions.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label>Editions</Label>
+        <div className='grid grid-cols-2 gap-2'>
+          {C_ServerEditions.map((edition) => (
+            <label key={edition} className='flex items-center gap-2 text-sm'>
+              <input
+                className='h-4 w-4 accent-primary'
+                type='checkbox'
+                name={fields.editions.name}
+                value={edition}
+                defaultChecked={editions?.includes(edition)}
+              />
+              {edition === 'java' ? 'Java' : 'Bedrock'}
+            </label>
+          ))}
+        </div>
+        {fields.editions.errors && (
+          <FieldError>{fields.editions.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.region.id}>Region</Label>
+        <InputConform
+          meta={fields.region}
+          type='text'
+          placeholder='US East, Europe, Oceania'
+        />
+        {fields.region.errors && (
+          <FieldError>{fields.region.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.accessType.id}>Access</Label>
+        <select
+          id={fields.accessType.id}
+          name={fields.accessType.name}
+          defaultValue={accessType || ''}
+          className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        >
+          <option value=''>Not specified</option>
+          {C_ServerAccessTypes.map((type) => (
+            <option key={type} value={type}>
+              {type === 'public' ?
+                'Public'
+              : type === 'whitelist' ?
+                'Whitelist'
+              : 'Application'}
+            </option>
+          ))}
+        </select>
+        {fields.accessType.errors && (
+          <FieldError>{fields.accessType.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
         <Label htmlFor={fields.linkDiscord.id}>Discord URL</Label>
         <InputConform meta={fields.linkDiscord} type='url' />
         {fields.linkDiscord.errors && (
           <FieldError>{fields.linkDiscord.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.websiteUrl.id}>Website URL</Label>
+        <InputConform meta={fields.websiteUrl} type='url' />
+        {fields.websiteUrl.errors && (
+          <FieldError>{fields.websiteUrl.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.storeUrl.id}>Store URL</Label>
+        <InputConform meta={fields.storeUrl} type='url' />
+        {fields.storeUrl.errors && (
+          <FieldError>{fields.storeUrl.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.mapUrl.id}>Map URL</Label>
+        <InputConform meta={fields.mapUrl} type='url' />
+        {fields.mapUrl.errors && (
+          <FieldError>{fields.mapUrl.errors}</FieldError>
+        )}
+      </Field>
+
+      <Field>
+        <Label htmlFor={fields.modpackUrl.id}>Modpack URL</Label>
+        <InputConform meta={fields.modpackUrl} type='url' />
+        {fields.modpackUrl.errors && (
+          <FieldError>{fields.modpackUrl.errors}</FieldError>
         )}
       </Field>
 

@@ -28,7 +28,10 @@ export default async function serverUpdateGeneralAction(
   const { id: serverId, slug } = parsedForm.value;
 
   if (!(await userCanEditServer(serverId)))
-    return { success: false, message: 'You are not allowed to edit this listing.' };
+    return {
+      success: false,
+      message: 'You are not allowed to edit this listing.',
+    };
 
   const server = await serverGetById(serverId);
 
@@ -71,6 +74,14 @@ export default async function serverUpdateGeneralAction(
     categories: data.categories ?? [],
     platforms: data.platforms ?? [],
     linkDiscord: data.linkDiscord || null,
+    versions: data.versions ?? [],
+    editions: data.editions ?? [],
+    region: data.region || null,
+    accessType: data.accessType || null,
+    websiteUrl: data.websiteUrl || null,
+    storeUrl: data.storeUrl || null,
+    mapUrl: data.mapUrl || null,
+    modpackUrl: data.modpackUrl || null,
     iconUrl: deletingIcon ? null : undefined,
     status:
       server?.status === 'published' && !serverIsPublicReady(nextData) ?

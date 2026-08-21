@@ -7,7 +7,9 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
+import { C_ServerAccessTypes } from '@/features/serverlist/config/c-server-access-type.config';
 import { C_ServerCategories } from '@/features/serverlist/config/c-server-categories.config';
+import { C_ServerEditions } from '@/features/serverlist/config/c-server-editions.config';
 import { C_ServerLoaders } from '@/features/serverlist/config/c-server-loaders.config';
 import { serverVotesTable } from '@/features/serverlist/schemas/votes.table';
 import { serverVotifierTable } from '@/features/serverlist/schemas/votifier-data.table';
@@ -38,6 +40,14 @@ export const serverTable = pgTable(
     languages: text().array(),
     // Optional
     linkDiscord: text(),
+    versions: text().array(),
+    editions: text('editions', { enum: C_ServerEditions }).array(),
+    region: text(),
+    accessType: text('accessType', { enum: C_ServerAccessTypes }),
+    websiteUrl: text(),
+    storeUrl: text(),
+    mapUrl: text(),
+    modpackUrl: text(),
     voteCooldownHours: integer().notNull().default(24),
     // Stats
     updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),

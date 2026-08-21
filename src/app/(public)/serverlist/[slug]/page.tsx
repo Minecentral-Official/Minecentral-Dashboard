@@ -1,5 +1,5 @@
-import { notFound } from 'next/navigation';
 import { CopyIcon, VoteIcon } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 import CopyToClipboard from '@/components/etc/copy-to-clipboard';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,14 @@ export default async function Page({ params }: PageProps) {
   const server = await serverGetBySlug(slug, true);
 
   if (!server) notFound();
+
+  const serverLinks = [
+    { label: 'Discord', url: server.linkDiscord },
+    { label: 'Website', url: server.websiteUrl },
+    { label: 'Store', url: server.storeUrl },
+    { label: 'Map', url: server.mapUrl },
+    { label: 'Modpack', url: server.modpackUrl },
+  ].filter((link): link is { label: string; url: string } => Boolean(link.url));
 
   return (
     <main className='mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8'>
@@ -52,7 +60,10 @@ export default async function Page({ params }: PageProps) {
           <code className='rounded-md bg-secondary px-3 py-2 text-sm'>
             {server.ip}:{server.port}
           </code>
-          <CopyToClipboard clipboardText={`${server.ip}:${server.port}`} asChild>
+          <CopyToClipboard
+            clipboardText={`${server.ip}:${server.port}`}
+            asChild
+          >
             <Button variant='outline'>
               <CopyIcon className='h-4 w-4' />
               Copy address
@@ -86,21 +97,66 @@ export default async function Page({ params }: PageProps) {
               ))}
             </div>
           </div>
+          {server.versions && server.versions.length > 0 && (
+            <div>
+              <h2 className='text-sm font-semibold'>Versions</h2>
+              <div className='mt-2 flex flex-wrap gap-2'>
+                {server.versions.map((version) => (
+                  <Badge key={version} variant='outline'>
+                    {version}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {server.editions && server.editions.length > 0 && (
+            <div>
+              <h2 className='text-sm font-semibold'>Editions</h2>
+              <div className='mt-2 flex flex-wrap gap-2'>
+                {server.editions.map((edition) => (
+                  <Badge key={edition} variant='outline'>
+                    {edition === 'java' ? 'Java' : 'Bedrock'}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {server.region && (
+            <div>
+              <h2 className='text-sm font-semibold'>Region</h2>
+              <p className='mt-2 text-sm text-muted-foreground'>
+                {server.region}
+              </p>
+            </div>
+          )}
+          {server.accessType && (
+            <div>
+              <h2 className='text-sm font-semibold'>Access</h2>
+              <p className='mt-2 text-sm capitalize text-muted-foreground'>
+                {server.accessType}
+              </p>
+            </div>
+          )}
           <div>
             <h2 className='text-sm font-semibold'>Owner</h2>
             <p className='mt-2 text-sm text-muted-foreground'>
               {server.author.name}
             </p>
           </div>
-          {server.linkDiscord && (
+          {serverLinks.length > 0 && (
             <div>
-              <h2 className='text-sm font-semibold'>Discord</h2>
-              <a
-                href={server.linkDiscord}
-                className='mt-2 block text-sm text-primary hover:underline'
-              >
-                Join Discord
-              </a>
+              <h2 className='text-sm font-semibold'>Links</h2>
+              <div className='mt-2 flex flex-wrap gap-3'>
+                {serverLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    className='text-sm text-primary hover:underline'
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             </div>
           )}
         </CardContent>
