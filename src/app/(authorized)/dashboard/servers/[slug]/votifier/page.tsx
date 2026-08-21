@@ -1,3 +1,5 @@
+import { RadioTowerIcon } from 'lucide-react';
+
 import {
   Card,
   CardContent,
@@ -25,10 +27,16 @@ export default async function VotifierPage({ params }: PageProps) {
 
   return (
     <>
-      <Card>
+      <Card className='rounded-md'>
         <CardHeader>
-          <CardTitle>Votifier Information</CardTitle>
-          <CardDescription>Edit your realm information here.</CardDescription>
+          <CardTitle className='flex items-center gap-2'>
+            <RadioTowerIcon className='h-5 w-5 text-primary' />
+            Voting
+          </CardTitle>
+          <CardDescription>
+            Manage vote rewards, cooldown, and Votifier delivery for this
+            server.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ServerUpdateVotifierForm
