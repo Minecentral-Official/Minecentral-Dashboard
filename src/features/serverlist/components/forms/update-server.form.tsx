@@ -11,6 +11,7 @@ import {
   SaveIcon,
   TrashIcon,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Field, FieldError } from '@/components/conform/field.conform';
@@ -71,6 +72,7 @@ export default function ServerUpdateGeneralForm({
   const [bannerUrl, setBannerUrl] = useState(oldBannerUrl);
   const [bannerUrlChanged, setBannerUrlChanged] = useState(false);
   const [bannerFile, setBannerFile] = useState<File>();
+  const router = useRouter();
 
   const { startUpload } = useUploadThing('serverlist_banner', {
     onUploadError: () => {
@@ -87,6 +89,7 @@ export default function ServerUpdateGeneralForm({
       setBannerFile(undefined);
       setBannerUrlChanged(false);
       setIsUploading(false);
+      router.refresh();
     },
     onUploadBegin: () => {
       setIsUploading(true);
@@ -109,6 +112,7 @@ export default function ServerUpdateGeneralForm({
         //Banner Deleted successfully
         setDeleteBanner(false);
         setBannerUrlChanged(false);
+        router.refresh();
       }
       setIsUploading(false);
     } else if (bannerFile) {
@@ -122,10 +126,11 @@ export default function ServerUpdateGeneralForm({
       toast.success(actionState.message, {
         id: 'update-realm',
       });
+      router.refresh();
     } else if (actionState?.success === false) {
       toast.error(actionState?.message, { id: 'update-realm' });
     }
-  }, [actionState]);
+  }, [actionState, router]);
 
   const handleImageChange = (url: string, file: File) => {
     setBannerFile(file);
