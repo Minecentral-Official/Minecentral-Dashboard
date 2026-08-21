@@ -47,7 +47,7 @@ export default async function serverUpdateGeneralAction(
     }
   }
 
-  const { deletingIcon, id: _serverIdField, ...data } = parsedForm.value;
+  const { deletingIcon, ...data } = parsedForm.value;
 
   if (!(await serverAddressAvailable(data.ip, data.port, serverId)))
     return {

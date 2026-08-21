@@ -85,6 +85,16 @@ const config = [
         },
       ],
       'n/no-process-env': ['error'],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       'boundaries/no-unknown': ['error'],
       'boundaries/no-unknown-files': ['error'],
       'boundaries/element-types': [
