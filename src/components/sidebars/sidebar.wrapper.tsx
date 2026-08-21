@@ -23,6 +23,7 @@ export default function SidebarWrapper({
         className={cn(
           'my-0', //top-[100px] h-[calc(100svh-100px)] xl:top-[80px] xl:h-[calc(100svh-80px)]',
           'relative rounded-md bg-sidebar',
+          '[&_[data-sidebar=sidebar]]:border [&_[data-sidebar=sidebar]]:bg-card/80 [&_[data-sidebar=sidebar]]:shadow-sm',
           className,
         )}
       >

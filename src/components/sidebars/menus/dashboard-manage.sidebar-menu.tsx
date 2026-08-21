@@ -13,7 +13,9 @@ export default function SidebarDashboardManage() {
   return (
     <SidebarGroup>
       <SidebarMenu>
-        <p className='text-md font-semibold'>Manage</p>
+        <p className='px-3 py-1 text-xs font-semibold uppercase text-muted-foreground'>
+          Manage
+        </p>
         <SidebarDashboardResouces />
         <SidebarDashboardServers />
       </SidebarMenu>

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ArrowLeftIcon,
   CheckCircle2Icon,
   ExternalLinkIcon,
   Globe2Icon,
@@ -59,6 +60,15 @@ export default function ServerEditTopbarTabs({
 
   return (
     <aside className='rounded-md border bg-card/80 text-card-foreground shadow-sm xl:sticky xl:top-4'>
+      <div className='border-b p-3'>
+        <Button asChild variant='ghost' className='w-full justify-start'>
+          <Link href='/dashboard/servers'>
+            <ArrowLeftIcon className='h-4 w-4' />
+            All servers
+          </Link>
+        </Button>
+      </div>
+
       <div className='border-b p-4'>
         <div className='mb-4 flex items-center justify-between gap-3'>
           <div className='flex h-10 w-10 items-center justify-center rounded-md border bg-background text-primary'>

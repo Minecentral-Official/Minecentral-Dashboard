@@ -13,7 +13,7 @@ export default async function AdminToggleButton({
   const text = isOnAdmin ? 'Back to Dashboard' : 'Admin';
   const link = isOnAdmin ? '/dashboard' : '/admin';
   return (
-    <Button variant='ghost' asChild>
+    <Button variant='ghost' className='w-full justify-start' asChild>
       <Link href={link}>{text}</Link>
     </Button>
   );
