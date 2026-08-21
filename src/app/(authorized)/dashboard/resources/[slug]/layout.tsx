@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { redirect } from 'next/navigation';
 
+import { DashboardLayout } from '@/components/layouts/dashboard-layout';
 import ResourceEditTopbarTabs from '@/features/resources/components/dashboard/topbar-tabs.resource-edit';
 import ResourceButtonPublish from '@/features/resources/components/resource/resource-button-publish';
 import ResourceButtonSendToMod from '@/features/resources/components/resource/resource-button-send-to-mod';
@@ -27,18 +28,20 @@ export default async function Layout({
   if (!resource) redirect('/dashboard/resources');
 
   return (
-    <div className='flex w-full flex-col gap-2'>
-      <div>
-        <ResourceEditTopbarTabs {...resource} />
-        <ResourceButtonSendToMod
-          {...resource}
-          canPublish={(await projectCanPublish(resource.id)).result}
-        />
-        {(await validateRole('admin')) && (
-          <ResourceButtonPublish {...resource} />
-        )}
+    <DashboardLayout>
+      <div className='flex w-full flex-col gap-2'>
+        <div>
+          <ResourceEditTopbarTabs {...resource} />
+          <ResourceButtonSendToMod
+            {...resource}
+            canPublish={(await projectCanPublish(resource.id)).result}
+          />
+          {(await validateRole('admin')) && (
+            <ResourceButtonPublish {...resource} />
+          )}
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </DashboardLayout>
   );
 }

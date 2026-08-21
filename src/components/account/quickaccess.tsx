@@ -8,9 +8,9 @@ export default async function AccountQuickaccess() {
   // const router = useRouter();
 
   const quickLinks = [
-    { icon: Plugin, label: 'My Resources', href: 'dashboard/resources' },
-    { icon: List, label: 'My Worlds', href: 'dashboard/servers' },
-    { icon: Settings, label: 'Account Settings', href: 'dashboard/account' },
+    { icon: Plugin, label: 'My Resources', href: '/dashboard/resources' },
+    { icon: List, label: 'My Realms', href: '/dashboard/servers' },
+    { icon: Settings, label: 'Account Settings', href: '/dashboard/account' },
   ];
 
   return (
@@ -19,7 +19,7 @@ export default async function AccountQuickaccess() {
         <CardTitle>Quick Access</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
           {quickLinks.map(({ href, icon: Icon, label }, index) => (
             <Button
               key={index}

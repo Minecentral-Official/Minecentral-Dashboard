@@ -13,7 +13,7 @@ export default function CollapsibleClientWrapper({
 }: PropsWithChildren & { urlSuffix: string }) {
   const pathname = usePathname();
 
-  const stayOpen = pathname.includes(urlSuffix);
+  const stayOpen = pathname.split('/').includes(urlSuffix);
   return (
     <SidebarMenu>
       <Collapsible

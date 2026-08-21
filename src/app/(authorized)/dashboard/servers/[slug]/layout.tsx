@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { redirect } from 'next/navigation';
 
+import { DashboardLayout } from '@/components/layouts/dashboard-layout';
 import ServerEditTopbarTabs from '@/features/serverlist/components/ui/topbar-tabs.server-edit';
 import { serverGetBySlug } from '@/features/serverlist/queries/server-by-slug.get';
 import { serverMissingRequiredFields } from '@/features/serverlist/util/server-public-ready';
@@ -25,14 +26,16 @@ export default async function Layout({
   const missingRequiredFields = serverMissingRequiredFields(server);
 
   return (
-    <div className='grid w-full items-start gap-5 xl:grid-cols-[minmax(0,1fr)_18rem]'>
-      <div className='min-w-0 space-y-5 pb-8'>{children}</div>
-      <div className='min-w-0'>
-        <ServerEditTopbarTabs
-          server={server}
-          missingRequiredCount={missingRequiredFields.length}
-        />
+    <DashboardLayout>
+      <div className='grid w-full items-start gap-5 xl:grid-cols-[minmax(0,1fr)_18rem]'>
+        <div className='min-w-0 space-y-5 pb-8'>{children}</div>
+        <div className='min-w-0'>
+          <ServerEditTopbarTabs
+            server={server}
+            missingRequiredCount={missingRequiredFields.length}
+          />
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

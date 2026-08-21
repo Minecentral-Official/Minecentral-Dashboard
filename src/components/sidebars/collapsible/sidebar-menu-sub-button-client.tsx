@@ -5,18 +5,20 @@ import { PropsWithChildren } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { sidebarLinkIsActive } from '@/components/sidebars/sidebar-active.util';
 import { SidebarMenuSubButton } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 export default function SidebarMenuSubButtonClient({
   children,
   url,
-}: PropsWithChildren & { url: string }) {
+  exact,
+}: PropsWithChildren & { url: string; exact?: boolean }) {
   const pathname = usePathname();
   return (
     <SidebarMenuSubButton
       asChild
-      isActive={pathname.includes(url)}
+      isActive={sidebarLinkIsActive({ pathname, url, exact })}
       className={cn(
         'h-9 rounded-md px-3 text-muted-foreground transition-colors',
         'hover:bg-muted hover:text-foreground',
