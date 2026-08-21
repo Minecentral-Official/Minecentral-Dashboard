@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import serverUpdate from '@/features/serverlist/mutations/update.server';
@@ -40,9 +39,6 @@ export default async function serverUpdateGeneralAction(
       console.log('Cant set slug to same as another project!');
       return { success: false, message: `Slug ${slug} is already taken!` };
     } else {
-      //Re validate the cache for old and new resource slugs
-      if (server) revalidateTag(`server-slug-${server.slug}`);
-      revalidateTag(`server-slug-${slug}`);
       redirectTo = slug;
     }
   }

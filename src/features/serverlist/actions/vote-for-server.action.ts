@@ -3,6 +3,7 @@
 import crypto from 'crypto';
 
 import { and, desc, eq, gte, or } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 
 import serverSaveUserVote from '@/features/serverlist/mutations/vote.user';
@@ -105,6 +106,7 @@ export default async function serverVoteForServer(
     votifierDeliveryStatus:
       rewardDeliveryEnabled ? 'failed' : 'not_configured',
   });
+  revalidateTag(`server-slug-${server.slug}`);
 
   if (
     rewardDeliveryEnabled &&
