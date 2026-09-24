@@ -1,7 +1,6 @@
-'use server';
+import 'server-only';
 
-import { revalidateTag } from 'next/cache';
-
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 import { serverVotesTable } from '@/lib/db/schema';
 

@@ -1,12 +1,12 @@
 import { eq } from 'drizzle-orm';
 
-import 'server-only';
+import { canAccessOwnedRecord } from '@/lib/auth/helpers/permissions';
 
-import { cacheLife } from 'next/dist/server/use-cache/cache-life';
+import 'server-only';
 
 import DTOTicket from '@/features/tickets/dto/ticket.dto';
 import validateSession from '@/lib/auth/helpers/validate-session';
-import { cacheTag } from '@/lib/cache/cache-exports';
+import { cacheLife, cacheTag } from '@/lib/cache/cache-exports';
 import { db } from '@/lib/db';
 import { ticket as ticketTable } from '@/lib/db/schema';
 
@@ -15,7 +15,10 @@ export default async function ticketsGetSingle(ticketId: number) {
 
   const ticket = await cachedTicket(ticketId);
 
-  if (ticket?.author.id !== user.id && user.role !== 'admin') {
+  if (
+    ticket &&
+    !canAccessOwnedRecord(user, ticket.author.id, 'tickets:support')
+  ) {
     throw new Error('Unauthorized');
   }
 

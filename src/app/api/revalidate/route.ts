@@ -1,6 +1,6 @@
-import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { serverEnv } from '@/lib/env/server.env';
 
 export async function POST(request: Request) {

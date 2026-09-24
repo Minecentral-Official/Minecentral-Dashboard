@@ -3,7 +3,6 @@
 import crypto from 'crypto';
 
 import { and, desc, eq, gte, or } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 
 import serverSaveUserVote from '@/features/serverlist/mutations/vote.user';
@@ -11,6 +10,7 @@ import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
 import { serverGetVotifierByServerId } from '@/features/serverlist/queries/votifier-by-server-id';
 import { serverlist_sendVotifierVote } from '@/features/serverlist/votifier/send-vote';
 import getSession from '@/lib/auth/helpers/get-session';
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 import { serverVotesTable } from '@/lib/db/schema';
 import { serverEnv } from '@/lib/env/server.env';
@@ -51,7 +51,7 @@ export default async function serverVoteForServer(
     cookieStore.set(VOTER_COOKIE, anonymousVoterId, {
       httpOnly: true,
       sameSite: 'lax',
-      secure: serverEnv.NODE_ENV === "production",
+      secure: serverEnv.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 365,
       path: '/',
     });
@@ -103,8 +103,7 @@ export default async function serverVoteForServer(
     userId: session?.user.id,
     minecraftUsername: rewardDeliveryEnabled ? minecraftUsername : undefined,
     votifierEnabledAtVote: rewardDeliveryEnabled,
-    votifierDeliveryStatus:
-      rewardDeliveryEnabled ? 'failed' : 'not_configured',
+    votifierDeliveryStatus: rewardDeliveryEnabled ? 'failed' : 'not_configured',
   });
   revalidateTag(`server-slug-${server.slug}`);
 

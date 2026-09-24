@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import projectDelete from '@/features/resources/mutations/delete.project';
 import { projectGetById } from '@/features/resources/queries/project-by-id.get';
+import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
 import {
   ACTIVITY,
   activityAddAction,
@@ -17,7 +18,7 @@ export default async function resourceDeleteAction(
 
   const resource = await projectGetById(resourceId);
 
-  if (!resource) return false;
+  if (!resource || !(await projectCanEdit(resourceId))) return false;
 
   await projectDelete(resourceId);
 

@@ -1,6 +1,7 @@
 'use server';
 
 import projectUpdate from '@/features/resources/mutations/update.project';
+import projectCanEdit from '@/features/resources/queries/user-can-edit-resource.boolean';
 import { S_ProjectUploadIcon } from '@/features/resources/schemas/zod/s-project-upload-icon.zod';
 
 export default async function resourceDeleteIconAction(serverId: string) {
@@ -11,6 +12,7 @@ export default async function resourceDeleteIconAction(serverId: string) {
     return { success: false, message: 'Invalid form data!' };
   }
 
+  if (!(await projectCanEdit(serverId))) throw new Error('Forbidden');
   await projectUpdate(serverId, {
     iconUrl: null,
   });

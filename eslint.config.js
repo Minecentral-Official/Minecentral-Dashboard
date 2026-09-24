@@ -1,19 +1,23 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import typescriptParser from '@typescript-eslint/parser';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTypescript from 'eslint-config-next/typescript';
+import prettier from 'eslint-config-prettier';
 import boundariesPlugin from 'eslint-plugin-boundaries';
 import checkFilePlugin from 'eslint-plugin-check-file';
 import drizzlePlugin from 'eslint-plugin-drizzle';
 import nPlugin from 'eslint-plugin-n';
 
-const compat = new FlatCompat({
-  // import.meta.dirname is available after Node.js v20.11.0
-  baseDirectory: import.meta.dirname,
-});
-
 const config = [
-  ...compat.config({
-    extends: ['next/core-web-vitals', 'next/typescript', 'prettier'],
-  }),
+  ...nextVitals,
+  ...nextTypescript,
+  prettier,
+  {
+    files: ['src/components/conform/**'],
+    // Conform exposes reactive control values, not React refs. Compiler analysis
+    // currently misidentifies useInputControl's returned value as a ref.
+    rules: { 'react-hooks/refs': 'off' },
+  },
+  { ignores: ['.next/**', 'node_modules/**', 'drizzle/**', 'coverage/**'] },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
@@ -132,6 +136,11 @@ const config = [
         },
       ],
     },
+  },
+  {
+    files: ['scripts/**', 'tests/**'],
+    // Standalone tooling owns environment access and lives outside the src alias.
+    rules: { 'no-restricted-imports': 'off', 'n/no-process-env': 'off' },
   },
 ];
 

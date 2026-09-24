@@ -1,9 +1,9 @@
-'use server';
+import 'server-only';
 
 import { eq } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 
 import { resourceTable } from '@/features/resources/schemas/resource.table';
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 
 export default async function resourceUploadImage(

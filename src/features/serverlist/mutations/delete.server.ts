@@ -1,8 +1,8 @@
-'use server';
+import 'server-only';
 
 import { eq } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 import { serverTable } from '@/lib/db/schema';
 

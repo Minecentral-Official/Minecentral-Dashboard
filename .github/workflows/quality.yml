@@ -1,0 +1,35 @@
+name: Quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    name: Quality gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: pnpm/setup@479c3cd2084b8e20207344a47dc10bdabea95adb # v3
+        with:
+          node-version-file: .node-version
+          cache: true
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check types
+        run: pnpm typecheck
+      - name: Lint
+        run: pnpm lint
+      - name: Unit and database integration tests
+        run: pnpm test
+      - name: Verify migration snapshots
+        run: DATABASE_URL=postgresql://fixture:fixture@127.0.0.1:1/minecentral_test pnpm db:check
+      - name: Production build with isolated configuration
+        run: node scripts/with-test-env.mjs pnpm build

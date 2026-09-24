@@ -1,6 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
+import getSession from '@/lib/auth/helpers/get-session';
+import { canAccessOwnedRecord } from '@/lib/auth/helpers/permissions';
 import { db } from '@/lib/db';
 import { resourceTable } from '@/lib/db/schema';
 
@@ -23,5 +25,13 @@ export async function GET(
   if (!resource)
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
+  if (resource.status !== 'accepted') {
+    const session = await getSession();
+    if (
+      !session ||
+      !canAccessOwnedRecord(session.user, resource.userId, 'resources:moderate')
+    )
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   return NextResponse.json(resource);
 }

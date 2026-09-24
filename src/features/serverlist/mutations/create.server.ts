@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { serverTable } from '@/features/serverlist/schemas/server.table';
 import { db } from '@/lib/db';

@@ -1,14 +1,16 @@
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import validateRole from '@/lib/auth/helpers/validate-role';
+import { hasPermission } from '@/lib/auth/helpers/permissions';
+import validateSession from '@/lib/auth/helpers/validate-session';
 
 export default async function AdminToggleButton({
   isOnAdmin,
 }: {
   isOnAdmin: boolean;
 }) {
-  const isAdmin = await validateRole('admin');
+  const { user } = await validateSession();
+  const isAdmin = hasPermission(user.role, 'admin:access');
   if (!isAdmin) return <></>;
   const text = isOnAdmin ? 'Back to Dashboard' : 'Admin';
   const link = isOnAdmin ? '/dashboard' : '/admin';

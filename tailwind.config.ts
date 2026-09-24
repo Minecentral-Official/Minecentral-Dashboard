@@ -1,4 +1,6 @@
+import scrollbarHide from 'tailwind-scrollbar-hide';
 import twAnimate from 'tailwindcss-animate';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import { withUt } from 'uploadthing/tw';
 
 import type { Config } from 'tailwindcss';
@@ -46,10 +48,7 @@ export default withUt({
           'Segoe UI Symbol',
           'Noto Color Emoji',
         ],
-        mono: [
-          'var(--font-mono)',
-          ...require('tailwindcss/defaultTheme').fontFamily.mono,
-        ],
+        mono: ['var(--font-mono)', ...defaultTheme.fontFamily.mono],
       },
       maxWidth: {
         '8xl': '120rem',
@@ -152,5 +151,5 @@ export default withUt({
       },
     },
   },
-  plugins: [twAnimate, require('tailwind-scrollbar-hide')],
+  plugins: [twAnimate, scrollbarHide],
 } satisfies Config);

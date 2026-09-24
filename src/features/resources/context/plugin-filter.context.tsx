@@ -84,14 +84,8 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
       C_PluginLoaders.includes(loader as T_PluginLoader),
     );
 
-  useEffect(() => {
-    // updateSearchParams({ q: searchQuery });
-    performSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDebounce, searchParams]);
-
   //Performs the search query, returning and updating the plugins to be shown to user
-  const performSearch = async () => {
+  async function performSearch() {
     const params = new URLSearchParams();
     SearchParamsConsume(params, getParams());
     filterCategories.forEach((category) => params.append('c', category));
@@ -112,7 +106,13 @@ function FilterPluginWrapper({ children }: FilterPluginProviderProps) {
           toast.error('Could not fetch data, please contact an admin!');
         }
       });
-  };
+  }
+
+  useEffect(() => {
+    // updateSearchParams({ q: searchQuery });
+    performSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDebounce, searchParams]);
 
   //#region Togglers
   function toggleCategory(category: T_PluginCategory) {

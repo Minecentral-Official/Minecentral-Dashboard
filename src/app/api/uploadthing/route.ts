@@ -6,5 +6,3 @@ import { serverlist_fileRoutes } from '@/features/serverlist/uploadthing/file-ro
 export const { GET, POST } = createRouteHandler({
   router: { ...resource_fileRoutes, ...serverlist_fileRoutes },
 });
-
-export const runtime = 'nodejs';
