@@ -211,6 +211,7 @@ export function resolveCompatibility(
         : 'There is not enough current, eligible evidence for this exact release and runtime.',
     };
   });
+  const graphFindingIds = new Set<string>();
   function dependency(
     from: CompatibilityEntry,
     data: {
@@ -234,6 +235,8 @@ export function resolveCompatibility(
       data.targetProjectId ?
         entries.find((e) => e.projectId === data.targetProjectId)
       : undefined;
+    if (data.eligible && target && ['required', 'optional'].includes(data.kind))
+      graphFindingIds.add(data.id);
     let state: DependencyFinding['state'] = 'unknown';
     let reason: string;
     if (!data.eligible)
@@ -426,7 +429,7 @@ export function resolveCompatibility(
   findings.sort((a, b) => order(a.id, b.id));
   const cycles = findCycles(
     entries.filter((e) => e.enabled).map((e) => e.id),
-    findings.filter((f) => f.state !== 'unknown'),
+    findings.filter((f) => graphFindingIds.has(f.id)),
   );
   return {
     engineVersion: COMPATIBILITY_ENGINE_VERSION,

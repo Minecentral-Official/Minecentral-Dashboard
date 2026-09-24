@@ -49,6 +49,27 @@ import type { WorkspaceDatabase } from '@/features/workspaces/services/workspace
 
 const uuid = z.string().uuid();
 const day = 86400000;
+
+// A repeatable-read snapshot can predate an advisory-lock wait. If another
+// refresh commits first, PostgreSQL aborts our write; retry the whole transaction
+// with a fresh snapshot instead of replacing the successful cache with a failure.
+async function retrySnapshot<T>(work: () => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await work();
+    } catch (error) {
+      let cause: unknown = error;
+      let retryable = false;
+      for (let depth = 0; depth < 5 && cause instanceof Error; depth++) {
+        const code = 'code' in cause ? cause.code : null;
+        if (code === '40001' || code === '40P01') retryable = true;
+        cause = cause.cause;
+      }
+      if (!retryable || attempt >= 2) throw error;
+    }
+  }
+}
+
 export function createCompatibilityService(
   db: WorkspaceDatabase,
   engine = resolveCompatibility,
@@ -323,81 +344,88 @@ export function createCompatibilityService(
       );
       let attemptedFingerprint = 'failed';
       try {
-        return await db.transaction(
-          async (tx) => {
-            await tx.execute(
-              sql`SELECT pg_advisory_xact_lock(hashtextextended(${`compat:${workspaceId}`}, 0))`,
-            );
-            const runtime = await workspaces.authorize(
-              tx,
-              actor,
-              workspaceId,
-              force ? 'content' : 'read',
-            );
-            const revisions = await tx
-              .select()
-              .from(revision)
-              .where(
-                inArray(revision.scope, [
-                  'catalog',
-                  `workspace:${workspaceId}`,
-                ]),
-              )
-              .orderBy(revision.scope);
-            const fingerprint = JSON.stringify([
-              COMPATIBILITY_ENGINE_VERSION,
-              runtime.platform,
-              runtime.minecraftVersion,
-              revisions,
-            ]);
-            attemptedFingerprint = fingerprint;
-            const now = new Date();
-            const [previous] = await tx
-              .select()
-              .from(cache)
-              .where(eq(cache.workspaceId, workspaceId));
-            if (
-              !force &&
-              previous?.fingerprint === fingerprint &&
-              previous.expiresAt > now
-            )
-              return { ...previous, cached: true };
-            const snapshot = await loadSnapshot(tx, workspaceId, runtime, now);
-            const report = engine(snapshot, now);
-            const boundaries = [
-              ...report.entries.flatMap((e) =>
-                e.evidence.map((c) => new Date(c.expiresAt).getTime()),
-              ),
-              ...snapshot.relationships.map((r) =>
-                new Date(r.expiresAt).getTime(),
-              ),
-            ].filter((t) => t > now.getTime());
-            const values = {
-              workspaceId,
-              fingerprint,
-              report,
-              computedAt: now,
-              expiresAt: new Date(
-                Math.min(now.getTime() + 3600000, ...boundaries),
-              ),
-              error: null,
-            };
-            await tx
-              .insert(cache)
-              .values(values)
-              .onConflictDoUpdate({ target: cache.workspaceId, set: values });
-            await tx
-              .update(change)
-              .set({ processedAt: now })
-              .where(
-                and(
-                  eq(change.workspaceId, workspaceId),
-                  isNull(change.processedAt),
-                ),
+        return await retrySnapshot(() =>
+          db.transaction(
+            async (tx) => {
+              await tx.execute(
+                sql`SELECT pg_advisory_xact_lock(hashtextextended(${`compat:${workspaceId}`}, 0))`,
               );
-            return { ...values, cached: false };
-          },
-          { isolationLevel: 'repeatable read' },
+              const runtime = await workspaces.authorize(
+                tx,
+                actor,
+                workspaceId,
+                force ? 'content' : 'read',
+              );
+              const revisions = await tx
+                .select()
+                .from(revision)
+                .where(
+                  inArray(revision.scope, [
+                    'catalog',
+                    `workspace:${workspaceId}`,
+                  ]),
+                )
+                .orderBy(revision.scope);
+              const fingerprint = JSON.stringify([
+                COMPATIBILITY_ENGINE_VERSION,
+                runtime.platform,
+                runtime.minecraftVersion,
+                revisions,
+              ]);
+              attemptedFingerprint = fingerprint;
+              const now = new Date();
+              const [previous] = await tx
+                .select()
+                .from(cache)
+                .where(eq(cache.workspaceId, workspaceId));
+              if (
+                !force &&
+                previous?.fingerprint === fingerprint &&
+                previous.expiresAt > now
+              )
+                return { ...previous, cached: true };
+              const snapshot = await loadSnapshot(
+                tx,
+                workspaceId,
+                runtime,
+                now,
+              );
+              const report = engine(snapshot, now);
+              const boundaries = [
+                ...report.entries.flatMap((e) =>
+                  e.evidence.map((c) => new Date(c.expiresAt).getTime()),
+                ),
+                ...snapshot.relationships.map((r) =>
+                  new Date(r.expiresAt).getTime(),
+                ),
+              ].filter((t) => t > now.getTime());
+              const values = {
+                workspaceId,
+                fingerprint,
+                report,
+                computedAt: now,
+                expiresAt: new Date(
+                  Math.min(now.getTime() + 3600000, ...boundaries),
+                ),
+                error: null,
+              };
+              await tx
+                .insert(cache)
+                .values(values)
+                .onConflictDoUpdate({ target: cache.workspaceId, set: values });
+              await tx
+                .update(change)
+                .set({ processedAt: now })
+                .where(
+                  and(
+                    eq(change.workspaceId, workspaceId),
+                    isNull(change.processedAt),
+                  ),
+                );
+              return { ...values, cached: false };
+            },
+            { isolationLevel: 'repeatable read' },
+          ),
         );
       } catch (error) {
         if (error instanceof WorkspaceError || error instanceof z.ZodError)

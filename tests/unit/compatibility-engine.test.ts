@@ -309,6 +309,45 @@ describe('deterministic dependency graphs', () => {
       ).cycles,
     ).toEqual([['a']]);
   });
+  it('keeps known dependency cycles visible when version constraints are unknown', () => {
+    const report = resolveCompatibility(
+      snapshot(
+        [plugin('a'), plugin('b')],
+        [
+          relation('required', { id: 'a-b', versionRange: '^1.0' }),
+          relation('optional', {
+            id: 'b-a',
+            fromProjectId: 'b',
+            toProjectId: 'a',
+            versionRange: '^1.0',
+          }),
+        ],
+      ),
+      now,
+    );
+    expect(report.findings.every((f) => f.state === 'unknown')).toBe(true);
+    expect(report.cycles).toEqual([['a', 'b']]);
+    expect(report.summary.blocked).toBe(0);
+  });
+  it('does not choose an arbitrary project for an ambiguous upstream version ID', () => {
+    const data = snapshot([
+      plugin('a', {
+        dependencies: [
+          { ...dep('b', 'required', 'b-v2'), sourceProjectId: null },
+        ],
+      }),
+      plugin('b'),
+    ]);
+    data.versions.push({
+      ...data.versions[0],
+      projectId: 'c',
+      versionId: 'c-v2',
+    });
+    const report = resolveCompatibility(data, now);
+    expect(report.findings[0].state).toBe('unknown');
+    expect(report.findings[0].targetProjectId).toBeNull();
+    expect(report.summary.blocked).toBe(0);
+  });
   it('handles a deep graph without recursive stack overflow', () => {
     const ids = Array.from({ length: 2000 }, (_, i) =>
       String(i).padStart(4, '0'),

@@ -136,6 +136,8 @@ Migration 0004 includes reviewed SQL triggers, beyond the Drizzle table snapshot
 
 Lazy recomputation runs on the next authorized report/stack/overview read.
 Transactions use repeatable-read snapshots and per-workspace advisory locks.
+Serialization/deadlock conflicts retry the complete transaction up to three
+attempts with fresh snapshots before recording a recompute failure.
 Cache lifetime is at most one hour, shortened to the earliest future evidence
 or relationship expiry. Engine logic changes must bump the engine version.
 `Recheck compatibility` forces recomputation for workspace content editors;
@@ -156,7 +158,8 @@ Unit tests cover all four verdicts, stale/revoked/low-confidence evidence,
 platform isolation, numeric ranges, missing/optional/exact/embedded dependencies,
 scoped conflicts and overlap, deterministic ordering, self-cycles and a 2,000-node
 cycle. Isolated PostgreSQL integration tests cover authorization, cache hits,
-stack/runtime/catalog invalidation, expiry, failure/recovery, outbox consumption,
+stack/runtime/catalog invalidation, expiry, failure/recovery, bounded injected
+snapshot-conflict retries, outbox consumption,
 curator auditing, merge preservation, stale forms, consent, trust/volume rules,
 self-review denial, bans, withdrawal, privacy and submission throttles.
 Desktop/mobile browser tests exercise a contradictory-evidence report, correction

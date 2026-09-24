@@ -173,6 +173,35 @@ describe('compatibility persistence and invalidation', () => {
     );
     expect(calls).toBe(2);
   });
+  it('retries a transient snapshot conflict without publishing a failed cache', async () => {
+    const compute = vi.fn(resolveCompatibility).mockImplementationOnce(() => {
+      throw new Error('Synthetic wrapped database conflict', {
+        cause: Object.assign(new Error('concurrent update'), { code: '40001' }),
+      });
+    });
+    const concurrent = createCompatibilityService(db, compute);
+    const result = await concurrent.report('owner', workspaceId);
+    expect(result.error).toBeNull();
+    expect(result.report?.entries[0].state).toBe('compatible');
+    expect(compute).toHaveBeenCalledTimes(2);
+    expect((await concurrent.report('owner', workspaceId)).cached).toBe(true);
+    expect(compute).toHaveBeenCalledTimes(2);
+    expect((await service.operations('curator')).failures).toBe(0);
+  });
+  it('bounds snapshot retries and records persistent contention as a failure', async () => {
+    const compute = vi.fn(() => {
+      throw Object.assign(new Error('synthetic conflict'), { code: '40001' });
+    });
+    const blocked = createCompatibilityService(db, compute);
+    const logging = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      expect((await blocked.report('owner', workspaceId)).report).toBeNull();
+      expect(compute).toHaveBeenCalledTimes(3);
+      expect((await service.operations('curator')).failures).toBe(1);
+    } finally {
+      logging.mockRestore();
+    }
+  });
   it('persists observable failures, never serves an old verdict as current and supports retry', async () => {
     await service.report('owner', workspaceId);
     const fail = vi.fn(() => {
