@@ -19,9 +19,9 @@ afterEach(async () => {
 describe('migration safety against PostgreSQL', () => {
   it('creates application tables and can be rerun without changing them', async () => {
     const client = database();
-    expect(await applyMigrations(client)).toBe(3);
+    expect(await applyMigrations(client)).toBe(4);
     const before = await schemaFingerprint(client);
-    expect(new Set(before.columns.map((row) => row.table_name)).size).toBe(22);
+    expect(new Set(before.columns.map((row) => row.table_name)).size).toBe(24);
     expect(await applyMigrations(client)).toBe(0);
     expect(await schemaFingerprint(client)).toEqual(before);
   });
@@ -49,7 +49,7 @@ describe('migration safety against PostgreSQL', () => {
     await client.exec(
       "CREATE TABLE obsolete (value text); INSERT INTO obsolete VALUES ('discard')",
     );
-    expect(await applyMigrations(client, { reset: true })).toBe(3);
+    expect(await applyMigrations(client, { reset: true })).toBe(4);
     expect(
       (await client.query("SELECT to_regclass('public.obsolete') AS name"))
         .rows,
@@ -58,9 +58,9 @@ describe('migration safety against PostgreSQL', () => {
       new Set(
         (await schemaFingerprint(client)).columns.map((row) => row.table_name),
       ).size,
-    ).toBe(22);
+    ).toBe(24);
     expect(await applyMigrations(client)).toBe(0);
-    expect(await applyMigrations(client, { reset: true })).toBe(3);
+    expect(await applyMigrations(client, { reset: true })).toBe(4);
   });
   it('rejects changed migration history', async () => {
     const client = database();

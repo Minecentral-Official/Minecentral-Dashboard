@@ -35,9 +35,17 @@ test('create, navigate, edit, share, archive, restore and delete a private works
     'Updates',
     'Diagnostics',
   ]) {
-    await nav.getByRole('link', { name: section, exact: true }).click();
+    await nav
+      .getByRole('link', {
+        name: section,
+        exact: true,
+      })
+      .click();
     await expect(
-      page.getByRole('heading', { name: section, exact: true }),
+      page.getByRole('heading', {
+        name: section === 'Stack' ? 'Plugin stack' : section,
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
       page.getByRole('heading', { name, exact: true }),

@@ -68,3 +68,11 @@ Read-only live adapter checks on 2026-09-24 successfully mapped LuckPerms from M
 - [Modrinth project versions](https://docs.modrinth.com/api/operations/getprojectversions/)
 - [Hangar API documentation](https://hangar.papermc.io/api-docs) and [published OpenAPI specification](https://hangar.papermc.io/v3/api-docs)
 - [Spigot terms of use](https://www.spigotmc.org/wiki/spigot-terms/)
+
+## Deployment feedback and stack integration
+
+On 2026-09-24 the repository owner confirmed the catalog workflow works in their
+environment. Epic #6 adds workspace entry points to catalog search/detail and
+preserves stack references during reviewed project merges. See the
+[stack merge policy](server-stack.md#data-and-authorization-47-48-52) for duplicate
+handling and private metadata retention.

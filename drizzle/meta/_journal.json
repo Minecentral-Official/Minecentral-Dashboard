@@ -22,6 +22,13 @@
       "when": 1790274340768,
       "tag": "0002_plugin_catalog",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790277675309,
+      "tag": "0003_server_stack",
+      "breakpoints": true
     }
   ]
 }

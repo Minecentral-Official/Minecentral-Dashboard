@@ -9,6 +9,7 @@ import {
   platforms,
   providers,
 } from '@/features/catalog/schemas/catalog-input';
+import { featureFlags } from '@/lib/env/feature-flags';
 
 export const instant = false;
 export const metadata = {
@@ -169,6 +170,14 @@ export default async function CatalogPage({
                   </p>
                 </div>
               </Link>
+              {featureFlags.workspaces && (
+                <Link
+                  href={`/servers/add-plugin?projectId=${p.id}`}
+                  className='mb-5 inline-block text-sm text-primary underline'
+                >
+                  Add to a workspace<span className='sr-only'> {p.name}</span>
+                </Link>
+              )}
             </li>
           ))}
         </ul>

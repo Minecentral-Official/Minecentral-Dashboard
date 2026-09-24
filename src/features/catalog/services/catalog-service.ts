@@ -345,6 +345,43 @@ export function createCatalogService(db: CatalogDatabase) {
           .where(inArray(project.id, [values.from, values.into]));
         if (rows.length !== 2 || rows.some((p) => p.status !== 'published'))
           throw new Error('Both projects must be published and unmerged.');
+        // Never discard private notes/version selections when canonical projects collide.
+        const affected = await tx
+          .select()
+          .from(schema.stackEntryTable)
+          .where(
+            inArray(schema.stackEntryTable.projectId, [
+              values.from,
+              values.into,
+            ]),
+          );
+        const targets = new Set(
+          affected
+            .filter((e) => e.projectId === values.into)
+            .map((e) => e.workspaceId),
+        );
+        if (
+          affected.some(
+            (e) => e.projectId === values.from && targets.has(e.workspaceId),
+          )
+        ) {
+          throw new Error(
+            'These projects coexist in a private stack. Resolve duplicate stack entries before merging; no private records were changed.',
+          );
+        }
+        for (const e of affected.filter((e) => e.projectId === values.from)) {
+          await tx
+            .update(schema.stackEntryTable)
+            .set({ projectId: values.into, updatedAt: new Date() })
+            .where(eq(schema.stackEntryTable.id, e.id));
+          await tx
+            .insert(schema.stackChangeTable)
+            .values({
+              workspaceId: e.workspaceId,
+              entryId: e.id,
+              event: 'project_merged',
+            });
+        }
         // Flatten existing redirects so stable URLs never accumulate redirect chains.
         await tx
           .update(project)

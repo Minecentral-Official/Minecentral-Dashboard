@@ -4,6 +4,7 @@ import { connection } from 'next/server';
 
 import { catalogService } from '@/features/catalog/queries/catalog-access';
 import { catalogHref } from '@/features/catalog/schemas/catalog-input';
+import { featureFlags } from '@/lib/env/feature-flags';
 
 export const instant = false;
 export default async function CatalogDetail({
@@ -43,6 +44,14 @@ export default async function CatalogDetail({
           By {project.metadata.authors.join(', ') || 'unknown author'}
         </p>
       </header>
+      {featureFlags.workspaces && (
+        <Link
+          href={`/servers/add-plugin?projectId=${project.id}`}
+          className='inline-block rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground'
+        >
+          Add to a workspace
+        </Link>
+      )}
       <nav
         aria-label='Plugin sections'
         className='flex flex-wrap gap-5 border-b pb-4'

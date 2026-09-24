@@ -4,10 +4,6 @@ import { notFound } from 'next/navigation';
 import { loadWorkspace } from '@/features/workspaces/queries/workspace-access';
 
 const descriptions: Record<string, [string, string]> = {
-  stack: [
-    'Stack',
-    'Plugin stacks will be available in a later release. No plugins have been recorded or installed by this workspace.',
-  ],
   configs: [
     'Configs',
     'Configuration editing is not available yet. Keep setup notes in Settings while you prepare your server.',

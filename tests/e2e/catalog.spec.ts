@@ -33,7 +33,7 @@ test('public catalog filters, attributed releases, stable URLs and external-only
   ).toHaveCount(0);
   await page.reload();
   await expect(page.getByLabel('Minecraft version')).toHaveValue('1.21.11');
-  await page.getByRole('link', { name: /Oak Permissions/ }).click();
+  await page.getByRole('link', { name: /^Oak Permissions/ }).click();
   await expect(
     page.getByRole('heading', { name: 'Oak Permissions', exact: true }),
   ).toBeVisible();
@@ -57,7 +57,7 @@ test('public catalog filters, attributed releases, stable URLs and external-only
   await page.goto(stable.replace(/\/[^/]+$/, '/old-slug'));
   await expect(page).toHaveURL(stable);
   await page.goto('/discover/plugins?source=manual');
-  await page.getByRole('link', { name: /External Craft/ }).click();
+  await page.getByRole('link', { name: /^External Craft/ }).click();
   await expect(
     page.getByText('Manually curated · external links only.', { exact: false }),
   ).toBeVisible();
