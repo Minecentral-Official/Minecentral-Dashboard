@@ -54,7 +54,7 @@ External-only records display **Manually curated / external links only** and **s
 
 Search uses indexed PostgreSQL simple-language full-text matching of name/description, with stable name or refresh-time ordering and bounded 12/24/48-item pagination. URL parameters follow the product contract: `q`, repeated `category`, `platform`, `gameVersion`, `source`, `sort`, `page`, `limit`. Category filters combine with AND; alternatives within platform/game/source combine with OR. A selected platform/game pair must be declared by the same release and source. The form presents one value per filter; shared URLs can express multiple alternatives. Changing filters resets pagination. Invalid values normalize to safe bounds/defaults.
 
-Search pages have loading, empty and retryable error states and an unfiltered canonical URL. Details show overview, authors, source attribution/freshness, release channels and support, dependencies, and external publisher/release links. Compatibility and Configs sections explicitly say unavailable/not checked. Versions paginate by 25. There is no fake download count, rating, compatibility badge or live server status.
+Search pages have loading, empty and retryable error states and an unfiltered canonical URL. Details show overview, authors, source attribution/freshness, release channels and support, dependencies, and external publisher/release links. Compatibility directs users to their workspace report; Configs remains unavailable. Versions paginate by 25. There is no fake download count, rating, compatibility badge or live server status.
 
 ## Verification
 

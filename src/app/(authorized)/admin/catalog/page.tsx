@@ -27,6 +27,12 @@ export default async function AdminCatalog() {
       >
         Sync jobs and source freshness →
       </Link>
+      <Link
+        href='/admin/compatibility'
+        className='inline-block text-primary underline'
+      >
+        Compatibility evidence and community reviews →
+      </Link>
       <section className='space-y-4 rounded-lg border p-5'>
         <h2 className='text-xl font-semibold'>Import a project</h2>
         <CatalogForm operation='sync' label='Queue metadata sync'>

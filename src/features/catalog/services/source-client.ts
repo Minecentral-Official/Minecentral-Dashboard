@@ -42,6 +42,7 @@ const mrVersion = z.object({
   id: z.string(),
   project_id: z.string(),
   name: z.string(),
+  version_number: z.string().max(150).optional(),
   version_type: z.string(),
   date_published: date,
   loaders: strings,
@@ -230,6 +231,7 @@ export function createSourceClient(
             versions.push({
               externalId: v.id,
               name: v.name,
+              versionNumber: v.version_number ?? null,
               channel: v.version_type,
               publishedAt: v.date_published,
               url: `https://modrinth.com/plugin/${p.slug}/version/${v.id}`,
@@ -302,6 +304,7 @@ export function createSourceClient(
           versions.push({
             externalId: String(v.id),
             name: v.name,
+            versionNumber: v.name,
             channel: v.channel.name,
             publishedAt: v.createdAt,
             url: `${url}/versions/${encodeURIComponent(v.name)}`,

@@ -144,6 +144,12 @@ export default async function CatalogDetail({
                     {v.publishedAt.toISOString().slice(0, 10)}
                   </span>
                 </div>
+                <details className='text-xs text-muted-foreground'>
+                  <summary className='cursor-pointer'>
+                    Catalog release identifier
+                  </summary>
+                  <code className='break-all'>{v.id}</code>
+                </details>
                 {v.support.map((s) => (
                   <p key={s.platform} className='break-words text-sm'>
                     <span className='font-medium capitalize'>{s.platform}</span>{' '}
@@ -216,8 +222,9 @@ export default async function CatalogDetail({
         >
           <h2 className='font-semibold'>Compatibility</h2>
           <p className='mt-2 text-sm text-muted-foreground'>
-            Not checked. Stack-specific dependency and compatibility analysis is
-            coming in a later epic.
+            Compatibility depends on an exact release and server runtime. Add
+            this plugin to a workspace and open Compatibility for
+            source-attributed evidence and dependency checks.
           </p>
         </section>
         <section id='configs' className='rounded-lg border border-dashed p-5'>

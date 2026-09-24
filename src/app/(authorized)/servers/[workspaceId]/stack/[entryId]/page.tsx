@@ -8,6 +8,7 @@ import {
   removeStackAction,
   versionStackAction,
 } from '@/features/workspaces/actions/stack.actions';
+import CommunityReportForm from '@/features/workspaces/components/community-report-form';
 import StackVersionFields from '@/features/workspaces/components/stack-version-fields';
 import WorkspaceActionForm from '@/features/workspaces/components/workspace-action-form';
 import { stackService } from '@/features/workspaces/queries/stack-access';
@@ -130,6 +131,17 @@ export default async function StackEntry({
           </WorkspaceActionForm>
         </fieldset>
       </section>
+      {editable && record.versionId && record.enabled && (
+        <CommunityReportForm
+          workspaceId={workspaceId}
+          entryId={entryId}
+          target={{
+            versionId: record.versionId!,
+            platform: workspace.platform,
+            minecraftVersion: workspace.minecraftVersion,
+          }}
+        />
+      )}
       {editable && (
         <details className='rounded-lg border border-destructive/30 p-5'>
           <summary className='cursor-pointer font-semibold'>

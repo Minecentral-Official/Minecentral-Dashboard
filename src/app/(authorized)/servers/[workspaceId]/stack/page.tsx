@@ -2,7 +2,9 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import CompatibilityStateBadge from '@/features/workspaces/components/compatibility-state';
 import { workspaceSelectClass } from '@/features/workspaces/components/workspace-styles';
+import { compatibilityService } from '@/features/workspaces/queries/compatibility-access';
 import { stackService } from '@/features/workspaces/queries/stack-access';
 import {
   loadWorkspace,
@@ -24,6 +26,10 @@ export default async function StackPage({
     await workspaceActor(),
     workspaceId,
     await searchParams,
+  );
+  const compatibility = await compatibilityService.report(
+    await workspaceActor(),
+    workspaceId,
   );
   const editable =
     canUseWorkspace(workspace.role, 'content') && !workspace.archivedAt;
@@ -89,10 +95,12 @@ export default async function StackPage({
         </label>
         <Button variant='outline'>Filter stack</Button>
       </form>
-      <p className='text-sm text-muted-foreground'>
-        Compatibility: not checked · Dependencies: not checked. Declared support
-        below is publisher metadata, not a stack compatibility result.
-      </p>
+      <Link
+        href={`/servers/${workspaceId}/compatibility`}
+        className='inline-block text-sm text-primary underline'
+      >
+        View compatibility and dependency report
+      </Link>
       {result.rows.length ?
         <ul className='divide-y border-y'>
           {result.rows.map(
@@ -119,6 +127,13 @@ export default async function StackPage({
                   </p>
                 </div>
                 <div className='min-w-0 text-sm'>
+                  <CompatibilityStateBadge
+                    state={
+                      compatibility.report?.entries.find(
+                        (e) => e.id === entry.id,
+                      )?.state ?? 'unknown'
+                    }
+                  />
                   <p className='text-muted-foreground'>
                     Installed → latest with declared support
                   </p>
