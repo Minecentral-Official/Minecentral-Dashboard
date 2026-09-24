@@ -38,7 +38,7 @@ Create a GitHub Project named **MineCentral v2** and enable the auto-add workflo
 - 09 Server recipes
 - 10 Upgrade readiness
 - 11 Diagnostics & troubleshooting
-- 12 MineCentral server agent
+- 12 Official MineCentral Server Plugin & Control Plane
 - 13 Search, knowledge & SEO
 - 14 Admin, moderation & trust
 - 15 Monetization, reliability & launch
@@ -85,7 +85,7 @@ Create a GitHub Project named **MineCentral v2** and enable the auto-add workflo
 | 09 | #11 Server recipes | #85–#91 |
 | 10 | #12 Upgrade readiness | #92–#98 |
 | 11 | #13 Diagnostics & troubleshooting | #99–#107 |
-| 12 | #14 MineCentral server agent | #108–#116 |
+| 12 | #14 Official MineCentral Server Plugin & Control Plane | #108–#116, #150–#162 |
 | 13 | #15 Search, knowledge & SEO | #117–#125 |
 | 14 | #16 Admin, moderation & trust | #126–#134 |
 | 15 | #17 Monetization, reliability & launch | #135–#148 |
@@ -117,10 +117,10 @@ Issues #92–#107.
 
 Outcome: MineCentral can help plan upgrades and analyze common server failures using recorded stack context.
 
-### M6 — Connected servers
-Issues #108–#116.
+### M6 — Official server plugin & connected control plane
+Issues #108–#116 and #150–#162.
 
-Outcome: an optional least-privilege Paper agent can sync observed server/plugin metadata with explicit consent.
+Outcome: a server owner can install the official MineCentral Paper plugin, securely pair it to a workspace, sync observed server/plugin state, receive update/compatibility alerts, and use MineCentral as the primary control plane for explicitly approved maintenance actions.
 
 ### M7 — Public knowledge & operations
 Issues #117–#134.
@@ -139,7 +139,10 @@ Outcome: billing boundaries, observability, backups, deployment, security, analy
 - Preserve **Unknown** as a valid compatibility state; never convert missing evidence into success or failure.
 - Every compatibility claim should be traceable to provenance.
 - Private configs, diagnostic logs, notes, and agent telemetry are private by default.
-- The initial agent must not provide arbitrary remote command execution.
+- The official MineCentral Server Plugin must not provide arbitrary remote command or shell execution.
+- MineCentral.net is the control plane; the installed server plugin is a narrowly scoped, permissioned connector.
+- Web-originated server actions must be allowlisted, authenticated, expiring/replay-resistant, auditable, and owner-controllable.
+- Remote configuration or plugin changes must never silently overwrite server state; use explicit review, conflict detection, and rollback safeguards.
 - Public/community content must use immutable releases so user edits do not silently mutate previously shared artifacts.
 - Keep implementation tickets small enough that one pull request can usually close one issue.
 - When implementation reveals a large new requirement, create a new issue and link the dependency instead of expanding an existing issue indefinitely.
