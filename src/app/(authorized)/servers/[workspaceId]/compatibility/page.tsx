@@ -172,7 +172,7 @@ export default async function CompatibilityPage({
                           <h4
                             className={`mb-3 text-sm font-semibold ${
                               group.title === 'Action required' ?
-                                'text-destructive'
+                                'text-red-700 dark:text-red-400'
                               : group.title === 'Needs evidence' ?
                                 'text-muted-foreground'
                               : 'text-primary'

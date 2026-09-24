@@ -8,7 +8,7 @@ export const compatibilityLabels: Record<CompatibilityState, string> = {
 };
 const colors: Record<CompatibilityState, string> = {
   compatible: 'border-primary/40 text-primary',
-  incompatible: 'border-destructive/50 text-destructive',
+  incompatible: 'border-red-600/50 text-red-700 dark:text-red-400',
   unknown: 'border-border text-muted-foreground',
   'conflicting-evidence':
     'border-amber-600/50 text-amber-600 dark:text-amber-400',

@@ -88,11 +88,10 @@ export default async function CompatibilityAdmin({
         are not exposed here.
       </p>
       <p className='text-sm text-muted-foreground'>
-        Use canonical project IDs from catalog URLs. Release IDs are shown on
-        catalog version details. Numeric constraints support exact dotted
-        versions or comparisons such as ≥ (written as &gt;=) 1.0; enter
-        “&gt;=1.0 &lt;2.0” with no space after the operator. Other syntax
-        remains unknown.
+        Use canonical project IDs from catalog URLs and release IDs from catalog
+        version details. Numeric constraints support exact dotted versions or
+        comparisons such as <code>{'>=1.0 <2.0'}</code>, with no space after
+        each operator. Other syntax remains unknown.
       </p>
       <section className='rounded-lg border p-5'>
         <h2 className='mb-4 text-xl font-semibold'>Record runtime evidence</h2>
