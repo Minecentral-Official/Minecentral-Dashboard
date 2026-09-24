@@ -61,3 +61,7 @@ Provider docs: [Discord](https://better-auth.com/docs/authentication/discord), [
 ## Completion evidence
 
 See [testing](testing-and-ci.md), [configuration](runtime-configuration.md) and [database workflow](database-workflow.md). Builds use isolated dummy configuration and do not contact production providers/databases. A passing build/test suite does not establish live OAuth, production migration readiness for an uninspected database, or deployment health. #27 and the epic stay open until live sign-in is verified; CI completion requires a real PR check run.
+
+## Sign-out visibility follow-up (#27)
+
+The owner confirmed live Discord login, then reported that sign-out was not discoverable. Dashboard and admin pages now expose a labeled **Sign out** button in the header on desktop and mobile. The existing account dropdown shares the same handler. Requests disable the control while pending; failures display a retry message. Successful revocation performs a full navigation to `/sign-in` to discard private client/router state. Live sign-out and cancellation/retry verification remain pending.

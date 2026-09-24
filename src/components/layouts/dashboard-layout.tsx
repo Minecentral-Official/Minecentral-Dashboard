@@ -7,10 +7,12 @@ import SidebarDashboardGeneral from '@/components/sidebars/menus/dashboard-gener
 import SidebarDashboardManage from '@/components/sidebars/menus/dashboard-manage.sidebar-menu';
 import SidebarWrapper from '@/components/sidebars/sidebar.wrapper';
 import { Separator } from '@/components/ui/separator';
+import SignOutButton from '@/lib/auth/components/buttons/sign-out.button';
 
 export async function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <SidebarWrapper
+      headerActions={<SignOutButton />}
       sidebar={
         <div className='flex h-full flex-col justify-between p-2'>
           <div className='space-y-2'>

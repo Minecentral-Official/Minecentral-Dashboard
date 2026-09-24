@@ -13,8 +13,10 @@ export default function SidebarWrapper({
   children,
   sidebar,
   className,
+  headerActions,
 }: PropsWithChildren<{
   sidebar: ReactNode;
+  headerActions?: ReactNode;
   className?: string;
 }>) {
   return (
@@ -30,11 +32,12 @@ export default function SidebarWrapper({
         {sidebar}
       </AppSidebar>
       <SidebarInset className='md:pl-4'>
-        <header className='flex shrink-0 items-center gap-2'>
-          <div className='flex items-center gap-2'>
+        <header className='flex shrink-0 items-center justify-between gap-2'>
+          <div className='flex min-w-0 items-center gap-2'>
             <SidebarTrigger className='md:hidden' />
             <DataBreadcrumbs />
           </div>
+          {headerActions}
         </header>
         {children}
       </SidebarInset>
