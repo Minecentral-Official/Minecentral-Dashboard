@@ -33,3 +33,8 @@ jobs:
         run: DATABASE_URL=postgresql://fixture:fixture@127.0.0.1:1/minecentral_test pnpm db:check
       - name: Production build with isolated configuration
         run: node scripts/with-test-env.mjs pnpm build
+
+      - name: Install Chromium and browser libraries
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Desktop and mobile workspace flows
+        run: pnpm test:e2e

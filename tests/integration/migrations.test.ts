@@ -17,11 +17,11 @@ afterEach(async () => {
 });
 
 describe('migration safety against PostgreSQL', () => {
-  it('creates the legacy schema and can be rerun without changing it', async () => {
+  it('creates legacy and workspace tables and can be rerun without changing them', async () => {
     const client = database();
-    expect(await applyMigrations(client)).toBe(1);
+    expect(await applyMigrations(client)).toBe(2);
     const before = await schemaFingerprint(client);
-    expect(new Set(before.columns.map((row) => row.table_name)).size).toBe(14);
+    expect(new Set(before.columns.map((row) => row.table_name)).size).toBe(17);
     expect(await applyMigrations(client)).toBe(0);
     expect(await schemaFingerprint(client)).toEqual(before);
   });

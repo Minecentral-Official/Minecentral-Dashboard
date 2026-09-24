@@ -1,13 +1,23 @@
-import { CogIcon, ReceiptIcon, TicketIcon, UserIcon } from 'lucide-react';
+import {
+  CogIcon,
+  ReceiptIcon,
+  ServerIcon,
+  TicketIcon,
+  UserIcon,
+} from 'lucide-react';
 
 import CollapsibleSidebarWrapper from '@/components/sidebars/collapsible/collapsible-sidebar.wrapper';
 import SidebarLink from '@/components/sidebars/link.sidebar';
 import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
+import { featureFlags } from '@/lib/env/feature-flags';
 
 export default function SidebarDashboardGeneral() {
   return (
     <SidebarGroup>
       <SidebarMenu>
+        {featureFlags.workspaces && (
+          <SidebarLink Icon={ServerIcon} name='My Servers' url='/servers' />
+        )}
         <SidebarDashboardAccount />
         <SidebarLink
           Icon={TicketIcon}

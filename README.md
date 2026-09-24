@@ -2,7 +2,7 @@
 
 MineCentral v2 is being designed to help Minecraft server owners **assemble, configure, troubleshoot, and maintain a working server stack**. The planned core experience combines private server workspaces, versioned plugin stacks, evidence-backed compatibility, configuration editing, upgrade planning, and log diagnostics.
 
-**Current phase: platform foundation and legacy migration preparation.** The application in this repository is still the v1 resource/server-list dashboard. The v2 documents describe intended behavior; they do not mean those features or routes have shipped. The proposed first beta focuses on Paper/Java Edition with manual workflows. Visual configuration editing, community configs, recipes, and the optional server agent are proposed later capabilities, subject to the scope decisions recorded in the product contract.
+**Current phase: private server workspaces.** The repository includes the legacy resource/server-list dashboard and feature-gated v2 workspaces. Other v2 product documents still describe planned behavior. The proposed first beta focuses on Paper/Java Edition with manual workflows. Visual configuration editing, community configs, recipes, and the optional server agent are proposed later capabilities, subject to the scope decisions recorded in the product contract.
 
 ## What exists today
 
@@ -13,7 +13,7 @@ MineCentral v2 is being designed to help Minecraft server owners **assemble, con
 | Public server listings  | Listing creation/editing, publication, discovery, voting, and optional Votifier delivery                                                                                            |
 | Support/account         | Tickets and messages, profile display, activity, shared dashboard layouts                                                                                                           |
 | Legacy scaffolding      | Placeholder pages for other resource types, worlds, collections, saved servers and vote history; Stripe/hosting helpers and environment settings without complete application flows |
-| V2 workspaces and tools | Specified in documentation; not implemented in the current application                                                                                                              |
+| V2 workspaces and tools | Private workspaces, metadata, collaborators and lifecycle implemented behind FEATURE_V2_WORKSPACES; stack/config/compatibility tools remain planned                                 |
 
 The [v1 audit](docs/audits/v1-feature-and-data-inventory.md) records known authorization, download-contract, data-model, and migration risks. Current functionality is not a claim of production readiness. Public server listings are distinct from the planned private workspaces: creating or editing a listing does not provision or manage a Minecraft server.
 
@@ -69,7 +69,7 @@ pnpm dev
 
 For an existing database, follow the [baseline and migration workflow](docs/development/database-workflow.md) first. Do not run the initial CREATE TABLE migration over existing tables. `db:push` is limited to disposable development experiments; production uses reviewed, tracked migrations.
 
-Open `http://localhost:3000`. Current routes include `/plugins`, `/serverlist`, `/sign-in` and `/dashboard`. Planned workspace routes remain unimplemented. To enable Discord, set its client ID/secret and register `<FRONTEND_URL>/api/auth/callback/discord`; if `DISCORD_REDIRECT` is set it must match exactly. GitHub is optional. Automatic cross-provider account linking is disabled. Follow the [live sign-in checklist](docs/development/platform-foundation.md#authentication-27) in an environment with database access. Uploads require an UploadThing development token and reachable callbacks.
+Open `http://localhost:3000`. Current routes include `/plugins`, `/serverlist`, `/sign-in` and `/dashboard`. After applying migration 0001 and setting `FEATURE_V2_WORKSPACES=true`, open `/servers` for private workspaces; see the [workspace guide](docs/development/server-workspaces.md). To enable Discord, set its client ID/secret and register `<FRONTEND_URL>/api/auth/callback/discord`; if `DISCORD_REDIRECT` is set it must match exactly. GitHub is optional. Automatic cross-provider account linking is disabled. Follow the [live sign-in checklist](docs/development/platform-foundation.md#authentication-27) in an environment with database access. Uploads require an UploadThing development token and reachable callbacks.
 
 ## Commands and verification
 
@@ -91,3 +91,5 @@ Open `http://localhost:3000`. Current routes include `/plugins`, `/serverlist`, 
 ## Working on v2
 
 Use the issue's requirements and acceptance criteria to bound the work. Preserve legacy identities, private data, files and URLs according to the migration contract; a proposed “archive/remove” disposition is not an instruction to delete production records. Keep planning documents distinct from implemented behavior and record validation evidence when completing an issue.
+
+Workspace browser checks: `pnpm exec playwright install --with-deps chromium`, then `pnpm test:e2e`. The runner uses a disposable loopback database and synthetic sessions; it does not connect to your configured database.

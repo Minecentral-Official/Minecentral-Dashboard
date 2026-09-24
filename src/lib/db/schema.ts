@@ -20,3 +20,6 @@ export * from '@/lib/stripe/schemas/customer.table';
 
 //Recent Activity
 export * from '@/lib/activity/schemas/recent-activity.table';
+
+// Private managed server workspaces (independent of public server listings).
+export * from '@/features/workspaces/schemas/workspace.table';
