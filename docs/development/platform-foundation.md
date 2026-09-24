@@ -65,3 +65,9 @@ See [testing](testing-and-ci.md), [configuration](runtime-configuration.md) and 
 ## Sign-out visibility follow-up (#27)
 
 The owner confirmed live Discord login, then reported that sign-out was not discoverable. Dashboard and admin pages now expose a labeled **Sign out** button in the header on desktop and mobile. The existing account dropdown shares the same handler. Requests disable the control while pending; failures display a retry message. Successful revocation performs a full navigation to `/sign-in` to discard private client/router state. Live sign-out and cancellation/retry verification remain pending.
+
+## OAuth cancellation fallback follow-up (#27)
+
+The owner confirmed sign-out and protected-route enforcement, then reported cancellation landing at the homepage with `error=state_mismatch`; a fresh Discord login still succeeded. Configure Better Auth's global `onAPIError.errorURL` to the configured origin's `/sign-in`, which already renders a generic retry message. This also covers failures before the per-attempt `errorCallbackURL` can be recovered. State/CSRF verification remains enforced. The reported URL alone does not identify why the deployed callback lost or rejected its state; this change fixes error routing, not an established cookie/database root cause.
+
+Regression tests exercise an unknown state and a valid-state Discord cancellation through the real auth HTTP handler, verify no session is created, and confirm a new attempt receives fresh state. Retest cancellation on the updated deployment; it should return to `/sign-in?error=...` with the retry message. Reference: [Better Auth state errors](https://better-auth.com/docs/reference/errors/state_mismatch).

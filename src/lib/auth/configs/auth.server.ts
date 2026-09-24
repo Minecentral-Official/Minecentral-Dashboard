@@ -17,6 +17,8 @@ import { serverEnv } from '@/lib/env/server.env';
 export const auth = betterAuth({
   baseURL: serverEnv.FRONTEND_URL,
   secret: serverEnv.BETTER_AUTH_SECRET,
+  // State validation can fail before the per-attempt error callback is available.
+  onAPIError: { errorURL: `${serverEnv.FRONTEND_URL}/sign-in` },
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema: {

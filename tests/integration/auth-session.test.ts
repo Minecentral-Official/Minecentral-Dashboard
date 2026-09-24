@@ -90,3 +90,69 @@ it('starts Discord OAuth with the configured callback and rejects external retur
   );
   expect(rejected.status).toBe(403);
 });
+
+it('routes an unknown OAuth state to the sign-in error UI without creating a session', async () => {
+  const response = await productionAuth.handler(
+    new Request(
+      'http://localhost:3000/api/auth/callback/discord?error=access_denied&state=unknown-state',
+    ),
+  );
+  expect(response.status).toBe(302);
+  const location = new URL(response.headers.get('location')!);
+  expect(location.origin + location.pathname).toBe(
+    'http://localhost:3000/sign-in',
+  );
+  expect(location.searchParams.get('error')).toBe('state_mismatch');
+  expect(
+    await productionAuth.api.getSession({ headers: new Headers() }),
+  ).toBeNull();
+});
+
+it('handles canceled Discord consent and allows a fresh sign-in attempt', async () => {
+  async function start() {
+    return productionAuth.handler(
+      new Request('http://localhost:3000/api/auth/sign-in/social', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          origin: 'http://localhost:3000',
+        },
+        body: JSON.stringify({
+          provider: 'discord',
+          callbackURL: '/dashboard',
+          errorCallbackURL: '/sign-in?returnTo=%2Fdashboard',
+          disableRedirect: true,
+        }),
+      }),
+    );
+  }
+  const first = await start();
+  expect(first.status).toBe(200);
+  const state = new URL((await first.json()).url).searchParams.get('state')!;
+  const cookie = first.headers
+    .getSetCookie()
+    .map((value) => value.split(';')[0])
+    .join('; ');
+  const canceled = await productionAuth.handler(
+    new Request(
+      `http://localhost:3000/api/auth/callback/discord?error=access_denied&state=${encodeURIComponent(state)}`,
+      { headers: { cookie } },
+    ),
+  );
+  expect(canceled.status).toBe(302);
+  const location = new URL(
+    canceled.headers.get('location')!,
+    'http://localhost:3000',
+  );
+  expect(location.pathname).toBe('/sign-in');
+  expect(location.searchParams.get('error')).toBe('access_denied');
+  expect(location.searchParams.get('returnTo')).toBe('/dashboard');
+  expect(
+    await productionAuth.api.getSession({ headers: new Headers({ cookie }) }),
+  ).toBeNull();
+  const retry = await start();
+  expect(retry.status).toBe(200);
+  expect(new URL((await retry.json()).url).searchParams.get('state')).not.toBe(
+    state,
+  );
+});
