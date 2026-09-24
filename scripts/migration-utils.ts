@@ -30,6 +30,49 @@ export async function schemaFingerprint(client: SqlClient) {
   };
 }
 
+// Report identifiers and changed field names only: defaults can contain sensitive literals.
+export function schemaDifferences(
+  expected: Awaited<ReturnType<typeof schemaFingerprint>>,
+  actual: Awaited<ReturnType<typeof schemaFingerprint>>,
+) {
+  const differences: string[] = [];
+  const keys = {
+    columns: ['table_name', 'column_name'],
+    constraints: ['table_name', 'name'],
+    indexes: ['tablename', 'indexname'],
+  } as const;
+  for (const category of ['columns', 'constraints', 'indexes'] as const) {
+    const key = (row: Record<string, unknown>) =>
+      JSON.stringify(keys[category].map((field) => row[field]));
+    const expectedRows = new Map(
+      expected[category].map((row) => [key(row), row]),
+    );
+    const actualRows = new Map(actual[category].map((row) => [key(row), row]));
+    for (const [name, row] of expectedRows) {
+      const found = actualRows.get(name);
+      if (!found)
+        differences.push(`${category} ${name}: missing from database`);
+      else {
+        const fields = [
+          ...new Set([...Object.keys(row), ...Object.keys(found)]),
+        ].filter(
+          (field) =>
+            JSON.stringify(row[field]) !== JSON.stringify(found[field]),
+        );
+        if (fields.length)
+          differences.push(
+            `${category} ${name}: differs in ${fields.join(', ')}`,
+          );
+      }
+    }
+    for (const name of actualRows.keys()) {
+      if (!expectedRows.has(name))
+        differences.push(`${category} ${name}: extra in database`);
+    }
+  }
+  return differences;
+}
+
 export async function ensureJournal(client: SqlClient) {
   await client.query('CREATE SCHEMA IF NOT EXISTS drizzle');
   await client.query(

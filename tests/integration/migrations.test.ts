@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   applyMigrations,
+  schemaDifferences,
   schemaFingerprint,
 } from '../../scripts/migration-utils';
 
@@ -41,6 +42,38 @@ describe('migration safety against PostgreSQL', () => {
         )
       ).rows,
     ).toEqual([{ name: null }]);
+  });
+  it('identifies schema drift without exposing default literals or changing records', async () => {
+    const client = database();
+    await client.exec(
+      "CREATE TABLE sample (id integer PRIMARY KEY, note text DEFAULT 'private-value'); INSERT INTO sample (id) VALUES (1)",
+    );
+    const expected = await schemaFingerprint(client);
+    expect(schemaDifferences(expected, expected)).toEqual([]);
+    await client.exec(
+      "ALTER TABLE sample ALTER COLUMN note SET DEFAULT 'another-private-value'; ALTER TABLE sample ADD COLUMN extra text; CREATE INDEX sample_note_idx ON sample (note)",
+    );
+    const differences = schemaDifferences(
+      expected,
+      await schemaFingerprint(client),
+    );
+    expect(differences).toContain(
+      'columns ["sample","note"]: differs in column_default',
+    );
+    expect(differences).toContain(
+      'columns ["sample","extra"]: extra in database',
+    );
+    expect(differences).toContain(
+      'indexes ["sample","sample_note_idx"]: extra in database',
+    );
+    expect(differences.join(' ')).not.toContain('private-value');
+    expect((await client.query('SELECT note FROM sample')).rows).toEqual([
+      { note: 'private-value' },
+    ]);
+    await client.exec('ALTER TABLE sample DROP COLUMN note');
+    expect(
+      schemaDifferences(expected, await schemaFingerprint(client)),
+    ).toContain('columns ["sample","note"]: missing from database');
   });
   it('rejects changed migration history', async () => {
     const client = database();

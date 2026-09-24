@@ -42,3 +42,9 @@ The runner takes a transaction-scoped advisory lock, uses a 5-second lock timeou
 Afterward: verify schema/version, row counts and application smoke checks before lifting the barrier. On failure stop deployment; do not retry destructive changes blindly. Roll back application code only when schema compatibility permits. Restore the verified backup or deploy a reviewed forward fix for committed data changes; there is no automatic destructive down migration.
 
 References: [Drizzle migration overview](https://orm.drizzle.team/docs/migrations), [Drizzle migrate](https://orm.drizzle.team/docs/drizzle-kit-migrate). The repository uses a guarded runner around Drizzle-generated SQL so adopting history is explicit.
+
+## Diagnosing baseline drift
+
+If `db:baseline` reports a schema mismatch, run `pnpm db:baseline --check` using the updated script. This mode uses a read-only transaction, requires no `BASELINE_APPROVED`, and never creates or adopts migration history. It reports missing/extra columns, constraints and indexes, plus field names for changed definitions (including defaults, column order and nullability). It deliberately omits definition values and application data. A mismatch exits nonzero.
+
+The report compares against the legacy migration only, not the new workspace tables. Extra workspace tables can therefore indicate prior use of `db:push`; do not reapply migrations or mark them adopted blindly. PostgreSQL version differences or historical DDL may also produce different catalog definitions. Review the reported differences on a restored copy before choosing reconciliation. A matching check is evidence for schema review, not permission to skip backups or the migration workflow.
