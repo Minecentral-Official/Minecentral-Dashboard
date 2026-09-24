@@ -96,3 +96,18 @@ Workspace browser checks: `pnpm exec playwright install --with-deps chromium`, t
 ### Plugin catalog
 
 The source-attributed catalog is at `/discover/plugins`. Curators/admins can queue Modrinth or Hangar imports and manage manual projects at `/admin/catalog`; `/admin/sources` shows sync status. Apply `pnpm db:migrate`, then run `pnpm catalog:sync` to process queued work. Schedule that command every five minutes for continued refreshes. See the [catalog architecture, source policy and operations guide](docs/development/plugin-catalog.md).
+
+### User administration
+
+Run these from the project directory in an environment with database access.
+They use `DATABASE_URL` from the environment or local `.env`.
+
+```sh
+pnpm users:list
+pnpm users:admin "USER_ID_FROM_LIST"
+```
+
+The list shows each account's ID, name, email, role and ban status. Promotion
+sets that existing account's global role to `admin` (including catalog and user
+management permissions); it does not create an account or remove a ban. An
+unknown ID fails without changing any accounts. Refresh the app after promotion.
