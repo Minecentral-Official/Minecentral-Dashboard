@@ -80,9 +80,11 @@ test('create, navigate, edit, share, archive, restore and delete a private works
   ).toBeVisible();
   await teammate.goto(`${workspaceUrl}/settings`);
   await expect(
-    teammate.getByText(
-      'Only the owner and workspace admins can edit these settings.',
-    ),
+    teammate
+      .getByRole('main')
+      .getByText(
+        'Only the owner and workspace admins can edit these settings.',
+      ),
   ).toBeVisible();
   await expect(
     teammate.getByRole('button', { name: 'Save changes' }),

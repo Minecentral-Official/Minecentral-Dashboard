@@ -15,6 +15,13 @@
       "when": 1790267203984,
       "tag": "0001_server_workspaces",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790274340768,
+      "tag": "0002_plugin_catalog",
+      "breakpoints": true
     }
   ]
 }

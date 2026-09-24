@@ -23,3 +23,6 @@ export * from '@/lib/activity/schemas/recent-activity.table';
 
 // Private managed server workspaces (independent of public server listings).
 export * from '@/features/workspaces/schemas/workspace.table';
+
+// Canonical source-attributed plugin catalog.
+export * from '@/features/catalog/schemas/catalog.table';

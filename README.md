@@ -92,3 +92,7 @@ Open `http://localhost:3000`. Current routes include `/plugins`, `/serverlist`, 
 Use the issue's requirements and acceptance criteria to bound the work. Preserve legacy identities, private data, files and URLs according to the migration contract; a proposed “archive/remove” disposition is not an instruction to delete production records. Keep planning documents distinct from implemented behavior and record validation evidence when completing an issue.
 
 Workspace browser checks: `pnpm exec playwright install --with-deps chromium`, then `pnpm test:e2e`. The runner uses a disposable loopback database and synthetic sessions; it does not connect to your configured database.
+
+### Plugin catalog
+
+The source-attributed catalog is at `/discover/plugins`. Curators/admins can queue Modrinth or Hangar imports and manage manual projects at `/admin/catalog`; `/admin/sources` shows sync status. Apply `pnpm db:migrate`, then run `pnpm catalog:sync` to process queued work. Schedule that command every five minutes for continued refreshes. See the [catalog architecture, source policy and operations guide](docs/development/plugin-catalog.md).
