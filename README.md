@@ -67,24 +67,23 @@ pnpm db:migrate
 pnpm dev
 ```
 
-For an existing database, follow the [baseline and migration workflow](docs/development/database-workflow.md) first. Do not run the initial CREATE TABLE migration over existing tables. `db:push` is limited to disposable development experiments; production uses reviewed, tracked migrations.
+For a disposable database with old tables, run `pnpm db:reset --confirm` once to erase and rebuild the schema. For subsequent schema changes, use `pnpm db:migrate`. See the [database workflow](docs/development/database-workflow.md).
 
 Open `http://localhost:3000`. Current routes include `/plugins`, `/serverlist`, `/sign-in` and `/dashboard`. After applying migration 0001 and setting `FEATURE_V2_WORKSPACES=true`, open `/servers` for private workspaces; see the [workspace guide](docs/development/server-workspaces.md). To enable Discord, set its client ID/secret and register `<FRONTEND_URL>/api/auth/callback/discord`; if `DISCORD_REDIRECT` is set it must match exactly. GitHub is optional. Automatic cross-provider account linking is disabled. Follow the [live sign-in checklist](docs/development/platform-foundation.md#authentication-27) in an environment with database access. Uploads require an UploadThing development token and reachable callbacks.
 
 ## Commands and verification
 
-| Command                                                | Purpose                                                                        |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `pnpm dev`                                             | Development server                                                             |
-| `pnpm build`, `pnpm start`                             | Build and serve with configured runtime integrations                           |
-| `pnpm typecheck`, `pnpm lint`                          | Next route types/TypeScript and ESLint                                         |
-| `pnpm test`                                            | Unit and isolated database/service integration tests                           |
-| `pnpm test:unit`, `pnpm test:integration`              | Individual test layers                                                         |
-| `pnpm db:generate --name change_name`, `pnpm db:check` | Generate/review SQL and validate migration snapshots                           |
-| `pnpm db:migrate`                                      | Apply tracked SQL to the configured database                                   |
-| `pnpm db:baseline`                                     | Explicitly adopt a structurally matching existing schema; read the guide first |
-| `pnpm db:studio`                                       | Database browser; can edit configured data                                     |
-| `node scripts/with-test-env.mjs pnpm build`            | Isolated build check without developer/provider secrets                        |
+| Command                                                | Purpose                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| `pnpm dev`                                             | Development server                                      |
+| `pnpm build`, `pnpm start`                             | Build and serve with configured runtime integrations    |
+| `pnpm typecheck`, `pnpm lint`                          | Next route types/TypeScript and ESLint                  |
+| `pnpm test`                                            | Unit and isolated database/service integration tests    |
+| `pnpm test:unit`, `pnpm test:integration`              | Individual test layers                                  |
+| `pnpm db:generate --name change_name`, `pnpm db:check` | Generate/review SQL and validate migration snapshots    |
+| `pnpm db:migrate`                                      | Apply tracked SQL to the configured database            |
+| `pnpm db:studio`                                       | Database browser; can edit configured data              |
+| `node scripts/with-test-env.mjs pnpm build`            | Isolated build check without developer/provider secrets |
 
 [Testing and CI](docs/development/testing-and-ci.md) explains fixtures, manual end-to-end boundaries and the required GitHub check. [Platform foundation](docs/development/platform-foundation.md) records architecture, roles and authentication behavior. Passing isolated checks does not prove live OAuth, upload or production database connectivity.
 

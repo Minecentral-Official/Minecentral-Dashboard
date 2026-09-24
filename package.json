@@ -18,7 +18,7 @@
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
     "db:migrate": "tsx scripts/migrate.ts",
-    "db:baseline": "tsx scripts/baseline.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   applyMigrations,
-  schemaDifferences,
   schemaFingerprint,
 } from '../../scripts/migration-utils';
 
@@ -26,12 +25,14 @@ describe('migration safety against PostgreSQL', () => {
     expect(await applyMigrations(client)).toBe(0);
     expect(await schemaFingerprint(client)).toEqual(before);
   });
-  it('refuses an existing unbaselined database without changing its data', async () => {
+  it('refuses an existing database without migration history without changing its data', async () => {
     const client = database();
     await client.exec(
       "CREATE TABLE existing (value text); INSERT INTO existing VALUES ('keep me')",
     );
-    await expect(applyMigrations(client)).rejects.toThrow('unbaselined');
+    await expect(applyMigrations(client)).rejects.toThrow(
+      'without migration history',
+    );
     expect((await client.query('SELECT * FROM existing')).rows).toEqual([
       { value: 'keep me' },
     ]);
@@ -43,37 +44,23 @@ describe('migration safety against PostgreSQL', () => {
       ).rows,
     ).toEqual([{ name: null }]);
   });
-  it('identifies schema drift without exposing default literals or changing records', async () => {
+  it('explicitly rebuilds disposable existing schemas and records all migrations', async () => {
     const client = database();
     await client.exec(
-      "CREATE TABLE sample (id integer PRIMARY KEY, note text DEFAULT 'private-value'); INSERT INTO sample (id) VALUES (1)",
+      "CREATE TABLE obsolete (value text); INSERT INTO obsolete VALUES ('discard')",
     );
-    const expected = await schemaFingerprint(client);
-    expect(schemaDifferences(expected, expected)).toEqual([]);
-    await client.exec(
-      "ALTER TABLE sample ALTER COLUMN note SET DEFAULT 'another-private-value'; ALTER TABLE sample ADD COLUMN extra text; CREATE INDEX sample_note_idx ON sample (note)",
-    );
-    const differences = schemaDifferences(
-      expected,
-      await schemaFingerprint(client),
-    );
-    expect(differences).toContain(
-      'columns ["sample","note"]: differs in column_default',
-    );
-    expect(differences).toContain(
-      'columns ["sample","extra"]: extra in database',
-    );
-    expect(differences).toContain(
-      'indexes ["sample","sample_note_idx"]: extra in database',
-    );
-    expect(differences.join(' ')).not.toContain('private-value');
-    expect((await client.query('SELECT note FROM sample')).rows).toEqual([
-      { note: 'private-value' },
-    ]);
-    await client.exec('ALTER TABLE sample DROP COLUMN note');
+    expect(await applyMigrations(client, { reset: true })).toBe(2);
     expect(
-      schemaDifferences(expected, await schemaFingerprint(client)),
-    ).toContain('columns ["sample","note"]: missing from database');
+      (await client.query("SELECT to_regclass('public.obsolete') AS name"))
+        .rows,
+    ).toEqual([{ name: null }]);
+    expect(
+      new Set(
+        (await schemaFingerprint(client)).columns.map((row) => row.table_name),
+      ).size,
+    ).toBe(17);
+    expect(await applyMigrations(client)).toBe(0);
+    expect(await applyMigrations(client, { reset: true })).toBe(2);
   });
   it('rejects changed migration history', async () => {
     const client = database();

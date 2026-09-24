@@ -4,7 +4,7 @@ This epic implements private server workspaces independently of legacy public li
 
 ## Enable and migrate
 
-The feature remains behind `FEATURE_V2_WORKSPACES=false` by default. On a dedicated development/staging database, follow [the migration workflow](database-workflow.md): an existing legacy database must have its baseline verified/adopted before applying tracked migrations. `0001_server_workspaces.sql` adds three new tables without altering legacy records. Back up and rehearse first; no migration is run against the developer's configured database by tests or this implementation.
+The feature remains behind `FEATURE_V2_WORKSPACES=false` by default. On a dedicated development/staging database, follow [the migration workflow](database-workflow.md): start with a fresh database, or use `pnpm db:reset --confirm` to rebuild a disposable database containing old tables. `0001_server_workspaces.sql` adds three new tables without altering legacy records. Back up and rehearse first; no migration is run against the developer's configured database by tests or this implementation.
 
 Set `FEATURE_V2_WORKSPACES=true` in the target environment, then build/restart the app. Sign in and open `/servers`, or choose **My Servers** in the dashboard. Both route access and every workspace action enforce the feature flag. Disabled routes are unavailable and cannot be enabled through submitted form fields.
 
