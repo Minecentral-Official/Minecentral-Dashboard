@@ -38,8 +38,8 @@ export default function LandingPage() {
                       Your Complete Minecraft Solution
                     </h1>
                     <p className='max-w-[600px] text-muted-foreground md:text-xl'>
-                      Advertise to players and discover community-made
-                      resources - all in one place.
+                      Advertise to players and discover community-made resources
+                      - all in one place.
                     </p>
                   </div>
                   <div className='flex flex-col gap-2 min-[400px]:flex-row'>
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 </div>
                 <div className='flex items-center justify-center'>
                   <Image
-                    src='/host/splash.png?height=550&width=350'
+                    src='/host/splash.png'
                     width={550}
                     height={350}
                     alt='Hero Image'
@@ -86,7 +86,7 @@ export default function LandingPage() {
                   <Card key={i} className='overflow-hidden'>
                     <CardHeader className='p-0'>
                       <Image
-                        src={`/placeholder.png?height=200&width=400&text=Server+${i + 1}`}
+                        src={`/placeholder.png`}
                         width={400}
                         height={200}
                         alt={`Server ${i + 1}`}
@@ -151,7 +151,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent>
                     <Image
-                      src='/placeholder.png?height=150&width=350&text=Plugins'
+                      src='/placeholder.png'
                       width={350}
                       height={150}
                       alt='Plugins'
@@ -173,7 +173,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent>
                     <Image
-                      src='/placeholder.png?height=150&width=350&text=Mods'
+                      src='/placeholder.png'
                       width={350}
                       height={150}
                       alt='Mods'
@@ -195,7 +195,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent>
                     <Image
-                      src='/placeholder.png?height=150&width=350&text=Shaders'
+                      src='/placeholder.png'
                       width={350}
                       height={150}
                       alt='Shaders'

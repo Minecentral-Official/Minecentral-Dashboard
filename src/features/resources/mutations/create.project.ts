@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import { resourceTable } from '@/features/resources/schemas/resource.table';
 import { db } from '@/lib/db';

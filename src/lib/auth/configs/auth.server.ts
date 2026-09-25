@@ -1,5 +1,8 @@
+import 'server-only';
+
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { nextCookies } from 'better-auth/next-js';
 import { admin } from 'better-auth/plugins';
 
 import { db } from '@/lib/db';
@@ -12,6 +15,10 @@ import {
 import { serverEnv } from '@/lib/env/server.env';
 
 export const auth = betterAuth({
+  baseURL: serverEnv.FRONTEND_URL,
+  secret: serverEnv.BETTER_AUTH_SECRET,
+  // State validation can fail before the per-attempt error callback is available.
+  onAPIError: { errorURL: `${serverEnv.FRONTEND_URL}/sign-in` },
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema: {
@@ -22,16 +29,33 @@ export const auth = betterAuth({
     },
   }),
   socialProviders: {
-    discord: {
-      clientId: serverEnv.DISCORD_CLIENT_ID,
-      clientSecret: serverEnv.DISCORD_CLIENT_SECRET,
-      redirectURI: serverEnv.DISCORD_REDIRECT,
-    },
-    github: {
-      clientId: serverEnv.GITHUB_CLIENT_ID,
-      clientSecret: serverEnv.GITHUB_CLIENT_SECRET,
-    },
+    ...(serverEnv.DISCORD_CLIENT_ID && serverEnv.DISCORD_CLIENT_SECRET ?
+      {
+        discord: {
+          clientId: serverEnv.DISCORD_CLIENT_ID,
+          clientSecret: serverEnv.DISCORD_CLIENT_SECRET,
+          redirectURI: `${serverEnv.FRONTEND_URL}/api/auth/callback/discord`,
+        },
+      }
+    : {}),
+    ...(serverEnv.GITHUB_CLIENT_ID && serverEnv.GITHUB_CLIENT_SECRET ?
+      {
+        github: {
+          clientId: serverEnv.GITHUB_CLIENT_ID,
+          clientSecret: serverEnv.GITHUB_CLIENT_SECRET,
+        },
+      }
+    : {}),
   },
-  trustedOrigins: ['https://minecentral.net', 'https://www.minecentral.net'],
-  plugins: [admin()],
+  account: { accountLinking: { enabled: false } },
+  trustedOrigins: [serverEnv.FRONTEND_URL],
+  advanced: {
+    useSecureCookies: serverEnv.NODE_ENV === 'production',
+    disableOriginCheck: false,
+    disableCSRFCheck: false,
+  },
+  plugins: [
+    admin({ defaultRole: 'user', adminRoles: ['admin'] }),
+    nextCookies(),
+  ],
 });

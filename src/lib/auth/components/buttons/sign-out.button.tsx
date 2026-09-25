@@ -1,26 +1,22 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { authClient } from '@/lib/auth/configs/auth.client';
+import useSignOut from '@/lib/auth/hooks/use-sign-out';
 
 export default function SignOutButton() {
-  const router = useRouter();
+  const { handleSignOut, pending } = useSignOut();
   return (
     <Button
-      variant='destructive'
-      onClick={async () =>
-        await authClient.signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              router.push('/sign-in');
-            },
-          },
-        })
-      }
+      variant='outline'
+      size='sm'
+      className='shrink-0'
+      disabled={pending}
+      onClick={handleSignOut}
     >
-      Sign Out
+      <LogOut aria-hidden='true' />
+      {pending ? 'Signing out…' : 'Sign out'}
     </Button>
   );
 }

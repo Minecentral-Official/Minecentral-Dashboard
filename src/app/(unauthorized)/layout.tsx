@@ -1,17 +1,6 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-import { redirect } from 'next/navigation';
-
-import getSession from '@/lib/auth/helpers/get-session';
-
-export default async function UnauthorizeGuard({
-  children,
-}: PropsWithChildren) {
-  const session = await getSession();
-
-  if (session) {
-    redirect('/dashboard');
-  }
-
-  return <>{children}</>;
+// Sign-in owns the return destination and existing-session redirect.
+export default function Layout({ children }: PropsWithChildren) {
+  return children;
 }

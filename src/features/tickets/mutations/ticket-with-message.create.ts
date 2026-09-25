@@ -1,7 +1,6 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
-import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { ticketCreateWithMessageZod } from '@/features/tickets/schemas/zod/ticket-with-message.zod';
@@ -10,6 +9,7 @@ import {
   activityAddAction,
 } from '@/lib/activity/mutations/activity.add';
 import validateSession from '@/lib/auth/helpers/validate-session';
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 import { ticket, ticketMessage } from '@/lib/db/schema';
 

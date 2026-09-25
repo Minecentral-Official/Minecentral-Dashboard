@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
-
 import serverUpdate from '@/features/serverlist/mutations/update.server';
 import { serverGetById } from '@/features/serverlist/queries/server-by-id.get';
 import userCanEditServer from '@/features/serverlist/queries/user-can-edit-server.boolean';
@@ -9,10 +7,14 @@ import {
   serverIsPublicReady,
   serverMissingRequiredFields,
 } from '@/features/serverlist/util/server-public-ready';
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 
 export async function serverPublishAction(serverId: string) {
   if (!(await userCanEditServer(serverId)))
-    return { success: false, message: 'You are not allowed to publish this listing.' };
+    return {
+      success: false,
+      message: 'You are not allowed to publish this listing.',
+    };
 
   const server = await serverGetById(serverId);
   if (!server) return { success: false, message: 'Server listing not found.' };

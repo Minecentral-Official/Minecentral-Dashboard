@@ -1,8 +1,7 @@
-'use server';
-
-import { revalidateTag } from 'next/cache';
+import 'server-only';
 
 import serverUpdate from '@/features/serverlist/mutations/update.server';
+import { invalidateTag as revalidateTag } from '@/lib/cache/invalidate-tag';
 import { db } from '@/lib/db';
 import { serverVotifierTable } from '@/lib/db/schema';
 

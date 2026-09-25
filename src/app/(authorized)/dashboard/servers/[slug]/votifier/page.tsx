@@ -1,4 +1,5 @@
 import { RadioTowerIcon } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 import {
   Card,
@@ -10,6 +11,7 @@ import {
 import ServerUpdateVotifierForm from '@/features/serverlist/components/forms/update-votifier.form';
 import { serverGetBySlug } from '@/features/serverlist/queries/server-by-slug.get';
 import { serverGetIdBySlug } from '@/features/serverlist/queries/server-get-id-by-slug.get';
+import userCanEditServer from '@/features/serverlist/queries/user-can-edit-server.boolean';
 import { serverGetVotifierByServerId } from '@/features/serverlist/queries/votifier-by-server-id';
 
 type PageProps = {
@@ -21,6 +23,7 @@ export default async function VotifierPage({ params }: PageProps) {
   const { slug } = await params;
 
   const serverId = (await serverGetIdBySlug(slug))!;
+  if (!serverId || !(await userCanEditServer(serverId))) notFound();
   const server = await serverGetBySlug(slug);
   //   const server = await serverGetById(serverId)
   const votifier = await serverGetVotifierByServerId(serverId);

@@ -8,8 +8,9 @@ export default async function resourceGetReleaseByResourceId(id: string) {
   'use cache';
   cacheLife('minutes');
   cacheTag(`release-id-${id}`);
+  if (!/^\d+$/.test(id) || !Number.isSafeInteger(Number(id))) return undefined;
   const release = await db.query.resourceReleaseTable.findFirst({
-    where: eq(resourceReleaseTable.pluginId, id),
+    where: eq(resourceReleaseTable.id, Number(id)),
     with: { plugin: true },
   });
   return release;

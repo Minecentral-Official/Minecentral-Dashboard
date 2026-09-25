@@ -1,43 +1,67 @@
-import DiscordSocialSignIn from '@/lib/auth/components/buttons/social-sign-in/discord.social-sign-in';
-import GithubSocialSignIn from '@/lib/auth/components/buttons/social-sign-in/github.social-sign-in';
+'use client';
 
-export default function SignInForm() {
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth/configs/auth.client';
+import { safeReturnPath } from '@/lib/auth/helpers/safe-return-path';
+
+type Provider = 'discord' | 'github';
+export default function SignInForm({
+  providers,
+  returnTo = '/dashboard',
+  failed = false,
+}: {
+  providers: Provider[];
+  returnTo?: string;
+  failed?: boolean;
+}) {
+  const [pending, setPending] = useState<Provider | null>(null);
+  const [error, setError] = useState(
+    failed ?
+      'Sign-in was canceled or could not be completed. Please try again.'
+    : '',
+  );
+  async function signIn(provider: Provider) {
+    setError('');
+    setPending(provider);
+    try {
+      const callbackURL = safeReturnPath(returnTo);
+      const result = await authClient.signIn.social({
+        provider,
+        callbackURL,
+        errorCallbackURL: `/sign-in?error=oauth&returnTo=${encodeURIComponent(callbackURL)}`,
+      });
+      if (result.error) {
+        setError('Sign-in could not be started. Please try again.');
+        setPending(null);
+      }
+    } catch {
+      setError('Unable to reach sign-in. Please try again.');
+      setPending(null);
+    }
+  }
   return (
     <div className='flex flex-col gap-2'>
-      <DiscordSocialSignIn />
-      <GithubSocialSignIn />
+      {error && (
+        <p role='alert' className='text-sm text-destructive'>
+          {error}
+        </p>
+      )}
+      {providers.length === 0 && (
+        <p role='status'>Sign-in is not configured for this environment.</p>
+      )}
+      {providers.map((provider) => (
+        <Button
+          key={provider}
+          disabled={pending !== null}
+          onClick={() => signIn(provider)}
+        >
+          {pending === provider ?
+            'Connecting…'
+          : `Continue with ${provider === 'discord' ? 'Discord' : 'GitHub'}`}
+        </Button>
+      ))}
     </div>
   );
 }
-
-// == This is where I got the buttom template ==
-// export default function ButtonDemo() {
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <Button className="bg-[#DB4437] text-white after:flex-1 hover:bg-[#DB4437]/90">
-//         <span className="pointer-events-none me-2 flex-1">
-//           <RiGoogleFill className="opacity-60" size={16} aria-hidden="true" />
-//         </span>
-//         Login with Google
-//       </Button>
-//       <Button className="bg-[#14171a] text-white after:flex-1 hover:bg-[#14171a]/90">
-//         <span className="pointer-events-none me-2 flex-1">
-//           <RiTwitterXFill className="opacity-60" size={16} aria-hidden="true" />
-//         </span>
-//         Login with X
-//       </Button>
-//       <Button className="bg-[#1877f2] text-white after:flex-1 hover:bg-[#1877f2]/90">
-//         <span className="pointer-events-none me-2 flex-1">
-//           <RiFacebookFill className="opacity-60" size={16} aria-hidden="true" />
-//         </span>
-//         Login with Facebook
-//       </Button>
-//       <Button className="bg-[#333333] text-white after:flex-1 hover:bg-[#333333]/90">
-//         <span className="pointer-events-none me-2 flex-1">
-//           <RiGithubFill className="opacity-60" size={16} aria-hidden="true" />
-//         </span>
-//         Login with GitHub
-//       </Button>
-//     </div>
-//   );
-// }

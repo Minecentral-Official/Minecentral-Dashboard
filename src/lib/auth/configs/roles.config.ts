@@ -1,2 +1,2 @@
-export const roleConfig = ['admin', 'user'] as const;
-export type T_Roles = typeof roleConfig[number];
+export const roleConfig = ['user', 'curator', 'moderator', 'admin'] as const;
+export type T_Roles = (typeof roleConfig)[number];

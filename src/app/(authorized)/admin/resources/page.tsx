@@ -20,14 +20,8 @@ export default function Page() {
 
   const [resources, setResources] = useState<T_DTOResource[]>([]);
 
-  useEffect(() => {
-    // updateSearchParams({ q: searchQuery });
-    performSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
-
   //Performs the search query, returning and updating the plugins to be shown to user
-  const performSearch = async () => {
+  async function performSearch() {
     const params = new URLSearchParams();
     SearchParamsConsume(params, {
       p: page > 0 ? page.toString() : null,
@@ -44,7 +38,13 @@ export default function Page() {
           toast.error('Query error:' + parse.error);
         }
       });
-  };
+  }
+
+  useEffect(() => {
+    // updateSearchParams({ q: searchQuery });
+    performSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   return (
     <>

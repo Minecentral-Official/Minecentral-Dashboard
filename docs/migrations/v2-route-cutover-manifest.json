@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "status": "Planning only; not deployment configuration",
+  "source_baseline": "05c4456a230802b1c7b970f4a17e093209753652",
+  "route_contract": "../product/v2-information-architecture.md",
+  "plan": "v2-legacy-migration-and-archival-plan.md",
+  "routes": [
+    {
+      "source": "/account",
+      "decision": "Remain",
+      "behavior": "Becomes canonical account page; remove current redirect to /dashboard/account before reversing that alias.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/admin",
+      "decision": "Remain",
+      "behavior": "Protected operational overview; preserve role checks on both pages and actions.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/admin/resources",
+      "decision": "Remain",
+      "behavior": "Keep legacy resource moderation; not an alias for the new canonical catalog.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/account",
+      "decision": "Redirect 308",
+      "behavior": "`/account`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/account",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/account/settings",
+      "decision": "Redirect 308",
+      "behavior": "`/account/settings`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/account/settings",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/tickets/[ticketId]",
+      "decision": "Redirect 308",
+      "behavior": "`/support/tickets/[ticketId]`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/support/tickets/[ticketId]",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/tickets/create",
+      "decision": "Redirect 308",
+      "behavior": "`/support/tickets/create`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/support/tickets/create",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/tickets",
+      "decision": "Redirect 308",
+      "behavior": "`/support/tickets`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/support/tickets",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/worlds",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/dashboard",
+      "decision": "Redirect 308",
+      "behavior": "`/servers`; retain auth and object permissions at destination.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "destination": "/servers",
+      "observation_status": 307,
+      "observation_cache_control": "no-store",
+      "steady_state_status": 308
+    },
+    {
+      "source": "/dashboard/resources/collections",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/dashboard/resources/liked",
+      "decision": "Remain",
+      "behavior": "Keep existing likes; account-menu entry \u201cLiked resources\u201d.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources",
+      "decision": "Remain",
+      "behavior": "Keep owned resources and create flow; account-menu entry \u201cMy resources\u201d.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]/description",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]/links",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]/tags",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]/versions/create",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/resources/[slug]/versions",
+      "decision": "Remain",
+      "behavior": "Keep resource editor section and existing slug; enforce owner/admin permissions on reads, actions and uploads according to explicit policy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/servers",
+      "decision": "Remain",
+      "behavior": "Keep owned public listings; label \u201cMy server listings\u201d, never My Servers.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/servers/saved",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/dashboard/servers/votes",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/dashboard/servers/[slug]",
+      "decision": "Remain",
+      "behavior": "Keep owner-only public listing editor, readiness/publish/delete behavior.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/dashboard/servers/[slug]/votifier",
+      "decision": "Remain",
+      "behavior": "Keep owner-only listing vote settings; not workspace agent settings.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/datapacks",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/modpacks",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/mods",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/plugins/[slug]",
+      "decision": "Remain",
+      "behavior": "Keep legacy published resource detail; enforce draft visibility; no inferred catalog mapping.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/plugins/[slug]/versions",
+      "decision": "Remain",
+      "behavior": "Keep original release identity and version links; fix download contract separately.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/plugins",
+      "decision": "Remain",
+      "behavior": "Keep legacy resource browsing and current filter contract; link from legacy/footer navigation.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/resourcepacks",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/shaders",
+      "decision": "Retire 410",
+      "behavior": "Remove placeholder navigation; offer Discover or My Servers as explicit links. Preserve any associated legacy records.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/",
+      "decision": "Remain",
+      "behavior": "Product landing at the same URL; navigation adopts v2 hierarchy.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/serverlist/[slug]",
+      "decision": "Remain",
+      "behavior": "Keep public published listing detail and voting; preserve listing slug.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/serverlist",
+      "decision": "Remain",
+      "behavior": "Keep public listing search, filters and voting; secondary/footer \u201cServer list\u201d link.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/user/[slug]",
+      "decision": "Retire 410",
+      "behavior": "No implemented public profile or equivalent; offer public discovery, never redirect to private account data.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    },
+    {
+      "source": "/sign-in",
+      "decision": "Remain",
+      "behavior": "Accept safe return destination; signed-in default goes to /servers, not /dashboard.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/auth/[...all]",
+      "decision": "Remain API",
+      "behavior": "GET/POST stay delegated to auth; preserve provider callback URLs and identity continuity.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/download",
+      "decision": "Remain API",
+      "behavior": "GET rId remains numeric release-ID contract from existing version links; fix the parent-ID lookup mismatch before cutover; preserve stored release IDs/files. Missing/invalid IDs return a defined 4xx, never an arbitrary release.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/redirect-resource/[idorslug]",
+      "decision": "Remain API",
+      "behavior": "GET resolves legacy resource ID or slug; public target /plugins/[slug], dashboard=true target /dashboard/resources/[slug]. Preserve temporary 307 while slug may change; enforce visibility/owner permissions and return 404 for unavailable targets.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/resources/[slug]",
+      "decision": "Remain API",
+      "behavior": "GET legacy ID/slug lookup remains; public accepted data only, or explicit authorized owner/admin access; use a public DTO rather than raw private rows.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/resources/all",
+      "decision": "Remain API",
+      "behavior": "GET remains for legacy admin table; enforce admin role and JSON 401/403 instead of exposing all statuses publicly.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/resources",
+      "decision": "Remain API",
+      "behavior": "GET accepted-resource search stays compatible with q/c/v/l/p/limit/type; do not reinterpret it as the new catalog API.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/revalidate",
+      "decision": "Remain API",
+      "behavior": "POST remains internal secret-authorized cache invalidation; preserve callback/self-call consumers until replaced.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/uploadthing",
+      "decision": "Remain API",
+      "behavior": "GET/POST and existing feature route keys remain for uploads/callbacks; preserve owner checks and storage reconciliation.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement."
+    },
+    {
+      "source": "/api/webhook/github",
+      "decision": "Retire 410 after consumer check",
+      "behavior": "POST retirement: return JSON 410 and do not log payload; confirm/unregister any provider consumer under #21 before disabling. No UI redirect.",
+      "activation": "Only after destination/data/access verification in M5\u2013M6; provider consumers must be reconciled before API retirement.",
+      "steady_state_status": 410
+    }
+  ]
+}

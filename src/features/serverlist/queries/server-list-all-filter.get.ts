@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import {
   and,
@@ -77,8 +77,7 @@ export default async function serverListAllFiltered({
   }
 
   const where = and(...conditions);
-  const votesSql =
-    sql<number>`(SELECT count(*) from ${serverVotesTable} WHERE "serverId" = ${serverTable.id})`;
+  const votesSql = sql<number>`(SELECT count(*) from ${serverVotesTable} WHERE "serverId" = ${serverTable.id})`;
 
   const orderBy =
     sort === 'top' ? [desc(votesSql), desc(serverTable.updatedAt)]
