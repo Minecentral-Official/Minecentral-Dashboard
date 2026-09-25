@@ -86,6 +86,7 @@ export async function saveConfigAction(
     const result = await configService.save(actor, workspaceId, id, {
       content,
       expectedRevision: Number(data.get('expectedRevision')),
+      expectedSchemaId: data.get('schemaReleaseId') || null,
       message: data.get('message') ?? '',
     });
     refresh(workspaceId);

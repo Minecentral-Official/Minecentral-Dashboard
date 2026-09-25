@@ -13,9 +13,16 @@ import {
   configSaveInput,
 } from '@/features/workspaces/schemas/config-input';
 import {
+  ConfigValidationError,
   inspectConfig,
   serializeConfig,
 } from '@/features/workspaces/services/config-yaml';
+import {
+  fieldIssues,
+  nodeValue,
+  visualDocument,
+} from '@/features/workspaces/services/visual-document';
+import { createVisualSchemaService } from '@/features/workspaces/services/visual-schema-service';
 import { WorkspaceError } from '@/features/workspaces/services/workspace-policy';
 import { createWorkspaceService } from '@/features/workspaces/services/workspace-service';
 import {
@@ -147,18 +154,16 @@ export function createConfigService(db: WorkspaceDatabase) {
         diagnostics: inspectConfig(content, record.profile).diagnostics,
       };
     const number = record.currentRevision + 1;
-    await tx
-      .insert(revision)
-      .values({
-        configId: record.id,
-        number,
-        content,
-        contentHash: hash(content),
-        authorId: actor,
-        source,
-        message,
-        restoredFrom,
-      });
+    await tx.insert(revision).values({
+      configId: record.id,
+      number,
+      content,
+      contentHash: hash(content),
+      authorId: actor,
+      source,
+      message,
+      restoredFrom,
+    });
     await tx
       .update(file)
       .set({ currentRevision: number, updatedAt: new Date() })
@@ -253,16 +258,14 @@ export function createConfigService(db: WorkspaceDatabase) {
           .insert(file)
           .values({ ...values, ...link, workspaceId, source })
           .returning();
-        await tx
-          .insert(revision)
-          .values({
-            configId: record.id,
-            number: 1,
-            content,
-            contentHash: hash(content),
-            authorId: actor,
-            source,
-          });
+        await tx.insert(revision).values({
+          configId: record.id,
+          number: 1,
+          content,
+          contentHash: hash(content),
+          authorId: actor,
+          source,
+        });
         await log(tx, actor, workspaceId, 'Configuration imported');
         return record;
       });
@@ -273,6 +276,34 @@ export function createConfigService(db: WorkspaceDatabase) {
         await writable(tx, actor, workspaceId);
         const record = await getFile(tx, workspaceId, id);
         expected(record, values.expectedRevision);
+        serializeConfig(values.content, record.profile);
+        const selected = await createVisualSchemaService(
+          tx as unknown as WorkspaceDatabase,
+        ).select(actor, workspaceId, id);
+        if (
+          values.expectedSchemaId !== undefined &&
+          values.expectedSchemaId !== selected.releaseId
+        )
+          throw new WorkspaceError(
+            'Schema coverage changed since you opened this file. Keep your draft and reload before saving.',
+          );
+        if (selected.schema) {
+          const issues = fieldIssues(
+            selected.schema.root,
+            nodeValue(visualDocument(values.content).contents),
+          );
+          if (issues.some((i) => i.severity === 'error'))
+            throw new ConfigValidationError(
+              issues
+                .filter((i) => i.severity === 'error')
+                .slice(0, 20)
+                .map((i) => ({
+                  category: 'schema',
+                  severity: 'error',
+                  message: `${i.path.join('.')}: ${i.message}`,
+                })),
+            );
+        }
         return append(
           tx,
           actor,

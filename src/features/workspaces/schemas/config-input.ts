@@ -36,6 +36,7 @@ export const configMetadata = z.object({
 export const configSaveInput = z.object({
   content: z.string().max(CONFIG_MAX_BYTES),
   expectedRevision: z.number().int().positive(),
+  expectedSchemaId: z.string().uuid().nullable().optional(),
   message: z.string().trim().max(500).default(''),
 });
 export type ConfigDiagnostic = {

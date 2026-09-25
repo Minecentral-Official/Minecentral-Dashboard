@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { saveConfigAction } from '@/features/workspaces/actions/config.actions';
+import ConfigWorkbench from '@/features/workspaces/components/config-workbench';
 import { CONFIG_MAX_BYTES } from '@/features/workspaces/schemas/config-input';
 import { inspectConfig } from '@/features/workspaces/services/config-yaml';
 
@@ -14,6 +15,7 @@ import type {
   ConfigDiagnostic,
   ConfigProfile,
 } from '@/features/workspaces/schemas/config-input';
+import type { SchemaSelection } from '@/features/workspaces/services/visual-schema-service';
 
 export default function ConfigEditor({
   workspaceId,
@@ -22,6 +24,7 @@ export default function ConfigEditor({
   revision,
   profile,
   editable,
+  selection,
 }: {
   workspaceId: string;
   configId: string;
@@ -29,6 +32,7 @@ export default function ConfigEditor({
   revision: number;
   profile: ConfigProfile;
   editable: boolean;
+  selection: SchemaSelection;
 }) {
   const [content, setContent] = useState(initialContent);
   const [saved, setSaved] = useState(initialContent);
@@ -132,23 +136,39 @@ export default function ConfigEditor({
       )}
       <fieldset disabled={pending} className='space-y-4'>
         <input type='hidden' name='expectedRevision' value={head} />
-        <label className='block space-y-2 text-sm'>
-          YAML content
-          <textarea
-            ref={textarea}
-            name='content'
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-              setLocal(null);
-              setNotice('');
-            }}
-            readOnly={!editable}
-            spellCheck={false}
-            rows={22}
-            className='w-full rounded-lg border bg-background p-4 font-mono text-sm leading-6 focus-visible:outline-primary'
-          />
-        </label>
+        <ConfigWorkbench
+          content={content}
+          onChange={(text) => {
+            setContent(text);
+            setLocal(null);
+            setNotice('');
+          }}
+          selection={selection}
+          disabled={!editable || pending}
+          raw={
+            <label className='block space-y-2 text-sm'>
+              YAML content
+              <textarea
+                ref={textarea}
+                style={{
+                  fontFamily:
+                    'ui-monospace, SFMono-Regular, Consolas, monospace',
+                }}
+                name='content'
+                value={content}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                  setLocal(null);
+                  setNotice('');
+                }}
+                readOnly={!editable}
+                spellCheck={false}
+                rows={22}
+                className='w-full rounded-lg border bg-background p-4 font-mono text-sm leading-6 focus-visible:outline-primary'
+              />
+            </label>
+          }
+        />
         <div className='flex flex-wrap items-center gap-3'>
           {editable && (
             <Button type='submit'>
@@ -256,7 +276,11 @@ export default function ConfigEditor({
                   textarea.current?.setSelectionRange(offset, offset);
                 }}
               >
-                {d.category === 'schema' ? 'Schema warning' : 'YAML error'}
+                {d.category === 'schema' ?
+                  d.severity === 'error' ?
+                    'Schema error'
+                  : 'Schema warning'
+                : 'YAML error'}
                 {d.line ? ` · Line ${d.line}, column ${d.column}` : ''}:{' '}
                 {d.message}
               </button>

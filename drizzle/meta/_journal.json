@@ -43,6 +43,13 @@
       "when": 1790345339991,
       "tag": "0005_configuration_platform",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790353108736,
+      "tag": "0006_visual_config_schemas",
+      "breakpoints": true
     }
   ]
 }

@@ -14,7 +14,9 @@ test('record a stack from the catalog, edit versions and private notes, import a
   const page = await context.newPage();
   const name = `Stack ${testInfo.project.name}`;
   await page.goto('/servers/new');
-  await page.getByLabel('Server name', { exact: true }).fill(name);
+  await page
+    .getByRole('textbox', { name: 'Server name', exact: true })
+    .fill(name);
   await page
     .getByRole('button', { name: 'Create workspace', exact: true })
     .click();
@@ -37,6 +39,7 @@ test('record a stack from the catalog, edit versions and private notes, import a
     page.getByRole('main').getByText('Oak 1.0 → Oak 1.0', { exact: true }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Edit entry', exact: true }).click();
+  await expect(page).toHaveURL(/\/stack\/[0-9a-f-]{36}$/);
   const entryUrl = page.url();
   await page
     .getByRole('textbox', { name: 'Alias or purpose', exact: true })
@@ -113,7 +116,7 @@ test('record a stack from the catalog, edit versions and private notes, import a
   ).toBeVisible();
   await page.goto(`${base}/stack/import`);
   await page
-    .getByLabel('Plugin list or JSON manifest')
+    .getByRole('textbox', { name: 'Plugin list or JSON manifest', exact: true })
     .fill('Oak Permissions\nExternal Craft\nUnknown Fixture');
   await page.getByRole('button', { name: 'Preview import' }).click();
   await expect(
@@ -159,7 +162,9 @@ test('record a stack from the catalog, edit versions and private notes, import a
   await page
     .getByRole('button', { name: 'Archive workspace', exact: true })
     .click();
-  await page.getByLabel(`Type “${name}” to confirm`).fill(name);
+  await page
+    .getByRole('textbox', { name: `Type “${name}” to confirm`, exact: true })
+    .fill(name);
   await page
     .getByRole('button', { name: 'Permanently delete workspace', exact: true })
     .click();

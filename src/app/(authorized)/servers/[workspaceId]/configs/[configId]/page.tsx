@@ -10,6 +10,7 @@ import ConfigEditor from '@/features/workspaces/components/config-editor';
 import ConfigMetadataFields from '@/features/workspaces/components/config-metadata-fields';
 import WorkspaceActionForm from '@/features/workspaces/components/workspace-action-form';
 import { configService } from '@/features/workspaces/queries/config-access';
+import { visualSchemas } from '@/features/workspaces/queries/visual-schema-access';
 import {
   loadWorkspace,
   workspaceActor,
@@ -38,6 +39,7 @@ export default async function ConfigDetail({
       throw error;
     });
   const choices = await configService.choices(actor, workspaceId);
+  const selection = await visualSchemas.select(actor, workspaceId, configId);
   const editable =
     !workspace.archivedAt && canUseWorkspace(workspace.role, 'content');
   const { file, current } = result;
@@ -76,6 +78,7 @@ export default async function ConfigDetail({
         revision={current.number}
         profile={file.profile}
         editable={editable}
+        selection={selection}
       />
       {editable && (
         <details className='rounded-lg border p-4'>

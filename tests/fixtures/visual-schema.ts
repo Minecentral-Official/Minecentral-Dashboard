@@ -1,0 +1,146 @@
+import type { VisualSchema } from '@/features/workspaces/schemas/visual-schema';
+
+// Synthetic documentation/test fixture. Never automatically published as a real plugin schema.
+export const visualSchemaFixture: VisualSchema = {
+  formatVersion: 1,
+  key: 'oak-config',
+  release: 1,
+  title: 'Oak settings',
+  filename: 'config.yml',
+  target: { kind: 'plugin', versionRange: '>=1.0 <2.0', platform: 'paper' },
+  provenance: {
+    url: 'https://example.test/oak/config',
+    description:
+      'Synthetic reviewed configuration for automated editor tests, not a real plugin.',
+    verifiedVersion: '1.0',
+    verifiedAt: '2026-09-20T00:00:00Z',
+  },
+  root: {
+    key: 'root',
+    label: 'Plugin settings',
+    type: 'object',
+    fields: [
+      {
+        key: 'enabled',
+        label: 'Plugin enabled',
+        type: 'boolean',
+        default: true,
+        required: true,
+        description: 'Enable the example plugin.',
+      },
+      {
+        key: 'mode',
+        label: 'Permission mode',
+        type: 'enum',
+        options: ['simple', 'advanced'],
+        default: 'simple',
+        description: 'Choose how the example plugin handles permissions.',
+      },
+      {
+        key: 'message',
+        label: 'Welcome message',
+        type: 'string',
+        default: 'Hello',
+        maxLength: 100,
+        examples: ['Welcome to our server!'],
+        link: 'https://example.test/oak/messages',
+      },
+      {
+        key: 'settings',
+        label: 'Connection settings',
+        type: 'object',
+        fields: [
+          {
+            key: 'timeout',
+            label: 'Timeout',
+            type: 'number',
+            integer: true,
+            min: 1,
+            max: 1000,
+            recommendedMin: 10,
+            recommendedMax: 60,
+            default: 30,
+            unit: 'seconds',
+            description: 'How long to wait for a response.',
+            caution: 'Long waits delay failure reporting.',
+          },
+          {
+            key: 'debug',
+            label: 'Debug logging',
+            type: 'boolean',
+            default: false,
+            visibleWhen: { path: ['mode'], equals: 'advanced' },
+          },
+        ],
+      },
+      {
+        key: 'servers',
+        label: 'Backend servers',
+        type: 'list',
+        default: [
+          { name: 'lobby', port: 25565 },
+          { name: 'survival', port: 25566 },
+        ],
+        maxLength: 10,
+        items: {
+          key: 'server',
+          label: 'Backend',
+          type: 'object',
+          fields: [
+            {
+              key: 'name',
+              label: 'Server name',
+              type: 'string',
+              required: true,
+              default: 'new-server',
+              minLength: 1,
+            },
+            {
+              key: 'port',
+              label: 'Port',
+              type: 'number',
+              integer: true,
+              min: 1,
+              max: 65535,
+              required: true,
+              default: 25565,
+            },
+          ],
+        },
+      },
+      {
+        key: 'groups',
+        label: 'Permission groups',
+        type: 'map',
+        keyMode: 'identifier',
+        default: { default: { prefix: 'Player', permissions: ['build'] } },
+        items: {
+          key: 'group',
+          label: 'Group',
+          type: 'object',
+          fields: [
+            {
+              key: 'prefix',
+              label: 'Prefix',
+              type: 'string',
+              default: 'Player',
+            },
+            {
+              key: 'permissions',
+              label: 'Permissions',
+              type: 'list',
+              default: [],
+              items: {
+                key: 'permission',
+                label: 'Permission',
+                type: 'string',
+                default: 'example.read',
+              },
+            },
+          ],
+        },
+      },
+      { key: 'custom', label: 'Scalar setting', type: 'scalar', default: null },
+    ],
+  },
+};
