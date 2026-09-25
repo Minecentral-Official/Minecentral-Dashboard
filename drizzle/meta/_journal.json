@@ -36,6 +36,13 @@
       "when": 1790280289034,
       "tag": "0004_compatibility_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790345339991,
+      "tag": "0005_configuration_platform",
+      "breakpoints": true
     }
   ]
 }

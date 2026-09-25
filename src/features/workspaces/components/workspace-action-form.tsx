@@ -12,15 +12,23 @@ export default function WorkspaceActionForm({
   label,
   children,
   destructive = false,
+  preserveValues = false,
 }: {
   action: WorkspaceFormAction;
   label: string;
   children?: ReactNode;
   destructive?: boolean;
+  preserveValues?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   return (
-    <form action={formAction} className='space-y-3'>
+    <form
+      action={formAction}
+      onReset={(event) => {
+        if (preserveValues) event.preventDefault();
+      }}
+      className='space-y-3'
+    >
       {state.error && (
         <p role='alert' className='text-sm text-destructive'>
           {state.error}

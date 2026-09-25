@@ -34,9 +34,8 @@ Writes lock the workspace row and use the existing catalog transaction lock to
 serialize source merges against version selection.
 
 Removing an entry requires an explicit confirmation and deletes its private
-notes. Workspace activity and the change outbox retain the removal event. There
-are no config files attached to stack entries yet. Future config/history foreign
-keys must restrict entry deletion until their export/retention policy exists.
+notes. Workspace activity and the change outbox retain the removal event. Linked configs and their revision history survive entry removal and are marked
+orphaned; see the [configuration platform](configuration-platform.md).
 Workspace deletion is restricted while entries exist; restore an archived
 workspace, remove its entries, then archive/delete it.
 

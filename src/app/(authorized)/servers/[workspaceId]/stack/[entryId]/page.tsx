@@ -12,6 +12,7 @@ import CommunityReportForm from '@/features/workspaces/components/community-repo
 import StackReleaseFilter from '@/features/workspaces/components/stack-release-filter';
 import StackVersionFields from '@/features/workspaces/components/stack-version-fields';
 import WorkspaceActionForm from '@/features/workspaces/components/workspace-action-form';
+import { configService } from '@/features/workspaces/queries/config-access';
 import { stackService } from '@/features/workspaces/queries/stack-access';
 import {
   loadWorkspace,
@@ -46,6 +47,7 @@ export default async function StackEntry({
     record.projectId,
     { all: query.all === 'true', page: Number(query.page) },
   );
+  const configs = await configService.list(actor, workspaceId, entryId);
   const editable =
     canUseWorkspace(workspace.role, 'content') && !workspace.archivedAt;
   const base = `/servers/${workspaceId}/stack`;
@@ -140,14 +142,43 @@ export default async function StackEntry({
           }}
         />
       )}
+      <section className='space-y-3 rounded-lg border p-5'>
+        <h3 className='text-xl font-semibold'>Configs</h3>
+        {configs.length ?
+          <ul className='space-y-2'>
+            {configs.map(({ file }) => (
+              <li key={file.id}>
+                <Link
+                  href={`/servers/${workspaceId}/configs/${file.id}`}
+                  className='break-all font-mono text-sm underline'
+                >
+                  {file.path}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        : <p className='text-sm text-muted-foreground'>
+            No configs linked to this plugin yet.
+          </p>
+        }
+        {editable && (
+          <Link
+            href={`/servers/${workspaceId}/configs/new?entryId=${entryId}`}
+            className='inline-block text-sm text-primary underline'
+          >
+            Import plugin config
+          </Link>
+        )}
+      </section>
       {editable && (
         <details className='rounded-lg border border-destructive/30 p-5'>
           <summary className='cursor-pointer font-semibold'>
             Remove plugin
           </summary>
           <p className='my-4 text-sm text-muted-foreground'>
-            Removal deletes this entry and its private notes. Workspace activity
-            is retained. No server files are changed.
+            Removal deletes this entry and its private notes. Linked configs are
+            kept and marked orphaned. Workspace activity is retained. No server
+            files are changed.
           </p>
           <WorkspaceActionForm
             action={removeStackAction.bind(null, workspaceId, entryId)}

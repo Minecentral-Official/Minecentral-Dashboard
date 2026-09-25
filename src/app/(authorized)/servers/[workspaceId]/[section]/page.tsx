@@ -4,10 +4,6 @@ import { notFound } from 'next/navigation';
 import { loadWorkspace } from '@/features/workspaces/queries/workspace-access';
 
 const descriptions: Record<string, [string, string]> = {
-  configs: [
-    'Configs',
-    'Configuration editing is not available yet. Keep setup notes in Settings while you prepare your server.',
-  ],
   updates: [
     'Updates',
     'Update readiness needs a recorded stack and version evidence. Those tools are not available yet.',

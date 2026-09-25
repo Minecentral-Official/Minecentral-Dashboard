@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { compatibilityService } from '@/features/workspaces/queries/compatibility-access';
+import { configService } from '@/features/workspaces/queries/config-access';
 import { stackService } from '@/features/workspaces/queries/stack-access';
 import {
   loadWorkspace,
@@ -23,6 +24,10 @@ export default async function WorkspaceOverview({
     workspace.id,
   );
   const compatibility = await compatibilityService.report(
+    await workspaceActor(),
+    workspace.id,
+  );
+  const configs = await configService.list(
     await workspaceActor(),
     workspace.id,
   );
@@ -55,9 +60,9 @@ export default async function WorkspaceOverview({
     ],
     [
       'configs',
-      'Config issues',
-      'Not checked',
-      'No configuration files have been analyzed.',
+      'Configs',
+      String(configs.length),
+      'Private YAML files and revision history.',
     ],
     [
       'diagnostics',
