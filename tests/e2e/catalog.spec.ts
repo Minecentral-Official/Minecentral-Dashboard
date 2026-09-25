@@ -15,11 +15,15 @@ test('public catalog filters, attributed releases, stable URLs and external-only
   await expect(
     page.getByRole('heading', { name: 'Plugin catalog', exact: true }),
   ).toBeVisible();
-  await page.getByLabel('Name or description').fill('Oak');
+  await page
+    .getByRole('textbox', { name: 'Name or description', exact: true })
+    .fill('Oak');
   await page
     .getByRole('combobox', { name: 'Platform', exact: true })
     .selectOption('paper');
-  await page.getByLabel('Minecraft version').fill('1.21.11');
+  await page
+    .getByRole('textbox', { name: 'Minecraft version', exact: true })
+    .fill('1.21.11');
   await page
     .getByRole('combobox', { name: 'Source', exact: true })
     .selectOption('modrinth');
@@ -32,7 +36,9 @@ test('public catalog filters, attributed releases, stable URLs and external-only
     page.getByRole('heading', { name: 'External Craft' }),
   ).toHaveCount(0);
   await page.reload();
-  await expect(page.getByLabel('Minecraft version')).toHaveValue('1.21.11');
+  await expect(
+    page.getByRole('textbox', { name: 'Minecraft version', exact: true }),
+  ).toHaveValue('1.21.11');
   await page.getByRole('link', { name: /^Oak Permissions/ }).click();
   await expect(
     page.getByRole('heading', { name: 'Oak Permissions', exact: true }),
