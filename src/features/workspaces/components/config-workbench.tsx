@@ -78,6 +78,9 @@ export default function ConfigWorkbench({
           Find a setting
           <Input
             type='search'
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') event.preventDefault();
+            }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder='Name, path or explanation'

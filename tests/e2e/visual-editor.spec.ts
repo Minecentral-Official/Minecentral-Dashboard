@@ -131,6 +131,9 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
   await page
     .getByRole('searchbox', { name: 'Find a setting', exact: true })
     .fill('timeout');
+  await page
+    .getByRole('searchbox', { name: 'Find a setting', exact: true })
+    .press('Enter');
   await expect(
     page.getByRole('spinbutton', { name: 'Timeout (seconds)', exact: true }),
   ).toBeVisible();
@@ -259,14 +262,12 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
   await expect(
     admin.getByRole('status').filter({ hasText: 'Schema release published.' }),
   ).toBeVisible();
-  const article = admin
-    .getByRole('article')
-    .filter({
-      has: admin.getByRole('heading', {
-        name: `Browser ${testInfo.project.name} · release 1`,
-        exact: true,
-      }),
-    });
+  const article = admin.getByRole('article').filter({
+    has: admin.getByRole('heading', {
+      name: `Browser ${testInfo.project.name} · release 1`,
+      exact: true,
+    }),
+  });
   await article.getByRole('checkbox').check();
   await article
     .getByRole('button', { name: 'Retire release', exact: true })
