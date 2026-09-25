@@ -29,6 +29,7 @@ const release = {
   id: 'v1',
   project_id: 'oak12345',
   name: '1.0',
+  version_number: '1.0.0',
   version_type: 'release',
   date_published: '2026-01-01T00:00:00Z',
   loaders: ['paper', 'fabric'],
@@ -93,6 +94,11 @@ describe('source normalization and boundaries', () => {
     expect(snap.versions[0].support).toEqual([
       { platform: 'paper', kind: 'minecraft', versions: ['1.21.11'] },
     ]);
+    expect(snap.versions[0]).toMatchObject({
+      externalId: 'v1',
+      name: '1.0',
+      versionNumber: '1.0.0',
+    });
     expect(snap.versions[0].dependencies[0].sourceProjectId).toBe('dep1');
     expect(paths[2]).toContain('/versions?ids=');
   });

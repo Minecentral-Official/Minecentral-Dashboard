@@ -19,6 +19,11 @@ export default function StackVersionFields({
 }) {
   return (
     <div className='space-y-4'>
+      <p className='text-sm text-muted-foreground'>
+        Select the release installed on your server to enable compatibility
+        checks. Adding a plugin without choosing a release leaves its version
+        unknown.
+      </p>
       <label className='block space-y-2 text-sm'>
         Installed version
         <select

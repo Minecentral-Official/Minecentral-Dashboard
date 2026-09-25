@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { catalogService } from '@/features/catalog/queries/catalog-access';
 import { addStackAction } from '@/features/workspaces/actions/stack.actions';
+import StackReleaseFilter from '@/features/workspaces/components/stack-release-filter';
 import StackVersionFields from '@/features/workspaces/components/stack-version-fields';
 import WorkspaceActionForm from '@/features/workspaces/components/workspace-action-form';
 import { stackService } from '@/features/workspaces/queries/stack-access';
@@ -56,14 +57,11 @@ export default async function AddPlugin({
           : `Releases declaring ${workspace.platform} / ${workspace.minecraftVersion} support.`
           }
         </p>
-        <Link
+        <StackReleaseFilter
+          all={query.all === 'true'}
+          empty={!releases.rows.length}
           href={href(1, query.all !== 'true')}
-          className='inline-block text-sm underline'
-        >
-          {query.all === 'true' ?
-            'Show relevant releases'
-          : 'Show all releases'}
-        </Link>
+        />
         <WorkspaceActionForm
           action={addStackAction.bind(null, workspaceId, releases.project.id)}
           label='Add to stack'

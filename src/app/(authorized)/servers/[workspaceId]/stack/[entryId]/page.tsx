@@ -9,6 +9,7 @@ import {
   versionStackAction,
 } from '@/features/workspaces/actions/stack.actions';
 import CommunityReportForm from '@/features/workspaces/components/community-report-form';
+import StackReleaseFilter from '@/features/workspaces/components/stack-release-filter';
 import StackVersionFields from '@/features/workspaces/components/stack-version-fields';
 import WorkspaceActionForm from '@/features/workspaces/components/workspace-action-form';
 import { stackService } from '@/features/workspaces/queries/stack-access';
@@ -68,14 +69,11 @@ export default async function StackEntry({
           {record.versionChangedAt.toISOString().slice(0, 16).replace('T', ' ')}{' '}
           UTC
         </p>
-        <Link
+        <StackReleaseFilter
+          all={query.all === 'true'}
+          empty={!releases.rows.length}
           href={href(1, query.all !== 'true')}
-          className='inline-block text-sm underline'
-        >
-          {query.all === 'true' ?
-            'Show relevant releases'
-          : 'Show all releases'}
-        </Link>
+        />
         <fieldset disabled={!editable}>
           <WorkspaceActionForm
             key={`${entryId}-${query.page}-${query.all}`}

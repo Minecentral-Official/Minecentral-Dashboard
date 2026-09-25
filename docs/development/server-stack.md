@@ -54,7 +54,13 @@ workspace platform and its Minecraft version. **Show all releases** also exposes
 unsupported, unknown and withdrawn releases, with warnings; each list paginates
 by 25. Stored releases remain readable if a source refresh withdraws them. Manual
 and unknown versions remain valid options for every project, including manual
-catalog entries. A release from another project is rejected by the service.
+catalog entries. An empty default selector can mean no release explicitly lists
+the exact workspace runtime, rather than a failed import. The add/edit pages now
+explain this and link to **Show all releases**. Select the release actually
+installed and save it to enable compatibility checks; importing or adding a
+project without a release selection preserves an unknown installed version.
+If the all-releases list is also empty, check `/admin/sources`, queue a fresh
+source import and run `pnpm catalog:sync` in the deployment environment. A release from another project is rejected by the service.
 
 Latest relevant means the most recently published available release with explicit
 runtime declarations, with a deterministic ID tie-breaker. It is not a semantic
