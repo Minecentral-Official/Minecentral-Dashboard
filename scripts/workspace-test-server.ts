@@ -19,7 +19,14 @@ const origin = 'http://127.0.0.1:3100';
 const database = new PGlite();
 await applyMigrations(database);
 await mkdir('tests/.auth', { recursive: true });
-for (const id of ['desktop', 'mobile', 'outsider', 'curator']) {
+for (const id of [
+  'desktop',
+  'mobile',
+  'outsider',
+  'curator',
+  'stack-desktop',
+  'stack-mobile',
+]) {
   const token = randomUUID();
   await database.query(
     'INSERT INTO "user" (id, name, email, "emailVerified", "createdAt", "updatedAt", role) VALUES ($1, $2, $3, true, now(), now(), $4)',

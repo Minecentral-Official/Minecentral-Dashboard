@@ -96,6 +96,7 @@ export function createWorkspaceService(db: WorkspaceDatabase) {
       throw new WorkspaceError('Restore this workspace before changing it.');
   }
   return {
+    authorize: access,
     async list(actorId: string, archived = false, page = 1) {
       if (!actorId)
         throw new WorkspaceError('Sign in to view workspaces.', 'forbidden');
@@ -250,6 +251,15 @@ export function createWorkspaceService(db: WorkspaceDatabase) {
         if (confirmation !== record.name)
           throw new WorkspaceError(
             'Type the exact workspace name to confirm deletion.',
+          );
+        const [stackEntry] = await tx
+          .select({ id: schema.stackEntryTable.id })
+          .from(schema.stackEntryTable)
+          .where(eq(schema.stackEntryTable.workspaceId, id))
+          .limit(1);
+        if (stackEntry)
+          throw new WorkspaceError(
+            'Restore the workspace and remove its stack entries before deleting it.',
           );
         // Membership/activity are workspace-owned and cascade. Future domain FKs must
         // restrict deletion until their retention/export policy is implemented.

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { stackService } from '@/features/workspaces/queries/stack-access';
 import {
   loadWorkspace,
   workspaceActor,
@@ -16,8 +17,17 @@ export default async function WorkspaceOverview({
     await workspaceActor(),
     workspace.id,
   );
+  const stackCount = await stackService.count(
+    await workspaceActor(),
+    workspace.id,
+  );
   const summaries = [
-    ['stack', 'Plugins', 'Not configured', 'A stack has not been recorded.'],
+    [
+      'stack',
+      'Plugins',
+      String(stackCount),
+      'Recorded plugins and installed versions.',
+    ],
     [
       'compatibility',
       'Compatibility warnings',

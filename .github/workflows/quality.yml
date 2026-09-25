@@ -36,5 +36,5 @@ jobs:
 
       - name: Install Chromium and browser libraries
         run: pnpm exec playwright install --with-deps chromium
-      - name: Desktop and mobile workspace and catalog flows
+      - name: Desktop and mobile workspace, catalog and stack flows
         run: pnpm test:e2e

@@ -26,3 +26,6 @@ export * from '@/features/workspaces/schemas/workspace.table';
 
 // Canonical source-attributed plugin catalog.
 export * from '@/features/catalog/schemas/catalog.table';
+
+// Private installed stacks and compatibility change outbox.
+export * from '@/features/workspaces/schemas/stack.table';

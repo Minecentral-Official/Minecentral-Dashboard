@@ -111,3 +111,11 @@ The list shows each account's ID, name, email, role and ban status. Promotion
 sets that existing account's global role to `admin` (including catalog and user
 management permissions); it does not create an account or remove a ban. An
 unknown ID fails without changing any accounts. Refresh the app after promotion.
+
+### Server stacks
+
+Apply `pnpm db:migrate`, then open a workspace's **Stack** tab to add catalog
+plugins, track installed versions, import a list/JSON manifest, and save private
+notes and enabled state. Catalog pages also offer **Add to a workspace**.
+Compatibility and dependencies remain explicitly unchecked until epic #7.
+See the [stack architecture, import format and operations guide](docs/development/server-stack.md).
