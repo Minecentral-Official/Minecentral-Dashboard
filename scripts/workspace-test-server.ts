@@ -28,6 +28,8 @@ for (const id of [
   'stack-mobile',
   'compatibility-desktop',
   'compatibility-mobile',
+  'config-desktop',
+  'config-mobile',
 ]) {
   const token = randomUUID();
   await database.query(

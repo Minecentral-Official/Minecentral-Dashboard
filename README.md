@@ -2,7 +2,7 @@
 
 MineCentral v2 is being designed to help Minecraft server owners **assemble, configure, troubleshoot, and maintain a working server stack**. The planned core experience combines private server workspaces, versioned plugin stacks, evidence-backed compatibility, configuration editing, upgrade planning, and log diagnostics.
 
-**Current phase: workspace stacks and compatibility.** The repository includes the legacy resource/server-list dashboard and feature-gated v2 workspaces. Other v2 product documents still describe planned behavior. The proposed first beta focuses on Paper/Java Edition with manual workflows. Visual configuration editing, community configs, recipes, and the optional server agent are proposed later capabilities, subject to the scope decisions recorded in the product contract.
+**Current phase: workspace stacks, compatibility and configuration.** The repository includes the legacy resource/server-list dashboard and feature-gated v2 workspaces. Other v2 product documents still describe planned behavior. The proposed first beta focuses on Paper/Java Edition with manual workflows. Visual configuration editing, community configs, recipes, and the optional server agent are proposed later capabilities, subject to the scope decisions recorded in the product contract.
 
 ## What exists today
 
@@ -13,7 +13,7 @@ MineCentral v2 is being designed to help Minecraft server owners **assemble, con
 | Public server listings  | Listing creation/editing, publication, discovery, voting, and optional Votifier delivery                                                                                            |
 | Support/account         | Tickets and messages, profile display, activity, shared dashboard layouts                                                                                                           |
 | Legacy scaffolding      | Placeholder pages for other resource types, worlds, collections, saved servers and vote history; Stripe/hosting helpers and environment settings without complete application flows |
-| V2 workspaces and tools | Private workspaces, collaborators, catalog-backed stacks and compatibility reports behind FEATURE_V2_WORKSPACES; configuration tools remain planned                                 |
+| V2 workspaces and tools | Private workspaces, collaborators, catalog-backed stacks, compatibility reports and private YAML editing/history/export behind FEATURE_V2_WORKSPACES                                 |
 
 The [v1 audit](docs/audits/v1-feature-and-data-inventory.md) records known authorization, download-contract, data-model, and migration risks. Current functionality is not a claim of production readiness. Public server listings are distinct from the planned private workspaces: creating or editing a listing does not provision or manage a Minecraft server.
 
@@ -122,3 +122,10 @@ conflicts and unknowns, with links to corrective actions.
 See the [stack architecture, import format and operations guide](docs/development/server-stack.md)
 and [compatibility evidence, curation and caching guide](docs/development/compatibility-engine.md).
 Curators can record evidence and review opt-in community reports at `/admin/compatibility`.
+
+### Configuration files
+
+Apply `pnpm db:migrate`, then use a workspace’s **Configs** tab to upload or paste
+YAML, edit privately, compare/restore revisions, and download the saved file.
+Plugin-linked configs survive stack removal and are marked orphaned. See the
+[configuration storage, validation and retention guide](docs/development/configuration-platform.md).

@@ -261,6 +261,15 @@ export function createWorkspaceService(db: WorkspaceDatabase) {
           throw new WorkspaceError(
             'Restore the workspace and remove its stack entries before deleting it.',
           );
+        const [config] = await tx
+          .select({ id: schema.configFileTable.id })
+          .from(schema.configFileTable)
+          .where(eq(schema.configFileTable.workspaceId, id))
+          .limit(1);
+        if (config)
+          throw new WorkspaceError(
+            'Restore the workspace, then export and delete its configs before deleting it.',
+          );
         // Membership/activity are workspace-owned and cascade. Future domain FKs must
         // restrict deletion until their retention/export policy is implemented.
         await tx.delete(workspace).where(eq(workspace.id, id));

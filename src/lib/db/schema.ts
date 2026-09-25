@@ -32,3 +32,6 @@ export * from '@/features/workspaces/schemas/stack.table';
 
 // Evidence-backed workspace compatibility and derived cache.
 export * from '@/features/workspaces/schemas/compatibility.table';
+
+// Private YAML configuration files and immutable revision history.
+export * from '@/features/workspaces/schemas/config.table';

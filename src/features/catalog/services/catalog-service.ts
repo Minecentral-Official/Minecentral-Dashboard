@@ -401,6 +401,10 @@ export function createCatalogService(db: CatalogDatabase) {
           .where(
             eq(schema.compatibilityRelationshipTable.toProjectId, values.from),
           );
+        await tx
+          .update(schema.configFileTable)
+          .set({ projectId: values.into })
+          .where(eq(schema.configFileTable.projectId, values.from));
         // Flatten existing redirects so stable URLs never accumulate redirect chains.
         await tx
           .update(project)
