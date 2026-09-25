@@ -159,6 +159,10 @@ export function serializeConfig(
 }
 export class ConfigValidationError extends Error {
   constructor(public readonly diagnostics: ConfigDiagnostic[]) {
-    super('Fix the YAML errors before saving or exporting.');
+    super(
+      diagnostics.every((d) => d.category === 'schema') ?
+        'Fix the schema errors before saving.'
+      : 'Fix the YAML errors before saving or exporting.',
+    );
   }
 }

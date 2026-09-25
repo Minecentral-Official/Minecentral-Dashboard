@@ -33,6 +33,12 @@ export default async function AdminCatalog() {
       >
         Compatibility evidence and community reviews →
       </Link>
+      <Link
+        href='/admin/config-schemas'
+        className='inline-block text-primary underline'
+      >
+        Visual config schemas →
+      </Link>
       <section className='space-y-4 rounded-lg border p-5'>
         <h2 className='text-xl font-semibold'>Import a project</h2>
         <CatalogForm operation='sync' label='Queue metadata sync'>

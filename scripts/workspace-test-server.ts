@@ -11,6 +11,7 @@ import type { CatalogDatabase } from '../src/features/catalog/services/catalog-s
 import { createCatalogService } from '../src/features/catalog/services/catalog-service';
 import * as schema from '../src/lib/db/schema';
 import { catalogFixture } from '../tests/fixtures/catalog';
+import { visualSchemaFixture } from '../tests/fixtures/visual-schema';
 import { applyMigrations } from './migration-utils';
 
 // Test-only ephemeral database + signed fixture sessions. No application auth bypass.
@@ -30,6 +31,8 @@ for (const id of [
   'compatibility-mobile',
   'config-desktop',
   'config-mobile',
+  'visual-desktop',
+  'visual-mobile',
 ]) {
   const token = randomUUID();
   await database.query(
@@ -77,7 +80,17 @@ const catalog = createCatalogService(
     casing: 'camelCase',
   }) as unknown as CatalogDatabase,
 );
-await catalog.importSnapshot(catalogFixture());
+const oakId = await catalog.importSnapshot(catalogFixture());
+await database.query(
+  'INSERT INTO visual_schema_release (key,release,project_id,definition,actor_id) VALUES ($1,$2,$3,$4::jsonb,$5)',
+  [
+    visualSchemaFixture.key,
+    visualSchemaFixture.release,
+    oakId,
+    JSON.stringify(visualSchemaFixture),
+    'curator',
+  ],
+);
 await catalog.manual('curator', {
   ...catalogFixture().metadata,
   name: 'External Craft',

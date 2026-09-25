@@ -68,7 +68,8 @@ layout. `serializeConfig` validates and returns the same text, preserving unknow
 keys, order, comments, quotes and multiline values as supplied to the service.
 An unchanged server-side round trip preserves CRLF too. Browser textarea edits
 may normalize newline style; no semantic formatting/normalization is applied.
-There is no structured/visual editor or automatic default merging in this epic.
+Epic #9 adds an optional [schema-driven visual editor](visual-config-editor.md).
+This raw storage layer does not automatically merge defaults.
 
 Users can upload UTF-8 `.yml`/`.yaml` files or paste text. Uploads are size and
 encoding checked; pasted/file content is validated again server-side. Invalid
@@ -84,8 +85,8 @@ types of `allow-end`, `connection-throttle` and `shutdown-message` when present.
 These advisory rules follow the [Paper Bukkit configuration reference](https://docs.papermc.io/paper/reference/bukkit-configuration/).
 They emit separate schema warnings, do not reject unknown keys and do not claim
 to validate an entire plugin schema or a specific Minecraft/plugin release.
-Warnings permit saving/export; syntax/safety errors block both. More complete
-versioned schemas belong to the following configuration-editor epic.
+Warnings permit saving/export; syntax/safety errors block both. The [visual editor](visual-config-editor.md) adds separately curated versioned
+schemas and server-side hard constraints for covered files.
 
 ## Revisions, comparison and restore (#65, #66)
 

@@ -35,3 +35,5 @@ export * from '@/features/workspaces/schemas/compatibility.table';
 
 // Private YAML configuration files and immutable revision history.
 export * from '@/features/workspaces/schemas/config.table';
+
+export * from '@/features/workspaces/schemas/visual-schema.table';
