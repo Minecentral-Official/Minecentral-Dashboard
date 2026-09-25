@@ -36,6 +36,7 @@ test('import YAML, preserve invalid drafts, save, download, restore and retain o
     .getByRole('heading', { name: 'Oak Permissions', exact: true })
     .getByRole('link')
     .click();
+  await expect(page).toHaveURL(/\/stack\/[0-9a-f-]{36}$/);
   const entryUrl = page.url();
   await page
     .getByRole('link', { name: 'Import plugin config', exact: true })
