@@ -81,7 +81,10 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
     .getByRole('spinbutton', { name: 'Timeout (seconds)', exact: true })
     .press('Tab');
   await expect(
-    page.getByRole('main').getByText(/Recommendation: Recommended range/),
+    page
+      .getByRole('main')
+      .getByText(/Recommendation: Recommended range/)
+      .filter({ visible: true }),
   ).toBeVisible();
   await page
     .getByRole('button', {
@@ -232,7 +235,10 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
     page.getByRole('textbox', { name: 'YAML content', exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole('main').getByText(/No reviewed visual schema covers/),
+    page
+      .getByRole('main')
+      .getByText(/No reviewed visual schema covers/)
+      .filter({ visible: true }),
   ).toBeVisible();
   const curator = await browser.newContext({
     baseURL: 'http://127.0.0.1:3100',
