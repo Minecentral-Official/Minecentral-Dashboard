@@ -20,6 +20,7 @@ for (const key of [
 Object.assign(env, {
   NODE_ENV: 'production',
   DATABASE_URL: 'postgresql://fixture:fixture@127.0.0.1:1/minecentral_test',
+  DATABASE_POOL_MAX: '10',
   BETTER_AUTH_SECRET: 'test-only-auth-secret-never-use-in-production-0001',
   REVALIDATION_SECRET: 'test-only-revalidation-secret-never-use-00000001',
   FRONTEND_URL: 'https://example.test',

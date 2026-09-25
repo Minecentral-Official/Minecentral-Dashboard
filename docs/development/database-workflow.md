@@ -1,6 +1,6 @@
 # Database conventions and migration workflow (#25)
 
-The legacy schema has 14 tables with mixed naming/ID conventions. `drizzle/0000_legacy_baseline.sql` reproduces that schema without renaming existing identities. This initial baseline is not permission to apply CREATE TABLE statements to an existing database. No v2 domain tables are introduced by this foundation task.
+The legacy schema has 14 tables with mixed naming/ID conventions. `drizzle/0000_legacy_baseline.sql` reproduces that schema without renaming existing identities. The next migration adds the workspace tables. These tracked files initialize fresh databases; there is no legacy schema adoption step.
 
 ## V2 conventions
 
@@ -21,11 +21,17 @@ Review new tables for these conventions. Existing v1 tables remain unchanged; co
 
 `db:push` remains for throwaway experiments only; it bypasses tracked history. A database populated with push must be recreated or explicitly reconciled before the migration runner will accept it. Fixtures use disposable PGlite instances; no test reads the developer's database URL.
 
-## Existing database baseline
+## Rebuild a disposable database
 
-Inspect a restored copy first. Back up schema/data and verify restoration. Establish a maintenance/write barrier with a single operator and no concurrent DDL. Run `BASELINE_APPROVED=true pnpm db:baseline` only after review. The command creates a temporary isolated expected schema, compares public columns/defaults/nullability, constraints and indexes, and records **only** the baseline hash if there is an exact match and no journal. It refuses drift instead of silently marking incompatible databases migrated. Differences caused by PostgreSQL versions/extensions also require investigation, not bypassing the comparison. Existing application rows are not changed.
+The legacy baseline/adoption workflow has been removed. For a database with no data to preserve, run:
 
-The fingerprint is structural evidence, not a complete inventory of custom triggers, policies, grants or extensions. Inventory those separately as part of the migration review. Do not adopt this baseline blindly for an uninspected production database.
+```bash
+pnpm db:reset --confirm
+```
+
+This drops the `public` and `drizzle` schemas (including their tables, data and dependent objects), recreates `public`, and applies every tracked migration in one transaction. The command reads the target from `DATABASE_URL`. Use the database owner; custom grants/extensions may need to be restored afterward. Without `--confirm` it refuses to connect. No reset runs automatically during app startup or ordinary migration.
+
+For a genuinely fresh database, simply run `pnpm db:migrate`. Future updates also use `pnpm db:migrate`, which preserves existing records. Keep the existing SQL migration files and hashes intact; they still create tables required by the application.
 
 ## Staging and production
 
@@ -37,7 +43,7 @@ Run one migration job behind the agreed maintenance/write barrier:
 NODE_ENV=production MIGRATION_APPROVED=true pnpm db:migrate
 ```
 
-The runner takes a transaction-scoped advisory lock, uses a 5-second lock timeout and 60-second statement timeout, checks every applied hash/timestamp is an unchanged prefix, and commits SQL + journal atomically. Existing unbaselined public tables are rejected. A SQL error rolls back the transaction. Applications must not perform migrations automatically at startup. Keep additive schema compatible with the preceding app version; deploy expand/backfill/contract changes separately. Concurrent index builds cannot run inside this runner's transaction and need a separately reviewed operational migration.
+The runner takes a transaction-scoped advisory lock, uses a 5-second lock timeout and 60-second statement timeout, checks every applied hash/timestamp is an unchanged prefix, and commits SQL + journal atomically. Existing tables without migration history require a fresh database or an explicit disposable reset. A SQL error rolls back the transaction. Applications must not perform migrations automatically at startup. Keep additive schema compatible with the preceding app version; deploy expand/backfill/contract changes separately. Concurrent index builds cannot run inside this runner's transaction and need a separately reviewed operational migration.
 
 Afterward: verify schema/version, row counts and application smoke checks before lifting the barrier. On failure stop deployment; do not retry destructive changes blindly. Roll back application code only when schema compatibility permits. Restore the verified backup or deploy a reviewed forward fix for committed data changes; there is no automatic destructive down migration.
 

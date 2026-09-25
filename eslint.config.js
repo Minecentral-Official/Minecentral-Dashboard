@@ -17,7 +17,17 @@ const config = [
     // currently misidentifies useInputControl's returned value as a ref.
     rules: { 'react-hooks/refs': 'off' },
   },
-  { ignores: ['.next/**', 'node_modules/**', 'drizzle/**', 'coverage/**'] },
+  {
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'drizzle/**',
+      'coverage/**',
+      'test-results/**',
+      'playwright-report/**',
+      'tests/.auth/**',
+    ],
+  },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {

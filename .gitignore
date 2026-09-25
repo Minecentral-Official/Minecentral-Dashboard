@@ -38,3 +38,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Isolated browser test sessions and artifacts
+/tests/.auth/
+/test-results/
+/playwright-report/

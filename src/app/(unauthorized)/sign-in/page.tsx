@@ -34,3 +34,6 @@ export default async function SignInPage({
     </main>
   );
 }
+
+// OAuth errors and the existing session are resolved for each request.
+export const instant = false;

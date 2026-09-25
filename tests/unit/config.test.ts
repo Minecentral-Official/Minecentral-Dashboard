@@ -12,6 +12,7 @@ const valid = {
 describe('runtime configuration', () => {
   it('needs no unused provider credentials and defaults features off', () => {
     const config = parseRuntimeConfig(valid);
+    expect(config.DATABASE_POOL_MAX).toBe(10);
     expect(config.FEATURE_V2_AGENT).toBe(false);
     expect(config.SERVERLIST_MAX_SERVERS_PER_USER).toBe(5);
   });
@@ -22,6 +23,17 @@ describe('runtime configuration', () => {
     expect(() =>
       parseRuntimeConfig({ ...valid, DISCORD_CLIENT_ID: 'id' }),
     ).toThrow('DISCORD_CLIENT_SECRET');
+  });
+  it('bounds the database connection pool', () => {
+    expect(
+      parseRuntimeConfig({ ...valid, DATABASE_POOL_MAX: '1' })
+        .DATABASE_POOL_MAX,
+    ).toBe(1);
+    for (const value of ['0', '101', 'no', '1.5']) {
+      expect(() =>
+        parseRuntimeConfig({ ...valid, DATABASE_POOL_MAX: value }),
+      ).toThrow('DATABASE_POOL_MAX');
+    }
   });
   it('reports field names without echoing secret input', () => {
     expect(() =>

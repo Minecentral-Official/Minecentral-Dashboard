@@ -5,6 +5,7 @@ Use `src/lib/env/server.env.ts` for server values and `client.env.ts` for explic
 | Variables                                                           | Requirement / behavior                                                                                     |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `DATABASE_URL`                                                      | Required PostgreSQL URL, dedicated per environment                                                         |
+| `DATABASE_POOL_MAX`                                                 | Optional connection pool limit, integer 1–100, default 10; browser fixture uses 1                          |
 | `BETTER_AUTH_SECRET`                                                | Required random secret, at least 32 characters, stable per environment                                     |
 | `REVALIDATION_SECRET`                                               | Required separate random secret, at least 32 characters                                                    |
 | `FRONTEND_URL`                                                      | Required HTTP(S) origin, no path/query/credentials; normalized without trailing slash; HTTPS in production |

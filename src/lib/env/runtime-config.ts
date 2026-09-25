@@ -25,6 +25,7 @@ export const runtimeConfigSchema = z
         (value) => /^postgres(ql)?:/.test(value),
         'Must be a PostgreSQL URL',
       ),
+    DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),
     BETTER_AUTH_SECRET: z.string().min(32),
     FRONTEND_URL: z.string().url(),
     REVALIDATION_SECRET: z.string().min(32),

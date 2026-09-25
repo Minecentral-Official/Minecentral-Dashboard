@@ -36,12 +36,20 @@ export async function ensureJournal(client: SqlClient) {
     'CREATE TABLE IF NOT EXISTS drizzle.__drizzle_migrations (id serial PRIMARY KEY, hash text NOT NULL, created_at bigint)',
   );
 }
-export async function applyMigrations(client: SqlClient) {
+export async function applyMigrations(
+  client: SqlClient,
+  options: { reset?: boolean } = {},
+) {
   await client.query('BEGIN');
   try {
     await client.query("SET LOCAL lock_timeout = '5s'");
     await client.query("SET LOCAL statement_timeout = '60s'");
     await client.query('SELECT pg_advisory_xact_lock(72721401)');
+    if (options.reset) {
+      await client.query('DROP SCHEMA IF EXISTS public CASCADE');
+      await client.query('DROP SCHEMA IF EXISTS drizzle CASCADE');
+      await client.query('CREATE SCHEMA public');
+    }
     const hasJournal = await client.query(
       "SELECT to_regclass('drizzle.__drizzle_migrations') AS name",
     );
@@ -51,7 +59,7 @@ export async function applyMigrations(client: SqlClient) {
       );
       if (existing.rows.length)
         throw new Error(
-          'Existing unbaselined database: review schema drift and run db:baseline first',
+          'Existing tables without migration history: use a fresh database or run pnpm db:reset --confirm to erase and rebuild this database',
         );
     }
     await ensureJournal(client);
