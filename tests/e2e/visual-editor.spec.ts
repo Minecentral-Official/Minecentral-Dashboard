@@ -81,7 +81,7 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
     .getByRole('spinbutton', { name: 'Timeout (seconds)', exact: true })
     .press('Tab');
   await expect(
-    page.getByText(/Recommendation: Recommended range/),
+    page.getByRole('main').getByText(/Recommendation: Recommended range/),
   ).toBeVisible();
   await page
     .getByRole('button', {
@@ -158,9 +158,11 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
   expect(changed).toContain('timeout: 80');
   await raw.fill('broken: [');
   await expect(
-    page.getByText(
-      'YAML is invalid. The last valid visual values are shown read-only. Fix the YAML to continue.',
-    ),
+    page
+      .getByRole('main')
+      .getByText(
+        'YAML is invalid. The last valid visual values are shown read-only. Fix the YAML to continue.',
+      ),
   ).toBeVisible();
   await expect(
     page.getByRole('spinbutton', { name: 'Timeout (seconds)', exact: true }),
@@ -230,7 +232,7 @@ test('visual YAML and split modes preserve unknowns, nested edits and drafts, pr
     page.getByRole('textbox', { name: 'YAML content', exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(/No reviewed visual schema covers/),
+    page.getByRole('main').getByText(/No reviewed visual schema covers/),
   ).toBeVisible();
   const curator = await browser.newContext({
     baseURL: 'http://127.0.0.1:3100',
