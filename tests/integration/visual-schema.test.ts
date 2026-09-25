@@ -154,6 +154,40 @@ describe('curated schema releases', () => {
       (await registry.select('owner', workspaceId, configId)).schema?.release,
     ).toBe(2);
   });
+  it('supports required settings without publishing invented defaults', async () => {
+    const required = {
+      ...definition,
+      root: {
+        ...definition.root,
+        fields: [
+          ...definition.root.fields!,
+          {
+            key: 'password',
+            label: 'Password',
+            type: 'string' as const,
+            required: true,
+            minLength: 1,
+          },
+        ],
+      },
+    };
+    const row = await registry.publish('curator', projectId, required);
+    expect(() => templateDocument(required)).toThrow('incomplete');
+    await expect(
+      configs.save('owner', workspaceId, configId, {
+        content: templateDocument(definition),
+        expectedRevision: 1,
+        expectedSchemaId: row.id,
+      }),
+    ).rejects.toThrow('schema errors');
+    const result = await configs.save('owner', workspaceId, configId, {
+      content:
+        templateDocument(definition) + 'password: synthetic-private-fixture\n',
+      expectedRevision: 1,
+      expectedSchemaId: row.id,
+    });
+    expect(result.revision).toBe(2);
+  });
   it('falls back for unknown, unsupported, orphaned and unlinked files without changing their YAML', async () => {
     await registry.publish('curator', projectId, definition);
     for (const manualVersion of ['2.0', 'v-next']) {

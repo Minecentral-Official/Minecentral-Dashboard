@@ -5,10 +5,7 @@ import { z } from 'zod';
 
 import { parseVisualSchema } from '@/features/workspaces/schemas/visual-schema';
 import { matchesVersionRange } from '@/features/workspaces/services/compatibility-engine';
-import {
-  fieldIssues,
-  templateDocument,
-} from '@/features/workspaces/services/visual-document';
+import { fieldIssues } from '@/features/workspaces/services/visual-document';
 import { WorkspaceError } from '@/features/workspaces/services/workspace-policy';
 import { createWorkspaceService } from '@/features/workspaces/services/workspace-service';
 import { hasPermission } from '@/lib/auth/helpers/permissions';
@@ -125,7 +122,6 @@ export function createVisualSchemaService(db: WorkspaceDatabase) {
         nodes.push(...(f.fields ?? []));
         if (f.items) nodes.push(f.items);
       }
-      templateDocument(definition);
       return db.transaction(async (tx) => {
         await curator(tx, actor);
         await tx.execute(sql`SELECT pg_advisory_xact_lock(72721402)`);

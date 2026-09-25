@@ -139,8 +139,10 @@ Copy, Download and History controls remain shared between modes.
 ## Defaults and replacement (#76)
 
 Defaults are metadata until the user explicitly adds/resets a field or generates
-a template. Publishing verifies typed defaults and that a generated template is
-valid YAML with required fields satisfied. Resetting a field/section asks for
+a template. Publishing verifies supplied typed defaults; required settings do not
+need a default (for example, credentials). A whole template is available only when
+defaults satisfy required fields. Otherwise generation explains the missing value
+and leaves the draft unchanged. Resetting a field/section asks for
 confirmation. Object-section reset recursively updates supported defaulted fields
 and preserves unrelated unknown keys. Scalar/list/map replacement may replace the
 selected value's contents; the confirmation explains this. No reset autosaves.
