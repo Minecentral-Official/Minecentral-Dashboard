@@ -34,10 +34,10 @@ export default function ServiceSelectionSection() {
 
 const services = [
   {
-    title: 'Resources',
+    title: 'Plugin catalog',
     description:
-      'Find fun community made plugins, texture-packs, mod-packs and more!',
-    href: '/plugins',
+      'Find server plugins with source-attributed releases and platform metadata.',
+    href: '/discover/plugins',
     enabled: true,
   },
   {

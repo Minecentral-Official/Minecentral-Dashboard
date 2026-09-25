@@ -18,6 +18,11 @@ export default function SidebarDashboardGeneral() {
         {featureFlags.workspaces && (
           <SidebarLink Icon={ServerIcon} name='My Servers' url='/servers' />
         )}
+        <SidebarLink
+          Icon={ServerIcon}
+          name='Plugin catalog'
+          url='/discover/plugins'
+        />
         <SidebarDashboardAccount />
         <SidebarLink
           Icon={TicketIcon}

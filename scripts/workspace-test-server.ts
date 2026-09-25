@@ -4,7 +4,13 @@ import { mkdir, writeFile } from 'node:fs/promises';
 
 import { PGlite } from '@electric-sql/pglite';
 import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
+import { drizzle } from 'drizzle-orm/pglite';
 
+import type { CatalogDatabase } from '../src/features/catalog/services/catalog-service';
+
+import { createCatalogService } from '../src/features/catalog/services/catalog-service';
+import * as schema from '../src/lib/db/schema';
+import { catalogFixture } from '../tests/fixtures/catalog';
 import { applyMigrations } from './migration-utils';
 
 // Test-only ephemeral database + signed fixture sessions. No application auth bypass.
@@ -13,11 +19,16 @@ const origin = 'http://127.0.0.1:3100';
 const database = new PGlite();
 await applyMigrations(database);
 await mkdir('tests/.auth', { recursive: true });
-for (const id of ['desktop', 'mobile', 'outsider']) {
+for (const id of ['desktop', 'mobile', 'outsider', 'curator']) {
   const token = randomUUID();
   await database.query(
     'INSERT INTO "user" (id, name, email, "emailVerified", "createdAt", "updatedAt", role) VALUES ($1, $2, $3, true, now(), now(), $4)',
-    [id, `Test ${id}`, `${id}@example.test`, 'user'],
+    [
+      id,
+      `Test ${id}`,
+      `${id}@example.test`,
+      id === 'curator' ? 'curator' : 'user',
+    ],
   );
   await database.query(
     'INSERT INTO session (id, token, "userId", "expiresAt", "createdAt", "updatedAt") VALUES ($1, $2, $3, now() + interval \'1 day\', now(), now())',
@@ -44,6 +55,20 @@ for (const id of ['desktop', 'mobile', 'outsider']) {
     { mode: 0o600 },
   );
 }
+const catalog = createCatalogService(
+  drizzle(database, {
+    schema,
+    casing: 'camelCase',
+  }) as unknown as CatalogDatabase,
+);
+await catalog.importSnapshot(catalogFixture());
+await catalog.manual('curator', {
+  ...catalogFixture().metadata,
+  name: 'External Craft',
+  platforms: [],
+  url: 'https://example.test/external',
+  reason: 'Synthetic manual fixture for browser coverage',
+});
 const socket = new PGLiteSocketServer({
   db: database,
   host: '127.0.0.1',
