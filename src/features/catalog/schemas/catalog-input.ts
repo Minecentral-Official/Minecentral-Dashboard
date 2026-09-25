@@ -46,6 +46,7 @@ export type CatalogDependency = {
   platform: string | null;
 };
 export type CatalogVersion = {
+  versionNumber?: string | null;
   externalId: string;
   name: string;
   channel: string;

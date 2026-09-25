@@ -26,6 +26,8 @@ for (const id of [
   'curator',
   'stack-desktop',
   'stack-mobile',
+  'compatibility-desktop',
+  'compatibility-mobile',
 ]) {
   const token = randomUUID();
   await database.query(
@@ -41,6 +43,11 @@ for (const id of [
     'INSERT INTO session (id, token, "userId", "expiresAt", "createdAt", "updatedAt") VALUES ($1, $2, $3, now() + interval \'1 day\', now(), now())',
     [randomUUID(), token, id],
   );
+  if (id.startsWith('compatibility-'))
+    await database.query(
+      'UPDATE "user" SET "createdAt" = now() - interval \'30 days\' WHERE id = $1',
+      [id],
+    );
   const signature = createHmac('sha256', secret).update(token).digest('base64');
   await writeFile(
     `tests/.auth/${id}.json`,
@@ -76,6 +83,32 @@ await catalog.manual('curator', {
   url: 'https://example.test/external',
   reason: 'Synthetic manual fixture for browser coverage',
 });
+const compatibilityFixture = catalogFixture();
+compatibilityFixture.externalId = 'cedar123';
+compatibilityFixture.locator = 'cedar123';
+compatibilityFixture.url = 'https://modrinth.com/plugin/cedar-resolver';
+compatibilityFixture.metadata.name = 'Cedar Resolver';
+compatibilityFixture.metadata.description =
+  'Synthetic compatibility browser fixture.';
+compatibilityFixture.versions[0].externalId = 'cedar-version1';
+compatibilityFixture.versions[0].name = 'Cedar 1.0';
+compatibilityFixture.versions[0].versionNumber = '1.0';
+compatibilityFixture.versions[0].dependencies = [
+  {
+    sourceProjectId: 'oak12345',
+    sourceVersionId: 'version1',
+    name: 'Oak Permissions',
+    type: 'required',
+    platform: 'paper',
+  },
+];
+const cedarId = await catalog.importSnapshot(compatibilityFixture);
+await database.query(
+  `INSERT INTO compatibility_evidence (version_id, platform, minecraft_version, kind, result, confidence, provenance, url, observed_at, expires_at, actor_id)
+SELECT v.id, 'paper', '1.21.11', 'automated-test', 'incompatible', 'high', 'Synthetic contradictory runtime evidence for browser testing', 'https://example.test/cedar-test', now() - interval '1 day', now() + interval '30 days', 'curator'
+FROM catalog_version v JOIN catalog_source s ON v.source_id = s.id WHERE s.project_id = $1`,
+  [cedarId],
+);
 const socket = new PGLiteSocketServer({
   db: database,
   host: '127.0.0.1',

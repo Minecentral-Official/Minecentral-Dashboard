@@ -106,6 +106,7 @@ export const catalogVersionTable = pgTable(
       .references(() => catalogSourceTable.id, { onDelete: 'restrict' }),
     externalId: text('external_id').notNull(),
     name: text('name').notNull(),
+    versionNumber: text('version_number'),
     channel: text('channel').notNull(),
     publishedAt: timestamp('published_at', { withTimezone: true }).notNull(),
     url: text('url').notNull(),

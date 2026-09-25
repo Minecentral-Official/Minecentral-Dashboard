@@ -152,13 +152,19 @@ export function createCatalogService(db: CatalogDatabase) {
             .insert(version)
             .values({
               ...v,
+              versionNumber: v.versionNumber ?? null,
               sourceId: s.id,
               publishedAt: new Date(v.publishedAt),
               available: 1,
             })
             .onConflictDoUpdate({
               target: [version.sourceId, version.externalId],
-              set: { ...v, publishedAt: new Date(v.publishedAt), available: 1 },
+              set: {
+                ...v,
+                versionNumber: v.versionNumber ?? null,
+                publishedAt: new Date(v.publishedAt),
+                available: 1,
+              },
             });
         }
         await refresh(tx, projectId);
@@ -374,14 +380,27 @@ export function createCatalogService(db: CatalogDatabase) {
             .update(schema.stackEntryTable)
             .set({ projectId: values.into, updatedAt: new Date() })
             .where(eq(schema.stackEntryTable.id, e.id));
-          await tx
-            .insert(schema.stackChangeTable)
-            .values({
-              workspaceId: e.workspaceId,
-              entryId: e.id,
-              event: 'project_merged',
-            });
+          await tx.insert(schema.stackChangeTable).values({
+            workspaceId: e.workspaceId,
+            entryId: e.id,
+            event: 'project_merged',
+          });
         }
+        await tx
+          .update(schema.compatibilityRelationshipTable)
+          .set({ fromProjectId: values.into })
+          .where(
+            eq(
+              schema.compatibilityRelationshipTable.fromProjectId,
+              values.from,
+            ),
+          );
+        await tx
+          .update(schema.compatibilityRelationshipTable)
+          .set({ toProjectId: values.into })
+          .where(
+            eq(schema.compatibilityRelationshipTable.toProjectId, values.from),
+          );
         // Flatten existing redirects so stable URLs never accumulate redirect chains.
         await tx
           .update(project)

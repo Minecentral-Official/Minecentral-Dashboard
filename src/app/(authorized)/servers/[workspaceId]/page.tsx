@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { compatibilityService } from '@/features/workspaces/queries/compatibility-access';
 import { stackService } from '@/features/workspaces/queries/stack-access';
 import {
   loadWorkspace,
@@ -21,6 +22,10 @@ export default async function WorkspaceOverview({
     await workspaceActor(),
     workspace.id,
   );
+  const compatibility = await compatibilityService.report(
+    await workspaceActor(),
+    workspace.id,
+  );
   const summaries = [
     [
       'stack',
@@ -31,8 +36,16 @@ export default async function WorkspaceOverview({
     [
       'compatibility',
       'Compatibility warnings',
-      'Not checked',
-      'No compatibility evidence is available yet.',
+      compatibility.report ?
+        String(
+          compatibility.report.summary.incompatible +
+            compatibility.report.summary.conflicting +
+            compatibility.report.summary.blocked,
+        )
+      : 'Unavailable',
+      compatibility.report ?
+        `${compatibility.report.summary.unknown} entries need runtime evidence.`
+      : 'Open the report to retry the check.',
     ],
     [
       'updates',

@@ -59,17 +59,15 @@ catalog entries. A release from another project is rejected by the service.
 Latest relevant means the most recently published available release with explicit
 runtime declarations, with a deterministic ID tie-breaker. It is not a semantic
 version comparison, a recommendation to upgrade, or a compatibility verdict.
-Proxy platform versions never satisfy a Minecraft version filter. The UI keeps
-publisher-declared runtime support separate from **Compatibility: not checked**
-and **Dependencies: not checked**.
+Proxy platform versions never satisfy a Minecraft version filter. The UI keeps publisher-declared runtime support separate from the evidence-backed
+report implemented in [epic #7](compatibility-engine.md).
 
 Every add, effective version change, metadata/state change, removal and catalog
 merge appends a `stack_change` row in the same transaction as the mutation. This
 is the durable recalculation hook for epic #7: consume unprocessed rows, authorize
 workspace-scoped outputs, calculate against current state and mark processed
 only after persisting results. Rows have a stable UUID for idempotency and retain
-entry IDs after removal. No compatibility consumer or result is claimed in this
-epic. Version no-ops do not create spurious change events. Removing a workspace
+entry IDs after removal. Epic #7 now consumes these rows when saving cached compatibility reports. Version no-ops do not create spurious change events. Removing a workspace
 cascades its outbox and activity, after stack entries have been explicitly removed.
 
 ## Bulk import (#50)
@@ -106,8 +104,8 @@ projects from importing; unexpected database errors roll back the transaction.
 ## Management UI (#51)
 
 The responsive stack list displays installed and latest relevant versions,
-source, enabled state, purpose, private-note presence and explicit analysis
-placeholders. Search matches plugin name or purpose; state and sort are URL
+source, enabled state, purpose, private-note presence and compatibility badges
+linked to the workspace report. Search matches plugin name or purpose; state and sort are URL
 parameters. Pagination is 24 entries per page with stable ordering and clamped
 out-of-range page numbers. An integration fixture exercises 105 entries.
 Overview counts query current entries and every successful action revalidates

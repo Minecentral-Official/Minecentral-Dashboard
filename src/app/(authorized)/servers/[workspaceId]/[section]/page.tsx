@@ -8,10 +8,6 @@ const descriptions: Record<string, [string, string]> = {
     'Configs',
     'Configuration editing is not available yet. Keep setup notes in Settings while you prepare your server.',
   ],
-  compatibility: [
-    'Compatibility',
-    'Compatibility has not been checked. No result here means unknown, not compatible.',
-  ],
   updates: [
     'Updates',
     'Update readiness needs a recorded stack and version evidence. Those tools are not available yet.',

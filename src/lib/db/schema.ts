@@ -29,3 +29,6 @@ export * from '@/features/catalog/schemas/catalog.table';
 
 // Private installed stacks and compatibility change outbox.
 export * from '@/features/workspaces/schemas/stack.table';
+
+// Evidence-backed workspace compatibility and derived cache.
+export * from '@/features/workspaces/schemas/compatibility.table';
